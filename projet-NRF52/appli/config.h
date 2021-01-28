@@ -56,6 +56,17 @@
 //Configs communes à tout les objets.
 
 
+#define PIN_UART_TX			6
+#define PIN_UART_RX			8
+#define PIN_BUTTON_NETWORK	18
+#define PIN_LED_NETWORK		19
+#define PIN_LED_BATTERY		20
+#define PIN_RESET			21
+
+//TODO compléter la liste des objets dotés d'une led batterie !
+#define I_HAVE_LED_BATTERY	(OBJECT_ID == OBJECT_BASE_STATION || OBJECT_ID == 4)
+
+
 #define ENABLE_POWERDOWN_FROM_MCU		1	//si 1 : permet de couper l'alim avec un appui long sur le bouton poussoir. Impose le maintient du bouton pendant 1 seconde au démarrage.
 
 
@@ -96,6 +107,10 @@ uint32_t debug_printf(char * format, ...);
 
 
 ///////////////////////////////////////////////////////////////////////////////////
+#ifndef NRF52832_XXAA
+	#define NRF52832_XXAA
+#endif
+#include "nrf.h"
 
 
 #endif /* CONFIG_CONFIG_H_ */

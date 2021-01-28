@@ -7,8 +7,8 @@
 
 #ifndef MACRO_TYPES_H_
 #define MACRO_TYPES_H_
-#include <stdio.h>
-#include <stdint.h>
+#include "stdio.h"
+#include "stdint.h"
 
 //Macro permettant d'activer un envoi sur l'UART de ce qui est affiché sur le LCD...
 //Utile si on a pas de LCD par exemple.

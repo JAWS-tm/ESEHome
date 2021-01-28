@@ -28,7 +28,7 @@
 							<targetPlatform archList="all" binaryParser="org.eclipse.cdt.core.ELF" id="fr.ac6.managedbuild.targetPlatform.gnu.cross.882759247" isAbstract="false" osList="all" superClass="fr.ac6.managedbuild.targetPlatform.gnu.cross"/>
 							<builder id="fr.ac6.managedbuild.builder.gnu.cross.701550064" keepEnvironmentInBuildfile="false" managedBuildOn="false" name="Gnu Make Builder" superClass="fr.ac6.managedbuild.builder.gnu.cross"/>
 							<tool id="fr.ac6.managedbuild.tool.gnu.cross.c.compiler.647748815" name="MCU GCC Compiler" superClass="fr.ac6.managedbuild.tool.gnu.cross.c.compiler">
-								<option id="gnu.c.compiler.option.include.paths.315934534" superClass="gnu.c.compiler.option.include.paths" valueType="includePath">
+								<option id="gnu.c.compiler.option.include.paths.315934534" name="Include paths (-I)" superClass="gnu.c.compiler.option.include.paths" useByScannerDiscovery="false" valueType="includePath">
 									<listOptionValue builtIn="false" value="&quot;C:\Ac6\GNU Tools ARM Embedded\8 2019-q3-update\arm-none-eabi\include&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;C:\Ac6\nRF5_SDK_17.0.2_d674dde\components\libraries&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;C:\Ac6\nRF5_SDK_17.0.2_d674dde\modules\nrfx\hal&quot;"/>
@@ -53,6 +53,24 @@
 								<inputType id="cdt.managedbuild.tool.gnu.assembler.input.34431054" superClass="cdt.managedbuild.tool.gnu.assembler.input"/>
 								<inputType id="fr.ac6.managedbuild.tool.gnu.cross.assembler.input.1878822971" superClass="fr.ac6.managedbuild.tool.gnu.cross.assembler.input"/>
 							</tool>
+						</toolChain>
+					</folderInfo>
+					<folderInfo id="fr.ac6.managedbuild.toolchain.gnu.cross.base.1980230842.1027858736" name="/" resourcePath="components">
+						<toolChain id="fr.ac6.managedbuild.toolchain.gnu.cross.base.1735979989" name="Ac6 STM32 MCU GCC" superClass="fr.ac6.managedbuild.toolchain.gnu.cross.base" unusedChildren="">
+							<option id="fr.ac6.managedbuild.option.gnu.cross.prefix.1038499661.675345766" name="Prefix" superClass="fr.ac6.managedbuild.option.gnu.cross.prefix.1038499661"/>
+							<option id="fr.ac6.managedbuild.option.gnu.cross.path.2025685466.1342786875" name="Path" superClass="fr.ac6.managedbuild.option.gnu.cross.path.2025685466"/>
+							<option id="fr.ac6.managedbuild.option.gnu.cross.mcu.1963265703.1852564767" name="Mcu" superClass="fr.ac6.managedbuild.option.gnu.cross.mcu.1963265703"/>
+							<option id="fr.ac6.managedbuild.option.gnu.cross.board.892464134.1246847859" name="Board" superClass="fr.ac6.managedbuild.option.gnu.cross.board.892464134"/>
+							<option id="fr.ac6.managedbuild.option.gnu.cross.core.1765940788.1420307595" name="Core" superClass="fr.ac6.managedbuild.option.gnu.cross.core.1765940788"/>
+							<option id="fr.ac6.managedbuild.option.gnu.cross.fpu.547186778.1892096237" name="Floating point hardware" superClass="fr.ac6.managedbuild.option.gnu.cross.fpu.547186778"/>
+							<option id="fr.ac6.managedbuild.option.gnu.cross.floatabi.910390527.1970120596" name="Floating-point ABI" superClass="fr.ac6.managedbuild.option.gnu.cross.floatabi.910390527"/>
+							<option id="fr.ac6.managedbuild.option.gnu.cross.instructionSet.1530698305.307768962" name="Instruction Set" superClass="fr.ac6.managedbuild.option.gnu.cross.instructionSet.1530698305"/>
+							<tool id="fr.ac6.managedbuild.tool.gnu.cross.c.compiler.2092927793" name="MCU GCC Compiler" superClass="fr.ac6.managedbuild.tool.gnu.cross.c.compiler.647748815"/>
+							<tool id="fr.ac6.managedbuild.tool.gnu.cross.cpp.compiler.650291775" name="MCU G++ Compiler" superClass="fr.ac6.managedbuild.tool.gnu.cross.cpp.compiler.553718220"/>
+							<tool id="fr.ac6.managedbuild.tool.gnu.cross.c.linker.1129962918" name="MCU GCC Linker" superClass="fr.ac6.managedbuild.tool.gnu.cross.c.linker.486882200"/>
+							<tool id="fr.ac6.managedbuild.tool.gnu.cross.cpp.linker.1665458400" name="MCU G++ Linker" superClass="fr.ac6.managedbuild.tool.gnu.cross.cpp.linker.1474632705"/>
+							<tool id="fr.ac6.managedbuild.tool.gnu.archiver.289522225" name="MCU GCC Archiver" superClass="fr.ac6.managedbuild.tool.gnu.archiver.569061048"/>
+							<tool id="fr.ac6.managedbuild.tool.gnu.cross.assembler.1353948349" name="MCU GCC Assembler" superClass="fr.ac6.managedbuild.tool.gnu.cross.assembler.1094144016"/>
 						</toolChain>
 					</folderInfo>
 				</configuration>

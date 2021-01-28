@@ -7,6 +7,10 @@ $(OUTPUT_DIRECTORY)/nrf52832_xxaa.out: \
 SRC_FILES += \
   $(PROJ_DIR)/appli/main.c \
   $(PROJ_DIR)/appli/common/gpio.c \
+  $(PROJ_DIR)/appli/common/systick.c \
+  $(PROJ_DIR)/appli/common/leds.c \
+  $(PROJ_DIR)/appli/common/buttons.c \
+  $(PROJ_DIR)/appli/common/systick.c \
   $(PROJ_DIR)/appli/common/adc.c \
   $(PROJ_DIR)/appli/common/secretary.c \
   $(PROJ_DIR)/appli/common/serial_dialog.c \

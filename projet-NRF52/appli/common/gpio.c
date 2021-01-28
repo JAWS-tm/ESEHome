@@ -5,17 +5,30 @@
  *      Author: Nirgal
  */
 #include "gpio.h"
-#include "modules/nrfx/hal/nrf_gpio.h"
+
 #include "nrf52.h"
+
+static void GPIO_configure_pins_9_and_10_as_gpio(void);
 
 void GPIO_init(void)
 {
-	//TODO !
+
+	//Spécificité sur pins 9 et 10 qui ne sont pas par défaut utilisables en tant que GPIO.
+	GPIO_configure_pins_9_and_10_as_gpio();
+}
+
+void GPIO_configure(uint8_t pin, nrf_gpio_pin_pull_t pull, bool_e output)
+{
+	if(output)
+		nrf_gpio_cfg_output(pin);
+	else
+		nrf_gpio_cfg_input(pin, pull);
 }
 
 
 
-void GPIO_configure_pins_9_and_10_as_gpio(void)
+
+static void GPIO_configure_pins_9_and_10_as_gpio(void)
 {
 	if ((NRF_UICR->NFCPINS & UICR_NFCPINS_PROTECT_Msk) == (UICR_NFCPINS_PROTECT_NFC << UICR_NFCPINS_PROTECT_Pos)){
 		NRF_NVMC->CONFIG = NVMC_CONFIG_WEN_Wen << NVMC_CONFIG_WEN_Pos;
