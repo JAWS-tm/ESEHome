@@ -2,7 +2,7 @@ PROJECT_NAME     := who_is_who
 TARGETS          := nrf52832_xxaa
 OUTPUT_DIRECTORY := _build
 
-SDK_ROOT := C:\Ac6\nRF5_SDK_16.0.0_98a08e2
+SDK_ROOT := C:\Ac6\nRF5_SDK_17.0.2_d674dde
 PROJ_DIR := .
 
 $(OUTPUT_DIRECTORY)/nrf52832_xxaa.out: \
@@ -58,7 +58,7 @@ SRC_FILES += \
   $(SDK_ROOT)/external/segger_rtt/SEGGER_RTT_printf.c \
   $(SDK_ROOT)/modules/nrfx/mdk/system_nrf52.c \
   $(PROJ_DIR)/appli/common/nrf_esb.c \
-  $(SDK_ROOT)/components/proprietary_rf/esb/nrf_esb.c \
+#  $(SDK_ROOT)/components/proprietary_rf/esb/nrf_esb.c \
   
 # Include folders common to all targets
 INC_FOLDERS += \
