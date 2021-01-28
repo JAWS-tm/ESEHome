@@ -1,9 +1,4 @@
-PROJECT_NAME     := who_is_who
-TARGETS          := nrf52832_xxaa
-OUTPUT_DIRECTORY := _build
-
-SDK_ROOT := C:\Ac6\nRF5_SDK_17.0.2_d674dde
-PROJ_DIR := .
+-include Makefile_config_perso.mk
 
 $(OUTPUT_DIRECTORY)/nrf52832_xxaa.out: \
   LINKER_SCRIPT  := esb_ptx_gcc_nrf52.ld
