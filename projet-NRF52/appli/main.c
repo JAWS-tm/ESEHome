@@ -10,7 +10,6 @@
 #include "nrf.h"
 #include "nrf52.h"
 #include "nrfx.h"
-
 #include "nrfx_systick.h"
 #include "components/libraries/log/nrf_log_ctrl.h"
 #include "components/libraries/log/nrf_log_default_backends.h"
