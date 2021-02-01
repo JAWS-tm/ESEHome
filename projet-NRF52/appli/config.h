@@ -20,14 +20,14 @@
 #define OBJECT_SMART_LIGHT		1
 #define OBJECT_NIGHT_LIGHT		2
 
-//TODO
+//TODO énumérer les objets !
 #define OBJECT_MATRIX_LEDS		24
 #define OBJECTS_NB				25
 
 
 ///////////////////////////////////////////////////////////////////////////////////
 //Numéro de l'objet pour lequel on compile.
-#define OBJECT_ID		OBJECT_NIGHT_LIGHT		//TODO enum des objets...
+#include "config_perso.h"
 ///////////////////////////////////////////////////////////////////////////////////
 
 
