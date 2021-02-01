@@ -40,9 +40,11 @@
 
 	#endif
 	#if OBJECT_ID == OBJECT_NIGHT_LIGHT
-
+		
 
 	#endif
+
+	
 	//...
 	#if OBJECT_ID == OBJECT_MATRIX_LEDS
 
@@ -105,7 +107,22 @@ uint32_t debug_printf(char * format, ...);
 
 #define USE_ADC						1
 
+#ifndef USE_MPU6050
+	#define USE_MPU6050		0
+#endif
 
+
+#if USE_MPU6050 //   || USE_... || USE...
+	#define USE_TWI		1
+	#ifndef I2C_SDA_PIN_NB
+		#define	I2C_SDA_PIN_NB	25
+	#endif
+	#ifndef I2C_SCL_PIN_NB
+		#define	I2C_SCL_PIN_NB	26
+	#endif
+#else
+	#define USE_TWI		0
+#endif
 ///////////////////////////////////////////////////////////////////////////////////
 #ifndef NRF52832_XXAA
 	#define NRF52832_XXAA

@@ -15,6 +15,8 @@ SRC_FILES += \
   $(PROJ_DIR)/appli/common/secretary.c \
   $(PROJ_DIR)/appli/common/serial_dialog.c \
   $(PROJ_DIR)/bsp/WS2812B_asm.s \
+  $(PROJ_DIR)/bsp/mpu6050.c \
+  $(PROJ_DIR)/bsp/mpu6050.c \
   $(SDK_ROOT)/modules/nrfx/mdk/gcc_startup_nrf52.S \
   $(SDK_ROOT)/components/libraries/log/src/nrf_log_backend_rtt.c \
   $(SDK_ROOT)/components/libraries/log/src/nrf_log_backend_serial.c \
@@ -33,6 +35,9 @@ SRC_FILES += \
   $(SDK_ROOT)/components/libraries/fifo/app_fifo.c \
   $(SDK_ROOT)/external/fprintf/nrf_fprintf.c \
   $(SDK_ROOT)/external/fprintf/nrf_fprintf_format.c \
+  $(SDK_ROOT)/components/libraries/twi_sensor/nrf_twi_sensor.c \
+  $(SDK_ROOT)/components/libraries/twi_mngr/nrf_twi_mngr.c \
+  $(SDK_ROOT)/components/libraries/queue/nrf_queue.c \
   $(SDK_ROOT)/components/libraries/memobj/nrf_memobj.c \
   $(SDK_ROOT)/components/libraries/ringbuf/nrf_ringbuf.c \
   $(SDK_ROOT)/components/libraries/strerror/nrf_strerror.c \
@@ -83,6 +88,9 @@ INC_FOLDERS += \
   $(SDK_ROOT)/components/libraries/fifo \
   $(SDK_ROOT)/components/libraries/experimental_section_vars \
   $(SDK_ROOT)/components/libraries/delay \
+  $(SDK_ROOT)/components/libraries/twi_sensor \
+  $(SDK_ROOT)/components/libraries/twi_mngr \
+  $(SDK_ROOT)/components/libraries/queue \
   $(SDK_ROOT)/integration/nrfx \
   $(SDK_ROOT)/components/drivers_nrf/nrf_soc_nosd \
   $(SDK_ROOT)/external/segger_rtt \
