@@ -31,9 +31,9 @@ void ADC_init(void)
 	adc_channel_3.acq_time = SAADC_CH_CONFIG_TACQ_40us;
 
 	nrfx_saadc_init(&adc_config, NULL);
-	nrfx_saadc_channel_init(0, &adc_channel_2);
-	nrfx_saadc_channel_init(1, &adc_channel_3);
-	nrfx_saadc_channel_init(2, &adc_channel_1);
+	nrfx_saadc_channel_init(0, &adc_channel_1);
+	nrfx_saadc_channel_init(1, &adc_channel_2);
+	nrfx_saadc_channel_init(2, &adc_channel_3);
 
 	adc_initialized = TRUE;
 }
