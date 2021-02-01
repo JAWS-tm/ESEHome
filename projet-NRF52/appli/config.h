@@ -113,15 +113,12 @@ uint32_t debug_printf(char * format, ...);
 
 
 #if USE_MPU6050 //   || USE_... || USE...
-	#define USE_TWI		1
 	#ifndef I2C_SDA_PIN_NB
 		#define	I2C_SDA_PIN_NB	25
 	#endif
 	#ifndef I2C_SCL_PIN_NB
 		#define	I2C_SCL_PIN_NB	26
 	#endif
-#else
-	#define USE_TWI		0
 #endif
 ///////////////////////////////////////////////////////////////////////////////////
 #ifndef NRF52832_XXAA
