@@ -1,7 +1,7 @@
 /*
  * object_station_meteo_int.c
  *
- *  Created on: 02 fevr. 2021
+ *  Created on: 02 févr. 2021
  *      Author: Thibault.R
  */
 #include "../config.h"
