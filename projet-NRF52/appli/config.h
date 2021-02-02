@@ -19,7 +19,21 @@
 #define OBJECT_BASE_STATION		0
 #define OBJECT_SMART_LIGHT		1
 #define OBJECT_NIGHT_LIGHT		2
-
+#define OBJECT_BRIGHTNESS_SENSOR    4
+#define OBJECT_STATION_METEO_INT    5
+#define OBJECT_OUT_WEATHER_STATION  6
+#define OBJECT_ROLLER_SHUTTER       7
+#define OBJECT_ALARM                8
+#define OBJECT_FIRE_DETECTOR        9
+#define OBJECT_WINE_DEGUSTATION     10
+#define OBJECT_VENTILATOR           11
+#define OBJECT_GSM                  12
+#define OBJECT_FALL_SENSOR          13
+#define OBJECT_TRACKER_GPS          16
+#define OBJECT_RFID                 17
+#define OBJECT_VOICE_CONTROL        19
+#define OBJECT_TOUCH_SCREEN         20
+#define OBJECT_E_PAPER              21
 //TODO énumérer les objets !
 #define OBJECT_MATRIX_LEDS		24
 #define OBJECTS_NB				25
