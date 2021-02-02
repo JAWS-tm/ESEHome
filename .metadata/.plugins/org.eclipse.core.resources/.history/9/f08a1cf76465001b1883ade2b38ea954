@@ -50,107 +50,21 @@
 	#if OBJECT_ID == OBJECT_BASE_STATION
 
 	#endif
-
 	#if OBJECT_ID == OBJECT_SMART_LIGHT
 
 	#endif
-
 	#if OBJECT_ID == OBJECT_NIGHT_LIGHT
 		
 
 	#endif
 
-	#if OBJECT_ID == OBJECT_BRIGHTNESS_SENSOR
-
-
-	#endif
-
-	#if OBJECT_ID == OBJECT_STATION_METEO_INT
-
-
-	#endif
-
-	#if OBJECT_ID == OBJECT_OUT_WEATHER_STATION
-
-
-	#endif
-
-	#if OBJECT_ID == OBJECT_ROLLER_SHUTTER
-
-
-	#endif
-
-	#if OBJECT_ID == OBJECT_ALARM
-
-
-	#endif
-
-	#if OBJECT_ID == OBJECT_FIRE_DETECTOR
-
-
-	#endif
-
-	#if OBJECT_ID == OBJECT_WINE_DEGUSTATION
-
-
-	#endif
-
-	#if OBJECT_ID == OBJECT_VENTILATOR
-
-
-	#endif
-
-	#if OBJECT_ID == OBJECT_GSM
-
-
-	#endif
-
-	#if OBJECT_ID == OBJECT_FALL_SENSOR
-
-
-	#endif
-
-	#if OBJECT_ID == OBJECT_TRACKER_GPS
-
-
-	#endif
-
-	#if OBJECT_ID == OBJECT_RFID
-
-
-	#endif
-
-	#if OBJECT_ID == OBJECT_TRACKER_GPS
-
-
-	#endif
-
-	#if OBJECT_ID == OBJECT_VOICE_CONTROL
-
-
-	#endif
-
-	#if OBJECT_ID == OBJECT_TOUCH_SCREEN
-
-
-	#endif
-
-	#if OBJECT_ID == OBJECT_E_PAPER
-
-
-	#endif
-
-
+	
+	//...
 	#if OBJECT_ID == OBJECT_MATRIX_LEDS
 
 
 	#endif
 
-
-	#if OBJECT_ID == OBJECTS_NB
-
-
-	#endif
 
 ///////////////////////////////////////////////////////////////////////////////////
 
