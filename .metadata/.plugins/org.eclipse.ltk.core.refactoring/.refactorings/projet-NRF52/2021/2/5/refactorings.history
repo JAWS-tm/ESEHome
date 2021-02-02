@@ -1,4 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<session version="1.0">
-<refactoring comment="Rename resource &apos;projet-NRF52/appli/objects/object_station_meteo_int&apos; to &apos;object_station_meteo_int.c&apos;" description="Rename resource &apos;object_station_meteo_int&apos;" flags="7" id="org.eclipse.ltk.core.refactoring.rename.resource" input="appli/objects/object_station_meteo_int" name="object_station_meteo_int.c" stamp="1612195992686" updateReferences="true"/>
-</session>

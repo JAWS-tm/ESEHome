@@ -13,9 +13,9 @@
 
 
 static nrfx_saadc_config_t adc_config;
-static nrf_saadc_channel_config_t adc_channel_1;
 static nrf_saadc_channel_config_t adc_channel_2;
 static nrf_saadc_channel_config_t adc_channel_3;
+static nrf_saadc_channel_config_t adc_channel_1;
 static bool_e adc_initialized = FALSE;
 
 
