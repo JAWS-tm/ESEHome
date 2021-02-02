@@ -20,6 +20,8 @@
 #define OBJECT_SMART_LIGHT		1
 #define OBJECT_NIGHT_LIGHT		2
 
+#define OBJECT_STATION_METEO_INT		5
+
 //TODO
 #define OBJECT_MATRIX_LEDS		24
 #define OBJECTS_NB				25
@@ -41,6 +43,10 @@
 	#endif
 	#if OBJECT_ID == OBJECT_NIGHT_LIGHT
 		
+	#endif
+
+	#if OBJECT_ID == OBJECT_STATION_METEO_INT
+
 
 	#endif
 
