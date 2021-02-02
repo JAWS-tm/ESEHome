@@ -130,6 +130,14 @@ void SERIAL_DIALOG_init(void)
 	SERIAL_DIALOG_puts("uart initialized\n");
 }
 
+static callback_fun_c_t rx_callback = NULL;
+
+void SERIAL_DIALOG_set_rx_callback(callback_fun_c_t new_callback)
+{
+	rx_callback = new_callback;
+}
+
+
 static void SERIAL_DIALOG_uart_event_handler(app_uart_evt_t * p_event)
 {
 	uint8_t c;
@@ -139,7 +147,10 @@ static void SERIAL_DIALOG_uart_event_handler(app_uart_evt_t * p_event)
 			while(app_uart_get(&c) == NRF_SUCCESS)
 			{
 				//SERIAL_DIALOG_putc(c);
-				SERIAL_DIALOG_parse_rx(c);
+				if(rx_callback != NULL)
+					rx_callback(c);
+				else
+					SERIAL_DIALOG_parse_rx(c);
 			}
 			break;
 		case APP_UART_COMMUNICATION_ERROR:

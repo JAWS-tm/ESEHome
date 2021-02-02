@@ -74,4 +74,7 @@
 	typedef void(*callback_fun_t)(void);	//Type pointeur sur fonction
 
 
+	typedef void(*callback_fun_c_t)(char c);	//Type pointeur sur fonction qui admet un caractère en paramètre
+
+
 #endif /* MACRO_TYPES_H_ */
