@@ -20,16 +20,14 @@
 #define OBJECT_SMART_LIGHT		1
 #define OBJECT_NIGHT_LIGHT		2
 
-#define OBJECT_STATION_METEO_INT		5
-
-//TODO
+//TODO énumérer les objets !
 #define OBJECT_MATRIX_LEDS		24
 #define OBJECTS_NB				25
 
 
 ///////////////////////////////////////////////////////////////////////////////////
 //Numéro de l'objet pour lequel on compile.
-#define OBJECT_ID		OBJECT_NIGHT_LIGHT		//TODO enum des objets...
+#include "config_perso.h"
 ///////////////////////////////////////////////////////////////////////////////////
 
 
@@ -43,10 +41,6 @@
 	#endif
 	#if OBJECT_ID == OBJECT_NIGHT_LIGHT
 		
-	#endif
-
-	#if OBJECT_ID == OBJECT_STATION_METEO_INT
-
 
 	#endif
 
@@ -134,3 +128,4 @@ uint32_t debug_printf(char * format, ...);
 
 
 #endif /* CONFIG_CONFIG_H_ */
+
