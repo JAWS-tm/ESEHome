@@ -34,7 +34,6 @@
 #define OBJECT_VOICE_CONTROL        19
 #define OBJECT_TOUCH_SCREEN         20
 #define OBJECT_E_PAPER              21
-//TODO énumérer les objets !
 #define OBJECT_MATRIX_LEDS		24
 #define OBJECTS_NB				25
 
