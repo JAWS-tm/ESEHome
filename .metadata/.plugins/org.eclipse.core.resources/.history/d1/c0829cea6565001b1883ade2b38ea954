@@ -34,6 +34,10 @@
 #define OBJECT_VOICE_CONTROL        19
 #define OBJECT_TOUCH_SCREEN         20
 #define OBJECT_E_PAPER              21
+<<<<<<< HEAD
+//TODO énumérer les objets !
+=======
+>>>>>>> dbc0c3cfd63ee6f43d74f6fe30e99cfd9ca39f5e
 #define OBJECT_MATRIX_LEDS		24
 #define OBJECTS_NB				25
 
@@ -49,20 +53,23 @@
 	#if OBJECT_ID == OBJECT_BASE_STATION
 
 	#endif
+<<<<<<< HEAD
 
 	#if OBJECT_ID == OBJECT_SMART_LIGHT
 
 	#endif
 
+=======
 	#if OBJECT_ID == OBJECT_SMART_LIGHT
 
 	#endif
-
+>>>>>>> dbc0c3cfd63ee6f43d74f6fe30e99cfd9ca39f5e
 	#if OBJECT_ID == OBJECT_NIGHT_LIGHT
 		
 
 	#endif
 
+<<<<<<< HEAD
 	#if OBJECT_ID == OBJECT_BRIGHTNESS_SENSOR
 
 
@@ -143,16 +150,25 @@
 
 	#endif
 
+
+=======
+	
+	//...
+>>>>>>> dbc0c3cfd63ee6f43d74f6fe30e99cfd9ca39f5e
 	#if OBJECT_ID == OBJECT_MATRIX_LEDS
 
 
 	#endif
 
+
+<<<<<<< HEAD
 	#if OBJECT_ID == OBJECTS_NB
 
 
 	#endif
 
+=======
+>>>>>>> dbc0c3cfd63ee6f43d74f6fe30e99cfd9ca39f5e
 ///////////////////////////////////////////////////////////////////////////////////
 
 ///////////////////////////////////////////////////////////////////////////////////
