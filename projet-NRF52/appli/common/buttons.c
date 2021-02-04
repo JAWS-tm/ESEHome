@@ -51,7 +51,23 @@ void BUTTONS_process_main(void)
 
 void BUTTONS_add(button_id_e id, uint8_t pin, callback_fun_t callback)
 {
-	//TODO
+	//configure la pin du bouton concernée en entrée
+	//enregistre le bouton comme "initialisée"
+
+	buttons[id].pin = pin;
+
+	GPIO_init();
+	//on part du principe que tout les boutons sont ne pullup
+	GPIO_configure(buttons[id].pin, NRF_GPIO_PIN_PULLUP, 0);
+	if(callback != NULL){
+		buttons[id].callback = callback;
+	}else {
+		buttons[id].callback = NULL;
+	}
+
+	buttons[id].initialized = TRUE;
+
+
 }
 
 
