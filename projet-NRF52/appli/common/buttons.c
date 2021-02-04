@@ -7,12 +7,14 @@
 #include "buttons.h"
 #include "systick.h"
 #include "gpio.h"
+#include "leds.h"
 
 
 typedef struct
 {
 	bool_e initialized;
 	uint8_t pin;
+	bool_e pullup;
 	callback_fun_t callback;
 }button_t;
 
@@ -28,6 +30,7 @@ void BUTTONS_init(void)
 	{
 		buttons[b].initialized = FALSE;
 		buttons[b].callback = NULL;
+		buttons[b].pullup = TRUE;
 	}
 	Systick_add_callback_function(&BUTTONS_process_ms);
 
@@ -48,8 +51,7 @@ void BUTTONS_process_main(void)
 }
 
 
-
-void BUTTONS_add(button_id_e id, uint8_t pin, callback_fun_t callback)
+void BUTTONS_add(button_id_e id, uint8_t pin, bool_e pullup, callback_fun_t callback)
 {
 	//configure la pin du bouton concernée en entrée
 	//enregistre le bouton comme "initialisée"
@@ -58,16 +60,14 @@ void BUTTONS_add(button_id_e id, uint8_t pin, callback_fun_t callback)
 
 	GPIO_init();
 	//on part du principe que tout les boutons sont ne pullup
-	GPIO_configure(buttons[id].pin, NRF_GPIO_PIN_PULLUP, 0);
+	GPIO_configure(buttons[id].pin, (pullup)?NRF_GPIO_PIN_PULLUP:NRF_GPIO_PIN_NOPULL, 0);
 	if(callback != NULL){
 		buttons[id].callback = callback;
 	}else {
 		buttons[id].callback = NULL;
 	}
-
+	buttons[id].pullup = pullup;
 	buttons[id].initialized = TRUE;
-
-
 }
 
 
@@ -83,7 +83,7 @@ void BUTTONS_get_event(button_event_e * event, button_id_e * button)
 
 	if(!initialized)
 		BUTTONS_init();
-
+	*event = BUTTON_EVENT_NONE;
 	if(!t)
 	{
 		bool_e stop_loop;
@@ -97,7 +97,7 @@ void BUTTONS_get_event(button_event_e * event, button_id_e * button)
 			if(buttons[b].initialized)
 			{
 				bool_e current;
-				current = !GPIO_read(buttons[b].pin);
+				current = BUTTONS_read(b);
 
 				if(current && !previous_states[b])
 				{
@@ -118,9 +118,29 @@ void BUTTONS_get_event(button_event_e * event, button_id_e * button)
 			}
 		}
 	}
-	else
-	{
-		*event = BUTTON_EVENT_NONE;
+}
+
+//renvoie vrai si le bouton est actuellement appuyé.
+bool_e BUTTONS_read(button_id_e id){
+	bool_e read = TRUE;
+	read = GPIO_read(buttons[id].pin);
+	if(buttons[id].pullup)
+		read = !read;
+	return read;
+}
+
+void BUTTONS_network_process(void)
+{
+	LED_toggle(LED_ID_NETWORK);
+}
+
+//fonction de test du bouton network
+void BUTTONS_network_test(void){
+	bool_e init = TRUE;
+	if(init){
+		BUTTONS_add(BUTTON_NETWORK, PIN_BUTTON_NETWORK, TRUE, &BUTTONS_network_process);
+		LED_add(LED_ID_NETWORK, PIN_LED_NETWORK);
+		init = FALSE;
 	}
 }
 
