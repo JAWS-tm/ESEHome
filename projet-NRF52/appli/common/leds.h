@@ -10,7 +10,7 @@
 
 typedef enum{
 	 LED_MODE_OFF,
-	 //TODO
+	 LED_MODE_ON//TODO
 }led_mode_e;
 
 typedef enum{

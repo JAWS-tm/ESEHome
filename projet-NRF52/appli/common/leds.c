@@ -7,7 +7,7 @@
 #include "../config.h"
 #include "leds.h"
 #include "systick.h"
-
+#include "gpio.h"
 
 typedef struct
 {
@@ -33,14 +33,23 @@ void LEDS_init(bool_e i_have_led_battery)
 
 void LED_add(led_id_e id, uint8_t pin)
 {
+	leds[id].pin = pin;
 
-	//configure la pin de la led concernée en sortie
-	//enregistre la led comme "initialisée"
+	GPIO_init();
+	GPIO_configure(pin, GPIO_PIN_CNF_PULL_Pullup, true);//configure la pin de la led concernée en sortie
+	leds[id].initialized = true;//enregistre la led comme "initialisée"
 }
 
 void LED_set(led_id_e id, led_mode_e mode)
 {
 
+	if(mode == LED_MODE_ON){
+		leds[id].mode = LED_MODE_ON;
+		GPIO_write(leds[id].pin, true);
+	}else if (mode == LED_MODE_OFF){
+		leds[id].mode = LED_MODE_OFF;
+		GPIO_write(leds[id].pin, false);
+	}
 }
 
 void LED_process_ms()
