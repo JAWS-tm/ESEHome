@@ -31,4 +31,9 @@ void LED_set(led_id_e id, led_mode_e mode);
 
 void LED_process_ms();
 
+void LED_toggle(led_id_e id);
+
+led_mode_e LED_get(led_id_e id);
+
+
 #endif /* APPLI_COMMON_LEDS_H_ */

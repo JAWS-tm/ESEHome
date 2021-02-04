@@ -52,6 +52,20 @@ void LED_set(led_id_e id, led_mode_e mode)
 	}
 }
 
+void LED_toggle(led_id_e id)
+{
+	if(leds[id].mode == LED_MODE_OFF)
+		LED_set(id, LED_MODE_ON);
+	else
+		LED_set(id, LED_MODE_OFF);
+}
+
+
+led_mode_e LED_get(led_id_e id)
+{
+	return leds[id].mode;
+}
+
 void LED_process_ms()
 {
 	//TODO
