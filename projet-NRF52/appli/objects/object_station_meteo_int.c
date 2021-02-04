@@ -10,5 +10,4 @@
 
 #if OBJECT_ID == OBJECT_STATION_METEO_INT
 
-
 #endif

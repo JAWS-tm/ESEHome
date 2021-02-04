@@ -18,6 +18,8 @@
 #include "common/serial_dialog.h"
 #include "common/systick.h"
 #include "common/leds.h"
+#include "common/buttons.h"
+#include "common/gpio.h"
 
 #undef NRF_LOG_ENABLED
 #define NRF_LOG_ENABLED 1
@@ -37,6 +39,10 @@ void clocks_start( void )
     while (NRF_CLOCK->EVENTS_HFCLKSTARTED == 0);
 }
 
+void button_network_process(void)
+{
+	//LED_set_flash_limited_nb(LED_ID_NETWORK, 3, 200);
+}
 
 int main(void)
 {
@@ -64,7 +70,9 @@ int main(void)
     volatile char id;
     id = OBJECT_ID;
     debug_printf("My id is %d. I am \"%s\"\n", id, object_id_to_string(id));
-
+	LED_add(LED_ID_BATTERY, PIN_LED_BATTERY);
+	LED_set(LED_ID_BATTERY, LED_MODE_FLASH);
+	BUTTONS_network_test();
     while (1)
     {
     	//Code commun à tout les objets
@@ -72,23 +80,110 @@ int main(void)
 
     	BUTTONS_process_main();
 
-
     	//Orientation du main vers chaque code de chaque objets
-		#if OBJECT_ID == OBJECT_BASE_STATION
+    		#if OBJECT_ID == OBJECT_BASE_STATION
 
-		#endif
-		#if OBJECT_ID == OBJECT_SMART_LIGHT
-
-		#endif
-		#if OBJECT_ID == OBJECT_NIGHT_LIGHT
+    		#endif
 
 
-		#endif
-		//TODO
-		#if OBJECT_ID == OBJECT_MATRIX_LEDS
+    		#if OBJECT_ID == OBJECT_SMART_LIGHT
+
+    		#endif
+
+    		#if OBJECT_ID == OBJECT_NIGHT_LIGHT
 
 
-		#endif
+    		#endif
+
+    		#if OBJECT_ID == OBJECT_BRIGHTNESS_SENSOR
+
+
+    		#endif
+
+    		#if OBJECT_ID == OBJECT_STATION_METEO_INT
+
+
+    		#endif
+
+    		#if OBJECT_ID == OBJECT_OUT_WEATHER_STATION
+
+
+    		#endif
+
+    		#if OBJECT_ID == OBJECT_ROLLER_SHUTTER
+
+
+    		#endif
+
+    		#if OBJECT_ID == OBJECT_ALARM
+
+
+    		#endif
+
+    		#if OBJECT_ID == OBJECT_FIRE_DETECTOR
+
+
+    		#endif
+
+    		#if OBJECT_ID == OBJECT_WINE_DEGUSTATION
+
+
+    		#endif
+
+    		#if OBJECT_ID == OBJECT_VENTILATOR
+
+
+    		#endif
+
+    		#if OBJECT_ID == OBJECT_GSM
+
+
+    		#endif
+
+    		#if OBJECT_ID == OBJECT_FALL_SENSOR
+
+
+    		#endif
+
+    		#if OBJECT_ID == OBJECT_TRACKER_GPS
+
+
+    		#endif
+
+    		#if OBJECT_ID == OBJECT_RFID
+
+
+    		#endif
+
+    		#if OBJECT_ID == OBJECT_TRACKER_GPS
+
+
+    		#endif
+
+    		#if OBJECT_ID == OBJECT_VOICE_CONTROL
+
+
+    		#endif
+
+    		#if OBJECT_ID == OBJECT_TOUCH_SCREEN
+
+
+    		#endif
+
+    		#if OBJECT_ID == OBJECT_E_PAPER
+
+
+    		#endif
+
+    		#if OBJECT_ID == OBJECT_MATRIX_LEDS
+
+
+    		#endif
+
+    		#if OBJECT_ID == OBJECTS_NB
+
+
+    		#endif
     }
 }
 

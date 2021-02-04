@@ -10,7 +10,11 @@
 
 typedef enum{
 	 LED_MODE_OFF,
-	 LED_MODE_ON//TODO
+	 LED_MODE_ON,
+	 LED_MODE_BLINK,
+	 LED_MODE_FLASH,
+	 LED_MODE_FLASH_LIMITED_NUMBER
+	 //TODO
 }led_mode_e;
 
 typedef enum{
@@ -29,7 +33,7 @@ void LED_add(led_id_e id, uint8_t pin);
 
 void LED_set(led_id_e id, led_mode_e mode);
 
-void LED_process_ms();
+void LED_process_ms(void);
 
 void LED_toggle(led_id_e id);
 
@@ -37,3 +41,4 @@ led_mode_e LED_get(led_id_e id);
 
 
 #endif /* APPLI_COMMON_LEDS_H_ */
+
