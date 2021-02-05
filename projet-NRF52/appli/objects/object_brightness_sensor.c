@@ -7,11 +7,18 @@
 #include "../config.h"
 #include "object_brightness_sensor.h"
 
-
+	typedef enum{
+		INIT,
+		GET_DATA,
+		SEND_DATA,
+		SLEEP,
+		STOP
+	}state_e;
 
 void state_machine(void)
 {
 	state_e state = INIT;
+
 	BUTTONS_add(BUTTON_NETWORK, PIN_BUTTON_NETWORK, TRUE, &BUTTON_action_sleep);
 	switch(state)
 	{

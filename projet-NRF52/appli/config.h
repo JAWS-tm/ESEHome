@@ -14,6 +14,7 @@
 #include "modules/nrfx/mdk/nrf52_bitfields.h"
 #include "components/softdevice/s132/headers/nrf_error.h"
 #include "../config/nrfx_config.h"
+#include "modules/nrfx/hal/nrf_gpio.h"
 
 //liste des objets
 #define OBJECT_BASE_STATION		0
@@ -169,25 +170,6 @@
 	#define OE 2
 	#define CLK 3
 	#define LAT 4
-
-	//Simplification fonction d'écriture et de configuration
-	#define WRITE(x,y) GPIO_write(uint8_t pin, bool_e value)
-	#define CONFIG_OUTPUT(port_pin) GPIO_configure(uint8_t pin, NRF_GPIO_PIN_PULLUP , 1)
-
-	//variable de couleurs
-	typedef uint8_t color_t;
-	#define COLOR_BLACK     0b00000000
-	#define COLOR_RED       0b00000100
-	#define COLOR_GREEN     0b00000010
-	#define COLOR_BLUE      0b00000001
-	#define COLOR_YELLOW    0b00000110
-	#define COLOR_CYAN      0b00000011
-	#define COLOR_PURPLE    0b00000101
-	#define COLOR_WHITE     0b00000111
-
-	//Simplification fonction d'écriture et de configuration
-	#define WRITE(port_pin, value) 	GPIO_write(port_pin, value)
-	#define CONFIG_OUTPUT(port_pin) 	GPIO_configure(port_pin, NRF_GPIO_PIN_PULLUP , 1)
 
 
 	#endif

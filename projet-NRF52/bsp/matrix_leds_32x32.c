@@ -4,7 +4,16 @@
  *  Created on: 5 févr. 2021
  *      Author: meven
  */
-#include "../config.h"
+
+#include "appli/config.h"
+#include "matrix_leds_32x32.h"
+#include "appli/common/gpio.h"
+
+//Simplification fonction d'écriture et de configuration
+#define WRITE(port_pin,value) 	GPIO_write(port_pin,value)
+#define CONFIG_OUTPUT(port_pin) GPIO_configure(port_pin, GPIO_PIN_CNF_PULL_Disabled , TRUE)
+
+
 
 static bool_e initialized = FALSE;
 
@@ -28,6 +37,10 @@ void MATRIX_init(void)
     WRITE(LAT, 0);
     initialized = TRUE;
 }
+
+
+
+
 
 void MATRIX_display(color_t color[32][32])
 {
