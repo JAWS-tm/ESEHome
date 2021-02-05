@@ -24,25 +24,26 @@ void MATRIX_afficheur(){
 		MATRIX_init();
 		for(uint8_t i = 0; i < 32; i++)
 			for(uint8_t j = 0; j < 32; j++)
-				matrix[i][j] = COLOR_CYAN;
-		matrix[3][6] = COLOR_RED;
+				matrix[i][j] = COLOR_RED;
+		matrix[3][6] = COLOR_CYAN;
 		matrix[0][0] = COLOR_YELLOW;
 		state = TEST_MATRIX;
 		break;
 	case TEST_MATRIX:{
 
 		MATRIX_display(matrix);
-	//	state = SLEEP;
+		//state = SLEEP;
+		break;}
+	case SLEEP:{
+		bool_e wait = FALSE;
+		if(wait == TRUE){
+			state = INIT;
+		}
 		break;}
 	default:
 		break;
 	}
 }
-
-
-
-
-
 
 
 #endif

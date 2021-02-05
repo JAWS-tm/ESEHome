@@ -146,30 +146,6 @@
 
 	#if OBJECT_ID == OBJECT_MATRIX_LEDS
 
-	//adaptation au choix hardware
-
-	#define A 10
-	#define B 9
-	#define D 7
-	#define C 5
-
-	//partie haute de la matrice
-
-	#define HIGH_B 14
-	#define HIGH_G 15
-	#define HIGH_R 16
-
-	//partie basse de la matrice
-
-	#define LOW_B 11
-	#define LOW_G 12
-	#define LOW_R 13
-
-	//CLK, LAT et OE
-
-	#define OE 2
-	#define CLK 3
-	#define LAT 4
 
 
 	#endif
