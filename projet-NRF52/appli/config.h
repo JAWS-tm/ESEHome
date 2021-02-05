@@ -145,6 +145,50 @@
 
 	#if OBJECT_ID == OBJECT_MATRIX_LEDS
 
+	//adaptation au choix hardware
+
+	#define A 10
+	#define B 9
+	#define D 7
+	#define C 5
+
+	//partie haute de la matrice
+
+	#define HIGH_B 14
+	#define HIGH_G 15
+	#define HIGH_R 16
+
+	//partie basse de la matrice
+
+	#define LOW_B 11
+	#define LOW_G 12
+	#define LOW_R 13
+
+	//CLK, LAT et OE
+
+	#define OE 2
+	#define CLK 3
+	#define LAT 4
+
+	//Simplification fonction d'écriture et de configuration
+	#define WRITE(x,y) GPIO_write(uint8_t pin, bool_e value)
+	#define CONFIG_OUTPUT(port_pin) GPIO_configure(uint8_t pin, NRF_GPIO_PIN_PULLUP , 1)
+
+	//variable de couleurs
+	typedef uint8_t color_t;
+	#define COLOR_BLACK     0b00000000
+	#define COLOR_RED       0b00000100
+	#define COLOR_GREEN     0b00000010
+	#define COLOR_BLUE      0b00000001
+	#define COLOR_YELLOW    0b00000110
+	#define COLOR_CYAN      0b00000011
+	#define COLOR_PURPLE    0b00000101
+	#define COLOR_WHITE     0b00000111
+
+	//Simplification fonction d'écriture et de configuration
+	#define WRITE(port_pin, value) 	GPIO_write(port_pin, value)
+	#define CONFIG_OUTPUT(port_pin) 	GPIO_configure(port_pin, NRF_GPIO_PIN_PULLUP , 1)
+
 
 	#endif
 
