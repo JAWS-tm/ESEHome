@@ -15,6 +15,7 @@ SRC_FILES += \
   $(PROJ_DIR)/appli/common/secretary.c \
   $(PROJ_DIR)/appli/common/serial_dialog.c \
   $(PROJ_DIR)/appli/objects/object_fall_sensor.c \
+  $(PROJ_DIR)/appli/objects/object_matrix_leds.c \
   $(PROJ_DIR)/bsp/WS2812B_asm.s \
   $(PROJ_DIR)/bsp/mpu6050.c \
   $(PROJ_DIR)/bsp/mpu6050.c \
