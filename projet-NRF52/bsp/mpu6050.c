@@ -34,7 +34,7 @@ NRF_TWI_MNGR_DEF(m_twi_mngr, 4, 0);         /**< TWI transaction manager.*/
 NRF_TWI_SENSOR_DEF(p_instance, &m_twi_mngr, 30); /**< TWI Sensor instance.*/
 
 
-bool mpu6050_init(uint8_t device_address)
+bool mpu6050_i2c_init(uint8_t device_address)
 {
     bool transfer_succeeded = true;
     ret_code_t err_code;
@@ -81,7 +81,7 @@ bool MPU6050_Init(MPU6050_t* DataStruct, MPU6050_Accelerometer_t AccelerometerSe
 	uint8_t temp;
 
 	/* Initialize I2C */
-	mpu6050_init(MPU_6050_I2C_ADDRESS);
+	mpu6050_i2c_init(MPU_6050_I2C_ADDRESS);
 
 	/* Wakeup MPU6050 */
 	mpu6050_register_write(MPU6050_PWR_MGMT_1, 0x00);
@@ -164,6 +164,13 @@ bool mpu6050_register_write(uint8_t register_address, uint8_t value)
 	return nrf_twi_sensor_reg_write(&p_instance, m_device_address, register_address, &value, 1);
 }
 
+volatile bool_e flag_read = FALSE;
+
+void mpu6050_read_callback(void)
+{
+	flag_read = TRUE;
+}
+
 bool mpu6050_register_read(uint8_t register_address, uint8_t * destination, uint8_t number_of_bytes)
 {
     bool transfer_succeeded;
@@ -171,7 +178,11 @@ bool mpu6050_register_read(uint8_t register_address, uint8_t * destination, uint
  //   transfer_succeeded &= twi_master_transfer(m_device_address|TWI_READ_BIT, destination, number_of_bytes, TWI_ISSUE_STOP);
   //   nrf_twi_sensor_reg_write(&p_instance, m_device_address, w2_data, 2);
     //TODO gérer la callback... !!!
-    transfer_succeeded = nrf_twi_sensor_reg_read(&p_instance, m_device_address, register_address, NULL, destination, number_of_bytes);
+    flag_read = FALSE;
+    transfer_succeeded = nrf_twi_sensor_reg_read(&p_instance, m_device_address, register_address, &mpu6050_read_callback, destination, number_of_bytes);
+   while(!flag_read);
+   //TODO gérer un timeout...
+
     return transfer_succeeded;
 }
 

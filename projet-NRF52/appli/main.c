@@ -20,6 +20,7 @@
 #include "common/leds.h"
 #include "common/buttons.h"
 #include "common/gpio.h"
+#include "objects/object_fall_sensor.h"
 
 #undef NRF_LOG_ENABLED
 #define NRF_LOG_ENABLED 1
@@ -71,7 +72,7 @@ int main(void)
     id = OBJECT_ID;
     debug_printf("My id is %d. I am \"%s\"\n", id, object_id_to_string(id));
 	LED_add(LED_ID_BATTERY, PIN_LED_BATTERY);
-	LED_set(LED_ID_BATTERY, LED_MODE_FLASH);
+	LED_set(LED_ID_BATTERY, LED_MODE_ON);
 	BUTTONS_network_test();
     while (1)
     {
@@ -141,7 +142,7 @@ int main(void)
     		#endif
 
     		#if OBJECT_ID == OBJECT_FALL_SENSOR
-
+    			OBJECT_FALL_SENSOR_state_machine();
 
     		#endif
 

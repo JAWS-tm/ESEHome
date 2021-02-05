@@ -109,7 +109,7 @@
 	#endif
 
 	#if OBJECT_ID == OBJECT_FALL_SENSOR
-
+		#define USE_MPU6050 1
 
 	#endif
 
