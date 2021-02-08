@@ -18,8 +18,6 @@ typedef enum{
 }state_e;
 
 
-void state_machine(void);
-void BUTTON_action_sleep(state_e state);
-
+void state_machine(void)
 #endif
 #endif /* APPLI_OBJECTS_OBJECT_BRIGHTNESS_SENSOR_H_ */

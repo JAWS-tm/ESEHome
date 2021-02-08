@@ -47,6 +47,7 @@
 #include "app_config.h"
 #endif
 
+#include "appli/config.h"
 // <h> nRF_Drivers 
 
 //#define NRF_ESB_BUGFIX_TIMER_IRQHandler	trash
@@ -66,11 +67,25 @@
 #define NRFX_GPIOTE_ENABLED		1
 #define NRFX_GPIOTE_CONFIG_NUM_OF_LOW_POWER_EVENTS 4
 #define NRFX_GPIOTE_CONFIG_IRQ_PRIORITY	1
-#define NRFX_TWIM0_ENABLED		1
-#define NRF_TWI_MNGR_ENABLED			1
-#define NRFX_TWI_ENABLED		1
-#define NRFX_TWI0_ENABLED		1
-#define NRF_QUEUE_ENABLED		1
+
+
+#if	USE_TWI
+	#define NRFX_TWIM0_ENABLED		1
+	#define NRF_TWI_MNGR_ENABLED			1
+	#define NRFX_TWI_ENABLED		1
+	#define NRFX_TWI0_ENABLED		1
+	#define NRF_QUEUE_ENABLED		1
+#endif
+
+#if USE_SPI
+	#define	NRFX_SPI_ENABLED		1
+	#define NRFX_SPI0_ENABLED		1
+	#define NRFX_SPIM_DEFAULT_CONFIG_IRQ_PRIORITY 7
+	#define SPI_DEFAULT_CONFIG_IRQ_PRIORITY		7
+	#define NRFX_SPI_MISO_PULL_CFG 1
+#endif
+
+
 #define CONFIG_NFCT_PINS_AS_GPIOS
 // </e>
 
