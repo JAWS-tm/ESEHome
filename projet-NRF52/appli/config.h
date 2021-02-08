@@ -13,7 +13,8 @@
 #include "modules/nrfx/mdk/nrf52.h"
 #include "modules/nrfx/mdk/nrf52_bitfields.h"
 #include "components/softdevice/s132/headers/nrf_error.h"
-#include "../config/nrfx_config.h"
+//#include "../config/nrfx_config.h"
+//#include "modules/nrfx/hal/nrf_gpio.h"
 
 //liste des objets
 #define OBJECT_BASE_STATION		0
@@ -74,7 +75,14 @@
 	#endif
 
 	#if OBJECT_ID == OBJECT_OUT_WEATHER_STATION
-
+		#define PIN_MOSFET   		27
+		#define USE_MPU6050  		1
+		#define PIN_DHT11    		2
+		#define PIN_PLUVIO-  		3
+		#define PIN_ANEMO-   		4
+		#define PIN_PLUVIO+  		9
+		#define PIN_ANEMO+   		10
+		#define PIN_MEASURE_BATT    31
 
 	#endif
 
@@ -109,12 +117,13 @@
 	#endif
 
 	#if OBJECT_ID == OBJECT_FALL_SENSOR
-
+		#define USE_MPU6050 1
 
 	#endif
 
 	#if OBJECT_ID == OBJECT_TRACKER_GPS
-
+		#define MOSFET_GND_GPS   17
+		#define UART_AT_BAUDRATE_9600
 
 	#endif
 
@@ -134,7 +143,15 @@
 	#endif
 
 	#if OBJECT_ID == OBJECT_TOUCH_SCREEN
-
+		#define ILI9341_ENABLED	1
+		#define ILI9341_SPI_INSTANCE	0
+		#define ILI9341_DC_PIN		1
+		#define ILI9341_SCK_PIN		2
+		#define ILI9341_MISO_PIN 	3
+		#define ILI9341_MOSI_PIN	4
+		#define ILI9341_SS_PIN		5
+		#define ILI9341_HEIGHT	240
+		#define ILI9341_WIDTH	320
 
 	#endif
 
@@ -144,6 +161,7 @@
 	#endif
 
 	#if OBJECT_ID == OBJECT_MATRIX_LEDS
+
 
 
 	#endif
@@ -167,7 +185,11 @@
 #define PIN_RESET			21
 
 //TODO compléter la liste des objets dotés d'une led batterie !
-#define I_HAVE_LED_BATTERY	(OBJECT_ID == OBJECT_BASE_STATION || OBJECT_ID == 4)
+#define I_HAVE_LED_BATTERY	(OBJECT_ID == OBJECT_BASE_STATION || OBJECT_ID == 6)
+
+#define USE_SPI	(OBJECT_ID == OBJECT_TOUCH_SCREEN)
+
+#define USE_TWI	(OBJECT_ID == OBJECT_FALL_SENSOR)
 
 
 #define ENABLE_POWERDOWN_FROM_MCU		1	//si 1 : permet de couper l'alim avec un appui long sur le bouton poussoir. Impose le maintient du bouton pendant 1 seconde au démarrage.
