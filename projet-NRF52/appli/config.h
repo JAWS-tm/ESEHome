@@ -75,7 +75,14 @@
 	#endif
 
 	#if OBJECT_ID == OBJECT_OUT_WEATHER_STATION
-
+		#define PIN_MOSFET   		27
+		#define USE_MPU6050  		1
+		#define PIN_DHT11    		2
+		#define PIN_PLUVIO-  		3
+		#define PIN_ANEMO-   		4
+		#define PIN_PLUVIO+  		9
+		#define PIN_ANEMO+   		10
+		#define PIN_MEASURE_BATT    31
 
 	#endif
 
@@ -170,7 +177,7 @@
 #define PIN_RESET			21
 
 //TODO compléter la liste des objets dotés d'une led batterie !
-#define I_HAVE_LED_BATTERY	(OBJECT_ID == OBJECT_BASE_STATION || OBJECT_ID == 4)
+#define I_HAVE_LED_BATTERY	(OBJECT_ID == OBJECT_BASE_STATION || OBJECT_ID == 6)
 
 
 #define ENABLE_POWERDOWN_FROM_MCU		1	//si 1 : permet de couper l'alim avec un appui long sur le bouton poussoir. Impose le maintient du bouton pendant 1 seconde au démarrage.
