@@ -13,7 +13,8 @@
 #include "modules/nrfx/mdk/nrf52.h"
 #include "modules/nrfx/mdk/nrf52_bitfields.h"
 #include "components/softdevice/s132/headers/nrf_error.h"
-#include "../config/nrfx_config.h"
+//#include "../config/nrfx_config.h"
+//#include "modules/nrfx/hal/nrf_gpio.h"
 
 //liste des objets
 #define OBJECT_BASE_STATION		0
@@ -109,12 +110,13 @@
 	#endif
 
 	#if OBJECT_ID == OBJECT_FALL_SENSOR
-
+		#define USE_MPU6050 1
 
 	#endif
 
 	#if OBJECT_ID == OBJECT_TRACKER_GPS
-
+		#define MOSFET_GND_GPS   17
+		#define UART_AT_BAUDRATE_9600
 
 	#endif
 
@@ -134,7 +136,15 @@
 	#endif
 
 	#if OBJECT_ID == OBJECT_TOUCH_SCREEN
- 	 	 #define ILI9341_ENABLED		1
+		#define ILI9341_ENABLED	1
+		#define ILI9341_SPI_INSTANCE	0
+		#define ILI9341_DC_PIN		1
+		#define ILI9341_SCK_PIN		2
+		#define ILI9341_MISO_PIN 	3
+		#define ILI9341_MOSI_PIN	4
+		#define ILI9341_SS_PIN		5
+		#define ILI9341_HEIGHT	240
+		#define ILI9341_WIDTH	320
 
 	#endif
 
@@ -145,49 +155,6 @@
 
 	#if OBJECT_ID == OBJECT_MATRIX_LEDS
 
-	//adaptation au choix hardware
-
-	#define A 10
-	#define B 9
-	#define D 7
-	#define C 5
-
-	//partie haute de la matrice
-
-	#define HIGH_B 14
-	#define HIGH_G 15
-	#define HIGH_R 16
-
-	//partie basse de la matrice
-
-	#define LOW_B 11
-	#define LOW_G 12
-	#define LOW_R 13
-
-	//CLK, LAT et OE
-
-	#define OE 2
-	#define CLK 3
-	#define LAT 4
-
-	//Simplification fonction d'écriture et de configuration
-	#define WRITE(x,y) GPIO_write(uint8_t pin, bool_e value)
-	#define CONFIG_OUTPUT(port_pin) GPIO_configure(uint8_t pin, NRF_GPIO_PIN_PULLUP , 1)
-
-	//variable de couleurs
-	typedef uint8_t color_t;
-	#define COLOR_BLACK     0b00000000
-	#define COLOR_RED       0b00000100
-	#define COLOR_GREEN     0b00000010
-	#define COLOR_BLUE      0b00000001
-	#define COLOR_YELLOW    0b00000110
-	#define COLOR_CYAN      0b00000011
-	#define COLOR_PURPLE    0b00000101
-	#define COLOR_WHITE     0b00000111
-
-	//Simplification fonction d'écriture et de configuration
-	#define WRITE(port_pin, value) 	GPIO_write(port_pin, value)
-	#define CONFIG_OUTPUT(port_pin) 	GPIO_configure(port_pin, NRF_GPIO_PIN_PULLUP , 1)
 
 
 	#endif
@@ -212,6 +179,10 @@
 
 //TODO compléter la liste des objets dotés d'une led batterie !
 #define I_HAVE_LED_BATTERY	(OBJECT_ID == OBJECT_BASE_STATION || OBJECT_ID == 4)
+
+#define USE_SPI	(OBJECT_ID == OBJECT_TOUCH_SCREEN)
+
+#define USE_TWI	(OBJECT_ID == OBJECT_FALL_SENSOR)
 
 
 #define ENABLE_POWERDOWN_FROM_MCU		1	//si 1 : permet de couper l'alim avec un appui long sur le bouton poussoir. Impose le maintient du bouton pendant 1 seconde au démarrage.
