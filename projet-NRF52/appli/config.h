@@ -134,7 +134,7 @@
 	#endif
 
 	#if OBJECT_ID == OBJECT_TOUCH_SCREEN
-
+ 	 	 #define ILI9341_ENABLED		1
 
 	#endif
 
