@@ -115,7 +115,8 @@
 	#endif
 
 	#if OBJECT_ID == OBJECT_TRACKER_GPS
-
+		#define MOSFET_GND_GPS   17
+		#define UART_AT_BAUDRATE_9600
 
 	#endif
 

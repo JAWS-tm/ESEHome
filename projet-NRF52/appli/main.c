@@ -20,6 +20,9 @@
 #include "common/leds.h"
 #include "common/buttons.h"
 #include "common/gpio.h"
+
+//Tout les includes des header des objets.
+#include "objects/object_tracker_gps.h"
 #include "objects/object_fall_sensor.h"
 
 #undef NRF_LOG_ENABLED
@@ -157,7 +160,7 @@ int main(void)
     		#endif
 
     		#if OBJECT_ID == OBJECT_TRACKER_GPS
-
+    			GPS_main();
 
     		#endif
 

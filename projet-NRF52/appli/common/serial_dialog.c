@@ -115,8 +115,11 @@ void SERIAL_DIALOG_init(void)
 		  9,//CTS_PIN_NUMBER,
 		  APP_UART_FLOW_CONTROL_DISABLED,
 		  false,	//use parity
-         // NRF_UARTE_BAUDRATE_9600
-		  NRF_UARTE_BAUDRATE_115200
+#ifdef UART_AT_BAUDRATE_9600
+         NRF_UARTE_BAUDRATE_9600
+#else
+		 NRF_UARTE_BAUDRATE_115200
+#endif
 	  };
 
 	buffers.rx_buf      = rx_buf;
@@ -147,10 +150,7 @@ static void SERIAL_DIALOG_uart_event_handler(app_uart_evt_t * p_event)
 			while(app_uart_get(&c) == NRF_SUCCESS)
 			{
 				//SERIAL_DIALOG_putc(c);
-				if(rx_callback != NULL)
-					rx_callback(c);
-				else
-					SERIAL_DIALOG_parse_rx(c);
+				SERIAL_DIALOG_parse_rx(c);
 			}
 			break;
 		case APP_UART_COMMUNICATION_ERROR:
@@ -203,6 +203,8 @@ void SERIAL_DIALOG_process_main()
 
 }
 
+
+
 /**
  * @brief	Cette fonction assure le traitement des caractères reçus sur l'UART. Les ocets sont rangés dans les variables size et datas, avant d'être traité lorsque le message complet et valide est reçu.
  * @post	La fonction SERIAL_DIALOG_process_msg() sera appelé si un message au format valide est reçu
@@ -211,6 +213,7 @@ void SERIAL_DIALOG_process_main()
 static void SERIAL_DIALOG_parse_rx(uint8_t c)
 {
 	static uint8_t datas[255];
+
 	static uint16_t index = 0;
 	static uint8_t size;
 	switch(index)
@@ -218,6 +221,11 @@ static void SERIAL_DIALOG_parse_rx(uint8_t c)
 		case 0:
 			if(c == SOH)
 				index++;
+			else
+			{
+				if(rx_callback != NULL)
+					rx_callback(c);
+			}
 			break;
 		case 1:
 			size = c;
@@ -244,6 +252,7 @@ static void SERIAL_DIALOG_parse_rx(uint8_t c)
 			break;
 	}
 }
+
 
 /**
  * @brief	Cette fonction permet l'envoi d'un message sur la liaison série.

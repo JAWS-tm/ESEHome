@@ -4,14 +4,14 @@
 #include "../config.h"
 
 
+#include "object_tracker_gps.h"
+#include "appli/common/gpio.h"
+#include <math.h>
+#include <stdlib.h>
 
 #if OBJECT_ID == OBJECT_TRACKER_GPS
 
-#include "gpio.h"
-#include "object_tracker_gps.h"
 
-#include <math.h>
-#include <stdlib.h>
 //Constantes priv�es
 #define BUFFER_SIZE	256
 
@@ -41,12 +41,75 @@ static uint8_t hextoint(char c);
  * Une trame correctement lue donne lieu au remplissage de la structure gps_datas et au renvoi d'une valeur de retour diff�rente de NO_TRAME_RECEIVED (0)
  */
 
+void GPS_main(void)
+{
+	static tracker_gps_state tracker_gps = INIT;
+	switch(tracker_gps)
+			{
+				case INIT:
+					// initialisation du gps
+					SERIAL_DIALOG_set_rx_callback(&GPS_process_rx);
+					GPS_On();
+					tracker_gps = TRAME_RECEIVE;
+					break;
+				case TRAME_RECEIVE:
+
+					break;
+				case SLEEP:
+					// mise en sommeil de la carte pour éviter une consomation top importante du module
+					break;
+				case STOP:
+					//arret de l'utilisation du module gps
+					break;
+				default:
+					break;
+			}
+}
+
+void GPS_On(void)
+{
+	GPIO_configure(MOSFET_GND_GPS, NRF_GPIO_PIN_NOPULL, true);//configure la pin de du gps concernée en sortie
+	GPIO_write(MOSFET_GND_GPS, true);
+}
+
+
+static gps_datas_t gps_datas;
+
+void GPS_process_rx(uint8_t c)
+{
+	static uint8_t buffer[BUFFER_SIZE];
+	static uint16_t index = 0;
+	if(c == '$')
+		index = 0;
+
+	buffer[index] = c;
+
+	if(index<BUFFER_SIZE-1)
+		index++;
+	if(c=='\n')
+	{
+		buffer[index] = '\0';
+
+		index = 0;
+		//trame terminée, on l'envoie !
+		if(GPS_parse(buffer, &gps_datas) == TRAME_GPRMC)
+		{
+			//TODO lever un flag !
+
+
+		}
+	}
+}
+
+
 void GPS_test(void)
 {
 	//checksum calculator : http://www.hhhh.org/wiml/proj/nmeaxor.html
 	//https://www.coordonnees-gps.fr/
 
 	#define NB_TEST_STRINGS 7
+
+
 	/*
 	 * changer le char et récupérer
 	 */
@@ -59,6 +122,9 @@ void GPS_test(void)
 			"$GPABC,ABCDEFGHIJKLMNOPQRSTUVWXYZ,E*09\r\n",		//Unknow frame
 			"$GPGLL,3751.65,S,14507.36,E*77\r\n",				//GPGGL
 			"$GPRMC,010203.00,A,8959.99999,N,17959.99999,E,254.000,,010418,,,D*74\r\n"};
+
+
+
 	uint16_t i;
 	gps_datas_t gps_datas;
 	uint8_t buf[128];
@@ -71,7 +137,7 @@ void GPS_test(void)
 		switch(err)
 		{
 			case TRAME_GPRMC:
-				printf("%lf, %lf\n",gps_datas.latitude_deg, gps_datas.longitude_deg);	//On affiche les coordonn�es lues
+				//printf("%lf, %lf\n",gps_datas.latitude_deg, gps_datas.longitude_deg);	//On affiche les coordonn�es lues
 				break;
 			case TRAME_INVALID:
 				printf("Invalid trame\n");
@@ -87,29 +153,6 @@ void GPS_test(void)
 		}
 	}
 }
-nmea_frame_e GPS_process_rx(uint8_t c, gps_datas_t * gps_datas)
-{
-	static uint8_t buffer[BUFFER_SIZE];
-	static uint16_t index = 0;
-	nmea_frame_e ret;
-	ret = NO_TRAME_RECEIVED;
-
-	if(c == '$')
-		index = 0;
-
-	buffer[index] = c;
-
-	if(index<BUFFER_SIZE-1)
-		index++;
-	if(c=='\n')
-	{
-		buffer[index] = '\0';
-		ret = GPS_parse(buffer, gps_datas);	//On sous-traite l'analyse de la trame re�ue...
-		index = 0;
-	}
-	return ret;
-}
-
 
 
 /*
@@ -268,6 +311,8 @@ static uint8_t hextoint(char c)
 		return (uint8_t)(c - '0');
 	return 0;
 }
+
+
 
 
 #endif
