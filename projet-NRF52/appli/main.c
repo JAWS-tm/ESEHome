@@ -201,6 +201,7 @@ char * object_id_to_string(uint8_t id)
 	{
 		case OBJECT_BASE_STATION:	ret = "Base Station";	break;
 		case OBJECT_SMART_LIGHT:	ret = "Smart Light";	break;
+		case OBJECT_TOUCH_SCREEN:	ret = "Touch Screen";	break;
 		//TODO
 		default:
 			break;
