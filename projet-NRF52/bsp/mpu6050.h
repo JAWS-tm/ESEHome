@@ -196,7 +196,7 @@ bool mpu6050_init(uint8_t device_address);
   @retval true Register write succeeded
   @retval false Register write failed
 */
-bool mpu6050_register_write(uint8_t register_address, const uint8_t value);
+bool mpu6050_register_write(uint8_t register_address, uint8_t value);
 
 /**
   @brief Function for reading MPU6050 register contents over TWI.
@@ -207,7 +207,7 @@ bool mpu6050_register_write(uint8_t register_address, const uint8_t value);
   @retval true Register read succeeded
   @retval false Register read failed
 */
-bool mpu6050_register_read(uint8_t register_address, uint8_t *destination, uint8_t number_of_bytes);
+running_e mpu6050_register_read(uint8_t register_address, uint8_t * destination, uint8_t number_of_bytes);
 
 /**
   @brief Function for reading and verifying MPU6050 product ID.

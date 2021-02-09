@@ -15,9 +15,10 @@
 #include <stdint.h>
 #include <stdio.h>
 
-#include "../components/libraries/twi_sensor/nrf_twi_sensor.h"
+#include "nrf52_i2c.h"
 #include "mpu6050.h"
 #include "nrf_delay.h"
+#include "appli/common/gpio.h"
 
 /*lint ++flb "Enter library region" */
 
@@ -28,43 +29,30 @@
 
 //static const uint8_t expected_who_am_i_9250 = 0x71; // !< Expected value to get from WHO_AM_I register.
 static const uint8_t expected_who_am_i = 0x68U; // !< Expected value to get from WHO_AM_I register.
-static uint8_t       m_device_address;          // !< Device address in bits [7:1]
 
-NRF_TWI_MNGR_DEF(m_twi_mngr, 4, 0);         /**< TWI transaction manager.*/
-NRF_TWI_SENSOR_DEF(p_instance, &m_twi_mngr, 30); /**< TWI Sensor instance.*/
+static bool_e initialized = FALSE;
 
-
-bool mpu6050_init(uint8_t device_address)
+void mpu6050_i2c_init(uint8_t device_address)
 {
-    bool transfer_succeeded = true;
-    ret_code_t err_code;
-    m_device_address = (uint8_t)(device_address << 1);   // init "m_device_address"  pour les autres fonctions
+	running_e sub;
+	I2C_init(device_address);
 
-	// Reinitialize it in managed non-blocking mode.
-	// Initialize the manager.
-	nrf_drv_twi_config_t const config_async = { // TODO the config should move to the nrfx namespace instead of nrf_drv
-		.scl                = I2C_SCL_PIN_NB,
-		.sda                = I2C_SDA_PIN_NB,
-		.frequency          = NRF_TWI_FREQ_400K,
-		.interrupt_priority = APP_IRQ_PRIORITY_LOWEST,
-		.clear_bus_init     = false
-	};
-	err_code = nrf_twi_mngr_init(&m_twi_mngr, &config_async);
-	APP_ERROR_CHECK(err_code);
-
-	// Initialize sensor.
-	err_code = nrf_twi_sensor_init(&p_instance);
-	APP_ERROR_CHECK(err_code);
-
+	SYSTICK_delay_ms(500);
 
     // Do a reset on signal paths
     uint8_t reset_value = 0x04U | 0x02U | 0x01U; // Resets gyro, accelerometer and temperature sensor signal paths.
-    transfer_succeeded &= mpu6050_register_write(ADDRESS_SIGNAL_PATH_RESET, reset_value);
+    sub = mpu6050_register_write(ADDRESS_SIGNAL_PATH_RESET, reset_value);
 
     // Read and verify product ID
-    transfer_succeeded &= mpu6050_verify_product_id();
+    if(sub == END_OK)
+    	initialized = mpu6050_verify_product_id();
 
-    return transfer_succeeded;
+
+    while(!initialized)
+    {
+    	initialized = mpu6050_verify_product_id();
+    	SYSTICK_delay_ms(100);
+    }
 }
 /*
  * @brief	Initialise le module MPU6050 en activant son alimentation, puis en configurant les registres internes du MPU6050.
@@ -80,8 +68,14 @@ bool MPU6050_Init(MPU6050_t* DataStruct, MPU6050_Accelerometer_t AccelerometerSe
 {
 	uint8_t temp;
 
+	// Initialize Power !
+	GPIO_configure(MPU6050_VCC_PIN, GPIO_PIN_CNF_PULL_Disabled, TRUE);
+	GPIO_write(MPU6050_VCC_PIN, FALSE);
+	SYSTICK_delay_ms(500);
+	GPIO_write(MPU6050_VCC_PIN, TRUE);
+
 	/* Initialize I2C */
-	mpu6050_init(MPU_6050_I2C_ADDRESS);
+	mpu6050_i2c_init(MPU_6050_I2C_ADDRESS);
 
 	/* Wakeup MPU6050 */
 	mpu6050_register_write(MPU6050_PWR_MGMT_1, 0x00);
@@ -140,9 +134,9 @@ bool MPU6050_Init(MPU6050_t* DataStruct, MPU6050_Accelerometer_t AccelerometerSe
 }
 bool mpu6050_verify_product_id(void)
 {
-    uint8_t who_am_i;
+    uint8_t who_am_i = 0x55;
 
-    if (mpu6050_register_read(ADDRESS_WHO_AM_I, &who_am_i, 1))
+    if (mpu6050_register_read(ADDRESS_WHO_AM_I, &who_am_i, 1) == END_OK)
     {
         if (who_am_i != expected_who_am_i)
         {
@@ -161,18 +155,24 @@ bool mpu6050_verify_product_id(void)
 
 bool mpu6050_register_write(uint8_t register_address, uint8_t value)
 {
-	return nrf_twi_sensor_reg_write(&p_instance, m_device_address, register_address, &value, 1);
+	running_e sub;
+	do
+	{
+		sub = I2C_register_write(register_address, value);
+	}while(sub == IN_PROGRESS);
+	return sub;
 }
 
-bool mpu6050_register_read(uint8_t register_address, uint8_t * destination, uint8_t number_of_bytes)
+
+
+running_e mpu6050_register_read(uint8_t register_address, uint8_t * destination, uint8_t number_of_bytes)
 {
-    bool transfer_succeeded;
- //   transfer_succeeded  = twi_master_transfer(m_device_address, &register_address, 1, TWI_DONT_ISSUE_STOP);
- //   transfer_succeeded &= twi_master_transfer(m_device_address|TWI_READ_BIT, destination, number_of_bytes, TWI_ISSUE_STOP);
-  //   nrf_twi_sensor_reg_write(&p_instance, m_device_address, w2_data, 2);
-    //TODO gérer la callback... !!!
-    transfer_succeeded = nrf_twi_sensor_reg_read(&p_instance, m_device_address, register_address, NULL, destination, number_of_bytes);
-    return transfer_succeeded;
+	running_e sub;
+	do
+	{
+		sub = I2C_register_read(register_address, destination, number_of_bytes);
+	}while(sub == IN_PROGRESS);
+    return sub;
 }
 
 
@@ -211,7 +211,8 @@ bool MPU6050_ReadAllType2(TYPE_2_MPU6050_t* DataStruct) {
  bool MPU6050_ReadAllType1(MPU6050_t* DataStruct) {
 	uint8_t data[14];
 	int16_t temp;
-
+	for(uint8_t i = 0; i<14 ; i++)
+		data[i] = 0x55;
 	/* Read full raw data, 14bytes */
 	//	I2C_ReadMulti(MPU6050_I2C, DataStruct->Address, MPU6050_ACCEL_XOUT_H, data, 14);
 	//	MPU6050_Init(&MPU6050_Data, MPU6050_Accelerometer_8G, MPU6050_Gyroscope_2000s);
