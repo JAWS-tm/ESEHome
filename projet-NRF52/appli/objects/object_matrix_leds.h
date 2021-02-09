@@ -8,7 +8,7 @@
 #ifndef APPLI_OBJECTS_OBJECT_MATRIX_LEDS_H_
 #define APPLI_OBJECTS_OBJECT_MATRIX_LEDS_H_
 
-
+void MATRIX_afficheur(void);
 
 
 

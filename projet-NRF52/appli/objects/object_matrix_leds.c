@@ -5,8 +5,8 @@
  *      Author: meven
  */
 #include "../config.h"
-#include "bsp/matrix_leds_32x32.h"
 #include "object_matrix_leds.h"
+#include "bsp/matrix_leds_32x32.h"
 
 
 #if OBJECT_ID == OBJECT_MATRIX_LEDS
@@ -19,7 +19,7 @@ void MATRIX_afficheur(){
 	}state_e;
 
 	static state_e state = INIT;
-	static color_t matrix[32*32];
+	static matrix_t matrix[32*32];
 	switch(state){
 	case INIT:
 		MATRIX_init();

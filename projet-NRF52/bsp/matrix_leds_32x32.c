@@ -66,7 +66,7 @@ void MATRIX_init(void)
     initialized = TRUE;
 }
 
-void MATRIX_display(color_t * matrix)
+void MATRIX_display(matrix_t * matrix)
 {
     uint32_t zone;
     uint32_t led;
@@ -110,7 +110,7 @@ void MATRIX_display(color_t * matrix)
 	for(t=0; t< 10; t++);
 }
 
-void MATRIX_reset(color_t * matrix){
+void MATRIX_reset(matrix_t * matrix){
 	for(uint8_t i = 0; i < 32; i++){
 		for(uint8_t j = 0; j < 32; j++){
 			uint32_t value;
