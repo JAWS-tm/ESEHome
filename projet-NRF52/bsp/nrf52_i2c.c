@@ -7,7 +7,7 @@
 #include "appli/config.h"
 #include "modules/nrfx/drivers/include/nrfx_twi.h"
 #include "appli/common/systick.h"
-
+#if USE_TWI
 static uint8_t m_device_address;          // !< Device address in bits [7:1]
 static volatile uint32_t t = 0;
 static volatile nrfx_twi_evt_type_t event = FALSE;
@@ -220,4 +220,4 @@ running_e I2C_register_write(uint8_t register_address, uint8_t value)
 	return ret;
 }
 
-
+#endif
