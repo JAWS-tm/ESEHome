@@ -29,8 +29,6 @@ void MATRIX_init(void);
 
 void MATRIX_display(color_t * matrix);
 
-void MATRIX_display_one_led(color_t matrix[32][32], uint8_t li, uint8_t col);
-
 
 #endif /* BSP_MATRIX_LEDS_32X32_H_ */
 

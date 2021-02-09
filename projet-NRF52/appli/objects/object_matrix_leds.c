@@ -5,6 +5,8 @@
  *      Author: meven
  */
 #include "../config.h"
+#include "bsp/matrix_leds_32x32.h"
+#include "object_matrix_leds.h"
 
 
 #if OBJECT_ID == OBJECT_MATRIX_LEDS

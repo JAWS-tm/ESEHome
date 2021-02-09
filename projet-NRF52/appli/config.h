@@ -163,6 +163,8 @@
 	#if OBJECT_ID == OBJECT_MATRIX_LEDS
 
 
+		#define USE_MATRIX		1
+
 
 	#endif
 
