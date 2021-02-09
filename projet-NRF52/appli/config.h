@@ -83,6 +83,7 @@
 		#define PIN_PLUVIO+  		9
 		#define PIN_ANEMO+   		10
 		#define PIN_MEASURE_BATT    31
+		#define USE_BMP180   		1
 
 	#endif
 
