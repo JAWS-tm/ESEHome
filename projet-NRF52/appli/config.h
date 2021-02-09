@@ -75,7 +75,15 @@
 	#endif
 
 	#if OBJECT_ID == OBJECT_OUT_WEATHER_STATION
-
+		#define PIN_MOSFET   		27
+		#define USE_MPU6050  		1
+		#define PIN_DHT11    		2
+		#define PIN_PLUVIO-  		3
+		#define PIN_ANEMO-   		4
+		#define PIN_PLUVIO+  		9
+		#define PIN_ANEMO+   		10
+		#define PIN_MEASURE_BATT    31
+		#define USE_BMP180   		1
 
 	#endif
 
@@ -156,6 +164,8 @@
 	#if OBJECT_ID == OBJECT_MATRIX_LEDS
 
 
+		#define USE_MATRIX		1
+
 
 	#endif
 
@@ -178,7 +188,7 @@
 #define PIN_RESET			21
 
 //TODO compléter la liste des objets dotés d'une led batterie !
-#define I_HAVE_LED_BATTERY	(OBJECT_ID == OBJECT_BASE_STATION || OBJECT_ID == 4)
+#define I_HAVE_LED_BATTERY	(OBJECT_ID == OBJECT_BASE_STATION || OBJECT_ID == 6)
 
 #define USE_SPI	(OBJECT_ID == OBJECT_TOUCH_SCREEN)
 

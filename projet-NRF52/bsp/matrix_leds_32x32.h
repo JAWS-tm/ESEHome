@@ -8,9 +8,11 @@
 #ifndef BSP_MATRIX_LEDS_32X32_H_
 #define BSP_MATRIX_LEDS_32X32_H_
 
+
 #include <stdint.h>
 
-typedef uint8_t color_t;
+typedef uint8_t	matrix_t;
+
 #define COLOR_BLACK     0b00000000
 #define COLOR_RED       0b00000100
 #define COLOR_GREEN     0b00000010
@@ -20,11 +22,14 @@ typedef uint8_t color_t;
 #define COLOR_PURPLE    0b00000101
 #define COLOR_WHITE     0b00000111
 
+#define xy_to_index(x, y) (32 * x + y)
+
 
 void MATRIX_init(void);
 
-void MATRIX_display(color_t color[32][32]);
-
+void MATRIX_display(matrix_t * matrix);
 
 
 #endif /* BSP_MATRIX_LEDS_32X32_H_ */
+
+
