@@ -23,4 +23,8 @@ bool_e Systick_remove_callback_function(callback_fun_t func);
 
 uint32_t SYSTICK_get_time_us(void);
 
+void SYSTICK_delay_ms(uint32_t duration);
+
+void SYSTICK_delay_us(uint32_t duration);
+
 #endif /* SYSTICK_H_ */

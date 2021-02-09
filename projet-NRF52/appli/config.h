@@ -235,6 +235,9 @@ uint32_t debug_printf(char * format, ...);
 	#ifndef I2C_SCL_PIN_NB
 		#define	I2C_SCL_PIN_NB	26
 	#endif
+	#ifndef MPU6050_VCC_PIN
+		#define	MPU6050_VCC_PIN	27
+	#endif
 #endif
 ///////////////////////////////////////////////////////////////////////////////////
 #ifndef NRF52832_XXAA
