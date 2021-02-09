@@ -15,9 +15,9 @@ typedef enum{
 	SEND_DATA,
 	SLEEP,
 	STOP
-}state_e;
+}state;
 
 
-void state_machine(void)
+void state_machine(void);
 #endif
 #endif /* APPLI_OBJECTS_OBJECT_BRIGHTNESS_SENSOR_H_ */
