@@ -35,7 +35,8 @@
 extern "C" {
 #endif
 
-#include "config.h"
+#include "../appli/config.h"
+
 #if USE_BMP180
 
 #include "stm32f1_i2c.h"

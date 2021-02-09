@@ -22,7 +22,8 @@
 #include "bmp180.h"
 #include <stdio.h>
 
-#include "config.h"
+#include "../appli/config.h"
+
 #if USE_BMP180
 /* Multiple is faster than divide */
 #define BMP180_1_16     ((float) 0.0625)
