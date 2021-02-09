@@ -32,7 +32,7 @@ void Out_weather_measurement(void){
 	case RAIN_MEASUREMENT:{
 		state = OTHERS_MEASUREMENT;
 		break;}
-	case RAIN_MEASUREMENT:{
+	case OTHERS_MEASUREMENT:{
 		state = SEND_DATAS;
 		break;}
 	case SEND_DATAS:{
