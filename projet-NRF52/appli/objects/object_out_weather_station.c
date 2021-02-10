@@ -10,6 +10,7 @@
 
 #if OBJECT_ID == OBJECT_OUT_WEATHER_STATION
 
+I2C_init();
 
 void Out_weather_measurement(void){
 	typedef enum{
