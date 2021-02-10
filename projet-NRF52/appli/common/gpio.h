@@ -14,7 +14,7 @@
 void GPIO_init(void);
 
 void GPIO_configure(uint8_t pin, nrf_gpio_pin_pull_t pull, bool_e output);
-
+void GPIO_configure_input_output_opendrain(int8_t pin, nrf_gpio_pin_pull_t pull);
 
 __inline void GPIO_write(uint8_t pin, bool_e value)
 {

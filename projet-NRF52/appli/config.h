@@ -70,7 +70,9 @@
 	#endif
 
 	#if OBJECT_ID == OBJECT_STATION_METEO_INT
-
+		#define USE_DHT11	true
+		#define MOSFET_GND  27
+		#define DHT11_PIN	2
 
 	#endif
 
