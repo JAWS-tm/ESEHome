@@ -190,7 +190,7 @@
 #define PIN_RESET			21
 
 //TODO compléter la liste des objets dotés d'une led batterie !
-#define I_HAVE_LED_BATTERY	(OBJECT_ID == OBJECT_BASE_STATION || OBJECT_ID == 6)
+#define I_HAVE_LED_BATTERY	(OBJECT_ID == OBJECT_BASE_STATION || OBJECT_ID == 6 || OBJECT_ID == OBJECT_FALL_SENSOR || OBJECT_ID == 13)
 
 #define USE_SPI	(OBJECT_ID == OBJECT_TOUCH_SCREEN)
 
