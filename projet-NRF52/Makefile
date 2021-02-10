@@ -14,6 +14,7 @@ SRC_FILES += \
   $(PROJ_DIR)/appli/common/adc.c \
   $(PROJ_DIR)/appli/common/secretary.c \
   $(PROJ_DIR)/appli/common/serial_dialog.c \
+  $(PROJ_DIR)/appli/common/battery.c \
   $(PROJ_DIR)/appli/objects/object_fall_sensor.c \
   $(PROJ_DIR)/appli/objects/object_matrix_leds.c \
   $(PROJ_DIR)/appli/objects/object_tracker_gps.c \

@@ -199,9 +199,26 @@ char * object_id_to_string(uint8_t id)
 
 	switch(id)
 	{
-		case OBJECT_BASE_STATION:	ret = "Base Station";	break;
-		case OBJECT_SMART_LIGHT:	ret = "Smart Light";	break;
-		case OBJECT_TOUCH_SCREEN:	ret = "Touch Screen";	break;
+		case OBJECT_BASE_STATION:		ret = "Base Station";		break;
+		case OBJECT_SMART_LIGHT:		ret = "Smart Light";		break;
+		case OBJECT_NIGHT_LIGHT:		ret = "Night Light";		break;
+		case OBJECT_BRIGHTNESS_SENSOR:	ret = "Brightness Sensor";	break;
+		case OBJECT_STATION_METEO_INT:	ret = "Station Meteo Int";	break;
+		case OBJECT_OUT_WEATHER_STATION:ret = "Station Meteo Ext";	break;
+		case OBJECT_ROLLER_SHUTTER:		ret = "Roller Shutter";		break;
+		case OBJECT_ALARM:				ret = "Alarm";				break;
+		case OBJECT_FIRE_DETECTOR:		ret = "Fire Detector";		break;
+		case OBJECT_WINE_DEGUSTATION:	ret = "Wine Degustation";	break;
+		case OBJECT_VENTILATOR:			ret = "Ventilator";			break;
+		case OBJECT_GSM:				ret = "GSM";				break;
+		case OBJECT_FALL_SENSOR:		ret = "Fall Sensor";		break;
+		case OBJECT_TRACKER_GPS:		ret = "Tracker GPS";		break;
+		case OBJECT_VOICE_CONTROL:		ret = "Voice Control";		break;
+		case OBJECT_TOUCH_SCREEN:		ret = "Touch Screen";		break;
+		case OBJECT_E_PAPER:			ret = "E Paper";			break;
+		case OBJECT_MATRIX_LEDS:		ret = "Matrix Leds";		break;
+
+
 		//TODO
 		default:
 			break;
