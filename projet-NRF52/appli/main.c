@@ -149,10 +149,6 @@ int main(void)
 
     		#endif
 
-    		#if OBJECT_ID == OBJECT_TRACKER_GPS
-
-
-    		#endif
 
     		#if OBJECT_ID == OBJECT_RFID
 
@@ -160,6 +156,7 @@ int main(void)
     		#endif
 
     		#if OBJECT_ID == OBJECT_TRACKER_GPS
+    			printf("main");
     			GPS_main();
 
     		#endif
