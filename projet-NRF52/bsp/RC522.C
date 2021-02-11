@@ -4,7 +4,7 @@
  *  Created on: 11 févr. 2021
  *      Author: paulq
  */
-
+/*
 static inline void spi_write(const void * data, size_t size)
 {
 	nrfx_spi_xfer_desc_t desc = {
@@ -193,3 +193,4 @@ nrf_gpio_pin_write(SPI_SS_PIN,1);
 }
 
 
+*/

@@ -70,7 +70,7 @@
 	#endif
 
 	#if OBJECT_ID == OBJECT_STATION_METEO_INT
-		#define USE_DHT11	true
+		#define USE_DHT11	1
 		#define MOSFET_GND  27
 		#define DHT11_PIN	2
 
@@ -225,6 +225,10 @@ uint32_t debug_printf(char * format, ...);
 
 
 #define USE_ADC						1
+
+#ifndef USE_DHT11
+	#define USE_DHT11		0
+#endif
 
 #ifndef USE_MPU6050
 	#define USE_MPU6050		0

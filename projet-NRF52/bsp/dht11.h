@@ -10,7 +10,7 @@
 
 #include "../appli/config.h"
 
-#if USE_DHT11 == true
+#if USE_DHT11
 
 #include <stdint.h>
 

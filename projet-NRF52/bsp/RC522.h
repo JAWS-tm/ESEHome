@@ -1,4 +1,4 @@
-
+/*
 #include "nrfx_spi.h"
 #include "app_error.h"
 #include <string.h>
@@ -221,3 +221,4 @@ static   void mfrc522_write(uint8_t reg, uint8_t data);
 static   uint8_t mfrc522_read(uint8_t reg);
 void mfrc522_init();
 void mfrc522_reset();
+*/

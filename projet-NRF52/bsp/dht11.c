@@ -6,7 +6,7 @@
  */
 #include "../appli/config.h"
 
-#if USE_DHT11 == true
+#if USE_DHT11
 
 #include "dht11.h"
 #include <stdbool.h>
