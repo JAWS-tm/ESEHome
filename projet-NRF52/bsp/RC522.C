@@ -4,7 +4,10 @@
  *  Created on: 11 févr. 2021
  *      Author: paulq
  */
-/*
+#include "appli/config.h"
+
+#if OBJECT_ID == OBJECT_RFID
+
 static inline void spi_write(const void * data, size_t size)
 {
 	nrfx_spi_xfer_desc_t desc = {
@@ -193,4 +196,5 @@ nrf_gpio_pin_write(SPI_SS_PIN,1);
 }
 
 
-*/
+
+#endif
