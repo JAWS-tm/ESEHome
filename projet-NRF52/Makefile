@@ -20,6 +20,7 @@ SRC_FILES += \
   $(PROJ_DIR)/appli/objects/object_touch_screen.c \
   $(PROJ_DIR)/bsp/WS2812B_asm.s \
   $(PROJ_DIR)/bsp/mpu6050.c \
+  $(PROJ_DIR)/bsp/RC522.c \
   $(PROJ_DIR)/bsp/nrf52_i2c.c \
   $(PROJ_DIR)/bsp/mpu6050.c \
   $(PROJ_DIR)/bsp/matrix_leds_32x32.c \

@@ -164,6 +164,8 @@ static inline void spi_write(const void * data, size_t size)
     APP_ERROR_CHECK(nrfx_spi_xfer(&spi, &desc, 0));
 }
 
+
+
 static inline void write_command(uint8_t c)
 {
     nrf_gpio_pin_clear(ILI9341_DC_PIN);

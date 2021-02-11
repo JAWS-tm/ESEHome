@@ -129,8 +129,14 @@
 	#endif
 
 	#if OBJECT_ID == OBJECT_RFID
-
-
+		#define RC522_RST_PIN   11
+		#define RC522_MOSI_PIN  13
+		#define RC522_MISO_PIN 14
+		#define RC522_IRQ_PIN 15
+		#define RC522_SCK_PIN 12
+		#define RC522_CS_PIN	25
+		#define USE_RC522	1
+		#define RC522_SPI_INSTANCE	0
 	#endif
 
 	#if OBJECT_ID == OBJECT_TRACKER_GPS
@@ -192,7 +198,7 @@
 //TODO compléter la liste des objets dotés d'une led batterie !
 #define I_HAVE_LED_BATTERY	(OBJECT_ID == OBJECT_BASE_STATION || OBJECT_ID == 6)
 
-#define USE_SPI	(OBJECT_ID == OBJECT_TOUCH_SCREEN)
+#define USE_SPI	(OBJECT_ID == OBJECT_TOUCH_SCREEN || OBJECT_ID == OBJECT_RFID)
 
 #define USE_TWI	(OBJECT_ID == OBJECT_FALL_SENSOR)
 
