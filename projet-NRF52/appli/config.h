@@ -140,10 +140,6 @@
 		#define RC522_SPI_INSTANCE	0
 	#endif
 
-	#if OBJECT_ID == OBJECT_TRACKER_GPS
-
-
-	#endif
 
 	#if OBJECT_ID == OBJECT_VOICE_CONTROL
 

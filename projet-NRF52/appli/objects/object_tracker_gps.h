@@ -38,9 +38,22 @@ typedef enum
 	TRAME_GPGGA				//Une trame GPGGA a été reçue
 }nmea_frame_e;
 
-nmea_frame_e GPS_process_rx(uint8_t c, gps_datas_t * gps_datas);
 
+typedef enum
+{
+	INIT = 0,	//Une trame est en cours de réception
+	CONTAINER_TRAM,
+	SENT_CONTAINER_TRAM,
+	STOP,
+
+}tracker_gps_state;
+
+
+void GPS_main(void);
+void GPS_On(void);
 void GPS_test(void);
+void GPS_process_rx(uint8_t c);
+
 
 
 #endif /* APPLI_OBJECTS_OBJECT_TRACKER_GPS_H_ */
