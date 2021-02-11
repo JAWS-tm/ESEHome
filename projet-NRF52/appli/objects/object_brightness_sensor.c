@@ -6,25 +6,36 @@
  */
 #include "../config.h"
 #include "object_brightness_sensor.h"
+#include "../../bsp/bh1750fvi.h"
 
 #if OBJECT_ID == OBJECT_BRIGHTNESS_SENSOR
 
 void state_machine(void)
 {
-	state_e state = INIT;
+	state state = INIT;
 	switch(state)
 	{
 	case INIT :
-			state = GET_DATA;
+		LED_add(LED_ID_BATTERY, PIN_LED_BATTERY);
+		LED_add(LED_ID_NETWORK, PIN_LED_NETWORK);
+		BUTTONS_add(BUTTON_NETWORK, PIN_BUTTON_NETWORK, TRUE, &BUTTON_action_sleep);
+		state = GET_DATA;
 		break;
 	case GET_DATA :
+		LED_set(LED_ID_NETWORK, LED_MODE_OFF);
+		LED_set(LED_ID_BATTERY, LED_MODE_OFF);
+		BH1750FVI_demo();
+
 		state = SEND_DATA;
 		break;
 	case SEND_DATA :
+
+		LED_set(LED_ID_NETWORK, LED_MODE_FLASH);
 		state = GET_DATA;
 		break;
 	case SLEEP :
-
+		LED_set(LED_ID_NETWORK, LED_MODE_OFF);
+		LED_set(LED_ID_BATTERY, LED_MODE_FLASH);
 		break;
 	case STOP :
 
@@ -33,6 +44,15 @@ void state_machine(void)
 	}
 }
 
+void BUTTON_action_sleep(state state)
+{
+	if(state == SEND_DATA){
+		state = SLEEP;
+	}else if(state == GET_DATA){
+		state = SLEEP;
+	}else if (state == SLEEP){
+		state = GET_DATA;
+	}
+}
 
 
-#endif

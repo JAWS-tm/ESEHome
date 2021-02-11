@@ -39,7 +39,7 @@ extern "C" {
 
 #if USE_BMP180
 
-#include "stm32f1_i2c.h"
+#include "../bsp/nrf52_i2c.h"
 
 /**
  * @addtogroup STM32F4xx_Libraries
@@ -100,8 +100,8 @@ SDA       PC9       I2C3 Serial data
 @endverbatim
  */
 
-#include "stm32f1xx.h"
-#include "stm32f1_i2c.h"
+//#include "stm32f1xx.h"
+#include "../bsp/nrf52_i2c.h"
 #include "math.h"
 
 /**
@@ -110,20 +110,18 @@ SDA       PC9       I2C3 Serial data
  * @{
  */
 
-/* Default I2C pin */
+/* Default I2C pin
 #ifndef BMP180_I2C
-#define BMP180_I2C					I2C1
+	#define BMP180_I2C					I2C1
 //#define BMP180_I2C_PINSPACK			I2C_PinsPack_1
 #endif
+*/
 
-/* Default I2C speed */
-#ifndef BMP180_I2C_SPEED
-#define BMP180_I2C_SPEED			100000
-#endif
+
 
 /* BMP180 I2C address */
 #ifndef BMP180_I2C_ADDRESS
-#define BMP180_I2C_ADDRESS			0xEE
+	#define BMP180_I2C_ADDRESS			(0xEE>>1)
 #endif
 
 /* Registers */

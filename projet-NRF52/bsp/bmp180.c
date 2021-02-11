@@ -23,6 +23,8 @@
 #include <stdio.h>
 
 #include "../appli/config.h"
+#include "../bsp/nrf52_i2c.h"
+#include "../appli/common/systick.h"
 
 #if USE_BMP180
 /* Multiple is faster than divide */
@@ -66,7 +68,7 @@ void BMP180_demo(void)
 
 		/* Wait delay in microseconds */
 		/* You can do other things here instead of delay */
-		HAL_Delay(BMP180_Data.Delay/1000+1);
+		SYSTICK_delay_ms(BMP180_Data.Delay/1000+1);
 
 		/* Read temperature first */
 		BMP180_ReadTemperature(&BMP180_Data);
@@ -76,22 +78,26 @@ void BMP180_demo(void)
 
 		/* Wait delay in microseconds */
 		/* You can do other things here instead of delay */
-		HAL_Delay(BMP180_Data.Delay/1000+1);
+		SYSTICK_delay_ms(BMP180_Data.Delay/1000+1);
 
 		/* Read pressure value */
 		BMP180_ReadPressure(&BMP180_Data);
 
-		/* Format data and print to USART */
-		sprintf(buffer, "Temp: %2.3f degrees\nPressure: %6ld Pascals\nAltitude at current pressure: %3.2f meters\n\n",
+		/* Format data and print to UART */
+		/*sprintf(buffer, "Temp: %2.3f degrees\nPressure: %6ld Pascals\nAltitude at current pressure: %3.2f meters\n\n",
 			BMP180_Data.Temperature,
 			BMP180_Data.Pressure,
 			BMP180_Data.Altitude
-		);
+		);*/
+		printf(buffer, "Temp: %2.3f degrees\nPressure: %6ld Pascals\nAltitude at current pressure: %3.2f meters\n\n",
+			BMP180_Data.Temperature,
+			BMP180_Data.Pressure,
+			BMP180_Data.Altitude);
 		/* Send to USART */
 		printf(buffer);
 
 		/* Some delay */
-		HAL_Delay(1000);
+		SYSTICK_delay_ms(1000);
 	}
 }
 
@@ -109,16 +115,12 @@ BMP180_Result_t BMP180_Init(BMP180_t* BMP180_Data) {
 	uint8_t i = 0;
 
 	/* Initialize I2C */
-	I2C_Init(BMP180_I2C, BMP180_I2C_SPEED);
+	I2C_init(BMP180_I2C_ADDRESS);
 	/* Test if device is connected */
-	if (!I2C_IsDeviceConnected(BMP180_I2C, BMP180_I2C_ADDRESS)) {
-		/* Device is not connected */
-		return BMP180_Result_DeviceNotConnected;
-	}
 
 	/* Get default values from EEPROM */
 	/* EEPROM starts at 0xAA address, read 22 bytes */
-	I2C_ReadMulti(BMP180_I2C, BMP180_I2C_ADDRESS, BMP180_REGISTER_EEPROM, data, 22);
+	I2C_register_read(BMP180_REGISTER_EEPROM, data, 22);
 
 	/* Set configuration values */
 	AC1 = (int16_t)(data[i] << 8 | data[i + 1]); i += 2;
@@ -146,7 +148,7 @@ BMP180_Result_t BMP180_StartTemperature(BMP180_t* BMP180_Data) {
 		return BMP180_Result_LibraryNotInitialized;
 	}
 	/* Send to device */
-	I2C_Write(BMP180_I2C, BMP180_I2C_ADDRESS, BMP180_REGISTER_CONTROL, BMP180_COMMAND_TEMPERATURE);
+	I2C_register_write(BMP180_REGISTER_CONTROL, BMP180_COMMAND_TEMPERATURE);
 	/* Set minimum delay */
 	BMP180_Data->Delay = BMP180_TEMPERATURE_DELAY;
 	/* Return OK */
@@ -162,7 +164,7 @@ BMP180_Result_t BMP180_ReadTemperature(BMP180_t* BMP180_Data) {
 	}
 
 	/* Read multi bytes from I2C */
-	I2C_ReadMulti(BMP180_I2C, BMP180_I2C_ADDRESS, BMP180_REGISTER_RESULT, data, 2);
+	I2C_register_read(BMP180_REGISTER_RESULT, data, 2);
 
 	/* Get uncompensated temperature */
 	UT = data[0] << 8 | data[1];
@@ -210,7 +212,7 @@ BMP180_Result_t BMP180_StartPressure(BMP180_t* BMP180_Data, BMP180_Oversampling_
 			break;
 	}
 	/* Send to device */
-	I2C_Write(BMP180_I2C, BMP180_I2C_ADDRESS, BMP180_REGISTER_CONTROL, command);
+	I2C_register_write(BMP180_REGISTER_CONTROL, command);
 	/* Save selected oversampling */
 	BMP180_Data->Oversampling = Oversampling;
 	/* Return OK */
@@ -226,7 +228,7 @@ BMP180_Result_t BMP180_ReadPressure(BMP180_t* BMP180_Data) {
 	}
 
 	/* Read multi bytes from I2C */
-	I2C_ReadMulti(BMP180_I2C, BMP180_I2C_ADDRESS, BMP180_REGISTER_RESULT, data, 3);
+	I2C_register_read(BMP180_REGISTER_RESULT, data, 3);
 
 	/* Get uncompensated pressure */
 	UP = (data[0] << 16 | data[1] << 8 | data[2]) >> (8 - (uint8_t)BMP180_Data->Oversampling);

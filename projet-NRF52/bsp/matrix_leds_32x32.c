@@ -80,12 +80,17 @@ void MATRIX_display(matrix_t * matrix)
 	{
 		for(t=0; t< 10; t++);
 		WRITE(A,(zone >> 0)&1);
+		for(t=0; t< 10; t++);
 		WRITE(B,(zone >> 1)&1);
+		for(t=0; t< 10; t++);
 		WRITE(C,(zone >> 2)&1);
+		for(t=0; t< 10; t++);
 		WRITE(D,(zone >> 3)&1);
+
 		for(t=0; t< 10; t++);
 		for(led = 0; led < 32; led++)
 		{
+			WRITE(CLK,0);
 			WRITE(HIGH_R, (matrix[xy_to_index(zone+16,led)] 		>> 2) & 1);
 			WRITE(LOW_R, (matrix[xy_to_index(zone,led)] 	>> 2) & 1);
 
@@ -96,8 +101,7 @@ void MATRIX_display(matrix_t * matrix)
 			WRITE(LOW_B, (matrix[xy_to_index(zone,led)]	>> 0) & 1);
 			for(t=0; t< 10; t++);
 			WRITE(CLK,1);
-			for(t=0; t< 10; t++);
-			WRITE(CLK,0);
+
 			for(t=0; t< 10; t++);
 		}
 		WRITE(LAT, 1);
