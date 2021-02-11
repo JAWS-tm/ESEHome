@@ -27,7 +27,10 @@ void MATRIX_afficheur(){
 			for(uint8_t j = 0; j < 32; j++){
 				uint32_t value;
 				value = xy_to_index(i,j);
-				matrix[value] = COLOR_CYAN;
+				if(j == 3)
+					matrix[value] = COLOR_CYAN;
+				else
+					matrix[value] = COLOR_BLACK;
 			}
 		}
 		state = TEST_MATRIX;
