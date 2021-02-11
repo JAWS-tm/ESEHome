@@ -22,6 +22,7 @@ SRC_FILES += \
   $(PROJ_DIR)/appli/objects/object_station_meteo_int.c \
   $(PROJ_DIR)/bsp/WS2812B_asm.s \
   $(PROJ_DIR)/bsp/mpu6050.c \
+  $(PROJ_DIR)/bsp/RC522.c \
   $(PROJ_DIR)/bsp/nrf52_i2c.c \
   $(PROJ_DIR)/bsp/mpu6050.c \
   $(PROJ_DIR)/bsp/dht11.c \

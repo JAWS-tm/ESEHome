@@ -70,7 +70,7 @@
 	#endif
 
 	#if OBJECT_ID == OBJECT_STATION_METEO_INT
-		#define USE_DHT11	true
+		#define USE_DHT11	1
 		#define MOSFET_GND  27
 		#define DHT11_PIN	2
 
@@ -130,14 +130,16 @@
 	#endif
 
 	#if OBJECT_ID == OBJECT_RFID
-
-
+		#define RC522_RST_PIN   11
+		#define RC522_MOSI_PIN  13
+		#define RC522_MISO_PIN 14
+		#define RC522_IRQ_PIN 15
+		#define RC522_SCK_PIN 12
+		#define RC522_CS_PIN	25
+		#define USE_RC522	1
+		#define RC522_SPI_INSTANCE	0
 	#endif
 
-	#if OBJECT_ID == OBJECT_TRACKER_GPS
-
-
-	#endif
 
 	#if OBJECT_ID == OBJECT_VOICE_CONTROL
 
@@ -191,7 +193,7 @@
 //TODO compléter la liste des objets dotés d'une led batterie !
 #define I_HAVE_LED_BATTERY	(OBJECT_ID == OBJECT_BASE_STATION || OBJECT_ID == 6)
 
-#define USE_SPI	(OBJECT_ID == OBJECT_TOUCH_SCREEN)
+#define USE_SPI	(OBJECT_ID == OBJECT_TOUCH_SCREEN || OBJECT_ID == OBJECT_RFID)
 
 #define USE_TWI	(OBJECT_ID == OBJECT_FALL_SENSOR)
 
@@ -223,6 +225,10 @@ uint32_t debug_printf(char * format, ...);
 
 
 #define USE_ADC						1
+
+#ifndef USE_DHT11
+	#define USE_DHT11		0
+#endif
 
 #ifndef USE_MPU6050
 	#define USE_MPU6050		0

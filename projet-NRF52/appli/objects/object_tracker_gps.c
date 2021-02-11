@@ -7,7 +7,7 @@
 
 #if OBJECT_ID == OBJECT_TRACKER_GPS
 
-#include "gpio.h"
+#include "appli/common/gpio.h"
 #include "object_tracker_gps.h"
 
 #include <math.h>
@@ -30,6 +30,7 @@
 #define EARTHRADIUS_M          (EARTHRADIUS_KM * 1000)    /**< Earth's mean radius in m */
 
 
+
 //Fonctions privï¿½es
 static nmea_frame_e GPS_parse(uint8_t * buffer, gps_datas_t * gps_datas);
 static bool_e GPS_parse_gprmc(uint8_t * string, gps_datas_t * coordinates);
@@ -40,6 +41,86 @@ static uint8_t hextoint(char c);
  * Lorsqu'on atteint la fin de la trame (dï¿½tection d'un caractï¿½re '\n') -> on sous-traite le dï¿½coupage de la trame au parser.
  * Une trame correctement lue donne lieu au remplissage de la structure gps_datas et au renvoi d'une valeur de retour diffï¿½rente de NO_TRAME_RECEIVED (0)
  */
+
+void GPS_main(void)
+{
+	static tracker_gps_state state = INIT;
+	switch(state)
+			{
+				case INIT:
+					// initialisation du gps
+					GPS_On();
+					Systick_init();
+					SECRETARY_init();
+					state = CONTAINER_TRAM;
+					break;
+				case CONTAINER_TRAM:
+					SERIAL_DIALOG_set_rx_callback(&GPS_process_rx);
+
+					break;
+				case SENT_CONTAINER_TRAM:
+					// mise en sommeil de la carte pour éviter une consomation top importante du module
+					break;
+				case STOP:
+					//arret de l'utilisation du module gps
+					break;
+				default:
+					break;
+			}
+}
+void GPS_On(void)
+{
+	GPIO_configure(MOSFET_GND_GPS, NRF_GPIO_PIN_NOPULL, true);//configure la pin de du gps concernée en sortie
+	GPIO_write(MOSFET_GND_GPS, true);
+}
+
+
+static gps_datas_t gps_datas;
+static uint8_t gps_tables[128];
+static uint8_t i;
+
+void GPS_process_rx(uint8_t c)
+{
+	static uint8_t buffer[BUFFER_SIZE];
+	static uint16_t index = 0;
+	if(c == '$')
+		index = 0;
+
+	buffer[index] = c;
+
+	if(index<BUFFER_SIZE-1)
+		index++;
+	if(c=='\n')
+	{
+		buffer[index] = '\0';
+
+		index = 0;
+		//trame terminée, on l'envoie !
+		if(GPS_parse(buffer, &gps_datas) == TRAME_GPRMC)
+		{
+			//lorsqu'une trame complète et valide a été reçue, on peut traiter les données interpretées.
+			//printf("%lf, %lf\n",gps_datas.latitude_deg, gps_datas.longitude_deg);
+
+			SECRETARY_send_msg(8, gps_datas);
+			/*
+			gps_tables[i] = gps_datas;
+			i++;
+			*/
+		}
+	}
+}
+
+uint8_t gps_calcul_distance(lat_a_degre, lon_a_degre, lat_b_degre, lon_b_degre)
+{
+
+	uint8_t lat_a = lat_a_degre*PI/180; // convertisseur degré en rad
+	uint8_t lon_a = lon_a_degre*PI/180;
+	uint8_t lat_b = lat_b_degre*PI/180;
+	uint8_t lon_b = lon_b_degre*PI/180;
+
+	uint8_t distance =  EARTHRADIUS_M* (PI/2 - asin(sin(lat_b) * sin(lat_a) + cos(lon_b - lon_a) *cos(lat_b) * cos(lat_a)));
+	return distance;
+}
 
 void GPS_test(void)
 {
@@ -87,28 +168,7 @@ void GPS_test(void)
 		}
 	}
 }
-nmea_frame_e GPS_process_rx(uint8_t c, gps_datas_t * gps_datas)
-{
-	static uint8_t buffer[BUFFER_SIZE];
-	static uint16_t index = 0;
-	nmea_frame_e ret;
-	ret = NO_TRAME_RECEIVED;
 
-	if(c == '$')
-		index = 0;
-
-	buffer[index] = c;
-
-	if(index<BUFFER_SIZE-1)
-		index++;
-	if(c=='\n')
-	{
-		buffer[index] = '\0';
-		ret = GPS_parse(buffer, gps_datas);	//On sous-traite l'analyse de la trame reï¿½ue...
-		index = 0;
-	}
-	return ret;
-}
 
 
 
