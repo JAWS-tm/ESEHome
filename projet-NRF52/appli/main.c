@@ -105,7 +105,7 @@ int main(void)
     		#endif
 
     		#if OBJECT_ID == OBJECT_STATION_METEO_INT
-
+    			STATION_METEO_INT_MAIN();
 
     		#endif
 

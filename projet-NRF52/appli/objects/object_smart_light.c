@@ -1,8 +1,8 @@
 /*
  * object_smart_light.c
  *
- *  Created on: 28 janv. 2021
- *      Author: Nirgal
+ *  Created on: 10 févr. 2021
+ *      Author: Thomas
  */
 #include "../config.h"
 
@@ -19,3 +19,5 @@
 
 
 #endif
+
+

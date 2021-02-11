@@ -25,7 +25,16 @@ void GPIO_configure(uint8_t pin, nrf_gpio_pin_pull_t pull, bool_e output)
 		nrf_gpio_cfg_input(pin, pull);
 }
 
-
+void GPIO_configure_input_output_opendrain(int8_t pin, nrf_gpio_pin_pull_t pull)
+{
+	 nrf_gpio_cfg(
+	        pin,
+	        NRF_GPIO_PIN_DIR_OUTPUT,
+	        NRF_GPIO_PIN_INPUT_CONNECT,
+	        pull,
+	        NRF_GPIO_PIN_S0D1,
+	        NRF_GPIO_PIN_NOSENSE);
+}
 
 
 static void GPIO_configure_pins_9_and_10_as_gpio(void)

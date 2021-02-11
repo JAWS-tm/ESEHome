@@ -83,7 +83,7 @@ uint32_t SYSTICK_get_time_us(void)
 	uint32_t t_ms;
 	__disable_irq();
 	t_us = 1000 - SysTick->VAL / 64;
-	t_ms = HAL_GetTick();
+	t_ms = absolute_time;
 	__enable_irq();
 
 	return t_ms*1000 + t_us;

@@ -5,9 +5,14 @@
  *      Author: Thibault.R
  */
 #include "../config.h"
-#include "object_station_meteo_int.h"
-
 
 #if OBJECT_ID == OBJECT_STATION_METEO_INT
+
+#include "object_station_meteo_int.h"
+#include "../../bsp/dht11.h"
+
+void STATION_METEO_INT_MAIN(void) {
+	DHT11_main();
+}
 
 #endif
