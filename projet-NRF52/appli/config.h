@@ -70,7 +70,9 @@
 	#endif
 
 	#if OBJECT_ID == OBJECT_STATION_METEO_INT
-
+		#define USE_DHT11	true
+		#define MOSFET_GND  27
+		#define DHT11_PIN	2
 
 	#endif
 
@@ -83,7 +85,6 @@
 		#define PIN_PLUVIO+  		9
 		#define PIN_ANEMO+   		10
 		#define PIN_MEASURE_BATT    31
-		#define USE_BMP180   		1
 
 	#endif
 
@@ -218,17 +219,7 @@
 void uart_puts(char * s);
 uint32_t debug_printf(char * format, ...);
 
-//Constitution d'un message.
-//				Master Group RECIPIENTS(6) MSG_ID DATASIZE DATAS
-#define BYTE_POS_MASTER_ID	(0)
-#define BYTE_POS_GROUP_ID	(BYTE_POS_MASTER_ID+1)
-#define BYTE_POS_RECIPIENTS	(BYTE_POS_GROUP_ID+1)
-#define BYTE_QTY_RECIPIENTS	(6)
-#define BYTE_POS_MSG_ID		(BYTE_POS_RECIPIENTS+BYTE_QTY_RECIPIENTS)
-#define BYTE_POS_DATASIZE	(BYTE_POS_MSG_ID+1)
-#define BYTE_POS_DATAS		(BYTE_POS_DATASIZE+1)
 
-#define MAX_DATA_SIZE		(32-BYTE_POS_DATAS)
 
 
 #define USE_ADC						1

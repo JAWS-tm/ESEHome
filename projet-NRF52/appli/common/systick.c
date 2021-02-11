@@ -23,11 +23,14 @@ void Systick_init(void)
 	initialized = TRUE;
 }
 
+static volatile uint32_t absolute_time;
+
 //Routine d'interruption appelée automatiquement à chaque ms.
 void SysTick_Handler(void)
 {
 	if(!initialized)
 		Systick_init();
+	absolute_time++;
 
 	uint8_t i;
 	for(i = 0; i<MAX_CALLBACK_FUNCTION_NB; i++)
@@ -80,8 +83,23 @@ uint32_t SYSTICK_get_time_us(void)
 	uint32_t t_ms;
 	__disable_irq();
 	t_us = 1000 - SysTick->VAL / 64;
-	t_ms = HAL_GetTick();
+	t_ms = absolute_time;
 	__enable_irq();
 
 	return t_ms*1000 + t_us;
+}
+
+void SYSTICK_delay_ms(uint32_t duration)
+{
+	uint32_t local;
+
+	local = absolute_time;
+	while(absolute_time < local + duration);
+}
+
+void SYSTICK_delay_us(uint32_t duration)
+{
+	uint32_t local;
+	local = SYSTICK_get_time_us();
+	while(SYSTICK_get_time_us() < local + duration);
 }
