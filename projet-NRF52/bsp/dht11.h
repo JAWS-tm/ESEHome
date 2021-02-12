@@ -14,6 +14,8 @@
 
 #include <stdint.h>
 
+void DHT11_demo(void);
+
 void DHT11_main(void);
 
 void DHT11_init(uint16_t GPIO_PIN_x);

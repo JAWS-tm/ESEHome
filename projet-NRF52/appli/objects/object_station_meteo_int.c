@@ -12,7 +12,7 @@
 #include "../../bsp/dht11.h"
 
 void STATION_METEO_INT_MAIN(void) {
-	DHT11_main();
+	DHT11_demo();
 }
 
 #endif

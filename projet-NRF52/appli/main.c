@@ -24,6 +24,7 @@
 //Tout les includes des header des objets.
 #include "objects/object_tracker_gps.h"
 #include "objects/object_fall_sensor.h"
+#include "objects/object_station_meteo_int.h"
 
 #undef NRF_LOG_ENABLED
 #define NRF_LOG_ENABLED 1

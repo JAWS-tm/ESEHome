@@ -9,6 +9,7 @@
 #if USE_DHT11
 
 #include "dht11.h"
+#include "nmos_gnd.h"
 #include <stdbool.h>
 #include "../appli/common/gpio.h"
 #include "nrf_drv_gpiote.h"
@@ -17,12 +18,6 @@
 #include "../appli/common/leds.h"
 #include "../appli/common/macro_types.h"
 #include "../appli/common/systick.h"
-
-void NMOS_On(void)
-{
-	GPIO_configure(MOSFET_GND, NRF_GPIO_PIN_NOPULL, true);
-	GPIO_write(MOSFET_GND, true);
-}
 
 /*
 https://www.mouser.com/ds/2/758/DHT11-Technical-Data-Sheet-Translated-Version-1143054.pdf
@@ -79,6 +74,40 @@ void DHT11_init(uint16_t GPIO_PIN_x)
 	initialized = TRUE;
 }
 
+//Fonction demo pour tester le DHT11
+void DHT11_demo(void)
+{
+	static uint8_t humidity_int;
+	static uint8_t humidity_dec;
+	static uint8_t temperature_int;
+	static uint8_t temperature_dec;
+
+	DHT11_init(DHT11_PIN);
+	while(1)
+	{
+
+		switch(DHT11_state_machine_get_datas(&humidity_int, &humidity_dec, &temperature_int, &temperature_dec))
+		{
+			case END_OK:
+ 				debug_printf("DHT11 h=%d,%d | t=%d,%d\n",humidity_int, humidity_dec, temperature_int, temperature_dec);
+ 				LED_set(LED_ID_NETWORK, LED_MODE_ON);
+ 				SYSTICK_delay_ms(1000);
+ 				LED_set(LED_ID_NETWORK, LED_MODE_OFF);
+				break;
+			case END_ERROR:
+				debug_printf("DHT11 read error (h=%d,%d | t=%d,%d)\n", humidity_int, humidity_dec, temperature_int, temperature_dec);
+				SYSTICK_delay_ms(1000);
+				break;
+			case END_TIMEOUT:
+				debug_printf("DHT11 timeout (h=%d,%d | t=%d,%d)\n", humidity_int, humidity_dec, temperature_int, temperature_dec);
+				SYSTICK_delay_ms(1000);
+				break;
+			default:
+				break;
+		}
+	}
+}
+
 //Fonction pour utiliser le DHT11
 void DHT11_main(void)
 {
@@ -94,15 +123,13 @@ void DHT11_main(void)
 		switch(DHT11_state_machine_get_datas(&humidity_int, &humidity_dec, &temperature_int, &temperature_dec))
 		{
 			case END_OK:
- 				debug_printf("DHT11 h=%d,%d | t=%d,%d\n",humidity_int, humidity_dec, temperature_int, temperature_dec);
+ 				//TODO envoyer les données
  				SYSTICK_delay_ms(1000);
 				break;
 			case END_ERROR:
-				debug_printf("DHT11 read error (h=%d,%d | t=%d,%d)\n", humidity_int, humidity_dec, temperature_int, temperature_dec);
 				SYSTICK_delay_ms(1000);
 				break;
 			case END_TIMEOUT:
-				debug_printf("DHT11 timeout (h=%d,%d | t=%d,%d)\n", humidity_int, humidity_dec, temperature_int, temperature_dec);
 				SYSTICK_delay_ms(1000);
 				break;
 			default:
@@ -110,6 +137,7 @@ void DHT11_main(void)
 		}
 	}
 }
+
 
 
 static void DHT11_process_ms(void)
@@ -128,8 +156,7 @@ static void DHT11_callback_exti(nrfx_gpiote_pin_t pin, nrf_gpiote_polarity_t act
 	{
 		if(GPIO_read(DHT11_pin))
 		{
-			rising_time_us = SYSTICK_get_time_us();				//on enregistre la date du front montant (en microsecondes)
-			LED_set(LED_ID_NETWORK, LED_MODE_ON);	//TODO supprimer ceci après débog
+			rising_time_us = SYSTICK_get_time_us();	//on enregistre la date du front montant (en microsecondes)
 		}
 		else
 		{
@@ -138,7 +165,6 @@ static void DHT11_callback_exti(nrfx_gpiote_pin_t pin, nrf_gpiote_polarity_t act
 			if(falling_time_us - rising_time_us > 50)
 				trame |= (uint64_t)(1) << (NB_BITS - 1 - index);
 			index++;
-			LED_set(LED_ID_NETWORK, LED_MODE_OFF);	//TODO supprimer ceci après débog
 		}
 	}
 

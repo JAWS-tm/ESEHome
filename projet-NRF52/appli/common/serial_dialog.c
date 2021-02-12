@@ -109,12 +109,12 @@ void SERIAL_DIALOG_init(void)
 */
 	const app_uart_comm_params_t comm_params =
 	  {
-		  8,//RX_PIN_NUMBER,
-		  6,//TX_PIN_NUMBER,
-		  7,//RTS_PIN_NUMBER,
-		  9,//CTS_PIN_NUMBER,
-		  APP_UART_FLOW_CONTROL_DISABLED,
-		  false,	//use parity
+		PIN_UART_RX,
+		PIN_UART_TX,
+		7,//RTS_PIN_NUMBER,
+		9,//CTS_PIN_NUMBER,
+		APP_UART_FLOW_CONTROL_DISABLED,
+		false,	//use parity
 #ifdef UART_AT_BAUDRATE_9600
          NRF_UARTE_BAUDRATE_9600
 #else

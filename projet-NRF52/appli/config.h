@@ -71,9 +71,13 @@
 
 	#if OBJECT_ID == OBJECT_STATION_METEO_INT
 		#define USE_DHT11	1
+		#define USE_NMOS_GND	1
+
 		#define MOSFET_GND  27
 		#define DHT11_PIN	2
 
+		#define PIN_UART_TX	8		//pour ne pas faire comme tout le monde (et résoudre un pb hardware !)
+		#define PIN_UART_RX	6		//pour ne pas faire comme tout le monde (et résoudre un pb hardware !)
 	#endif
 
 	#if OBJECT_ID == OBJECT_OUT_WEATHER_STATION
@@ -184,8 +188,13 @@
 //Configs communes à tout les objets.
 
 
-#define PIN_UART_TX			6
-#define PIN_UART_RX			8
+#ifndef PIN_UART_TX
+	#define PIN_UART_TX			6
+#endif
+#ifndef PIN_UART_RX
+	#define PIN_UART_RX			8
+#endif
+
 #define PIN_BUTTON_NETWORK	18
 #define PIN_LED_NETWORK		19
 #define PIN_LED_BATTERY		20
@@ -247,6 +256,10 @@ uint32_t debug_printf(char * format, ...);
 
 #ifndef USE_DHT11
 	#define USE_DHT11		0
+#endif
+
+#ifndef USE_NMOS_GND
+	#define USE_NMOS_GND		0
 #endif
 
 #ifndef USE_MPU6050
