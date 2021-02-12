@@ -61,7 +61,7 @@ void MATRIX_afficheur(){
 	static matrix_t matrix[32][32];
 	switch(state){
 	case INIT:
-		MATRIX_french_flag(matrix);
+		MATRIX_write_number(matrix, 2, 5, 9, COLOR_BLUE);
 		state = TEST_MATRIX;
 		break;
 	case TEST_MATRIX:{

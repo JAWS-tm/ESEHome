@@ -124,5 +124,156 @@ void MATRIX_french_flag(matrix_t matrix[32][32]){
 	}
 }
 
+void MATRIX_write_one_led(uint32_t i, uint32_t j, matrix_t matrix[32][32], uint32_t color){
+    if(!initialized)
+    	MATRIX_init();
+    matrix[i - 1][j] = color;
+}
+
+#define WRITE_led(i, j, matrix, color)		MATRIX_write_one_led(i, j, matrix, color)
+
+void MATRIX_write_number(matrix_t matrix[32][32], uint32_t i, uint32_t j, uint32_t number, uint32_t color){
+	if(!initialized)
+		MATRIX_init();
+	switch(number){
+	case 0:{
+		WRITE_led(i, j, matrix, color);
+		WRITE_led(i + 1, j, matrix, color);
+		WRITE_led(i + 2, j, matrix, color);
+		WRITE_led(i + 3, j, matrix, color);
+		WRITE_led(i + 4, j, matrix, color);
+		WRITE_led(i, j + 1, matrix, color);
+		WRITE_led(i + 4, j + 1, matrix, color);
+		WRITE_led(i, j + 2, matrix, color);
+		WRITE_led(i + 4, j + 2, matrix, color);
+		WRITE_led(i, j + 3, matrix, color);
+		WRITE_led(i + 1, j +3, matrix, color);
+		WRITE_led(i + 2, j + 3, matrix, color);
+		WRITE_led(i + 3, j + 3, matrix, color);
+		WRITE_led(i + 4, j + 3, matrix, color);
+		break;
+	}
+	case 1:{
+		WRITE_led(i + 2, j, matrix, color);
+		WRITE_led(i + 1, j + 1, matrix, color);
+		WRITE_led(i, j + 2, matrix, color);
+		WRITE_led(i, j + 3, matrix, color);
+		WRITE_led(i + 1, j + 3, matrix, color);
+		WRITE_led(i + 2, j + 3, matrix, color);
+		WRITE_led(i + 3, j + 3, matrix, color);
+		WRITE_led(i + 4, j + 3, matrix, color);
+		break;
+	}
+	case 2:{
+		WRITE_led(i + 1, j, matrix, color);
+		WRITE_led(i, j + 1, matrix, color);
+		WRITE_led(i, j + 2, matrix, color);
+		WRITE_led(i + 1, j + 3, matrix, color);
+		WRITE_led(i + 2, j + 2, matrix, color);
+		WRITE_led(i + 3, j + 1, matrix, color);
+		WRITE_led(i + 4, j, matrix, color);
+		WRITE_led(i + 4, j + 1, matrix, color);
+		WRITE_led(i + 4, j + 2, matrix, color);
+		WRITE_led(i + 4, j + 3, matrix, color);
+		break;
+	}
+	case 3:{
+		WRITE_led(i, j, matrix, color);
+		WRITE_led(i, j + 1, matrix, color);
+		WRITE_led(i, j + 2, matrix, color);
+		WRITE_led(i + 1, j + 3, matrix, color);
+		WRITE_led(i + 2, j + 1, matrix, color);
+		WRITE_led(i + 2, j + 2, matrix, color);
+		WRITE_led(i + 3, j + 3, matrix, color);
+		WRITE_led(i + 4, j, matrix, color);
+		WRITE_led(i + 4, j + 1, matrix, color);
+		WRITE_led(i + 4, j + 2, matrix, color);
+		break;
+	}
+	case 4:{
+		WRITE_led(i + 2, j, matrix, color);
+		WRITE_led(i + 3, j, matrix, color);
+		WRITE_led(i + 1, j + 1, matrix, color);
+		WRITE_led(i + 3, j + 1, matrix, color);
+		WRITE_led(i, j + 2, matrix, color);
+		WRITE_led(i + 3, j + 2, matrix, color);
+		WRITE_led(i, j + 3, matrix, color);
+		WRITE_led(i + 1, j + 3, matrix, color);
+		WRITE_led(i + 2, j + 3, matrix, color);
+		WRITE_led(i + 3, j + 3, matrix, color);
+		WRITE_led(i + 4, j + 3, matrix, color);
+		break;
+	}
+	case 5:{
+		WRITE_led(i, j, matrix, color);
+		WRITE_led(i + 1, j, matrix, color);
+		WRITE_led(i + 2, j, matrix, color);
+		WRITE_led(i + 4, j, matrix, color);
+		WRITE_led(i, j + 1, matrix, color);
+		WRITE_led(i + 2, j + 1, matrix, color);
+		WRITE_led(i + 4, j + 1, matrix, color);
+		WRITE_led(i, j + 2, matrix, color);
+		WRITE_led(i + 2, j + 2, matrix, color);
+		WRITE_led(i + 4, j + 2, matrix, color);
+		WRITE_led(i + 3, j + 3, matrix, color);
+		WRITE_led(i, j + 3, matrix, color);
+		break;
+	}
+	case 6:{
+		WRITE_led(i + 1, j, matrix, color);
+		WRITE_led(i + 2, j, matrix, color);
+		WRITE_led(i + 3, j, matrix, color);
+		WRITE_led(i, j + 1, matrix, color);
+		WRITE_led(i + 2, j + 1, matrix, color);
+		WRITE_led(i + 4, j + 1, matrix, color);
+		WRITE_led(i, j + 2, matrix, color);
+		WRITE_led(i + 2, j + 2, matrix, color);
+		WRITE_led(i + 4, j + 2, matrix, color);
+		WRITE_led(i + 3, j + 3, matrix, color);
+		break;
+	}
+	case 7:{
+		WRITE_led(i, j, matrix, color);
+		WRITE_led(i, j + 1, matrix, color);
+		WRITE_led(i + 3, j + 1, matrix, color);
+		WRITE_led(i + 4, j + 1, matrix, color);
+		WRITE_led(i, j + 2, matrix, color);
+		WRITE_led(i + 2, j + 2, matrix, color);
+		WRITE_led(i, j + 3, matrix, color);
+		WRITE_led(i + 1, j + 3, matrix, color);
+		break;
+	}
+	case 8:{
+		WRITE_led(i + 1, j, matrix, color);
+		WRITE_led(i + 3, j, matrix, color);
+		WRITE_led(i, j + 1, matrix, color);
+		WRITE_led(i + 2, j + 1, matrix, color);
+		WRITE_led(i + 4, j + 1, matrix, color);
+		WRITE_led(i, j + 2, matrix, color);
+		WRITE_led(i + 2, j + 2, matrix, color);
+		WRITE_led(i + 4, j + 2, matrix, color);
+		WRITE_led(i + 1, j + 3, matrix, color);
+		WRITE_led(i + 3, j + 3, matrix, color);
+		break;
+	}
+	case 9:{
+		WRITE_led(i + 1, j, matrix, color);
+		WRITE_led(i, j + 1, matrix, color);
+		WRITE_led(i + 2, j + 1, matrix, color);
+		WRITE_led(i + 4, j + 1, matrix, color);
+		WRITE_led(i, j + 2, matrix, color);
+		WRITE_led(i + 2, j + 2, matrix, color);
+		WRITE_led(i + 4, j + 2, matrix, color);
+		WRITE_led(i + 1, j + 3, matrix, color);
+		WRITE_led(i + 3, j + 3, matrix, color);
+		break;
+	}
+	default:
+		break;
+	}
+}
+
+#define WRITE_number(matrix, i, j, number, color) MATRIX_write_number(matrix, i, j, number, color)
+
 #endif
 
