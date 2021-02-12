@@ -149,11 +149,12 @@
 	#if OBJECT_ID == OBJECT_TOUCH_SCREEN
 		#define ILI9341_ENABLED	1
 		#define ILI9341_SPI_INSTANCE	0
-		#define ILI9341_DC_PIN		1
-		#define ILI9341_SCK_PIN		2
-		#define ILI9341_MISO_PIN 	3
-		#define ILI9341_MOSI_PIN	4
-		#define ILI9341_SS_PIN		5
+		#define ILI9341_DC_PIN		11
+		#define ILI9341_SCK_PIN		12
+		#define ILI9341_MISO_PIN 	14
+		#define ILI9341_MOSI_PIN	13
+		#define	ILI9341_SS_PIN		9
+		#define ILI9341_RST_PIN		10
 		#define ILI9341_HEIGHT	240
 		#define ILI9341_WIDTH	320
 
