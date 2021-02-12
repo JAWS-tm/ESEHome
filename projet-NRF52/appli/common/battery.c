@@ -9,9 +9,6 @@
 #include "battery.h"
 #include "nrfx_saadc.h"
 
-static nrfx_saadc_config_t adc_config;
-static nrf_saadc_channel_config_t channel_battery;
-static bool_e adc_initialized = FALSE;
 
 void MEASURE_VBAT_init(void)
 {

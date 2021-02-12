@@ -57,5 +57,7 @@ typedef enum{
 	NB				    =25,
 }recipient_e;
 
+void RF_DIALOG_send_msg_id_to_basestation(msg_id_e msg_id, uint8_t datasize, uint8_t * datas);
+
 
 #endif /* APPLI_COMMON_RF_DIALOG_H_ */

@@ -30,7 +30,7 @@
 
 void banque_de_fonctions_utiles(void)
 {
-	uint32_t i;
+	__unused uint32_t i;
 	nrf_gpio_range_cfg_input(13, 16, GPIO_PIN_CNF_PULL_Pulldown);
 	i = nrf_gpio_pin_read(16);
 }

@@ -37,8 +37,7 @@
 	}adc_id_e;
 
 		void ADC_init(void);
-		void ADC_read_sensors(nrf_saadc_value_t * front, nrf_saadc_value_t * back);
-		void ADC_read_button_off(nrf_saadc_value_t * value);
-		int16_t ADC_getValue(adc_id_e channel);
+		void ADC_read(uint8_t channel, nrf_saadc_value_t * value);
+
 	#endif
 #endif /* APPLI_ADC_H_ */

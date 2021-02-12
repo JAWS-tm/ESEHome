@@ -38,16 +38,12 @@
  * sera alors 0x5C).
  * Le capteur est alimenté sur sa broche Vcc en 3,3V.
  */
+#include "../appli/config.h"
 
-#include "config.h"
-#include "stm32f1_uart.h"
-#include "stm32f1_sys.h"
 #if USE_BH1750FVI
 #include "bh1750fvi.h"
-#include "stm32f1xx_hal.h"
-#include "stm32f1_gpio.h"
-#include "stm32f1_i2c.h"
-#include "stm32f1xx_nucleo.h"
+#include "appli/common/gpio.h"
+
 
 //Si la pin ADDR n'est pas reliée à la masse mais à 3,3V, changer cette macro en lui donnant la valeur BH1750FVI_ADDR_H
 #define BH1750FVI_ADDR BH1750FVI_ADDR_L

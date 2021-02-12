@@ -16,8 +16,7 @@ static nrfx_saadc_config_t adc_config;
 static nrf_saadc_channel_config_t adc_channels[ADC_USE_CHANNELS_NB];
 static uint8_t channel_nb = 0;
 static bool_e adc_initialized = FALSE;
-static int8_t adc_id[ADC_USE_CHANNELS_NB];
-static uint32_t adc_converted_value[ADC_USE_CHANNELS_NB];
+
 static int8_t channel_pin_to_index[ADC_MAX_NB_CHANNELS];
 
 void ADC_init(void)
@@ -61,16 +60,6 @@ void ADC_read(uint8_t channel, nrf_saadc_value_t * value)
 	nrfx_saadc_sample_convert(index, value);
 }
 
-
-int16_t ADC_getValue(adc_id_e channel)
-{
-	if(adc_id[channel] == -1 || channel >= ADC_CHANNEL_NB)
-	{
-		printf("Lecture de la valeur du canal analogique numérique %d : non utilisé ou non initialisé !\n", channel);
-		return -1;
-	}
-	return (int16_t)adc_converted_value[adc_id[channel]];
-}
 
 #endif
 

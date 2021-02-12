@@ -215,18 +215,6 @@ bool PICC_ReadCardSerial();
 #include "nrfx_spi.h"
 
 
-static   void spi_event_handler(nrfx_spi_evt_t const * p_event,void *p_context);
-static   uint8_t spi_transmit(uint8_t data);
-static   void mfrc522_write(uint8_t reg, uint8_t data);
-static   uint8_t mfrc522_read(uint8_t reg);
-void mfrc522_init();
-void mfrc522_reset();
-
-
-
-
-
-
 /*
  * mfrc522.h
  *
@@ -249,6 +237,16 @@ void mfrc522_reset();
  *
  *
  */
+
+void mfrc522_init();
+void mfrc522_reset();
+void mfrc522_write(uint8_t reg, uint8_t data);
+uint8_t mfrc522_read(uint8_t reg);
+uint8_t	mfrc522_request(uint8_t req_mode, uint8_t * tag_type);
+uint8_t mfrc522_to_card(uint8_t cmd, uint8_t *send_data, uint8_t send_data_len, uint8_t *back_data, uint32_t *back_data_len);
+uint8_t mfrc522_get_card_serial(uint8_t * serial_out);
+
+
 
 
 #include <stdint.h>
@@ -368,13 +366,7 @@ void mfrc522_reset();
 # define PICC_TRANSFER        0xB0               // save the data in the buffer
 # define PICC_HALT            0x50               // Sleep
 
-void mfrc522_init();
-void mfrc522_reset();
-void mfrc522_write(uint8_t reg, uint8_t data);
-uint8_t mfrc522_read(uint8_t reg);
-uint8_t	mfrc522_request(uint8_t req_mode, uint8_t * tag_type);
-uint8_t mfrc522_to_card(uint8_t cmd, uint8_t *send_data, uint8_t send_data_len, uint8_t *back_data, uint32_t *back_data_len);
-uint8_t mfrc522_get_card_serial(uint8_t * serial_out);
+
 
 #endif
 
