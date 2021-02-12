@@ -70,7 +70,9 @@
 	#endif
 
 	#if OBJECT_ID == OBJECT_STATION_METEO_INT
-
+		#define USE_DHT11	1
+		#define MOSFET_GND  27
+		#define DHT11_PIN	2
 
 	#endif
 
@@ -83,7 +85,6 @@
 		#define PIN_PLUVIO+  		9
 		#define PIN_ANEMO+   		10
 		#define PIN_MEASURE_BATT    31
-		#define USE_BMP180   		1
 
 	#endif
 
@@ -129,14 +130,16 @@
 	#endif
 
 	#if OBJECT_ID == OBJECT_RFID
-
-
+		#define RC522_RST_PIN   11
+		#define RC522_MOSI_PIN  13
+		#define RC522_MISO_PIN 14
+		#define RC522_IRQ_PIN 15
+		#define RC522_SCK_PIN 12
+		#define RC522_CS_PIN	25
+		#define USE_RC522	1
+		#define RC522_SPI_INSTANCE	0
 	#endif
 
-	#if OBJECT_ID == OBJECT_TRACKER_GPS
-
-
-	#endif
 
 	#if OBJECT_ID == OBJECT_VOICE_CONTROL
 
@@ -146,13 +149,11 @@
 	#if OBJECT_ID == OBJECT_TOUCH_SCREEN
 		#define ILI9341_ENABLED	1
 		#define ILI9341_SPI_INSTANCE	0
-		#define ILI9341_DC_PIN		11
-		#define ILI9341_SCK_PIN		12
-		#define ILI9341_MISO_PIN 	14
-		#define ILI9341_MOSI_PIN	13
-		#define ILI9341_SS_PIN		9
-		#define ILI9341_RST_PIN		10
-
+		#define ILI9341_DC_PIN		1
+		#define ILI9341_SCK_PIN		2
+		#define ILI9341_MISO_PIN 	3
+		#define ILI9341_MOSI_PIN	4
+		#define ILI9341_SS_PIN		5
 		#define ILI9341_HEIGHT	240
 		#define ILI9341_WIDTH	320
 
@@ -193,9 +194,7 @@
 #define I_HAVE_LED_BATTERY	(OBJECT_ID == OBJECT_BASE_STATION || OBJECT_ID == 6 || OBJECT_ID == OBJECT_FALL_SENSOR || OBJECT_ID == 13)
 #define I_HAVE_MEASURE_VBAT	(OBJECT_ID == OBJECT_BASE_STATION || OBJECT_ID == 6 || OBJECT_ID == OBJECT_FALL_SENSOR || OBJECT_ID == 13)
 
-
-
-#define USE_SPI	(OBJECT_ID == OBJECT_TOUCH_SCREEN)
+#define USE_SPI	(OBJECT_ID == OBJECT_TOUCH_SCREEN || OBJECT_ID == OBJECT_RFID)
 
 #define USE_TWI	(OBJECT_ID == OBJECT_FALL_SENSOR)
 
@@ -223,17 +222,7 @@
 void uart_puts(char * s);
 uint32_t debug_printf(char * format, ...);
 
-//Constitution d'un message.
-//				Master Group RECIPIENTS(6) MSG_ID DATASIZE DATAS
-#define BYTE_POS_MASTER_ID	(0)
-#define BYTE_POS_GROUP_ID	(BYTE_POS_MASTER_ID+1)
-#define BYTE_POS_RECIPIENTS	(BYTE_POS_GROUP_ID+1)
-#define BYTE_QTY_RECIPIENTS	(6)
-#define BYTE_POS_MSG_ID		(BYTE_POS_RECIPIENTS+BYTE_QTY_RECIPIENTS)
-#define BYTE_POS_DATASIZE	(BYTE_POS_MSG_ID+1)
-#define BYTE_POS_DATAS		(BYTE_POS_DATASIZE+1)
 
-#define MAX_DATA_SIZE		(32-BYTE_POS_DATAS)
 
 
 #define USE_ADC						1
@@ -255,6 +244,10 @@ uint32_t debug_printf(char * format, ...);
 
 
 
+#ifndef USE_DHT11
+	#define USE_DHT11		0
+#endif
+
 #ifndef USE_MPU6050
 	#define USE_MPU6050		0
 #endif
@@ -266,9 +259,6 @@ uint32_t debug_printf(char * format, ...);
 	#endif
 	#ifndef I2C_SCL_PIN_NB
 		#define	I2C_SCL_PIN_NB	26
-	#endif
-	#ifndef MPU6050_VCC_PIN
-		#define	MPU6050_VCC_PIN	27
 	#endif
 #endif
 ///////////////////////////////////////////////////////////////////////////////////
