@@ -137,20 +137,16 @@ void MATRIX_write_number(matrix_t matrix[32][32], uint32_t i, uint32_t j, uint32
 		MATRIX_init();
 	switch(number){
 	case 0:{
-		WRITE_led(i, j, matrix, color);
 		WRITE_led(i + 1, j, matrix, color);
 		WRITE_led(i + 2, j, matrix, color);
-		WRITE_led(i + 3, j, matrix, color);
-		WRITE_led(i + 4, j, matrix, color);
+		WRITE_led(i + 3, j, matrix, color);;
 		WRITE_led(i, j + 1, matrix, color);
 		WRITE_led(i + 4, j + 1, matrix, color);
 		WRITE_led(i, j + 2, matrix, color);
 		WRITE_led(i + 4, j + 2, matrix, color);
-		WRITE_led(i, j + 3, matrix, color);
 		WRITE_led(i + 1, j +3, matrix, color);
 		WRITE_led(i + 2, j + 3, matrix, color);
 		WRITE_led(i + 3, j + 3, matrix, color);
-		WRITE_led(i + 4, j + 3, matrix, color);
 		break;
 	}
 	case 1:{
@@ -266,6 +262,7 @@ void MATRIX_write_number(matrix_t matrix[32][32], uint32_t i, uint32_t j, uint32
 		WRITE_led(i + 4, j + 2, matrix, color);
 		WRITE_led(i + 1, j + 3, matrix, color);
 		WRITE_led(i + 3, j + 3, matrix, color);
+		WRITE_led(i + 2, j + 3, matrix, color);
 		break;
 	}
 	default:
@@ -274,6 +271,22 @@ void MATRIX_write_number(matrix_t matrix[32][32], uint32_t i, uint32_t j, uint32
 }
 
 #define WRITE_number(matrix, i, j, number, color) MATRIX_write_number(matrix, i, j, number, color)
+
+void MATRIX_show_number(matrix_t matrix[32][32], uint32_t color){
+	if(!initialized)
+		MATRIX_init();
+	WRITE_number(matrix, 1, 1, 0, color);
+	WRITE_number(matrix, 1, 6, 1, color);
+	WRITE_number(matrix, 1, 11, 2, color);
+	WRITE_number(matrix, 1, 16, 3, color);
+	WRITE_number(matrix, 1, 21, 4, color);
+	WRITE_number(matrix, 1, 26, 5, color);
+
+	WRITE_number(matrix, 7, 1, 6, color);
+	WRITE_number(matrix, 7, 6, 7, color);
+	WRITE_number(matrix, 7, 11, 8, color);
+	WRITE_number(matrix, 7, 16, 9, color);
+}
 
 #endif
 
