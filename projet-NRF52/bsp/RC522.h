@@ -377,3 +377,4 @@ uint8_t mfrc522_to_card(uint8_t cmd, uint8_t *send_data, uint8_t send_data_len, 
 uint8_t mfrc522_get_card_serial(uint8_t * serial_out);
 
 #endif
+

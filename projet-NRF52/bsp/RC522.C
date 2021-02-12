@@ -373,3 +373,4 @@ uint8_t mfrc522_get_card_serial(uint8_t * serial_out)
 
 
 #endif
+

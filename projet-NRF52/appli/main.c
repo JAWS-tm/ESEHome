@@ -105,7 +105,7 @@ int main(void)
     		#endif
 
     		#if OBJECT_ID == OBJECT_STATION_METEO_INT
-    			STATION_METEO_INT_MAIN();
+				STATION_METEO_INT_MAIN();
 
     		#endif
 
@@ -149,6 +149,10 @@ int main(void)
 
     		#endif
 
+    		#if OBJECT_ID == OBJECT_TRACKER_GPS
+
+
+    		#endif
 
     		#if OBJECT_ID == OBJECT_RFID
 
@@ -156,7 +160,6 @@ int main(void)
     		#endif
 
     		#if OBJECT_ID == OBJECT_TRACKER_GPS
-    			printf("main");
     			GPS_main();
 
     		#endif
@@ -213,10 +216,7 @@ char * object_id_to_string(uint8_t id)
 		case OBJECT_VOICE_CONTROL:		ret = "Voice Control";		break;
 		case OBJECT_TOUCH_SCREEN:		ret = "Touch Screen";		break;
 		case OBJECT_E_PAPER:			ret = "E Paper";			break;
-		case OBJECT_MATRIX_LEDS:		ret = "Matrix Leds";		break;
-
-
-		//TODO
+		case OBJECT_MATRIX_LEDS:		ret = "Matrix Leds";		break;		//TODO
 		default:
 			break;
 	}
