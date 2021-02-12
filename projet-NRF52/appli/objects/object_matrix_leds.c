@@ -11,7 +11,7 @@
 
 #if OBJECT_ID == OBJECT_MATRIX_LEDS
 
-void MATRIX_afficheur(){
+/*void MATRIX_afficheur(){
 	typedef enum{
 		INIT,
 		TEST_MATRIX,
@@ -27,7 +27,10 @@ void MATRIX_afficheur(){
 			for(uint8_t j = 0; j < 32; j++){
 				uint32_t value;
 				value = xy_to_index(i,j);
-				matrix[value] = COLOR_CYAN;
+				if(j == 2)
+					matrix[value] = COLOR_CYAN;
+				else
+					matrix[value] = COLOR_BLACK;
 			}
 		}
 		state = TEST_MATRIX;
@@ -45,8 +48,36 @@ void MATRIX_afficheur(){
 	default:
 		break;
 	}
-}
+}*/
 
+void MATRIX_afficheur(){
+	typedef enum{
+		INIT,
+		TEST_MATRIX,
+		SLEEP
+	}state_e;
+
+	static state_e state = INIT;
+	static matrix_t matrix[32][32];
+	switch(state){
+	case INIT:
+		MATRIX_french_flag(matrix);
+		state = TEST_MATRIX;
+		break;
+	case TEST_MATRIX:{
+		MATRIX_display(matrix);
+		//state = SLEEP;
+		break;}
+	case SLEEP:{
+		bool_e wait = FALSE;
+		if(wait == TRUE){
+			state = INIT;
+		}
+		break;}
+	default:
+		break;
+	}
+}
 
 #endif
 

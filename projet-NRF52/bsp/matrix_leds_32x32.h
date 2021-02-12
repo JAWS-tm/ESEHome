@@ -27,7 +27,9 @@ typedef uint8_t	matrix_t;
 
 void MATRIX_init(void);
 
-void MATRIX_display(matrix_t * matrix);
+void MATRIX_display(matrix_t color[32][32]);
+
+void MATRIX_french_flag(matrix_t matrix[32][32]);
 
 
 #endif /* BSP_MATRIX_LEDS_32X32_H_ */

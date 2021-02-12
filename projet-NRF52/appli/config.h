@@ -253,6 +253,10 @@ uint32_t debug_printf(char * format, ...);
 	#define USE_MPU6050		0
 #endif
 
+#ifndef USE_MATRIX
+	#define USE_MATRIX		0
+#endif
+
 
 #if USE_MPU6050 //   || USE_... || USE...
 	#ifndef I2C_SDA_PIN_NB
