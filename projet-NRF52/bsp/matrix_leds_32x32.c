@@ -288,5 +288,61 @@ void MATRIX_show_number(matrix_t matrix[32][32], uint32_t color){
 	WRITE_number(matrix, 7, 16, 9, color);
 }
 
+void MATRIX_celcius(matrix_t matrix[32][32], uint32_t i, uint32_t j, uint32_t color){
+	WRITE_led(i, j, matrix, color);
+	WRITE_led(i, j + 1, matrix, color);
+	WRITE_led(i, j + 2, matrix, color);
+	WRITE_led(i + 1, j, matrix, color);
+	WRITE_led(i + 1, j + 2, matrix, color);
+	WRITE_led(i + 2, j, matrix, color);
+	WRITE_led(i + 2, j + 1, matrix, color);
+	WRITE_led(i + 2, j + 2, matrix, color);
+
+	WRITE_led(i, j + 5, matrix, color);
+	WRITE_led(i, j + 6, matrix, color);
+	WRITE_led(i + 1, j + 4, matrix, color);
+	WRITE_led(i + 2, j + 4, matrix, color);
+	WRITE_led(i + 3, j + 4, matrix, color);
+	WRITE_led(i + 4, j + 5, matrix, color);
+	WRITE_led(i + 4, j + 6, matrix, color);
+	WRITE_led(i, j + 7, matrix, color);
+	WRITE_led(i + 4, j + 7, matrix, color);
+}
+
+#define WRITE_celcius(matrix, i, j, color) MATRIX_celcius(matrix, i, j, color)
+
+void MATRIX_positif(matrix_t matrix[32][32], uint32_t i, uint32_t j, uint32_t color){
+	WRITE_led(i, j + 2, matrix, color);
+	WRITE_led(i + 1, j + 2, matrix, color);
+	WRITE_led(i + 2, j, matrix, color);
+	WRITE_led(i + 2, j + 1, matrix, color);
+	WRITE_led(i + 2, j + 2, matrix, color);
+	WRITE_led(i + 2, j + 3, matrix, color);
+	WRITE_led(i + 2, j + 4, matrix, color);
+	WRITE_led(i + 3, j + 2, matrix, color);
+	WRITE_led(i + 4, j + 2, matrix, color);
+}
+
+void MATRIX_negatif(matrix_t matrix[32][32], uint32_t i, uint32_t j, uint32_t color){
+	WRITE_led(i + 2, j, matrix, color);
+	WRITE_led(i + 2, j + 1, matrix, color);
+	WRITE_led(i + 2, j + 2, matrix, color);
+	WRITE_led(i + 2, j + 3, matrix, color);
+	WRITE_led(i + 2, j + 4, matrix, color);
+}
+
+#define WRITE_plus(matrix, i, j, color)		MATRIX_positif(matrix, i, j, color)
+
+#define WRITE_moins(matrix, i, j, color)	MATRIX_negatif(matrix, i, j, color)
+
+void MATRIX_show_temperature(matrix_t matrix[32][32], uint32_t i, uint32_t j, bool_e positif, uint32_t number1, uint32_t number2, uint32_t color){
+	if(positif)
+		WRITE_plus(matrix, i, j, color);
+	else
+		WRITE_moins(matrix, i, j, color);
+	WRITE_number(matrix, i, j + 6, number1, color);
+	WRITE_number(matrix, i, j + 12, number2, color);
+	WRITE_celcius(matrix, i, j + 18, color);
+}
 #endif
 

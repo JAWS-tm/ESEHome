@@ -36,6 +36,9 @@ void MATRIX_write_one_led(uint32_t i, uint32_t j, matrix_t matrix[32][32], uint3
 void MATRIX_write_number(matrix_t matrix[32][32], uint32_t i, uint32_t j, uint32_t number, uint32_t color);
 
 void MATRIX_show_number(matrix_t matrix[32][32], uint32_t color);
+
+void MATRIX_show_temperature(matrix_t matrix[32][32], uint32_t i, uint32_t j, bool_e positif, uint32_t number2, uint32_t number3, uint32_t color);
+
 #endif /* BSP_MATRIX_LEDS_32X32_H_ */
 
 
