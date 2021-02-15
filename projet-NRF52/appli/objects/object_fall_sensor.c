@@ -47,8 +47,9 @@ void OBJECT_FALL_SENSOR_state_machine(void){
 			int32_t gyro_x = 0;
 			int32_t gyro_y = 0;
 			int32_t gyro_z = 0;
+			debug_printf("test\n");
 			if (MPU6050_Init(&mpu_datas, MPU6050_Accelerometer_4G, MPU6050_Gyroscope_1000s) != MPU6050_Result_Ok){
-							debug_printf("MPU6050 Error\n");
+							debug_printf("MPU6050 Datas\n");
 							while(1){
 								MPU6050_ReadAllType1(&mpu_datas);
 								gyro_x += mpu_datas.Gyroscope_X;
@@ -65,11 +66,16 @@ void OBJECT_FALL_SENSOR_state_machine(void){
 												gyro_y/16400,						//environ en °
 												gyro_z/16400,						//environ en °
 												mpu_datas.Temperature);
-
+								//LED_add(LED_ID_BATTERY, PIN_LED_BATTERY);
+								//LED_set(LED_ID_NETWORK, LED_MODE_ON);
 							}
+			} else {
+				debug_printf("MPU6050 Error\n");
 			}
 			LED_add(LED_ID_NETWORK, PIN_LED_NETWORK);
 			LED_set(LED_ID_NETWORK, LED_MODE_ON);
+
+			//SYSTICK_delay_ms(500);
 /*			if(!t)
 			{
 				t = 100;

@@ -69,10 +69,12 @@ bool MPU6050_Init(MPU6050_t* DataStruct, MPU6050_Accelerometer_t AccelerometerSe
 	uint8_t temp;
 
 	// Initialize Power !
-	GPIO_configure(MPU6050_VCC_PIN, GPIO_PIN_CNF_PULL_Disabled, TRUE);
-	GPIO_write(MPU6050_VCC_PIN, FALSE);
-	SYSTICK_delay_ms(500);
-	GPIO_write(MPU6050_VCC_PIN, TRUE);
+	#ifdef MPU6050_VCC_PIN
+		GPIO_configure(MPU6050_VCC_PIN, GPIO_PIN_CNF_PULL_Disabled, TRUE);
+		GPIO_write(MPU6050_VCC_PIN, FALSE);
+		SYSTICK_delay_ms(500);
+		GPIO_write(MPU6050_VCC_PIN, TRUE);
+	#endif
 
 	/* Initialize I2C */
 	mpu6050_i2c_init(MPU_6050_I2C_ADDRESS);

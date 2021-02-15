@@ -127,7 +127,7 @@
 
 	#if OBJECT_ID == OBJECT_FALL_SENSOR
 		#define USE_MPU6050 1
-
+		#define MPU6050_VCC_PIN 27
 	#endif
 
 	#if OBJECT_ID == OBJECT_TRACKER_GPS
