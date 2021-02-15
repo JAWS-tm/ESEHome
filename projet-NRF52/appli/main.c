@@ -111,7 +111,7 @@ int main(void)
     		#endif
 
     		#if OBJECT_ID == OBJECT_OUT_WEATHER_STATION
-
+				BMP180_demo();
 
     		#endif
 

@@ -81,13 +81,16 @@
 	#endif
 
 	#if OBJECT_ID == OBJECT_OUT_WEATHER_STATION
-		#define PIN_MOSFET   		27
-		#define USE_MPU6050  		1
-		#define PIN_DHT11    		2
-		#define PIN_PLUVIO-  		3
-		#define PIN_ANEMO-   		4
-		#define PIN_PLUVIO+  		9
-		#define PIN_ANEMO+   		10
+		#define USE_DHT11			1
+		#define USE_NMOS_GND		1
+		#define USE_BMP180			1
+
+		#define MOSFET_GND  		27
+		#define DHT11_PIN    		2
+		#define PIN_PLUVIO_MOINS  	3
+		#define PIN_ANEMO_MOINS   	4
+		#define PIN_PLUVIO_PLUS  	9
+		#define PIN_ANEMO_PLUS		10
 		#define PIN_MEASURE_BATT    31
 
 	#endif
@@ -206,7 +209,8 @@
 
 #define USE_SPI	(OBJECT_ID == OBJECT_TOUCH_SCREEN || OBJECT_ID == OBJECT_RFID)
 
-#define USE_TWI	(OBJECT_ID == OBJECT_FALL_SENSOR)
+#define USE_TWI	(OBJECT_ID == OBJECT_FALL_SENSOR || OBJECT_ID == OBJECT_OUT_WEATHER_STATION)
+
 
 
 #define ENABLE_POWERDOWN_FROM_MCU		1	//si 1 : permet de couper l'alim avec un appui long sur le bouton poussoir. Impose le maintient du bouton pendant 1 seconde au démarrage.
@@ -270,8 +274,11 @@ uint32_t debug_printf(char * format, ...);
 	#define USE_MATRIX		0
 #endif
 
+#ifndef USE_BMP180
+	#define USE_BMP180		0
+#endif
 
-#if USE_MPU6050 //   || USE_... || USE...
+#if USE_MPU6050 || USE_BMP180 //   || USE_... || USE...
 	#ifndef I2C_SDA_PIN_NB
 		#define	I2C_SDA_PIN_NB	25
 	#endif

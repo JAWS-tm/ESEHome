@@ -25,6 +25,7 @@
 #include "../appli/config.h"
 #include "../bsp/nrf52_i2c.h"
 #include "../appli/common/systick.h"
+#include "../appli/common/gpio.h"
 
 #if USE_BMP180
 /* Multiple is faster than divide */
@@ -38,9 +39,11 @@
 #define BMP180_1_101325 ((float) 0.00000986923266726)
 
 
+
 //Fonction blocante, pour démo.
 void BMP180_demo(void)
 {
+
 	char buffer[50];
 	/* Working structure */
 	BMP180_t BMP180_Data;
@@ -48,18 +51,18 @@ void BMP180_demo(void)
 	/* Initialize BMP180 pressure sensor */
 	if (BMP180_Init(&BMP180_Data) == BMP180_Result_Ok) {
 		/* Init OK */
-		printf("BMP180 configured and ready to use\n\n");
+		debug_printf("BMP180 configured and ready to use\n\n");
 	} else {
 		/* Device error */
-		printf("BMP180 error\n\n");
+		debug_printf("BMP180 error\n\n");
 		return;
 	}
 
 	/* Imagine, we are at 1000 meters above the sea */
 	/* And we read pressure of 95000 pascals */
 	/* Pressure right on the sea is */
-	printf( "Pressure right above the sea: %ld pascals\n", BMP180_GetPressureAtSeaLevel(95000, 1000));
-	printf("Data were calculated from pressure %ld pascals at know altitude %d meters\n\n\n", 95000, 1000);
+	debug_printf( "Pressure right above the sea: %ld pascals\n", BMP180_GetPressureAtSeaLevel(95000, 1000));
+	debug_printf("Data were calculated from pressure %ld pascals at know altitude %d meters\n\n\n", 95000, 1000);
 
 	while (1)
 	{
@@ -113,6 +116,8 @@ uint8_t lib_initialized = 0;
 BMP180_Result_t BMP180_Init(BMP180_t* BMP180_Data) {
 	uint8_t data[22];
 	uint8_t i = 0;
+
+	NMOS_On();
 
 	/* Initialize I2C */
 	I2C_init(BMP180_I2C_ADDRESS);
