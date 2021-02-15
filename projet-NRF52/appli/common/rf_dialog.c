@@ -6,7 +6,7 @@
  */
 #include "../config.h"
 #include "secretary.h"
-#include "appli/common/rf_dialog.h"
+#include "rf_dialog.h"
 //Reception e transmission RF
 
 
