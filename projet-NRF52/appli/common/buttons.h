@@ -26,7 +26,16 @@ typedef enum
 	BUTTON_RELEASE_EVENT
 }button_event_e;
 
-
+typedef enum
+{
+	INIT_BUTTON,
+    IDLE_READING_BUTTON,
+    BUTTON_WAIT_FOR_LONG_PRESS,
+    WAIT_RELEASE_BUTTON,
+    BUTTON_5_FAST_PRESS,
+	SIMPLE_PRESS,
+    POWERDOWN
+}button_event_functions_e;
 
 
 void BUTTONS_init(void);

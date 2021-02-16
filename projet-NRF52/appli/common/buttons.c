@@ -9,6 +9,7 @@
 #include "gpio.h"
 #include "leds.h"
 
+#define FIVE_FAST_PRESS_DURATION 2000	//unité : [1ms] => 2 seconde.
 
 typedef struct
 {
@@ -19,9 +20,15 @@ typedef struct
 }button_t;
 
 static button_t buttons[BUTTON_NB];
+static button_event_functions_e state;
 
 static bool_e initialized = FALSE;
+static bool_e entrance;
 static volatile uint32_t t = 0;
+static volatile uint32_t t_for_5_fast_press = 0;
+static volatile uint32_t t_for_long_press = 0;
+static uint8_t nb_fast_press = 0;
+
 void BUTTONS_process_ms(void);
 
 void BUTTONS_init(void)
@@ -34,6 +41,8 @@ void BUTTONS_init(void)
 	}
 	Systick_add_callback_function(&BUTTONS_process_ms);
 
+	state = INIT_BUTTON;
+
 	initialized = TRUE;
 }
 
@@ -43,10 +52,78 @@ void BUTTONS_process_main(void)
 	button_id_e button;
 	BUTTONS_get_event(&event, &button);
 
-	if(event == BUTTON_PRESS_EVENT)
-	{
-		if(buttons[button].callback != NULL)
-			buttons[button].callback();
+	switch(state) {
+		case INIT_BUTTON:
+			state = IDLE_READING_BUTTON;	//Changement d'état
+			break;
+
+		case IDLE_READING_BUTTON:
+			if(event == BUTTON_PRESS_EVENT)
+			{
+				entrance = TRUE;
+				state = BUTTON_WAIT_FOR_LONG_PRESS;        				//le bouton est appuyé... on attend de voir si c'est un appui long ou court
+				if(t_for_5_fast_press == 0)                				//si le temps est écoulé
+				{
+					nb_fast_press = 0;                    				//on démarre un nouveau comptage
+					t_for_5_fast_press = FIVE_FAST_PRESS_DURATION;		//pour les 2 prochaines secondes
+				}
+				nb_fast_press++;
+				if(nb_fast_press == 5)
+				{
+					nb_fast_press = 0;
+					state = BUTTON_5_FAST_PRESS;            			//alors c'est l'événement que lon cherchait
+				}
+			}
+			else if(t_for_5_fast_press == 0 && nb_fast_press != 0)
+			{
+				nb_fast_press = 0;
+				state = SIMPLE_PRESS;
+			}
+			break;
+
+		case BUTTON_WAIT_FOR_LONG_PRESS:
+			if(entrance)
+			{
+				t_for_long_press = OFF_BUTTON_LONG_PRESS_DURATION;
+				entrance = FALSE;
+			}
+			if(event == BUTTON_RELEASE_EVENT)
+			{
+				state = IDLE_READING_BUTTON;        //c'était un appui court !
+			}
+			if(!t_for_long_press)
+				state = WAIT_RELEASE_BUTTON;    //c'était un appui long, le temps est écoulé !
+			break;
+
+		case WAIT_RELEASE_BUTTON:
+			if(event == BUTTON_RELEASE_EVENT)
+			{
+				nb_fast_press = 0;
+				state = POWERDOWN;
+			}
+			break;
+
+		case BUTTON_5_FAST_PRESS:
+			//TODO ce que l'on veut faire...
+
+			state = IDLE_READING_BUTTON;
+			break;
+
+		case SIMPLE_PRESS:
+			if(buttons[button].callback != NULL)
+			{
+				buttons[button].callback();
+			}
+			state = IDLE_READING_BUTTON;
+			break;
+
+		case POWERDOWN:
+			state = IDLE_READING_BUTTON;
+			break;
+
+		default:
+			state = INIT_BUTTON;	//N'est jamais sensé se produire.
+			break;
 	}
 }
 
@@ -59,7 +136,7 @@ void BUTTONS_add(button_id_e id, uint8_t pin, bool_e pullup, callback_fun_t call
 	buttons[id].pin = pin;
 
 	GPIO_init();
-	//on part du principe que tout les boutons sont ne pullup
+	//on part du principe que tout les boutons sont no pullup
 	GPIO_configure(buttons[id].pin, (pullup)?NRF_GPIO_PIN_PULLUP:NRF_GPIO_PIN_NOPULL, 0);
 	if(callback != NULL){
 		buttons[id].callback = callback;
@@ -73,8 +150,12 @@ void BUTTONS_add(button_id_e id, uint8_t pin, bool_e pullup, callback_fun_t call
 
 void BUTTONS_process_ms(void)
 {
-	if(t)
-		t--;
+    if(t)
+        t--;
+    if(t_for_5_fast_press)
+        t_for_5_fast_press--;
+    if(t_for_long_press)
+    	t_for_long_press--;
 }
 
 void BUTTONS_get_event(button_event_e * event, button_id_e * button)
@@ -96,22 +177,22 @@ void BUTTONS_get_event(button_event_e * event, button_id_e * button)
 		{
 			if(buttons[b].initialized)
 			{
-				bool_e current;
-				current = BUTTONS_read(b);
+				bool_e current_state;
+				current_state = BUTTONS_read(b);
 
-				if(current && !previous_states[b])
+				if(current_state && !previous_states[b])
 				{
 					*event = BUTTON_PRESS_EVENT;
 					*button = b;
 					stop_loop = TRUE;
 				}
-				else if(!current && previous_states[b])
+				else if(!current_state && previous_states[b])
 				{
 					*event = BUTTON_RELEASE_EVENT;
 					*button = b;
 					stop_loop = TRUE;
 				}
-				previous_states[b] = current;
+				previous_states[b] = current_state;
 
 				if(stop_loop)
 					break;
