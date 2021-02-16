@@ -30,7 +30,7 @@ static const nrfx_spi_t spi = NRFX_SPI_INSTANCE(RC522_SPI_INSTANCE);
 void mfrc522_write(uint8_t reg, uint8_t data)
 {
 	uint8_t data_to_send[2];
-	data_to_send[0] = ((reg<<1)&0x7E);	//on envoie l'adresse du registre que l'on souhaite écrire, décalée au milieu de l'octet. Le but de poids fort à 0 indique qu'on souhaite écrire !
+	data_to_send[0] = ((reg<<1)&0x7E);	//on envoie l'adresse du registre que l'on souhaite écrire, décalée au milieu de l'octet. Le bit de poids fort à 0 indique qu'on souhaite écrire !
 	data_to_send[1] = data;
 
 	nrfx_spi_xfer_desc_t desc = {
@@ -46,7 +46,7 @@ void mfrc522_write(uint8_t reg, uint8_t data)
 uint8_t mfrc522_read(uint8_t reg)
 {
 	uint8_t data_to_send[2];
-	data_to_send[0] = ((reg<<1)&0x7E)|0x80;	//on envoie l'adresse du registre que l'on souhaite lire, décalée au milieu de l'octet. Le but de poids fort indique qu'on souhaite lire !
+	data_to_send[0] = ((reg<<1)&0x7E)|0x80;	//on envoie l'adresse du registre que l'on souhaite lire, décalée au milieu de l'octet. Le bit de poids fort indique qu'on souhaite lire !
 	data_to_send[1] = 0x00;
 	uint8_t data_to_read[2];
 

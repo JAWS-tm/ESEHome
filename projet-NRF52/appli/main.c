@@ -20,12 +20,12 @@
 #include "common/leds.h"
 #include "common/buttons.h"
 #include "common/gpio.h"
-#include "common/parameters.h"
 
 //Tout les includes des header des objets.
 #include "objects/object_tracker_gps.h"
 #include "objects/object_fall_sensor.h"
 #include "objects/object_station_meteo_int.h"
+#include "objects/object_rfid.h"
 
 #undef NRF_LOG_ENABLED
 #define NRF_LOG_ENABLED 1
@@ -78,12 +78,6 @@ int main(void)
     debug_printf("My id is %d. I am \"%s\"\n", id, object_id_to_string(id));
 	LED_add(LED_ID_BATTERY, PIN_LED_BATTERY);
 	LED_set(LED_ID_BATTERY, LED_MODE_ON);
-
-	PARAMETERS_init();
-	//Tout les objets ont le paramètre MY_BASE_STATION_ID...
-	PARAMETERS_enable(PARAM_MY_BASE_STATION_ID, 0xFFFFFFFF, TRUE, NULL);
-	RF_DIALOG_init();
-
 	BUTTONS_network_test();
     while (1)
     {
@@ -118,7 +112,7 @@ int main(void)
     		#endif
 
     		#if OBJECT_ID == OBJECT_OUT_WEATHER_STATION
-				BMP180_demo();
+
 
     		#endif
 
@@ -164,6 +158,7 @@ int main(void)
 
     		#if OBJECT_ID == OBJECT_RFID
 
+    			object_rfid_process_main();
 
     		#endif
 
