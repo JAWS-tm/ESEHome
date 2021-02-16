@@ -7,6 +7,7 @@
 
 #include "appli/config.h"
 #include "parameters.h"
+#include "flash.h"
 
 typedef struct
 {
@@ -17,7 +18,7 @@ typedef struct
 	callback_fun_i32_t	callback;
 }params_t;
 
-static params_t params[PARAM_NB];
+static params_t params[PARAM_32_BITS_NB];
 
 
 //Cette fonction doit être appelée lors de l'init, avant l'init des objets.
@@ -50,9 +51,10 @@ void PARAMETERS_enable(param_id_e param_id, int32_t default_value, bool_e value_
 
 void PARAMETERS_update(param_id_e param_id, int32_t new_value)
 {
-	if(param_id < PARAM_32_BITS_NB && params[param_id].enable)
+	params[param_id].value = new_value;
+
+	if(params[param_id].enable)
 	{
-		params[param_id].value = new_value;
 		params[param_id].updated = TRUE;
 		if(params[param_id].callback != NULL)
 			params[param_id].callback(new_value);
@@ -60,23 +62,11 @@ void PARAMETERS_update(param_id_e param_id, int32_t new_value)
 		if(params[param_id].value_saved_in_flash)
 		{
 			//TODO sauvegarder le paramètre en flash...
+			uint32_t address = (uint32_t)param_id * 4;
+			FLASHWRITER_write(address, params[param_id].value_saved_in_flash);
 		}
 	}
 }
-
-//cette fonction se destine aux paramètres spécifiques dont la valeur ne peut se contenter de 32 bits.
-//dans ce cas, on confie à une callback le traitement des données... exprimées sous forme d'un paquet d'octet.
-void PARAMETERS_update_custom(param_id_e param_id, uint8_t * datas)
-{
-	if(param_id > PARAM_32_BITS_NB && param_id < PARAM_NB && params[param_id].enable)
-	{
-		params[param_id].updated = TRUE;
-		if(params[param_id].callback != NULL)
-			params[param_id].callback((uint32_t)datas);	//on transmets l'adresse des données à traiter.... de façon un peu violente.
-	}
-}
-
-
 
 void PARAMETERS_read_from_flash(param_id_e param_id)
 {
@@ -85,19 +75,33 @@ void PARAMETERS_read_from_flash(param_id_e param_id)
 	//Etape2 : Si des données s'y trouvent, on va chercher ce paramètre
 		//pour toute donnée lue à 0xFFFFFFFF -> on préfère la valeur par défaut (=on ne mets pas à jour le paramètre)
 
+	if(params[param_id].enable && params[param_id].value_saved_in_flash){
+		uint32_t address = (uint32_t)param_id * 4;
+		uint32_t save_flash = FLASHWRITER_read(address);
+		if(save_flash != 0){
+			PARAMETERS_get(address);
+		}
+	}
+
 }
+
 
 //Cette fonction sauvegarde en flash tout les paramètres dont la value_saved_in_flash est vrai, et dont la valeur est différente ce celle présente en flash !
 void PARAMETERS_save_to_flash(void)
 {
-
+	PARAMETERS_init();
+	for(uint8_t i = 0; i<PARAM_32_BITS_NB; i++){
+		uint32_t address = i * 4;
+		if(params[i].value_saved_in_flash && params[i].value != FLASHWRITER_read(address)){
+			FLASHWRITER_write(address, params[i].value);
+		}
+	}
 }
 
 int32_t PARAMETERS_get(param_id_e param_id)
 {
 	return params[param_id].value;
 }
-
 
 /*
 //Orientation du main vers chaque code de chaque objets
