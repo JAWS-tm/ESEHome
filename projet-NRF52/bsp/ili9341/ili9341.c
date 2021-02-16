@@ -7,8 +7,9 @@
 
 
 #include "sdk_common.h"
+#include "appli/config.h"
 
-//#if NRF_MODULE_ENABLED(ILI9341)
+#if USE_ILI9341
 
 #include "nrf_lcd.h"
 #include "nrfx_spi.h"
@@ -1190,4 +1191,4 @@ const nrf_lcd_t nrf_lcd_ili9341 = {
     .p_lcd_cb = &ili9341_cb
 };
 
-//#endif // NRF_MODULE_ENABLED(ILI9341)
+#endif // USE_ILI9341
