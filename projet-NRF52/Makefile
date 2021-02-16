@@ -14,6 +14,7 @@ SRC_FILES += \
   $(PROJ_DIR)/appli/common/adc.c \
   $(PROJ_DIR)/appli/common/secretary.c \
   $(PROJ_DIR)/appli/common/serial_dialog.c \
+  $(PROJ_DIR)/appli/common/rf_dialog.c \
   $(PROJ_DIR)/appli/common/battery.c \
   $(PROJ_DIR)/appli/common/flash.c \
   $(PROJ_DIR)/appli/common/parameters.c \

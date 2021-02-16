@@ -7,15 +7,17 @@
 #include "../config.h"
 #include "secretary.h"
 #include "rf_dialog.h"
+#include "parameters.h"
 //Reception e transmission RF
 
-
+static uint32_t my_device_id = -1;	//constitué de 3 octets d'identifiant unique et 1 octet d'OBJECT_ID
 static uint32_t my_base_station_id = 0xFFFFFFFF;
 static uint8_t index_msg_cnt = 0;
 
 void RF_DIALOG_init(void)
 {
-	//TODO lecture en flash de my_base_station_id si dispo !
+	my_device_id = (NRF_FICR->DEVICEID[0] << 8) | OBJECT_ID;
+	my_base_station_id = PARAMETERS_get(PARAM_MY_BASE_STATION_ID);
 }
 
 void RF_DIALOG_process_rx(nrf_esb_payload_t * payload){
@@ -48,15 +50,13 @@ void RF_DIALOG_process_rx(nrf_esb_payload_t * payload){
 			}
 			case PARAMETER_ASK :{
 				//TODO répondre !!
-				RF_DIALOG_send_msg_id_to_basestation(PARAMETER_IS, );
+				//RF_DIALOG_send_msg_id_to_basestation(PARAMETER_IS, );
 				break;
 			}
 			case PARAMETER_WRITE :{
 				break;
 			}
-			case PARAMETER_ASK :{
-				break;
-			}
+
 			case I_HAVE_NO_SERVER_ID :{
 				break;
 			}

@@ -81,7 +81,8 @@ int main(void)
 
 	PARAMETERS_init();
 	//Tout les objets ont le paramètre MY_BASE_STATION_ID...
-	PARAMETERS_enable(PARAM_MY_BASE_STATION_ID, 0xCAFEDECA, TRUE, NULL);
+	PARAMETERS_enable(PARAM_MY_BASE_STATION_ID, 0xFFFFFFFF, TRUE, NULL);
+	RF_DIALOG_init();
 
 	BUTTONS_network_test();
     while (1)
