@@ -6,20 +6,23 @@
  */
 #include "../config.h"
 #include "object_brightness_sensor.h"
+#include "../common/leds.h"
+#include "../common/buttons.h"
 #include "../../bsp/bh1750fvi.h"
 
 #if OBJECT_ID == OBJECT_BRIGHTNESS_SENSOR
 
 void state_machine(void)
 {
-	state state = INIT;
+	static state state = INIT;
 	switch(state)
 	{
 	case INIT :
 		LED_add(LED_ID_BATTERY, PIN_LED_BATTERY);
 		LED_add(LED_ID_NETWORK, PIN_LED_NETWORK);
-		BUTTONS_add(BUTTON_NETWORK, PIN_BUTTON_NETWORK, TRUE, &BUTTON_action_sleep);
 		state = GET_DATA;
+		BUTTONS_add(BUTTON_NETWORK, PIN_BUTTON_NETWORK, TRUE, &BUTTON_action_sleep);
+
 		break;
 	case GET_DATA :
 		LED_set(LED_ID_NETWORK, LED_MODE_OFF);
@@ -40,7 +43,7 @@ void state_machine(void)
 	case STOP :
 
 		break;
-	default :
+
 	}
 }
 
@@ -55,4 +58,4 @@ void BUTTON_action_sleep(state state)
 	}
 }
 
-
+#endif
