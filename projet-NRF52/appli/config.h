@@ -154,7 +154,8 @@
 	#endif
 
 	#if OBJECT_ID == OBJECT_TOUCH_SCREEN
-		#define ILI9341_ENABLED	1
+		#define USE_ILI9341			1
+		#define ILI9341_ENABLED		1
 		#define ILI9341_SPI_INSTANCE	0
 		#define ILI9341_DC_PIN		11
 		#define ILI9341_SCK_PIN		12

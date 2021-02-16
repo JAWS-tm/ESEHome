@@ -50,7 +50,7 @@ void PARAMETERS_enable(param_id_e param_id, int32_t default_value, bool_e value_
 
 void PARAMETERS_update(param_id_e param_id, int32_t new_value)
 {
-	if(param_id_e < PARAM_32_BITS_NB && params[param_id].enable)
+	if(param_id < PARAM_32_BITS_NB && params[param_id].enable)
 	{
 		params[param_id].value = new_value;
 		params[param_id].updated = TRUE;

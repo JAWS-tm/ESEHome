@@ -5,7 +5,7 @@ GROUP(-lgcc -lc -lnosys)
 
 MEMORY
 {
-  FLASH (rx) : ORIGIN = 0x0, LENGTH = 0x80000
+  FLASH (rx) : ORIGIN = 0x0, LENGTH = 0x70000		/*La limitation à 0x70000 sur les 0x80000 dispos permet l'utilisation du module logiciel flash.c/h*/ 	
   RAM (rwx) :  ORIGIN = 0x20000000, LENGTH = 0x10000
 }
 
