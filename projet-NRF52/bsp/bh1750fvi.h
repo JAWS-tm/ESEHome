@@ -8,8 +8,8 @@
 #ifndef LIB_BSP_BH1750FVI_BH1750FVI_H_
 #define LIB_BSP_BH1750FVI_BH1750FVI_H_
 
-#include "macro_types.h"
-#include "stm32f1xx_hal.h"
+//#include "macro_types.h"
+//#include "stm32f1xx_hal.h"
 
 #define BH1750FVI_I2C 	I2C1
 
