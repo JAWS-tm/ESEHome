@@ -38,10 +38,14 @@ void PARAMETERS_init(void)
 void PARAMETERS_enable(param_id_e param_id, int32_t default_value, bool_e value_saved_in_flash, callback_fun_i32_t callback)
 {
 	params[param_id].enable = TRUE;
-	params[param_id].value = default_value;
-	params[param_id].value_saved_in_flash = default_value;
+	params[param_id].value_saved_in_flash = value_saved_in_flash;
 	params[param_id].callback = callback;
 	params[param_id].updated = FALSE;
+	params[param_id].value = default_value;
+	if(value_saved_in_flash)
+	{
+		PARAMETERS_read_from_flash(param_id);	//la default value sera écrasée si ce paramètre dispose d'une valeur en flash !
+	}
 }
 
 void PARAMETERS_update(param_id_e param_id, int32_t new_value)
@@ -61,11 +65,20 @@ void PARAMETERS_update(param_id_e param_id, int32_t new_value)
 	}
 }
 
-void PARAMETERS_restore_from_flash(void)
+void PARAMETERS_read_from_flash(param_id_e param_id)
 {
-	//TODO pour tout les paramètres activés, et dont value_saved_in_flash est vrai, on va chercher leurs valeurs en flash.
+	//TODO si le paramètre est activé, et que son value_saved_in_flash est vrai, on va chercher sa valeur en flash.
+	//Etape1 : on lit la première adresse de la flash pour savoir si des données s'y trouvent
+	//Etape2 : Si des données s'y trouvent, on va chercher ce paramètre
+		//pour toute donnée lue à 0xFFFFFFFF -> on préfère la valeur par défaut (=on ne mets pas à jour le paramètre)
+
 }
 
+//Cette fonction sauvegarde en flash tout les paramètres dont la value_saved_in_flash est vrai, et dont la valeur est différente ce celle présente en flash !
+void PARAMETERS_save_to_flash(void)
+{
+
+}
 
 int32_t PARAMETERS_get(param_id_e param_id)
 {

@@ -13,6 +13,7 @@
 typedef enum
 {
 	PARAM_UNKNOW = 0,
+	PARAM_MY_BASE_STATION_ID,
 	PARAM_ACTUATOR_STATE,
 	PARAM_SENSOR_VALUE,
 	PARAM_ALARM_TRESHOLD,
@@ -54,6 +55,8 @@ void PARAMETERS_enable(param_id_e param_id, int32_t default_value, bool_e value_
 void PARAMETERS_update(param_id_e param_id, int32_t new_value);
 
 void PARAMETERS_restore_from_flash(void);
+
+void PARAMETERS_read_from_flash(param_id_e param_id);
 
 //permet de récupérer la valeur d'un paramètre
 int32_t PARAMETERS_get(param_id_e param_id);
