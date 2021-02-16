@@ -159,6 +159,7 @@ typedef enum{					// Frame Rate
 #define ILI9341_SS_RESET()			GPIO_write(ILI9341_SS_PIN, 0)
 #define ILI9341_SS_SET()			GPIO_write(ILI9341_SS_PIN, 1)
 #define ILI9341_DC_SET()			GPIO_write(ILI9341_DC_PIN, 1)
+#define ILI9341_DC_RESET()			GPIO_write(ILI9341_DC_PIN, 0)
 
 uint16_t ILI9341_x;
 uint16_t ILI9341_y;
