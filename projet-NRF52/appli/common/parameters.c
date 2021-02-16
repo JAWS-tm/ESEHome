@@ -5,28 +5,75 @@
  *      Author: meven
  */
 
-/*#include "appli/config.h"
+#include "appli/config.h"
 #include "parameters.h"
 
-//ajout possible, choisir un mode general ou precisé pour l'objet
+typedef struct
+{
+	bool_e enable;
+	bool_e updated;
+	bool_e value_saved_in_flash;	//TODO gérer cette fonctionnalité
+	uint32_t value;
+	callback_fun_i32_t	callback;
+}params_t;
 
-typedef enum{
-	ON,
-	OFF
-}state_e;
-
-uint32_t id_object;
-
-uint32_t *id = &id_object;
-
-
-//essai de fonction de parametrage (a revoir)
-void PARAMETER_set(uint32_t object_id,uint32_t parametre, uint32_t value){
-	*id = object_id;
+static params_t params[PARAM_32_BITS_NB];
 
 
+//Cette fonction doit être appelée lors de l'init, avant l'init des objets.
+void PARAMETERS_init(void)
+{
+	for(uint8_t i = 0; i<PARAM_32_BITS_NB; i++)
+	{
+		params[i] = (params_t){
+			.enable = FALSE,
+			.updated = FALSE,
+			.value = 0,
+			.callback = NULL
+			};
+	}
 }
 
+//chaque objet doit appeler cette fonction pour chacun de ses paramètres
+void PARAMETERS_enable(param_id_e param_id, int32_t default_value, bool_e value_saved_in_flash, callback_fun_i32_t callback)
+{
+	params[param_id].enable = TRUE;
+	params[param_id].value = default_value;
+	params[param_id].value_saved_in_flash = default_value;
+	params[param_id].callback = callback;
+	params[param_id].updated = FALSE;
+}
+
+void PARAMETERS_update(param_id_e param_id, int32_t new_value)
+{
+	params[param_id].value = new_value;
+
+	if(params[param_id].enable)
+	{
+		params[param_id].updated = TRUE;
+		if(params[param_id].callback != NULL)
+			params[param_id].callback(new_value);
+
+		if(params[param_id].value_saved_in_flash)
+		{
+			//TODO sauvegarder le paramètre en flash...
+		}
+	}
+}
+
+void PARAMETERS_restore_from_flash(void)
+{
+	//TODO pour tout les paramètres activés, et dont value_saved_in_flash est vrai, on va chercher leurs valeurs en flash.
+}
+
+
+int32_t PARAMETERS_get(param_id_e param_id)
+{
+	return params[param_id].value;
+}
+
+
+/*
 //Orientation du main vers chaque code de chaque objets
     		#if id_object == OBJECT_BASE_STATION
 
