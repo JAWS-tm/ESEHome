@@ -10,7 +10,7 @@
 #include "nrf_fstorage_nvmc.h"
 
 #define FLASH_ADDRESS_BEGIN	0x70000
-#define FLASH_SIZE			0x1000
+#define FLASH_SIZE			0x10000
 #define FLASH_ADDRESS_END	(FLASH_ADDRESS_BEGIN+FLASH_SIZE)
 
 

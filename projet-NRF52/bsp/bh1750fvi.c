@@ -38,12 +38,14 @@
  * sera alors 0x5C).
  * Le capteur est alimenté sur sa broche Vcc en 3,3V.
  */
-#include "../appli/config.h"
 
+#include "../appli/config.h"
+#include "nrfx_uart.h"
+#include "../appli/common/systick.h"
 #if USE_BH1750FVI
 #include "bh1750fvi.h"
-#include "appli/common/gpio.h"
-
+#include "../appli/common/gpio.h"
+#include "nrf52_i2c.h"
 
 //Si la pin ADDR n'est pas reliée à la masse mais à 3,3V, changer cette macro en lui donnant la valeur BH1750FVI_ADDR_H
 #define BH1750FVI_ADDR BH1750FVI_ADDR_L
@@ -62,12 +64,12 @@ void BH1750FVI_demo()
 	uint16_t luminosity;
 	BH1750FVI_init();
 	BH1750FVI_powerOn();
-	BH1750FVI_measureMode(BH1750FVI_CON_L);
+	BH1750FVI_measureMode(BH1750FVI_CON_H1);
 	while(1)
 	{
-		HAL_Delay(200);
+		SYSTICK_delay_ms(200);
 		luminosity = BH1750FVI_readLuminosity();
-		printf("\nLuminosite = %d lx", luminosity);
+		debug_printf("\nLuminosite = %d lx", luminosity);
 	}
 }
 
@@ -78,7 +80,7 @@ void BH1750FVI_demo()
  */
 void BH1750FVI_init()
 {
-	I2C_Init(BH1750FVI_I2C, 100000);
+	I2C_init(BH1750FVI_ADDR);
 }
 
 /**
@@ -86,7 +88,7 @@ void BH1750FVI_init()
  */
 void BH1750FVI_powerOn()
 {
-	I2C_WriteNoRegister(BH1750FVI_I2C, BH1750FVI_ADDR<<1, BH1750FVI_ON);
+	I2C_register_write(BH1750FVI_ADDR<<1, BH1750FVI_ON);
 }
 
 /**
@@ -94,7 +96,7 @@ void BH1750FVI_powerOn()
  */
 void BH1750FVI_powerDown()
 {
-	I2C_WriteNoRegister(BH1750FVI_I2C, BH1750FVI_ADDR<<1, BH1750FVI_OFF);
+	I2C_register_write(BH1750FVI_ADDR<<1, BH1750FVI_OFF);
 }
 
 /**
@@ -102,7 +104,7 @@ void BH1750FVI_powerDown()
  */
 void BH1750FVI_reset()
 {
-	I2C_WriteNoRegister(BH1750FVI_I2C, BH1750FVI_ADDR<<1, BH1750FVI_RESET);
+	I2C_register_write(BH1750FVI_ADDR<<1, BH1750FVI_RESET);
 }
 
 /**
@@ -113,7 +115,7 @@ void BH1750FVI_reset()
  */
 void BH1750FVI_measureMode(uint8_t mode)
 {
-	I2C_WriteNoRegister(BH1750FVI_I2C, BH1750FVI_ADDR<<1, mode);
+	I2C_register_write(BH1750FVI_ADDR<<1, mode);
 }
 
 
@@ -138,7 +140,7 @@ uint16_t BH1750FVI_readLuminosity()
 uint16_t BH1750FVI_read()
 {
 	uint8_t ret[3];
-	I2C_ReadMultiNoRegister(BH1750FVI_I2C, BH1750FVI_ADDR<<1, ret, 3);
+	I2C_register_read(BH1750FVI_ADDR<<1, &ret, 2);
 	return ret[1] | ((uint16_t)(ret[0])) << 8;
 }
 

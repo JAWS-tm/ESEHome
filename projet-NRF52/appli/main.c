@@ -25,6 +25,7 @@
 #include "objects/object_tracker_gps.h"
 #include "objects/object_fall_sensor.h"
 #include "objects/object_station_meteo_int.h"
+#include "objects/object_rfid.h"
 
 #undef NRF_LOG_ENABLED
 #define NRF_LOG_ENABLED 1
@@ -75,9 +76,14 @@ int main(void)
     volatile char id;
     id = OBJECT_ID;
     debug_printf("My id is %d. I am \"%s\"\n", id, object_id_to_string(id));
+
+    PARAMETERS_init();
+
 	LED_add(LED_ID_BATTERY, PIN_LED_BATTERY);
 	LED_set(LED_ID_BATTERY, LED_MODE_ON);
-	BUTTONS_network_test();
+
+	SECRETARY_init();
+
     while (1)
     {
     	//Code commun à tout les objets
@@ -96,7 +102,7 @@ int main(void)
     		#endif
 
     		#if OBJECT_ID == OBJECT_NIGHT_LIGHT
-
+    			OBJECT_NIGHT_LIGHT_state_machine();
 
     		#endif
 
@@ -111,7 +117,7 @@ int main(void)
     		#endif
 
     		#if OBJECT_ID == OBJECT_OUT_WEATHER_STATION
-				BMP180_demo();
+
 
     		#endif
 
@@ -136,7 +142,7 @@ int main(void)
     		#endif
 
     		#if OBJECT_ID == OBJECT_VENTILATOR
-
+				object_ventilator_activation();
 
     		#endif
 
@@ -157,6 +163,7 @@ int main(void)
 
     		#if OBJECT_ID == OBJECT_RFID
 
+    			object_rfid_process_main();
 
     		#endif
 

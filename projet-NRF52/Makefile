@@ -14,16 +14,24 @@ SRC_FILES += \
   $(PROJ_DIR)/appli/common/adc.c \
   $(PROJ_DIR)/appli/common/secretary.c \
   $(PROJ_DIR)/appli/common/serial_dialog.c \
+  $(PROJ_DIR)/appli/common/rf_dialog.c \
   $(PROJ_DIR)/appli/common/battery.c \
   $(PROJ_DIR)/appli/common/flash.c \
+  $(PROJ_DIR)/appli/common/parameters.c \
   $(PROJ_DIR)/appli/objects/object_fall_sensor.c \
   $(PROJ_DIR)/appli/objects/object_matrix_leds.c \
   $(PROJ_DIR)/appli/objects/object_tracker_gps.c \
   $(PROJ_DIR)/appli/objects/object_touch_screen.c \
+  $(PROJ_DIR)/appli/objects/object_ventilator.c \
   $(PROJ_DIR)/appli/objects/object_station_meteo_int.c \
+  $(PROJ_DIR)/appli/objects/object_brightness_sensor.c \
+  $(PROJ_DIR)/appli/objects/object_rfid.c \
+  $(PROJ_DIR)/appli/objects/object_night_light.c \
   $(PROJ_DIR)/bsp/nmos_gnd.c \
   $(PROJ_DIR)/bsp/WS2812B_asm.s \
+  $(PROJ_DIR)/bsp/WS2812.c \
   $(PROJ_DIR)/bsp/mpu6050.c \
+  $(PROJ_DIR)/bsp/bh1750fvi.c \
   $(PROJ_DIR)/bsp/RC522.c \
   $(PROJ_DIR)/bsp/nrf52_i2c.c \
   $(PROJ_DIR)/bsp/ili9341/ili9341.c \

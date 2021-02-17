@@ -2,11 +2,21 @@
 
 #include "../config.h"
 #include "../../bsp/WS2812.h"
-
+#include "../common/parameters.h"
 
 #if OBJECT_ID == OBJECT_NIGHT_LIGHT
 
-void RGB_state_machine(){
+static volatile uint32_t my_color = 0;
+
+void OBJECT_NIGHT_LIGHT_color_updated_callback(int32_t new_color)
+{
+	debug_printf("nouvelle couleur envoyée depuis la station de base : %lx\n", new_color);
+	my_color = new_color;
+}
+
+
+
+void OBJECT_NIGHT_LIGHT_state_machine(void){
 	typedef enum{
 			INIT,
 			RUN,
@@ -14,27 +24,34 @@ void RGB_state_machine(){
 		}state_e;
 
 	static state_e state = INIT;
-
-	switch(state){
+	static uint32_t previous_color = -1;
+	switch(state)
+	{
 		case INIT:
-			LEDS_init(24,30);
+			PARAMETERS_enable(PARAM_COLOR, 0xCAFEDECA, TRUE, &OBJECT_NIGHT_LIGHT_color_updated_callback);
+			WS2812_init(WS2812_PIN, 30);
 			state = RUN;
 		break;
-	}
 
-	case RUN:{
-		LEDS_display_full();
+		case RUN:{
+			if(my_color != previous_color)
+			{
+				WS2812_display_full(my_color);
+				WS2812_refresh();
+				previous_color = my_color;
+			}
+			break;
+		}
 
-		break;
-	}
+		case SLEEP:{
+			break;
+		}
 
-	case SLEEP:{
-		break;
-	}
-
-	default:
-		break;
+		default:
+			break;
 	}
 }
+
+
 
 #endif

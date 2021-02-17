@@ -60,13 +60,13 @@
 	#endif
 
 	#if OBJECT_ID == OBJECT_NIGHT_LIGHT
-		
+		#define WS2812_PIN	9
 
 	#endif
 
 	#if OBJECT_ID == OBJECT_BRIGHTNESS_SENSOR
-
-
+		#define	BH1750FVI_VCC_PIN	27
+		#define USE_BH1750FVI		1
 	#endif
 
 	#if OBJECT_ID == OBJECT_STATION_METEO_INT
@@ -116,7 +116,7 @@
 	#endif
 
 	#if OBJECT_ID == OBJECT_VENTILATOR
-
+		#define MOSFET_PIN		9
 
 	#endif
 
@@ -155,7 +155,8 @@
 	#endif
 
 	#if OBJECT_ID == OBJECT_TOUCH_SCREEN
-		#define ILI9341_ENABLED	1
+		#define USE_ILI9341			1
+		#define ILI9341_ENABLED		1
 		#define ILI9341_SPI_INSTANCE	0
 		#define ILI9341_DC_PIN		11
 		#define ILI9341_SCK_PIN		12
@@ -205,12 +206,12 @@
 #define PIN_RESET			21
 
 //TODO compléter la liste des objets dotés d'une led batterie !
-#define I_HAVE_LED_BATTERY	(OBJECT_ID == OBJECT_BASE_STATION || OBJECT_ID == 6 || OBJECT_ID == OBJECT_FALL_SENSOR || OBJECT_ID == 13)
-#define I_HAVE_MEASURE_VBAT	(OBJECT_ID == OBJECT_BASE_STATION || OBJECT_ID == 6 || OBJECT_ID == OBJECT_FALL_SENSOR || OBJECT_ID == 13)
+#define I_HAVE_LED_BATTERY	(OBJECT_ID == OBJECT_BASE_STATION || OBJECT_ID == 6 || OBJECT_ID == OBJECT_FALL_SENSOR || OBJECT_ID == 13||OBJECT_ID == OBJECT_BRIGHTNESS_SENSOR)
+#define I_HAVE_MEASURE_VBAT	(OBJECT_ID == OBJECT_BASE_STATION || OBJECT_ID == 6 || OBJECT_ID == OBJECT_FALL_SENSOR || OBJECT_ID == 13||OBJECT_ID == OBJECT_BRIGHTNESS_SENSOR)
 
 #define USE_SPI	(OBJECT_ID == OBJECT_TOUCH_SCREEN || OBJECT_ID == OBJECT_RFID)
 
-#define USE_TWI	(OBJECT_ID == OBJECT_FALL_SENSOR || OBJECT_ID == OBJECT_OUT_WEATHER_STATION)
+#define USE_TWI	(OBJECT_ID == OBJECT_FALL_SENSOR || OBJECT_ID == OBJECT_OUT_WEATHER_STATION ||OBJECT_ID == OBJECT_BRIGHTNESS_SENSOR)
 
 
 
@@ -270,7 +271,9 @@ uint32_t debug_printf(char * format, ...);
 #ifndef USE_MPU6050
 	#define USE_MPU6050		0
 #endif
-
+#ifndef USE_BH1750FVI
+	#define USE_BH1750FVI		0
+#endif
 #ifndef USE_MATRIX
 	#define USE_MATRIX		0
 #endif
@@ -279,7 +282,7 @@ uint32_t debug_printf(char * format, ...);
 	#define USE_BMP180		0
 #endif
 
-#if USE_MPU6050 || USE_BMP180 //   || USE_... || USE...
+#if USE_MPU6050 || USE_BMP180 ||USE_BH1750FVI//   || USE_... || USE...
 	#ifndef I2C_SDA_PIN_NB
 		#define	I2C_SDA_PIN_NB	25
 	#endif
@@ -295,3 +298,4 @@ uint32_t debug_printf(char * format, ...);
 
 
 #endif /* CONFIG_CONFIG_H_ */
+

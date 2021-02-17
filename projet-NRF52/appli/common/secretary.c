@@ -15,6 +15,7 @@
 #include "components/libraries/log/nrf_log_default_backends.h"
 #include "modules/nrfx/hal/nrf_gpio.h"
 #include "components/proprietary_rf/esb/nrf_esb.h"
+#include "rf_dialog.h"
 
 static nrf_esb_payload_t        rx_payload;
 static nrf_esb_payload_t        tx_payload;
@@ -24,7 +25,13 @@ volatile static _Bool flag_rx_payload_process_main = false;
 #endif
 static volatile _Bool initialized = false;
 
-static void SECRETARY_frame_parse(nrf_esb_payload_t * payload);
+typedef enum
+{
+	MSG_SOURCE_RF,
+	MSG_SOURCE_UART
+}msg_source_e;
+
+static void SECRETARY_frame_parse(nrf_esb_payload_t * payload, msg_source_e msg_source);
 
 void SECRETARY_init(void)
 {
@@ -89,7 +96,7 @@ void SECRETARY_esb_event_handler(nrf_esb_evt_t const * p_event)
             {
                 if (rx_payload.length > 0)
                 {
-                    SECRETARY_frame_parse(&rx_payload);
+                    SECRETARY_frame_parse(&rx_payload, MSG_SOURCE_RF);
                 }
             }
 
@@ -97,18 +104,59 @@ void SECRETARY_esb_event_handler(nrf_esb_evt_t const * p_event)
     }
 }
 
-void SECRETARY_frame_parse(nrf_esb_payload_t * payload)
+void SECRETARY_frame_parse(nrf_esb_payload_t * payload, msg_source_e msg_source)
 {
-	#if 0
-		if(payload->length == 4)
+	uint32_t recipient;
+	uint8_t msg_id;
+	uint8_t msg_size;
+
+
+		if(payload->length > BYTE_POS_DATASIZE && payload->length <= NRF_ESB_MAX_PAYLOAD_LENGTH)
 		{
-			if(payload->data[0] == 0xE5 && payload->data[1] == 0xE0)
+			recipient = U32FROMU8( payload->data[BYTE_POS_RECIPIENTS],  payload->data[BYTE_POS_RECIPIENTS+1],  payload->data[BYTE_POS_RECIPIENTS+2],  payload->data[BYTE_POS_RECIPIENTS+3]);
+
+			if(OBJECT_ID == OBJECT_BASE_STATION)
 			{
-				//événement reçu !
-				//...
+				//je suis la station de base
+
+				if(recipient == RF_DIALOG_get_my_base_station_id() || recipient == 0xFFFFFFFF)
+				{
+					//le message est pour moi
+					RF_DIALOG_process_rx_basestation(payload);
+				}
+				else
+				{
+					//le message reçu est pour quelqu'un d'autre
+					if(msg_source == MSG_SOURCE_UART)
+					{
+						//le message vient de l'UART (donc du serveur !), on le relaye vers le RF
+						SECRETARY_send_msg(payload->length, payload->data);
+					}
+				}
+
+
+
+			}
+			else{
+				//je suis un objet
+				if(recipient == OBJECT_ID)
+				{
+					//super, le message est pour moi !
+					RF_DIALOG_process_rx_object(payload);
+				}
+				else
+				{
+					//le message est pour quelqu'un d'autre
+
+					//si ce message vient de l'UART (donc d'un développeur qui test des choses...
+					//je le renvoie sur la RF
+					if(msg_source == MSG_SOURCE_UART)
+						SECRETARY_send_msg(payload->length, payload->data);
+
+					//sinon, je ne fait rien... le message n'était pas pour moi.
+				}
 			}
 		}
-	#endif
 }
 
 
@@ -134,7 +182,7 @@ void SECRETARY_process_msg_from_uart(uint8_t size, uint8_t * datas)
 		fake_payload.data[i] = datas[i];
 	}
 
-	SECRETARY_frame_parse(&fake_payload);
+	SECRETARY_frame_parse(&fake_payload, MSG_SOURCE_UART);
 }
 
 
@@ -145,17 +193,22 @@ void SECRETARY_send_msg(uint8_t size, uint8_t * datas)
 	{
 		tx_payload.data[i] = datas[i];
 	}
-	tx_payload.noack = FALSE;	//On demande un acquittement !
+	tx_payload.noack = TRUE;	//On demande pas d'acquittement !
 	nrf_esb_stop_rx();
 
 	if (nrf_esb_write_payload(&tx_payload) == NRF_SUCCESS)
 	{
+		debug_printf("msgsent:");
 
 	}
 	else
 	{
 		nrf_esb_flush_tx();
+		debug_printf("failtosend:");
 	}
+	for(uint8_t i = 0; i<tx_payload.length; i++)
+		debug_printf("%02x ", tx_payload.data[i]);
+	debug_printf("\n");
 }
 
 

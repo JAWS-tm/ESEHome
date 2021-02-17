@@ -1,7 +1,7 @@
 /*
  * object_touch_screen.c
  *
- *  Created on: 6 févr. 2021
+ *  Created on: 6 fï¿½vr. 2021
  *      Author: verhasya
  */
 
@@ -36,6 +36,7 @@ void object_touch_screen_process_main(void)
     switch(state){
     case INIT:
         nrf_lcd_ili9341.lcd_init();
+        /*
         for(x=0; x<40; x++){
             for(y=0; y<320; y++){
                 nrf_lcd_ili9341.lcd_pixel_draw(x, y, ILI9341_COLOR_MAGENTA);
@@ -65,7 +66,8 @@ void object_touch_screen_process_main(void)
             for(y=0; y<320; y++){
                 nrf_lcd_ili9341.lcd_pixel_draw(x, y, ILI9341_COLOR_RED);
             }
-        }
+        }*/
+        nrf_lcd_ili9341.lcd_rect_draw(110, 50, 10, 20, ILI9341_COLOR_RED);
         state = DEFAULT;
         break;
     default:
