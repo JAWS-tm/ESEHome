@@ -26,6 +26,8 @@
 #include "objects/object_fall_sensor.h"
 #include "objects/object_station_meteo_int.h"
 #include "objects/object_rfid.h"
+#include "objects/object_out_weather_station.h"
+
 
 #undef NRF_LOG_ENABLED
 #define NRF_LOG_ENABLED 1
