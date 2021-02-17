@@ -6,13 +6,7 @@
  */
 
 
-
-#include "libraries/gfx/nrf_lcd.h"
-#include "../config.h"
 #include "object_touch_screen.h"
-#include "nrfx_spi.h"
-
-
 
 #if OBJECT_ID == OBJECT_TOUCH_SCREEN
 
@@ -31,7 +25,7 @@ void object_touch_screen_process_main(void)
 
 
 
-    uint16_t x, y;
+    //uint16_t x, y;
     static state_e state = INIT;
     switch(state){
     case INIT:
@@ -67,7 +61,8 @@ void object_touch_screen_process_main(void)
                 nrf_lcd_ili9341.lcd_pixel_draw(x, y, ILI9341_COLOR_RED);
             }
         }*/
-        nrf_lcd_ili9341.lcd_rect_draw(110, 50, 10, 20, ILI9341_COLOR_RED);
+        //nrf_lcd_ili9341.lcd_int_fill(0, 240, 120,320, ILI9341_COLOR_YELLOW);
+        nrf_lcd_ili9341.lcd_puts(200, 200, "OK", &Font_11x18, ILI9341_COLOR_BROWN, ILI9341_COLOR_WHITE);
         state = DEFAULT;
         break;
     default:
@@ -75,7 +70,5 @@ void object_touch_screen_process_main(void)
         break;
     }
 }
-
-
 
 #endif

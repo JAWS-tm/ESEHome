@@ -27,16 +27,13 @@
    ----------------------------------------------------------------------
 @endverbatim
  */
+
 #ifndef FONTS_H
 #define FONTS_H 120
 
-/* C++ detection */
-#ifdef __cplusplus
-extern C {
-#endif
-
 #include "../appli/config.h"
 
+#if OBJECT_ID == OBJECT_TOUCH_SCREEN
 /**
  * @addtogroup STM32F4xx_Libraries
  * @{
@@ -161,9 +158,6 @@ char* FONTS_GetStringSize(char* str, FONTS_SIZE_t* SizeStruct, FontDef_t* Font);
  * @}
  */
 
-/* C++ detection */
-#ifdef __cplusplus
-}
 #endif
 
 

@@ -35,6 +35,8 @@ SRC_FILES += \
   $(PROJ_DIR)/bsp/RC522.c \
   $(PROJ_DIR)/bsp/nrf52_i2c.c \
   $(PROJ_DIR)/bsp/ili9341/ili9341.c \
+  $(PROJ_DIR)/bsp/ili9341/ili9341_fonts.c \
+  $(PROJ_DIR)/bsp/ili9341/ili9341_xpt2046.c \
   $(PROJ_DIR)/bsp/mpu6050.c \
   $(PROJ_DIR)/bsp/dht11.c \
   $(PROJ_DIR)/bsp/matrix_leds_32x32.c \

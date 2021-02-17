@@ -38,8 +38,14 @@
  *
  */
 
+#include "../appli/config.h"
+
+#if OBJECT_ID == OBJECT_TOUCH_SCREEN
+
 #ifndef NRF_LCD_H__
 #define NRF_LCD_H__
+
+
 
 #include <nrfx.h>
 #include "../bsp/ili9341/ili9341_fonts.h"
@@ -174,3 +180,5 @@ typedef struct
 /* @} */
 
 #endif // NRF_LCD_H__
+
+#endif

@@ -27,6 +27,12 @@
    ----------------------------------------------------------------------
 @endverbatim
  */
+
+
+#include "../appli/config.h"
+
+#if OBJECT_ID == OBJECT_TOUCH_SCREEN
+
 #ifndef ILI9341_H
 #define ILI9341_H 130
 
@@ -125,7 +131,6 @@ VCC          3.3V         Positive power supply
 
 #include "nrf.h"
 #include "ili9341_fonts.h"
-#include "../appli/config.h"
 
 /* Colors */
 #define ILI9341_COLOR_WHITE			0xFFFF
@@ -263,3 +268,5 @@ void ILI9341_putImage_monochrome(uint16_t color_front, uint16_t color_background
 
 #endif
 
+
+#endif

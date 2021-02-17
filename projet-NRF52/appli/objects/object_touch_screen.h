@@ -1,3 +1,9 @@
+#include "../bsp/ili9341/ili9341_fonts.h"
+#include "../config.h"
+#include "../bsp/ili9341/nrf_lcd.h"
+#include "nrfx_spi.h"
+
+
 #define ILI9341_COLOR_WHITE			0xFFFF
 #define ILI9341_COLOR_BLACK			0x0000
 #define ILI9341_COLOR_RED			0xF800

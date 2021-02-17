@@ -618,8 +618,8 @@ void ILI9341_Fill(uint16_t color) {
 void ILI9341_INT_Fill(uint16_t x0, uint16_t y0, uint16_t x1, uint16_t y1, uint16_t color) {
 	uint32_t pixels_count;
 	uint8_t datas[2];
-	datas[1] = HIGHINT(color);
-	datas[0] = LOWINT(color);
+	datas[0] = HIGHINT(color);
+	datas[1] = LOWINT(color);
 
 	/* Set cursor position */
 	set_addr_window(x0, y0, x1, y1);
