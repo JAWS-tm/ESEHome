@@ -22,6 +22,7 @@ SRC_FILES += \
   $(PROJ_DIR)/appli/objects/object_matrix_leds.c \
   $(PROJ_DIR)/appli/objects/object_tracker_gps.c \
   $(PROJ_DIR)/appli/objects/object_touch_screen.c \
+  $(PROJ_DIR)/appli/objects/object_ventilator.c \
   $(PROJ_DIR)/appli/objects/object_station_meteo_int.c \
   $(PROJ_DIR)/appli/objects/object_brightness_sensor.c \
   $(PROJ_DIR)/appli/objects/object_rfid.c \
