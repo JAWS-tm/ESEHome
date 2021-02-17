@@ -182,14 +182,19 @@ static inline void spi_write(const void * data, size_t size)
 
 static inline void write_command(uint8_t c)
 {
-    nrf_gpio_pin_clear(ILI9341_DC_PIN);
+    ILI9341_DC_RESET();
+    ILI9341_SS_RESET();
     spi_write(&c, sizeof(c));
+    ILI9341_SS_SET();
 }
 
 static inline void write_data(uint8_t c)
 {
-    nrf_gpio_pin_set(ILI9341_DC_PIN);
+
+    ILI9341_DC_SET();
+    ILI9341_SS_RESET();
     spi_write(&c, sizeof(c));
+    ILI9341_SS_SET();
 }
 
 static void set_addr_window(uint16_t x_0, uint16_t y_0, uint16_t x_1, uint16_t y_1)
