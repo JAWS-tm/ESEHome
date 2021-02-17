@@ -535,7 +535,8 @@ static void ili9341_rect_draw(uint16_t x, uint16_t y, uint16_t width, uint16_t h
 
     const uint8_t data[2] = {color >> 8, color};
 
-    nrf_gpio_pin_set(ILI9341_DC_PIN);
+    ILI9341_DC_SET();
+    ILI9341_SS_RESET();
 
     // Duff's device algorithm for optimizing loop.
     uint32_t i = (height * width + 7) / 8;
@@ -565,7 +566,8 @@ static void ili9341_rect_draw(uint16_t x, uint16_t y, uint16_t width, uint16_t h
     }
 /*lint -restore */
 
-    nrf_gpio_pin_clear(ILI9341_DC_PIN);
+    ILI9341_SS_SET();
+    ILI9341_DC_RESET();
 }
 
 static void ili9341_dummy_display(void)
