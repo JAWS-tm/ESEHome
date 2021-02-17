@@ -78,7 +78,6 @@ int main(void)
     debug_printf("My id is %d. I am \"%s\"\n", id, object_id_to_string(id));
 	LED_add(LED_ID_BATTERY, PIN_LED_BATTERY);
 	LED_set(LED_ID_BATTERY, LED_MODE_ON);
-	BUTTONS_network_test();
     while (1)
     {
     	//Code commun à tout les objets

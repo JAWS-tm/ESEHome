@@ -2,7 +2,7 @@
  * buttons.c
  *
  *  Created on: 20 janv. 2021
- *      Author: Nirgal
+ *      Author: Nirgal & Thbault Malary & Yannis Verhasselt
  */
 #include "buttons.h"
 #include "systick.h"
@@ -41,6 +41,8 @@ void BUTTONS_init(void)
 	}
 	Systick_add_callback_function(&BUTTONS_process_ms);
 
+	BUTTONS_add(BUTTON_NETWORK, PIN_BUTTON_NETWORK, TRUE, &BUTTONS_network_process);
+	LED_add(LED_ID_NETWORK, PIN_LED_NETWORK);
 	state = INIT_BUTTON;
 
 	initialized = TRUE;
@@ -77,7 +79,6 @@ void BUTTONS_process_main(void)
 			else if(t_for_5_fast_press == 0 && nb_fast_press != 0)
 			{
 				nb_fast_press = 0;
-				state = SIMPLE_PRESS;
 			}
 			break;
 
@@ -89,10 +90,12 @@ void BUTTONS_process_main(void)
 			}
 			if(event == BUTTON_RELEASE_EVENT)
 			{
-				state = IDLE_READING_BUTTON;        //c'était un appui court !
+				state = SIMPLE_PRESS;        //c'était un appui court !
 			}
-			if(!t_for_long_press)
+			else if(!t_for_long_press)
+			{
 				state = WAIT_RELEASE_BUTTON;    //c'était un appui long, le temps est écoulé !
+			}
 			break;
 
 		case WAIT_RELEASE_BUTTON:
@@ -104,20 +107,22 @@ void BUTTONS_process_main(void)
 			break;
 
 		case BUTTON_5_FAST_PRESS:
-			//TODO ce que l'on veut faire...
+			//TODO BUTTON_5_FAST_PRESS
 
 			state = IDLE_READING_BUTTON;
 			break;
 
 		case SIMPLE_PRESS:
-			if(buttons[button].callback != NULL)
-			{
-				buttons[button].callback();
-			}
+			//TODO SIMPLE_PRESS
+
+			LED_toggle(LED_ID_NETWORK);
+
 			state = IDLE_READING_BUTTON;
 			break;
 
 		case POWERDOWN:
+			//TODO POWERDOWN
+
 			state = IDLE_READING_BUTTON;
 			break;
 
@@ -151,11 +156,19 @@ void BUTTONS_add(button_id_e id, uint8_t pin, bool_e pullup, callback_fun_t call
 void BUTTONS_process_ms(void)
 {
     if(t)
-        t--;
+    {
+    	t--;
+    }
+
     if(t_for_5_fast_press)
+    {
         t_for_5_fast_press--;
+    }
+
     if(t_for_long_press)
+    {
     	t_for_long_press--;
+    }
 }
 
 void BUTTONS_get_event(button_event_e * event, button_id_e * button)
