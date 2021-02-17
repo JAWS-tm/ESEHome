@@ -76,10 +76,6 @@ void BUTTONS_process_main(void)
 					state = BUTTON_5_FAST_PRESS;            			//alors c'est l'événement que lon cherchait
 				}
 			}
-			else if(t_for_5_fast_press == 0 && nb_fast_press != 0)
-			{
-				nb_fast_press = 0;
-			}
 			break;
 
 		case BUTTON_WAIT_FOR_LONG_PRESS:
