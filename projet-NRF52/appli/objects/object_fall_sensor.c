@@ -106,21 +106,21 @@ void BUTTON_action_sleep(state_e state)
 	}
 }
 
-//fonction du bouton ALERTE
-void BUTTONS_alerte(void){
-	bool_e init = TRUE;
-	if(init){
-		BUTTONS_add(BUTTON_ALERTE, PIN_BUTTON_ALERTE, TRUE, &BUTTONS_alerte_process);
-		LED_add(LED_ID_BATTERY, PIN_LED_BATTERY);
-		init = FALSE;
-	}
-}
-
 //action a effectuer dans fonction btn alerte
 void BUTTONS_alerte_process(void)
 {
 	LED_set(LED_ID_BATTERY, LED_MODE_ON);
 	debug_printf("ALERT ! FALL DETECTED.");
+}
+
+//fonction du bouton ALERTE
+void BUTTONS_alerte(void){
+	bool_e init = TRUE;
+	if(init){
+		BUTTONS_add(BUTTON_ALERTE, PIN_BUTTON_ALERT, TRUE, &BUTTONS_alerte_process, NULL, NULL, NULL);
+		LED_add(LED_ID_BATTERY, PIN_LED_BATTERY);
+		init = FALSE;
+	}
 }
 
 #endif
