@@ -77,7 +77,15 @@ void RF_DIALOG_process_rx_object(nrf_esb_payload_t * payload){
 			}
 			case PARAMETER_WRITE :{
 				// la base impose un parametre a l'objet
-				//parameter=value;
+				param_id_e param;
+				uint32_t value;
+				param = payload->data[BYTE_POS_DATAS];
+				value = U32FROMU8( payload->data[BYTE_POS_DATAS+1],  payload->data[BYTE_POS_DATAS+2],  payload->data[BYTE_POS_DATAS+3],  payload->data[BYTE_POS_DATAS+4]);
+				if(param < PARAM_32_BITS_NB)
+					PARAMETERS_update(param, value);
+				else
+					PARAMETERS_update_custom(param, &payload->data[BYTE_POS_DATAS+1]);
+
 				break;
 			}
 			case I_HAVE_NO_SERVER_ID :{

@@ -60,7 +60,7 @@
 	#endif
 
 	#if OBJECT_ID == OBJECT_NIGHT_LIGHT
-		
+		#define WS2812_PIN	9
 
 	#endif
 

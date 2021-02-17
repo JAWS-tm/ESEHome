@@ -76,9 +76,15 @@ int main(void)
     volatile char id;
     id = OBJECT_ID;
     debug_printf("My id is %d. I am \"%s\"\n", id, object_id_to_string(id));
+
+    PARAMETERS_init();
+
 	LED_add(LED_ID_BATTERY, PIN_LED_BATTERY);
 	LED_set(LED_ID_BATTERY, LED_MODE_ON);
 	BUTTONS_network_test();
+
+	SECRETARY_init();
+
     while (1)
     {
     	//Code commun à tout les objets
@@ -97,7 +103,7 @@ int main(void)
     		#endif
 
     		#if OBJECT_ID == OBJECT_NIGHT_LIGHT
-
+    			OBJECT_NIGHT_LIGHT_state_machine();
 
     		#endif
 

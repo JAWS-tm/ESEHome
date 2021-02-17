@@ -198,12 +198,17 @@ void SECRETARY_send_msg(uint8_t size, uint8_t * datas)
 
 	if (nrf_esb_write_payload(&tx_payload) == NRF_SUCCESS)
 	{
+		debug_printf("msgsent:");
 
 	}
 	else
 	{
 		nrf_esb_flush_tx();
+		debug_printf("failtosend:");
 	}
+	for(uint8_t i = 0; i<tx_payload.length; i++)
+		debug_printf("%02x ", tx_payload.data[i]);
+	debug_printf("\n");
 }
 
 
