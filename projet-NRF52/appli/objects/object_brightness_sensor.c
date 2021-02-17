@@ -21,7 +21,7 @@ void state_machine(void)
 		LED_add(LED_ID_BATTERY, PIN_LED_BATTERY);
 		LED_add(LED_ID_NETWORK, PIN_LED_NETWORK);
 		state = GET_DATA;
-		BUTTONS_add(BUTTON_NETWORK, PIN_BUTTON_NETWORK, TRUE, &BUTTON_action_sleep);
+		BUTTONS_add(BUTTON_NETWORK, PIN_BUTTON_NETWORK, TRUE, &BUTTON_action_sleep, NULL, NULL, NULL);
 
 		break;
 	case GET_DATA :

@@ -42,7 +42,8 @@ void BUTTONS_init(void);
 
 void BUTTONS_process_main(void);
 
-void BUTTONS_add(button_id_e id, uint8_t pin, bool_e pullup, callback_fun_t callback);
+void BUTTONS_add(button_id_e id, uint8_t pin, bool_e pullup, callback_fun_t callback_short_press, callback_fun_t callback_short_release, callback_fun_t callback_long_press, callback_fun_t callback_long_release);
+
 
 void BUTTONS_process_ms(void);
 

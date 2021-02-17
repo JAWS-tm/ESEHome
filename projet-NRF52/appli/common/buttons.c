@@ -16,7 +16,10 @@ typedef struct
 	bool_e initialized;
 	uint8_t pin;
 	bool_e pullup;
-	callback_fun_t callback;
+	callback_fun_t callback_short_press;
+	callback_fun_t callback_short_release;
+	callback_fun_t callback_long_press;
+	callback_fun_t callback_long_release;
 }button_t;
 
 static button_t buttons[BUTTON_NB];
@@ -36,12 +39,15 @@ void BUTTONS_init(void)
 	for(button_id_e b = 0; b< BUTTON_NB; b++)
 	{
 		buttons[b].initialized = FALSE;
-		buttons[b].callback = NULL;
+		buttons[b].callback_short_press = NULL;
+		buttons[b].callback_short_release = NULL;
+		buttons[b].callback_long_press = NULL;
+		buttons[b].callback_long_release = NULL;
 		buttons[b].pullup = TRUE;
 	}
 	Systick_add_callback_function(&BUTTONS_process_ms);
 
-	BUTTONS_add(BUTTON_NETWORK, PIN_BUTTON_NETWORK, TRUE, &BUTTONS_network_process);
+	BUTTONS_add(BUTTON_NETWORK, PIN_BUTTON_NETWORK, TRUE, &BUTTONS_network_process, NULL, NULL, NULL);
 	LED_add(LED_ID_NETWORK, PIN_LED_NETWORK);
 	state = INIT_BUTTON;
 
@@ -75,6 +81,11 @@ void BUTTONS_process_main(void)
 					nb_fast_press = 0;
 					state = BUTTON_5_FAST_PRESS;            			//alors c'est l'événement que lon cherchait
 				}
+				else
+				{
+					if(buttons[button].callback_short_press != NULL)
+						buttons[button].callback_short_press();
+				}
 			}
 			break;
 
@@ -86,10 +97,14 @@ void BUTTONS_process_main(void)
 			}
 			if(event == BUTTON_RELEASE_EVENT)
 			{
+				if(buttons[button].callback_short_release != NULL)
+					buttons[button].callback_short_release();
 				state = SIMPLE_PRESS;        //c'était un appui court !
 			}
 			else if(!t_for_long_press)
 			{
+				if(buttons[button].callback_long_press != NULL)
+					buttons[button].callback_long_press();
 				state = WAIT_RELEASE_BUTTON;    //c'était un appui long, le temps est écoulé !
 			}
 			break;
@@ -99,6 +114,8 @@ void BUTTONS_process_main(void)
 			{
 				nb_fast_press = 0;
 				state = POWERDOWN;
+				if(buttons[button].callback_long_release != NULL)
+					buttons[button].callback_long_release();
 			}
 			break;
 
@@ -109,7 +126,7 @@ void BUTTONS_process_main(void)
 			break;
 
 		case SIMPLE_PRESS:
-			//TODO SIMPLE_PRESS
+
 
 			LED_toggle(LED_ID_NETWORK);
 
@@ -129,7 +146,7 @@ void BUTTONS_process_main(void)
 }
 
 
-void BUTTONS_add(button_id_e id, uint8_t pin, bool_e pullup, callback_fun_t callback)
+void BUTTONS_add(button_id_e id, uint8_t pin, bool_e pullup, callback_fun_t callback_short_press, callback_fun_t callback_short_release, callback_fun_t callback_long_press, callback_fun_t callback_long_release)
 {
 	//configure la pin du bouton concernée en entrée
 	//enregistre le bouton comme "initialisée"
@@ -139,11 +156,10 @@ void BUTTONS_add(button_id_e id, uint8_t pin, bool_e pullup, callback_fun_t call
 	GPIO_init();
 	//on part du principe que tout les boutons sont no pullup
 	GPIO_configure(buttons[id].pin, (pullup)?NRF_GPIO_PIN_PULLUP:NRF_GPIO_PIN_NOPULL, 0);
-	if(callback != NULL){
-		buttons[id].callback = callback;
-	}else {
-		buttons[id].callback = NULL;
-	}
+	buttons[id].callback_short_press = callback_short_press;
+	buttons[id].callback_short_release = callback_short_release;
+	buttons[id].callback_long_press = callback_long_press;
+	buttons[id].callback_long_release = callback_long_release;
 	buttons[id].pullup = pullup;
 	buttons[id].initialized = TRUE;
 }
@@ -228,7 +244,7 @@ void BUTTONS_network_process(void)
 void BUTTONS_network_test(void){
 	bool_e init = TRUE;
 	if(init){
-		BUTTONS_add(BUTTON_NETWORK, PIN_BUTTON_NETWORK, TRUE, &BUTTONS_network_process);
+		BUTTONS_add(BUTTON_NETWORK, PIN_BUTTON_NETWORK, TRUE, &BUTTONS_network_process, NULL, NULL, NULL);
 		LED_add(LED_ID_NETWORK, PIN_LED_NETWORK);
 		init = FALSE;
 	}
