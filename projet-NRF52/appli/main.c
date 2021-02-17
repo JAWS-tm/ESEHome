@@ -81,7 +81,6 @@ int main(void)
 
 	LED_add(LED_ID_BATTERY, PIN_LED_BATTERY);
 	LED_set(LED_ID_BATTERY, LED_MODE_ON);
-	BUTTONS_network_test();
 
 	SECRETARY_init();
 
