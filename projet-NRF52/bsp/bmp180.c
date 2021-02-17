@@ -61,8 +61,8 @@ void BMP180_demo(void)
 	/* Imagine, we are at 1000 meters above the sea */
 	/* And we read pressure of 95000 pascals */
 	/* Pressure right on the sea is */
-	debug_printf( "Pressure right above the sea: %ld pascals\n", BMP180_GetPressureAtSeaLevel(95000, 1000));
-	debug_printf("Data were calculated from pressure %ld pascals at know altitude %d meters\n\n\n", 95000, 1000);
+	debug_printf( "Pressure right above the sea: %ld pascals\n", BMP180_GetPressureAtSeaLevel(101300, 0));
+	debug_printf("Data were calculated from pressure %ld pascals at know altitude %d meters\n\n\n", 1013, 0);
 
 	while (1)
 	{
@@ -92,18 +92,25 @@ void BMP180_demo(void)
 			BMP180_Data.Pressure,
 			BMP180_Data.Altitude
 		);*/
-		printf(buffer, "Temp: %2.3f degrees\nPressure: %6ld Pascals\nAltitude at current pressure: %3.2f meters\n\n",
-			BMP180_Data.Temperature,
+		debug_printf("Temp: %2d degrees\nPressure: %6ld Pascals\nAltitude at current pressure: %d meters\n\n",
+			(uint16_t)(BMP180_Data.Temperature),
 			BMP180_Data.Pressure,
-			BMP180_Data.Altitude);
-		/* Send to USART */
-		printf(buffer);
-
+			(uint16_t)(BMP180_Data.Altitude));
 		/* Some delay */
 		SYSTICK_delay_ms(1000);
 	}
 }
 
+
+void BMP180_register_read(uint8_t register_address, uint8_t * destination, uint8_t number_of_bytes)
+{
+	while(I2C_register_read(register_address,  destination, number_of_bytes)==IN_PROGRESS);
+}
+
+void BMP180_register_write(uint8_t register_address, uint8_t value)
+{
+	while(I2C_register_write(register_address, value)==IN_PROGRESS);
+}
 
 /* EEPROM values */
 int16_t AC1, AC2, AC3, B1, B2, MB, MC, MD;
@@ -125,7 +132,7 @@ BMP180_Result_t BMP180_Init(BMP180_t* BMP180_Data) {
 
 	/* Get default values from EEPROM */
 	/* EEPROM starts at 0xAA address, read 22 bytes */
-	I2C_register_read(BMP180_REGISTER_EEPROM, data, 22);
+	BMP180_register_read(BMP180_REGISTER_EEPROM, data, 22);
 
 	/* Set configuration values */
 	AC1 = (int16_t)(data[i] << 8 | data[i + 1]); i += 2;
@@ -153,7 +160,7 @@ BMP180_Result_t BMP180_StartTemperature(BMP180_t* BMP180_Data) {
 		return BMP180_Result_LibraryNotInitialized;
 	}
 	/* Send to device */
-	I2C_register_write(BMP180_REGISTER_CONTROL, BMP180_COMMAND_TEMPERATURE);
+	BMP180_register_write(BMP180_REGISTER_CONTROL, BMP180_COMMAND_TEMPERATURE);
 	/* Set minimum delay */
 	BMP180_Data->Delay = BMP180_TEMPERATURE_DELAY;
 	/* Return OK */
@@ -169,7 +176,7 @@ BMP180_Result_t BMP180_ReadTemperature(BMP180_t* BMP180_Data) {
 	}
 
 	/* Read multi bytes from I2C */
-	I2C_register_read(BMP180_REGISTER_RESULT, data, 2);
+	BMP180_register_read(BMP180_REGISTER_RESULT, data, 2);
 
 	/* Get uncompensated temperature */
 	UT = data[0] << 8 | data[1];
@@ -217,7 +224,7 @@ BMP180_Result_t BMP180_StartPressure(BMP180_t* BMP180_Data, BMP180_Oversampling_
 			break;
 	}
 	/* Send to device */
-	I2C_register_write(BMP180_REGISTER_CONTROL, command);
+	BMP180_register_write(BMP180_REGISTER_CONTROL, command);
 	/* Save selected oversampling */
 	BMP180_Data->Oversampling = Oversampling;
 	/* Return OK */
@@ -233,7 +240,7 @@ BMP180_Result_t BMP180_ReadPressure(BMP180_t* BMP180_Data) {
 	}
 
 	/* Read multi bytes from I2C */
-	I2C_register_read(BMP180_REGISTER_RESULT, data, 3);
+	BMP180_register_read(BMP180_REGISTER_RESULT, data, 3);
 
 	/* Get uncompensated pressure */
 	UP = (data[0] << 16 | data[1] << 8 | data[2]) >> (8 - (uint8_t)BMP180_Data->Oversampling);

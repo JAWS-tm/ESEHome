@@ -14,6 +14,11 @@
 
 #include <stdint.h>
 
+extern uint8_t humidity_int;
+extern uint8_t humidity_dec;
+extern uint8_t temperature_int;
+extern uint8_t temperature_dec;
+
 void DHT11_demo(void);
 
 void DHT11_main(void);

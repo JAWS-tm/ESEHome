@@ -43,6 +43,11 @@ static volatile uint64_t trame;
 static volatile uint8_t index = 0;
 static volatile uint32_t t = 0;
 
+uint8_t humidity_int;
+uint8_t humidity_dec;
+uint8_t temperature_int;
+uint8_t temperature_dec;
+
 void DHT11_set_pin_direction(bool_e out)
 {
 	if(out)
@@ -63,7 +68,6 @@ void DHT11_set_pin_direction(bool_e out)
 
 void DHT11_init(uint16_t GPIO_PIN_x)
 {
-	NMOS_On();
 	DHT11_pin = GPIO_PIN_x;
 
 	nrf_drv_gpiote_init();
@@ -77,10 +81,6 @@ void DHT11_init(uint16_t GPIO_PIN_x)
 //Fonction demo pour tester le DHT11
 void DHT11_demo(void)
 {
-	static uint8_t humidity_int;
-	static uint8_t humidity_dec;
-	static uint8_t temperature_int;
-	static uint8_t temperature_dec;
 
 	DHT11_init(DHT11_PIN);
 	while(1)
@@ -108,33 +108,13 @@ void DHT11_demo(void)
 	}
 }
 
-//Fonction pour utiliser le DHT11
+//Fonction pour utiliser le DHT11 --> Vous devez declarer en EXTERN dans votre .h les 4 variables humidity/temperature int & dec
 void DHT11_main(void)
 {
-	static uint8_t humidity_int;
-	static uint8_t humidity_dec;
-	static uint8_t temperature_int;
-	static uint8_t temperature_dec;
 
 	DHT11_init(DHT11_PIN);
-	while(1)
+	while(DHT11_state_machine_get_datas(&humidity_int, &humidity_dec, &temperature_int, &temperature_dec) != END_OK)
 	{
-
-		switch(DHT11_state_machine_get_datas(&humidity_int, &humidity_dec, &temperature_int, &temperature_dec))
-		{
-			case END_OK:
- 				//TODO envoyer les données
- 				SYSTICK_delay_ms(1000);
-				break;
-			case END_ERROR:
-				SYSTICK_delay_ms(1000);
-				break;
-			case END_TIMEOUT:
-				SYSTICK_delay_ms(1000);
-				break;
-			default:
-				break;
-		}
 	}
 }
 
@@ -242,7 +222,6 @@ running_e DHT11_state_machine_get_datas(uint8_t * humidity_int, uint8_t * humidi
 			state = WAIT_BEFORE_NEXT_ASK;
 			break;
 		case END_OF_RECEPTION:
-			debug_printf("%llx\n",trame);
 			if(compute_frame(trame, humidity_int, humidity_dec, temperature_int, temperature_dec))
 				ret = END_OK;
 			else
@@ -268,7 +247,7 @@ static bool_e compute_frame(uint64_t datas, uint8_t * humidity_int, uint8_t * hu
 	*humidity_dec = (uint8_t)(datas >> 24);
 	*temperature_int = (uint8_t)(datas >> 16);
 	*temperature_dec = (uint8_t)(datas >> 8);
-	debug_printf(" - %d+%d+%d+%d= %d (%d)", *humidity_int, *humidity_dec, *temperature_int, *temperature_dec, (uint8_t)(*humidity_int + *humidity_dec + *temperature_int + *temperature_dec), (uint8_t)(datas));
+	//debug_printf(" - %d+%d+%d+%d= %d (%d)", *humidity_int, *humidity_dec, *temperature_int, *temperature_dec, (uint8_t)(*humidity_int + *humidity_dec + *temperature_int + *temperature_dec), (uint8_t)(datas));
 	//checksum
 	if((uint8_t)(*humidity_int + *humidity_dec + *temperature_int + *temperature_dec) == (uint8_t)(datas))
 		ret = TRUE;
