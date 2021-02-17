@@ -10,5 +10,8 @@
 
 void OBJECT_FALL_SENSOR_state_machine(void);
 
+void BUTTONS_alerte(void);
+void BUTTONS_alerte_process(void);
+
 
 #endif /* APPLI_OBJECTS_OBJECT_FALL_SENSOR_H_ */

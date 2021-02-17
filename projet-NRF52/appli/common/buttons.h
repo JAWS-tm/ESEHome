@@ -16,6 +16,7 @@ typedef enum
 	BUTTON_NETWORK,
 	BUTTON_USER0,
 	BUTTON_USER1,
+	BUTTON_ALERTE,
 	BUTTON_NB	//Nombre max de boutons
 }button_id_e;
 
