@@ -28,6 +28,7 @@
 #include "objects/object_station_meteo_int.h"
 #include "objects/object_rfid.h"
 #include "objects/object_out_weather_station.h"
+#include "objects/object_smart_light.h"
 
 void button_network_process_short_press(void);
 void button_network_process_long_press(void);
@@ -107,7 +108,7 @@ int main(void)
 
 
     		#if OBJECT_ID == OBJECT_SMART_LIGHT
-
+				Smart_light_Main();
     		#endif
 
     		#if OBJECT_ID == OBJECT_NIGHT_LIGHT

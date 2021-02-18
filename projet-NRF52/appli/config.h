@@ -52,6 +52,16 @@
 	#endif
 
 	#if OBJECT_ID == OBJECT_SMART_LIGHT
+		
+		#define MOSFET_LED_FROIDE2 					12
+		#define MOSFET_LED_FROIDE 					11
+		#define MOSFET_LED_CHAUDE2					10
+		#define MOSFET_LED_CHAUDE					9
+		#define INPUT_A_ENCODEUR_ROTATIF  			27
+		#define INPUT_B_ENCODEUR_ROTATIF 			26
+		#define INPUT_SW_ENCODEUR_ROTATIF 			25
+
+		#define PIN_BUTTON_LOCAL					17
 
 	#endif
 
