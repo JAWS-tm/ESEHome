@@ -5,15 +5,18 @@
  *      Author: Utilisateur
  */
 #include "../config.h"
+
+
+#if OBJECT_ID == OBJECT_VENTILATOR
 #include "../common/gpio.h"
 #include "nrf_gpio.h"
 #include "nrf52.h"
+#include "appli/common/buttons.h"
 #include "object_ventilator.h"
 
 static ventilator_e state = VENTILATOR_INIT;
 static bool_e state_changement = FALSE;
-
-#if OBJECT_ID == OBJECT_VENTILATOR
+void object_ventilator_changement_etat(void);
 
 void object_ventilator_activation(void)
 {
@@ -21,7 +24,7 @@ void object_ventilator_activation(void)
 	case VENTILATOR_INIT:
 		GPIO_init();
 		GPIO_configure(MOSFET_PIN, NRF_GPIO_PIN_PULLUP, true);
-
+		BUTTONS_set_short_press_callback(BUTTON_NETWORK, &object_ventilator_changement_etat);
 		state = VENTILATOR_OFF;	//Changement d'état
 		break;
 

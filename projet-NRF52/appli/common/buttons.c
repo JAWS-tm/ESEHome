@@ -154,6 +154,26 @@ void BUTTONS_add(button_id_e id, uint8_t pin, bool_e pullup, callback_fun_t call
 	buttons[id].initialized = TRUE;
 }
 
+void BUTTONS_set_short_press_callback(button_id_e id, callback_fun_t callback)
+{
+	buttons[id].callback_short_press = callback;
+}
+
+void BUTTONS_set_short_release_callback(button_id_e id, callback_fun_t callback)
+{
+	buttons[id].callback_short_release = callback;
+}
+
+void BUTTONS_set_long_press_callback(button_id_e id, callback_fun_t callback)
+{
+	buttons[id].callback_long_press = callback;
+}
+
+void BUTTONS_set_long_release_callback(button_id_e id, callback_fun_t callback)
+{
+	buttons[id].callback_long_release = callback;
+}
+
 
 void BUTTONS_process_ms(void)
 {
