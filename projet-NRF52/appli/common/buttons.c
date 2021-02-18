@@ -8,7 +8,6 @@
 #include "systick.h"
 #include "gpio.h"
 #include "leds.h"
-#include "../objects/object_ventilator.h"
 
 #define FIVE_FAST_PRESS_DURATION 2000	//unité : [1ms] => 2 seconde.
 
@@ -127,9 +126,6 @@ void BUTTONS_process_main(void)
 			break;
 
 		case SIMPLE_PRESS:
-
-			object_ventilator_changement_etat();
-
 			LED_toggle(LED_ID_NETWORK);
 
 			state = IDLE_READING_BUTTON;
