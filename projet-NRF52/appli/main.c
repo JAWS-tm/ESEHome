@@ -20,6 +20,7 @@
 #include "common/leds.h"
 #include "common/buttons.h"
 #include "common/gpio.h"
+#include "common/parameters.h"
 
 //Tout les includes des header des objets.
 #include "objects/object_tracker_gps.h"
@@ -28,6 +29,9 @@
 #include "objects/object_rfid.h"
 #include "objects/object_out_weather_station.h"
 
+void button_network_process_short_press(void);
+void button_network_process_long_press(void);
+void button_network_process_5press(void);
 
 #undef NRF_LOG_ENABLED
 #define NRF_LOG_ENABLED 1
@@ -81,10 +85,13 @@ int main(void)
 
     PARAMETERS_init();
 
+    LED_add(LED_ID_NETWORK, PIN_LED_NETWORK);
 	LED_add(LED_ID_BATTERY, PIN_LED_BATTERY);
 	LED_set(LED_ID_BATTERY, LED_MODE_ON);
 
 	SECRETARY_init();
+
+	BUTTONS_add(BUTTON_NETWORK, PIN_BUTTON_NETWORK, TRUE, &button_network_process_short_press, NULL, &button_network_process_long_press, &button_network_process_5press);
 
     while (1)
     {
@@ -232,4 +239,28 @@ char * object_id_to_string(uint8_t id)
 	}
 	return ret;
 }
+
+
+
+void button_network_process_short_press(void)
+{
+	LED_toggle(LED_ID_NETWORK);
+	//TODO envoi d'un ping... (avec éventuellement extinction de la led à la réception du Pong ?)
+}
+
+void button_network_process_long_press(void)
+{
+
+}
+
+
+void button_network_process_5press(void)
+{
+	// TODO reset usine...
+}
+
+
+
+
+
 

@@ -7,7 +7,6 @@
 #include "buttons.h"
 #include "systick.h"
 #include "gpio.h"
-#include "leds.h"
 
 #define FIVE_FAST_PRESS_DURATION 2000	//unité : [1ms] => 2 seconde.
 
@@ -47,8 +46,6 @@ void BUTTONS_init(void)
 	}
 	Systick_add_callback_function(&BUTTONS_process_ms);
 
-	BUTTONS_add(BUTTON_NETWORK, PIN_BUTTON_NETWORK, TRUE, &BUTTONS_network_process, NULL, NULL, NULL);
-	LED_add(LED_ID_NETWORK, PIN_LED_NETWORK);
 	state = INIT_BUTTON;
 
 	initialized = TRUE;
@@ -99,7 +96,7 @@ void BUTTONS_process_main(void)
 			{
 				if(buttons[button].callback_short_release != NULL)
 					buttons[button].callback_short_release();
-				state = SIMPLE_PRESS;        //c'était un appui court !
+				state = IDLE_READING_BUTTON;     //c'était un appui court !
 			}
 			else if(!t_for_long_press)
 			{
@@ -125,11 +122,6 @@ void BUTTONS_process_main(void)
 			state = IDLE_READING_BUTTON;
 			break;
 
-		case SIMPLE_PRESS:
-			LED_toggle(LED_ID_NETWORK);
-
-			state = IDLE_READING_BUTTON;
-			break;
 
 		case POWERDOWN:
 			//TODO POWERDOWN
@@ -232,26 +224,6 @@ bool_e BUTTONS_read(button_id_e id){
 		read = !read;
 	return read;
 }
-
-void BUTTONS_network_process(void)
-{
-	LED_toggle(LED_ID_NETWORK);
-}
-
-//fonction de test du bouton network
-void BUTTONS_network_test(void){
-	bool_e init = TRUE;
-	if(init){
-		BUTTONS_add(BUTTON_NETWORK, PIN_BUTTON_NETWORK, TRUE, &BUTTONS_network_process, NULL, NULL, NULL);
-		LED_add(LED_ID_NETWORK, PIN_LED_NETWORK);
-		init = FALSE;
-	}
-}
-
-
-
-
-
 
 
 
