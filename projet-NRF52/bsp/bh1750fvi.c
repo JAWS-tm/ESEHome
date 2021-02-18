@@ -83,12 +83,16 @@ void BH1750FVI_init()
 	I2C_init(BH1750FVI_ADDR);
 }
 
+void BH1750_write(uint8_t data)
+{
+	while(I2C_write(&data, 1)==IN_PROGRESS);
+}
 /**
  * @brief	Fonction d'allumage du capteur.
  */
 void BH1750FVI_powerOn()
 {
-	I2C_register_write(BH1750FVI_ADDR<<1, BH1750FVI_ON);
+	BH1750_write(BH1750FVI_ON);
 }
 
 /**
@@ -96,7 +100,7 @@ void BH1750FVI_powerOn()
  */
 void BH1750FVI_powerDown()
 {
-	I2C_register_write(BH1750FVI_ADDR<<1, BH1750FVI_OFF);
+	BH1750_write(BH1750FVI_OFF);
 }
 
 /**
@@ -104,7 +108,7 @@ void BH1750FVI_powerDown()
  */
 void BH1750FVI_reset()
 {
-	I2C_register_write(BH1750FVI_ADDR<<1, BH1750FVI_RESET);
+	BH1750_write(BH1750FVI_RESET);
 }
 
 /**
@@ -115,7 +119,7 @@ void BH1750FVI_reset()
  */
 void BH1750FVI_measureMode(uint8_t mode)
 {
-	I2C_register_write(BH1750FVI_ADDR<<1, mode);
+	BH1750_write(mode);
 }
 
 
@@ -139,8 +143,8 @@ uint16_t BH1750FVI_readLuminosity()
  */
 uint16_t BH1750FVI_read()
 {
-	uint8_t ret[3];
-	I2C_register_read(BH1750FVI_ADDR<<1, &ret, 2);
+	uint8_t ret[2];
+	while(I2C_write(ret, 2)==IN_PROGRESS);
 	return ret[1] | ((uint16_t)(ret[0])) << 8;
 }
 
