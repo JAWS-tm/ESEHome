@@ -22,6 +22,10 @@ typedef enum
 	PARAM_HYGROMETRY,
 	PARAM_COLOR,
 	PARAM_REFRESH_PERIOD,
+	PARAM_PRESSURE,
+	PARAM_BRIGHTNESS,
+	PARAM_WINDSPEED,
+	PARAM_PLUVIOMETRY,
 
 	PARAM_32_BITS_NB,	//au dessus de ce define, tout les paramètres tiennent sur 32 bits.
 

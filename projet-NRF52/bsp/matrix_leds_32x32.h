@@ -10,6 +10,7 @@
 
 
 #include <stdint.h>
+#include "appli/common/parameters.h"
 
 typedef uint8_t	matrix_t;
 
@@ -21,8 +22,6 @@ typedef uint8_t	matrix_t;
 #define COLOR_CYAN      0b00000011
 #define COLOR_PURPLE    0b00000101
 #define COLOR_WHITE     0b00000111
-
-#define xy_to_index(x, y) (32 * x + y)
 
 
 void MATRIX_init(void);
@@ -38,6 +37,8 @@ void MATRIX_write_number(matrix_t matrix[32][32], uint32_t i, uint32_t j, uint32
 void MATRIX_show_number(matrix_t matrix[32][32], uint32_t color);
 
 void MATRIX_show_temperature(matrix_t matrix[32][32], uint32_t i, uint32_t j, bool_e positif, uint32_t number2, uint32_t number3, uint32_t color);
+
+void MATRIX_show_value(matrix_t matrix[32][32], uint32_t valeur, bool_e positif, uint32_t colorC, param_id_e type, uint32_t colorS);
 
 #endif /* BSP_MATRIX_LEDS_32X32_H_ */
 

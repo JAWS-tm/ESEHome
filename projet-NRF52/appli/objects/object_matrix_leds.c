@@ -7,34 +7,49 @@
 #include "../config.h"
 #include "object_matrix_leds.h"
 #include "bsp/matrix_leds_32x32.h"
+#include "appli/common/parameters.h"
 
 
 #if OBJECT_ID == OBJECT_MATRIX_LEDS
 
-void MATRIX_afficheur(){
+static volatile uint32_t value = 0;
+static volatile param_id_e param_id = PARAM_TEMPERATURE;
+
+void OBJECT_MATRIX_LEDS_value_updated_callback(param_id_e new_param_id, uint32_t new_value){
+	param_id = new_param_id;
+	value = new_value;
+}
+
+void MATRIX_afficheur(uint32_t colorDonnees, uint32_t colorType){
 	typedef enum{
-		INIT,
-		TEST_MATRIX,
-		SLEEP
+		INIT_DATA,
+		INIT_MATRIX,
+		DISPLAY
 	}state_e;
 
-	static state_e state = INIT;
+	static state_e state = INIT_DATA;
 	static matrix_t matrix[32][32];
+	static uint32_t pre_value = -1;
+
 	switch(state){
-	case INIT:
-		MATRIX_show_temperature(matrix, 7, 3, FALSE, 1, 9, COLOR_RED);
-		state = TEST_MATRIX;
+	case INIT_DATA:
+		PARAMETERS_enable(PARAM_TEMPERATURE, 19, TRUE, &OBJECT_MATRIX_LEDS_value_updated_callback);
+		state = INIT_MATRIX;
 		break;
-	case TEST_MATRIX:{
-		MATRIX_display(matrix);
-		//state = SLEEP;
-		break;}
-	case SLEEP:{
-		bool_e wait = FALSE;
-		if(wait == TRUE){
-			state = INIT;
+	case INIT_MATRIX:{
+		if(value != pre_value){
+			bool_e positif = TRUE;
+			if(value < 0)
+				positif = FALSE;
+			MATRIX_show_value(matrix, value, positif, colorDonnees, param_id, colorType);
 		}
-		break;}
+		state = DISPLAY;
+		break;
+	}
+	case DISPLAY:{
+		MATRIX_display(matrix);
+		break;
+	}
 	default:
 		break;
 	}

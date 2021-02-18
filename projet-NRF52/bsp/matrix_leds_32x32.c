@@ -9,6 +9,7 @@
 #include "matrix_leds_32x32.h"
 #include "appli/common/gpio.h"
 #include "appli/common/systick.h"
+#include "appli/common/parameters.h"
 
 
 
@@ -270,79 +271,334 @@ void MATRIX_write_number(matrix_t matrix[32][32], uint32_t i, uint32_t j, uint32
 	}
 }
 
+
 #define WRITE_number(matrix, i, j, number, color) MATRIX_write_number(matrix, i, j, number, color)
 
-void MATRIX_show_number(matrix_t matrix[32][32], uint32_t color){
-	if(!initialized)
-		MATRIX_init();
-	WRITE_number(matrix, 1, 1, 0, color);
-	WRITE_number(matrix, 1, 6, 1, color);
-	WRITE_number(matrix, 1, 11, 2, color);
-	WRITE_number(matrix, 1, 16, 3, color);
-	WRITE_number(matrix, 1, 21, 4, color);
-	WRITE_number(matrix, 1, 26, 5, color);
-
-	WRITE_number(matrix, 7, 1, 6, color);
-	WRITE_number(matrix, 7, 6, 7, color);
-	WRITE_number(matrix, 7, 11, 8, color);
-	WRITE_number(matrix, 7, 16, 9, color);
-}
-
-void MATRIX_celcius(matrix_t matrix[32][32], uint32_t i, uint32_t j, uint32_t color){
-	WRITE_led(i, j, matrix, color);
-	WRITE_led(i, j + 1, matrix, color);
-	WRITE_led(i, j + 2, matrix, color);
-	WRITE_led(i + 1, j, matrix, color);
-	WRITE_led(i + 1, j + 2, matrix, color);
-	WRITE_led(i + 2, j, matrix, color);
-	WRITE_led(i + 2, j + 1, matrix, color);
-	WRITE_led(i + 2, j + 2, matrix, color);
-
-	WRITE_led(i, j + 5, matrix, color);
-	WRITE_led(i, j + 6, matrix, color);
-	WRITE_led(i + 1, j + 4, matrix, color);
-	WRITE_led(i + 2, j + 4, matrix, color);
-	WRITE_led(i + 3, j + 4, matrix, color);
-	WRITE_led(i + 4, j + 5, matrix, color);
-	WRITE_led(i + 4, j + 6, matrix, color);
-	WRITE_led(i, j + 7, matrix, color);
-	WRITE_led(i + 4, j + 7, matrix, color);
-}
-
-#define WRITE_celcius(matrix, i, j, color) MATRIX_celcius(matrix, i, j, color)
 
 void MATRIX_positif(matrix_t matrix[32][32], uint32_t i, uint32_t j, uint32_t color){
-	WRITE_led(i, j + 2, matrix, color);
+	WRITE_led(i + 1, j, matrix, color);
+	WRITE_led(i, j + 1, matrix, color);
+	WRITE_led(i + 1, j + 1, matrix, color);
+	WRITE_led(i + 2, j + 1, matrix, color);
 	WRITE_led(i + 1, j + 2, matrix, color);
-	WRITE_led(i + 2, j, matrix, color);
-	WRITE_led(i + 2, j + 1, matrix, color);
-	WRITE_led(i + 2, j + 2, matrix, color);
-	WRITE_led(i + 2, j + 3, matrix, color);
-	WRITE_led(i + 2, j + 4, matrix, color);
-	WRITE_led(i + 3, j + 2, matrix, color);
-	WRITE_led(i + 4, j + 2, matrix, color);
-}
-
-void MATRIX_negatif(matrix_t matrix[32][32], uint32_t i, uint32_t j, uint32_t color){
-	WRITE_led(i + 2, j, matrix, color);
-	WRITE_led(i + 2, j + 1, matrix, color);
-	WRITE_led(i + 2, j + 2, matrix, color);
-	WRITE_led(i + 2, j + 3, matrix, color);
-	WRITE_led(i + 2, j + 4, matrix, color);
 }
 
 #define WRITE_plus(matrix, i, j, color)		MATRIX_positif(matrix, i, j, color)
 
+void MATRIX_negatif(matrix_t matrix[32][32], uint32_t i, uint32_t j, uint32_t color){
+	WRITE_led(i + 1, j, matrix, color);
+	WRITE_led(i + 1, j + 1, matrix, color);
+	WRITE_led(i + 1, j + 2, matrix, color);
+}
+
 #define WRITE_moins(matrix, i, j, color)	MATRIX_negatif(matrix, i, j, color)
 
-void MATRIX_show_temperature(matrix_t matrix[32][32], uint32_t i, uint32_t j, bool_e positif, uint32_t number1, uint32_t number2, uint32_t color){
-	if(positif)
-		WRITE_plus(matrix, i, j, color);
-	else
-		WRITE_moins(matrix, i, j, color);
-	WRITE_number(matrix, i, j + 6, number1, color);
-	WRITE_number(matrix, i, j + 12, number2, color);
-	WRITE_celcius(matrix, i, j + 18, color);
+void WRITE_tmp_sigle(matrix_t matrix[32][32], uint32_t i, uint32_t j, uint32_t color){
+	WRITE_led(i, j, matrix, color);
+	WRITE_led(i + 1, j, matrix, color);
+	WRITE_led(i, j + 1, matrix, color);
+	WRITE_led(i + 1, j + 1, matrix, color);
+
+	WRITE_led(i, j + 4, matrix, color);
+	WRITE_led(i, j + 5, matrix, color);
+	WRITE_led(i, j + 11, matrix, color);
+	WRITE_led(i, j + 12, matrix, color);
+	WRITE_led(i, j + 13, matrix, color);
+	WRITE_led(i, j + 16, matrix, color);
+	WRITE_led(i, j + 17, matrix, color);
+	WRITE_led(i, j + 18, matrix, color);
+	WRITE_led(i, j + 21, matrix, color);
+	WRITE_led(i, j + 22, matrix, color);
+	WRITE_led(i, j + 23, matrix, color);
+
+	WRITE_led(i + 1, j + 3, matrix, color);
+	WRITE_led(i + 1, j + 12, matrix, color);
+	WRITE_led(i + 1, j + 16, matrix, color);
+	WRITE_led(i + 1, j + 17, matrix, color);
+	WRITE_led(i + 1, j + 18, matrix, color);
+	WRITE_led(i + 1, j + 21, matrix, color);
+	WRITE_led(i + 1, j + 22, matrix, color);
+	WRITE_led(i + 1, j + 23, matrix, color);
+
+	WRITE_led(i + 2, j + 4, matrix, color);
+	WRITE_led(i + 2, j + 5, matrix, color);
+	WRITE_led(i + 2, j + 12, matrix, color);
+	WRITE_led(i + 2, j + 16, matrix, color);
+	WRITE_led(i + 2, j + 18, matrix, color);
+	WRITE_led(i + 2, j + 21, matrix, color);
+}
+
+void WRITE_hum_sigle(matrix_t matrix[32][32], uint32_t i, uint32_t j, uint32_t color){
+	WRITE_led(i, j, matrix, color);
+	WRITE_led(i, j + 1, matrix, color);
+	WRITE_led(i, j + 4, matrix, color);
+	WRITE_led(i, j + 11, matrix, color);
+	WRITE_led(i, j + 13, matrix, color);
+	WRITE_led(i, j + 16, matrix, color);
+	WRITE_led(i, j + 18, matrix, color);
+	WRITE_led(i, j + 21, matrix, color);
+	WRITE_led(i, j + 22, matrix, color);
+	WRITE_led(i, j + 23, matrix, color);
+
+	WRITE_led(i + 1, j, matrix, color);
+	WRITE_led(i + 1, j + 1, matrix, color);
+	WRITE_led(i + 1, j + 3, matrix, color);
+	WRITE_led(i + 1, j + 5, matrix, color);
+	WRITE_led(i + 1, j + 6, matrix, color);
+	WRITE_led(i + 1, j + 11, matrix, color);
+	WRITE_led(i + 1, j + 12, matrix, color);
+	WRITE_led(i + 1, j + 13, matrix, color);
+	WRITE_led(i + 1, j + 16, matrix, color);
+	WRITE_led(i + 1, j + 18, matrix, color);
+	WRITE_led(i + 1, j + 21, matrix, color);
+	WRITE_led(i + 1, j + 22, matrix, color);
+	WRITE_led(i + 1, j + 23, matrix, color);
+
+	WRITE_led(i + 2, j + 2, matrix, color);
+	WRITE_led(i + 2, j + 5, matrix, color);
+	WRITE_led(i + 2, j + 6, matrix, color);
+	WRITE_led(i + 2, j + 11, matrix, color);
+	WRITE_led(i + 2, j + 13, matrix, color);
+	WRITE_led(i + 2, j + 16, matrix, color);
+	WRITE_led(i + 2, j + 17, matrix, color);
+	WRITE_led(i + 2, j + 18, matrix, color);
+	WRITE_led(i + 2, j + 13, matrix, color);
+	WRITE_led(i + 2, j + 16, matrix, color);
+	WRITE_led(i + 2, j + 17, matrix, color);
+	WRITE_led(i + 2, j + 18, matrix, color);
+	WRITE_led(i + 2, j + 21, matrix, color);
+	WRITE_led(i + 2, j + 23, matrix, color);
+}
+
+void WRITE_lum_sigle(matrix_t matrix[32][32], uint32_t i, uint32_t j, uint32_t color){
+	WRITE_led(i, j, matrix, color);
+	WRITE_led(i, j + 1, matrix, color);
+	WRITE_led(i, j + 4, matrix, color);
+	WRITE_led(i, j + 11, matrix, color);
+	WRITE_led(i, j + 16, matrix, color);
+	WRITE_led(i, j + 18, matrix, color);
+	WRITE_led(i, j + 21, matrix, color);
+	WRITE_led(i, j + 22, matrix, color);
+	WRITE_led(i, j + 23, matrix, color);
+
+	WRITE_led(i + 1, j, matrix, color);
+	WRITE_led(i + 1, j + 1, matrix, color);
+	WRITE_led(i + 1, j + 3, matrix, color);
+	WRITE_led(i + 1, j + 5, matrix, color);
+	WRITE_led(i + 1, j + 6, matrix, color);
+	WRITE_led(i + 1, j + 11, matrix, color);
+	WRITE_led(i + 1, j + 16, matrix, color);
+	WRITE_led(i + 1, j + 18, matrix, color);
+	WRITE_led(i + 1, j + 21, matrix, color);
+	WRITE_led(i + 1, j + 22, matrix, color);
+	WRITE_led(i + 1, j + 23, matrix, color);
+
+	WRITE_led(i + 2, j + 2, matrix, color);
+	WRITE_led(i + 2, j + 5, matrix, color);
+	WRITE_led(i + 2, j + 6, matrix, color);
+	WRITE_led(i + 2, j + 11, matrix, color);
+	WRITE_led(i + 2, j + 12, matrix, color);
+	WRITE_led(i + 2, j + 13, matrix, color);
+	WRITE_led(i + 2, j + 16, matrix, color);
+	WRITE_led(i + 2, j + 18, matrix, color);
+	WRITE_led(i + 2, j + 21, matrix, color);
+	WRITE_led(i + 2, j + 23, matrix, color);
+
+}
+
+void WRITE_pres_sigle(matrix_t matrix[32][32], uint32_t i, uint32_t j, uint32_t color){
+	WRITE_led(i, j, matrix, color);
+	WRITE_led(i, j + 3, matrix, color);
+	WRITE_led(i, j + 4, matrix, color);
+	WRITE_led(i, j + 5, matrix, color);
+	WRITE_led(i, j + 7, matrix, color);
+	WRITE_led(i, j + 11, matrix, color);
+	WRITE_led(i, j + 12, matrix, color);
+	WRITE_led(i, j + 13, matrix, color);
+	WRITE_led(i, j + 16, matrix, color);
+	WRITE_led(i, j + 17, matrix, color);
+	WRITE_led(i, j + 18, matrix, color);
+	WRITE_led(i, j + 21, matrix, color);
+	WRITE_led(i, j + 22, matrix, color);
+	WRITE_led(i, j + 23, matrix, color);
+
+	WRITE_led(i + 1, j, matrix, color);
+	WRITE_led(i + 1, j + 1, matrix, color);
+	WRITE_led(i + 1, j + 2, matrix, color);
+	WRITE_led(i + 1, j + 3, matrix, color);
+	WRITE_led(i + 1, j + 4, matrix, color);
+	WRITE_led(i + 1, j + 5, matrix, color);
+	WRITE_led(i + 1, j + 6, matrix, color);
+	WRITE_led(i + 1, j + 7, matrix, color);
+	WRITE_led(i + 1, j + 8, matrix, color);
+	WRITE_led(i + 1, j + 11, matrix, color);
+	WRITE_led(i + 1, j + 12, matrix, color);
+	WRITE_led(i + 1, j + 13, matrix, color);
+	WRITE_led(i + 1, j + 21, matrix, color);
+	WRITE_led(i + 1, j + 22, matrix, color);
+
+	WRITE_led(i + 2, j + 1, matrix, color);
+	WRITE_led(i + 2, j + 2, matrix, color);
+	WRITE_led(i + 2, j + 6, matrix, color);
+	WRITE_led(i + 2, j + 8, matrix, color);
+	WRITE_led(i + 2, j + 11, matrix, color);
+	WRITE_led(i + 2, j + 16, matrix, color);
+	WRITE_led(i + 2, j + 18, matrix, color);
+	WRITE_led(i + 2, j + 21, matrix, color);
+	WRITE_led(i + 2, j + 22, matrix, color);
+	WRITE_led(i + 2, j + 23, matrix, color);
+}
+
+void WRITE_wind_sigle(matrix_t matrix[32][32], uint32_t i, uint32_t j, uint32_t color){
+	WRITE_led(i, j, matrix, color);
+	WRITE_led(i, j + 2, matrix, color);
+	WRITE_led(i, j + 5, matrix, color);
+	WRITE_led(i, j + 6, matrix, color);
+	WRITE_led(i, j + 7, matrix, color);
+	WRITE_led(i, j + 11, matrix, color);
+	WRITE_led(i, j + 14, matrix, color);
+	WRITE_led(i, j + 16, matrix, color);
+
+	WRITE_led(i + 1, j, matrix, color);
+	WRITE_led(i + 1, j + 1, matrix, color);
+	WRITE_led(i + 1, j + 5, matrix, color);
+	WRITE_led(i + 1, j + 6, matrix, color);
+	WRITE_led(i + 1, j + 7, matrix, color);
+	WRITE_led(i + 1, j + 10, matrix, color);
+	WRITE_led(i + 1, j + 14, matrix, color);
+	WRITE_led(i + 1, j + 15, matrix, color);
+	WRITE_led(i + 1, j + 16, matrix, color);
+
+	WRITE_led(i + 2, j, matrix, color);
+	WRITE_led(i + 2, j + 2, matrix, color);
+	WRITE_led(i + 2, j + 5, matrix, color);
+	WRITE_led(i + 2, j + 7, matrix, color);
+	WRITE_led(i + 2, j + 9, matrix, color);
+	WRITE_led(i + 2, j + 14, matrix, color);
+	WRITE_led(i + 2, j + 16, matrix, color);
+}
+
+void WRITE_plu_sigle(matrix_t matrix[32][32], uint32_t i, uint32_t j, uint32_t color){
+	WRITE_led(i, j, matrix, color);
+	WRITE_led(i, j + 1, matrix, color);
+	WRITE_led(i, j + 2, matrix, color);
+	WRITE_led(i, j + 4, matrix, color);
+	WRITE_led(i, j + 5, matrix, color);
+	WRITE_led(i, j + 6, matrix, color);
+	WRITE_led(i, j + 11, matrix, color);
+	WRITE_led(i, j + 12, matrix, color);
+	WRITE_led(i, j + 13, matrix, color);
+	WRITE_led(i, j + 16, matrix, color);
+	WRITE_led(i, j + 21, matrix, color);
+	WRITE_led(i, j + 23, matrix, color);
+
+	WRITE_led(i + 1, j, matrix, color);
+	WRITE_led(i + 1, j + 1, matrix, color);
+	WRITE_led(i + 1, j + 2, matrix, color);
+	WRITE_led(i + 1, j + 4, matrix, color);
+	WRITE_led(i + 1, j + 5, matrix, color);
+	WRITE_led(i + 1, j + 6, matrix, color);
+	WRITE_led(i + 1, j + 11, matrix, color);
+	WRITE_led(i + 1, j + 12, matrix, color);
+	WRITE_led(i + 1, j + 13, matrix, color);
+	WRITE_led(i + 1, j + 16, matrix, color);
+	WRITE_led(i + 1, j + 21, matrix, color);
+	WRITE_led(i + 1, j + 23, matrix, color);
+
+	WRITE_led(i + 2, j, matrix, color);
+	WRITE_led(i + 2, j + 2, matrix, color);
+	WRITE_led(i + 2, j + 4, matrix, color);
+	WRITE_led(i + 2, j + 6, matrix, color);
+	WRITE_led(i + 2, j + 11, matrix, color);
+	WRITE_led(i + 2, j + 16, matrix, color);
+	WRITE_led(i + 2, j + 17, matrix, color);
+	WRITE_led(i + 2, j + 18, matrix, color);
+	WRITE_led(i + 2, j + 21, matrix, color);
+	WRITE_led(i + 2, j + 22, matrix, color);
+	WRITE_led(i + 2, j + 23, matrix, color);
+}
+
+void MATRIX_show_value(matrix_t matrix[32][32], uint32_t valeur, bool_e positif, uint32_t colorC, param_id_e type, uint32_t colorS){
+	if(!initialized)
+		MATRIX_init();
+
+	//on définit les coordonnées
+	uint32_t ligne = 7;
+	uint32_t colonne = 8;
+
+	//on considere que la valeur est inférieur a 9999
+	uint32_t thousands = valeur / 1000;
+	valeur = valeur - thousands * 1000;
+
+	uint32_t hundreds = valeur / 100;
+	valeur = valeur - hundreds * 100;
+
+	uint32_t ten = valeur / 10;
+	valeur = valeur - ten * 10;
+
+	uint32_t unit = valeur;
+
+	if(type == PARAM_TEMPERATURE){
+		if(positif){
+			WRITE_plus(matrix, 8, 3, colorC);
+		}else{
+			WRITE_moins(matrix, 8, 3, colorC);
+		}
+	}
+
+	if(thousands == 0){
+		WRITE_number(matrix, ligne, colonne, thousands, COLOR_BLACK);
+	}else{
+		WRITE_number(matrix, ligne, colonne, thousands, colorC);
+	}
+
+	if(thousands == 0 && hundreds == 0){
+		WRITE_number(matrix, ligne, colonne + 6, hundreds, COLOR_BLACK);
+	}else{
+		WRITE_number(matrix, ligne, colonne + 6, hundreds, colorC);
+	}
+
+	if(thousands == 0 && hundreds == 0 && ten == 0){
+		WRITE_number(matrix, ligne, colonne + 12, ten, COLOR_BLACK);
+	}else{
+		WRITE_number(matrix, ligne, colonne + 12, ten, colorC);
+	}
+
+	WRITE_number(matrix, ligne, colonne + 18, unit, colorC);
+
+	uint32_t ligneS = 17;
+	uint32_t colonneS = 4;
+
+	switch(type){
+	case PARAM_TEMPERATURE:{
+		WRITE_tmp_sigle(matrix, ligneS, colonneS, colorS);
+		break;
+	}
+	case PARAM_HYGROMETRY:{
+		WRITE_hum_sigle(matrix, ligneS, colonneS, colorS);
+		break;
+	}
+	case PARAM_BRIGHTNESS:{
+		WRITE_lum_sigle(matrix, ligneS, colonneS, colorS);
+		break;
+	}
+	case PARAM_PRESSURE:{
+		WRITE_pres_sigle(matrix, ligneS, colonneS, colorS);
+		break;
+	}
+	case PARAM_WINDSPEED:{
+		WRITE_wind_sigle(matrix, ligneS, colonneS, colorS);
+		break;
+	}
+	case PARAM_PLUVIOMETRY:{
+		WRITE_plu_sigle(matrix, ligneS, colonneS, colorS);
+		break;
+	}
+	default:
+		break;
+	}
+
+
 }
 #endif
 
