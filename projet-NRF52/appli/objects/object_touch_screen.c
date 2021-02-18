@@ -5,11 +5,14 @@
  *      Author: verhasya
  */
 
-
-#include "object_touch_screen.h"
-
+#include "../config.h"
 #if OBJECT_ID == OBJECT_TOUCH_SCREEN
 
+#include "object_touch_screen.h"
+#include "../bsp/ili9341/ili9341_fonts.h"
+#include "../bsp/ili9341/nrf_lcd.h"
+#include "nrfx_spi.h"
+#include "bsp/ili9341/ili9341_xpt2046.h"
 
 
 extern const nrf_lcd_t nrf_lcd_ili9341;

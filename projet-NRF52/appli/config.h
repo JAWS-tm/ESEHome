@@ -140,14 +140,17 @@
 	#endif
 
 	#if OBJECT_ID == OBJECT_RFID
+
+		#define SPI_INSTANCE		0
+		#define SPI_SCK_PIN			12
+		#define SPI_MISO_PIN 		14
+		#define SPI_MOSI_PIN		13
+
 		#define RC522_RST_PIN   11
-		#define RC522_MOSI_PIN  13
-		#define RC522_MISO_PIN 14
 		#define RC522_IRQ_PIN 15
-		#define RC522_SCK_PIN 12
 		#define RC522_CS_PIN	25
 		#define USE_RC522	1
-		#define RC522_SPI_INSTANCE	0
+
 	#endif
 
 
@@ -159,14 +162,18 @@
 	#if OBJECT_ID == OBJECT_TOUCH_SCREEN
 		#define USE_ILI9341				1
 		#define ILI9341_ENABLED			1
-		#define ILI9341_SPI_INSTANCE	0
+
+		#define SPI_INSTANCE		0
+		#define SPI_SCK_PIN			12
+		#define SPI_MISO_PIN 		14
+		#define SPI_MOSI_PIN		13
+
 		#define ILI9341_DC_PIN			11
-		#define ILI9341_SCK_PIN			12
-		#define ILI9341_MISO_PIN 		14
-		#define ILI9341_MOSI_PIN		13
 		#define	ILI9341_SS_PIN			9
 		#define ILI9341_RST_PIN			10
-		#define PIN_CS_TOUCH 			22
+		#define XPT2046_PIN_CS 			22
+		#define XPT2046_PIN_IRQ			15
+
 		#define ILI9341_HEIGHT			240
 		#define ILI9341_WIDTH			320
 		#define USE_FONT11x18			1

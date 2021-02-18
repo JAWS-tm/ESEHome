@@ -15,7 +15,7 @@
 #include "app_error.h"
 
 #if OBJECT_ID == OBJECT_RFID
-
+#include "nrf52_spi.h"
 
 static uint8_t m_tx_buf[2];// = TEST_STRING; /**< TX buffer. */
 static uint8_t m_rx_buf[1]; /**< RX buffer. */
@@ -24,23 +24,13 @@ static const uint8_t m_length = 1; /**< Transfer length. */
 static const uint8_t m_tx_length = 2; /**< Transfer length. */
 
 
-static const nrfx_spi_t spi = NRFX_SPI_INSTANCE(RC522_SPI_INSTANCE);
-
-
 void mfrc522_write(uint8_t reg, uint8_t data)
 {
 	uint8_t data_to_send[2];
 	data_to_send[0] = ((reg<<1)&0x7E);	//on envoie l'adresse du registre que l'on souhaite écrire, décalée au milieu de l'octet. Le bit de poids fort à 0 indique qu'on souhaite écrire !
 	data_to_send[1] = data;
 
-	nrfx_spi_xfer_desc_t desc = {
-	.p_tx_buffer = data_to_send,
-	.tx_length = 2,
-	.p_rx_buffer = NULL,
-	.rx_length = 0
-	};
-
-	nrfx_spi_xfer(&spi, &desc, 0);
+	SPI_write(data_to_send, 2);
 }
 
 uint8_t mfrc522_read(uint8_t reg)
@@ -50,29 +40,12 @@ uint8_t mfrc522_read(uint8_t reg)
 	data_to_send[1] = 0x00;
 	uint8_t data_to_read[2];
 
-	nrfx_spi_xfer_desc_t desc = {
-	.p_tx_buffer = data_to_send,
-	.tx_length = 2,
-	.p_rx_buffer = data_to_read,
-	.rx_length = 2
-	};
-
-	nrfx_spi_xfer(&spi, &desc, 0);
+	SPI_xfer(data_to_send, 2, data_to_read, 2);
 
 	return data_to_read[1];	//on retourne l'octet lu lors du second échange.
 }
 
 
-static inline void spi_xfer(const void * datawrite, size_t sizewrite, void * dataread, size_t sizeread)
-{
-	nrfx_spi_xfer_desc_t desc = {
-		.p_tx_buffer = datawrite,
-		.tx_length = sizewrite,
-		.p_rx_buffer = dataread,
-		.rx_length = sizeread
-	};
-    APP_ERROR_CHECK(nrfx_spi_xfer(&spi, &desc, 0));
-}
 /*
 static ret_code_t hardware_init(void)
 {
@@ -97,7 +70,7 @@ void PCD_WriteRegister(PCD_Register reg, byte value){
         m_tx_buf[0] = reg &0x7E;
         m_tx_buf[1] = value;
         memset(m_rx_buf, 0, m_length);
-        spi_xfer(&m_tx_buf[0], m_length, NULL, 0);
+        SPI_xfer(&m_tx_buf[0], m_length, NULL, 0);
         nrf_gpio_pin_write(RC522_CS_PIN,1);
 }
 void PCD_WriteRegister_long(PCD_Register reg, byte count, byte *values){
@@ -105,13 +78,13 @@ void PCD_WriteRegister_long(PCD_Register reg, byte count, byte *values){
         m_tx_buf[0] = reg & 0x7E;
         memset(m_rx_buf, 0, m_length);
 
-        spi_xfer(&m_tx_buf[0], m_length, NULL, 0);
+        SPI_xfer(&m_tx_buf[0], m_length, NULL, 0);
 
 
 	for (byte index = 0; index < count; index++) {
 	  memset(m_rx_buf, 0, m_length);
          // debug_info("long value[%d]:%x",index,values[index]);
-          spi_xfer(&values[index], m_length, NULL, 0);
+          SPI_xfer(&values[index], m_length, NULL, 0);
 
 	}
 
@@ -121,12 +94,12 @@ byte PCD_ReadRegister(PCD_Register reg){
         nrf_gpio_pin_write(RC522_CS_PIN,0);
         m_tx_buf[0] = (0x80 | (reg & 0x7E));
         memset(m_rx_buf, 0, m_length);
-        spi_xfer(&m_tx_buf[0], m_length, m_rx_buf, m_length);
+        SPI_xfer(&m_tx_buf[0], m_length, m_rx_buf, m_length);
 
         memset(m_rx_buf, 0, m_length);
         uint8_t _reg;
         _reg = 0x00;
-        spi_xfer(&_reg, m_length, m_rx_buf, m_length);
+        SPI_xfer(&_reg, m_length, m_rx_buf, m_length);
 
 
         nrf_gpio_pin_write(RC522_CS_PIN,1);
@@ -144,14 +117,14 @@ void PCD_ReadRegister_long(PCD_Register reg, byte count, byte *values, byte rxAl
 
         memset(m_rx_buf, 0, m_length);
 
-        spi_xfer(&address, m_length, m_rx_buf, m_length);
+        SPI_xfer(&address, m_length, m_rx_buf, m_length);
 
         if (rxAlign) {		// Only update bit positions rxAlign..7 in values[0]
 		// Create bit mask for bit positions rxAlign..7
 		byte mask = (0xFF << rxAlign) & 0xFF;
 		// Read value and tell that we want to read the same address again.
         memset(m_rx_buf, 0, m_length);
-        spi_xfer(&address, m_length, m_rx_buf, m_length);
+        SPI_xfer(&address, m_length, m_rx_buf, m_length);
         byte value = m_rx_buf[0];
 		// Apply mask to both current value of values[0] and the new data in value.
 		values[0] = (values[0] & ~mask) | (value & mask);
@@ -160,14 +133,14 @@ void PCD_ReadRegister_long(PCD_Register reg, byte count, byte *values, byte rxAl
 
         while (index < count) {
         memset(m_rx_buf, 0, m_length);
-        spi_xfer(&address, m_length, m_rx_buf, m_length);
+        SPI_xfer(&address, m_length, m_rx_buf, m_length);
         values[index] = m_rx_buf[0];
         index++;
 	}
         memset(m_rx_buf, 0, m_length);
 
         uint8_t _reg = 0x00;
-        spi_xfer(&_reg, m_length, m_rx_buf, m_length);
+        SPI_xfer(&_reg, m_length, m_rx_buf, m_length);
         values[index] = m_rx_buf[0];
         nrf_gpio_pin_write(RC522_CS_PIN,1);
 }
