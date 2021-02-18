@@ -198,8 +198,7 @@ int main(void)
     		#endif
 
     		#if OBJECT_ID == OBJECT_MATRIX_LEDS
-				#include "bsp/matrix_leds_32x32.h"
-    			MATRIX_afficheur(COLOR_BLUE, COLOR_PURPLE);
+
 
     		#endif
 

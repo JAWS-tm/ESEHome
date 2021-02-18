@@ -123,6 +123,8 @@ void SECRETARY_frame_parse(nrf_esb_payload_t * payload, msg_source_e msg_source)
 				{
 					//le message est pour moi
 					RF_DIALOG_process_rx_basestation(payload);
+					if(msg_source == MSG_SOURCE_RF)
+						SECRETARY_process_msg_to_uart(payload);	//je renvoie le message sur l'UART
 				}
 				else
 				{
@@ -143,6 +145,8 @@ void SECRETARY_frame_parse(nrf_esb_payload_t * payload, msg_source_e msg_source)
 				{
 					//super, le message est pour moi !
 					RF_DIALOG_process_rx_object(payload);
+					if(msg_source == MSG_SOURCE_RF)
+						SECRETARY_process_msg_to_uart(payload);	//je renvoie le message sur l'UART
 				}
 				else
 				{
@@ -185,6 +189,15 @@ void SECRETARY_process_msg_from_uart(uint8_t size, uint8_t * datas)
 	SECRETARY_frame_parse(&fake_payload, MSG_SOURCE_UART);
 }
 
+
+void SECRETARY_process_msg_to_uart(nrf_esb_payload_t * payload)
+{
+	SERIAL_DIALOG_putc(0xBA);
+	SERIAL_DIALOG_putc(payload->length);
+	for(uint8_t i=0; i<payload->length; i++)
+		SERIAL_DIALOG_putc(payload->data[i]);
+	SERIAL_DIALOG_putc(0xDA);
+}
 
 void SECRETARY_send_msg(uint8_t size, uint8_t * datas)
 {

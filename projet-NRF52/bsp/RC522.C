@@ -15,6 +15,7 @@
 #include "app_error.h"
 
 #if OBJECT_ID == OBJECT_RFID
+#if USE_RC522
 #include "nrf52_spi.h"
 
 static uint8_t m_tx_buf[2];// = TEST_STRING; /**< TX buffer. */
@@ -347,3 +348,4 @@ uint8_t mfrc522_get_card_serial(uint8_t * serial_out)
 
 #endif
 
+#endif

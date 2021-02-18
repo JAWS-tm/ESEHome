@@ -58,6 +58,8 @@ void PARAMETERS_enable(param_id_e param_id, int32_t default_value, bool_e value_
 //  soit suite à la station qui met à jour une valeur (accessible sur demande de l'objet)
 void PARAMETERS_update(param_id_e param_id, int32_t new_value);
 
+void PARAMETERS_update_custom(param_id_e param_id, uint8_t * datas);
+
 void PARAMETERS_restore_from_flash(void);
 
 void PARAMETERS_read_from_flash(param_id_e param_id);

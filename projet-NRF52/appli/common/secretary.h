@@ -21,6 +21,8 @@ void SECRETARY_init(void);
 
 void SECRETARY_process_msg_from_uart(uint8_t size, uint8_t * datas);
 
+void SECRETARY_process_msg_to_uart(nrf_esb_payload_t * payload);
+
 void SECRETARY_send_msg(uint8_t size, uint8_t * datas);
 
 _Bool SECRETARY_toggle_debug_mode(void);
