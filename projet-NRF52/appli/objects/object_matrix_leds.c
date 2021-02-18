@@ -20,6 +20,8 @@ void OBJECT_MATRIX_LEDS_value_updated_callback(param_id_e new_param_id, uint32_t
 	value = new_value;
 }
 
+//En commentaire une version du code affichant une donnée en brut
+
 void MATRIX_afficheur(uint32_t colorDonnees, uint32_t colorType){
 	typedef enum{
 		INIT_DATA,
@@ -33,6 +35,7 @@ void MATRIX_afficheur(uint32_t colorDonnees, uint32_t colorType){
 
 	switch(state){
 	case INIT_DATA:
+		//value = 28;
 		PARAMETERS_enable(PARAM_TEMPERATURE, 19, TRUE, &OBJECT_MATRIX_LEDS_value_updated_callback);
 		state = INIT_MATRIX;
 		break;
@@ -43,6 +46,7 @@ void MATRIX_afficheur(uint32_t colorDonnees, uint32_t colorType){
 				positif = FALSE;
 			MATRIX_show_value(matrix, value, positif, colorDonnees, param_id, colorType);
 		}
+		//MATRIX_show_value(matrix, value, positif, colorDonnees, param_id, colorType);
 		state = DISPLAY;
 		break;
 	}
