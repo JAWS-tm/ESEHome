@@ -29,12 +29,6 @@ bool_e XPT2046_getCoordinates(Sint16 * pX, Sint16 * pY, XPT2046_coordinateMode_e
 bool_e XPT2046_getMedianCoordinates(Sint16 * pX, Sint16 * pY, XPT2046_coordinateMode_e coordinateMode);
 bool_e XPT2046_getAverageCoordinates(Sint16 * pX, Sint16 * pY, Uint8 nSamples, XPT2046_coordinateMode_e coordinateMode);
 
-#ifndef XPT2046_SPI
-	#define XPT2046_SPI           	SPI1
-#endif
-
-#define PIN_CS_TOUCH GPIOA, GPIO_PIN_11
-#define PIN_IRQ_TOUCH GPIOB, GPIO_PIN_3		//Attention, PB3 n'est pas utilisable sur la Nucleo (suggestion -> PB5). OK sur la Bluepill.
 
 #define XPT2046_USE_PIN_IRQ_TO_CHECK_TOUCH
 

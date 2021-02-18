@@ -222,7 +222,11 @@ typedef struct {
  * @{
  */
 
+ret_code_t ILI9341_init(void);
+
 void ILI9341_Fill(uint16_t color);
+
+void ILI9341_INT_Fill(uint16_t x0, uint16_t y0, uint16_t x1, uint16_t y1, uint16_t color);
 
 void ILI9341_Putc(uint16_t x, uint16_t y, char c, FontDef_t* font, uint16_t foreground, uint16_t background);
 

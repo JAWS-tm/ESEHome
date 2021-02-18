@@ -35,6 +35,7 @@ SRC_FILES += \
   $(PROJ_DIR)/bsp/bh1750fvi.c \
   $(PROJ_DIR)/bsp/RC522.c \
   $(PROJ_DIR)/bsp/nrf52_i2c.c \
+  $(PROJ_DIR)/bsp/nrf52_spi.c \
   $(PROJ_DIR)/bsp/ili9341/ili9341.c \
   $(PROJ_DIR)/bsp/ili9341/ili9341_fonts.c \
   $(PROJ_DIR)/bsp/ili9341/ili9341_xpt2046.c \

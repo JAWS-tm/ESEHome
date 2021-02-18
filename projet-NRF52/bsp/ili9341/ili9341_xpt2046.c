@@ -31,8 +31,9 @@
 
 #if USE_XPT2046
 #include "stdarg.h"
-
-
+#include "ili9341.h"
+#include "appli/common/gpio.h"
+#include "bsp/nrf52_spi.h"
 
 // Définition du bit de départ (S n7)
 #define CONTROL_BYTE_START									0b10000000
@@ -74,8 +75,8 @@ typedef Uint8 controlByte_t;
 
 
 
-#define XPT2046_CS_SET() 		GPIO_write(PIN_CS_TOUCH, 1)
-#define XPT2046_CS_RESET() 		GPIO_write(PIN_CS_TOUCH, 0)
+#define XPT2046_CS_SET() 		GPIO_write(XPT2046_PIN_CS, 1)
+#define XPT2046_CS_RESET() 		GPIO_write(XPT2046_PIN_CS, 0)
 
 static Uint16 XPT2046_getReading(controlByte_t controlByte);
 static void XPT2046_convertCoordinateScreenMode(Sint16 * pX, Sint16 * pY);
@@ -86,8 +87,8 @@ static void XPT2046_convertCoordinateScreenMode(Sint16 * pX, Sint16 * pY);
  */
 void XPT2046_demo(void)
 {
-	ILI9341_Init();	//initialisation de l'�cran TFT
-	ILI9341_Rotate(ILI9341_Orientation_Landscape_2);
+	ILI9341_init();	//initialisation de l'�cran TFT
+	//ILI9341_Rotate(ILI9341_Orientation_Landscape_2);
 	ILI9341_Fill(ILI9341_COLOR_WHITE);
 	ILI9341_DrawCircle(20,20,5,ILI9341_COLOR_BLUE);
 	ILI9341_DrawLine(20,20,100,20,ILI9341_COLOR_RED);
@@ -124,9 +125,10 @@ void XPT2046_demo(void)
 void XPT2046_init(void){
 
 	// Initialise SPI
-	SPI_Init(XPT2046_SPI);
-	BSP_GPIO_PinCfg(PIN_CS_TOUCH,GPIO_MODE_OUTPUT_PP,GPIO_NOPULL,GPIO_SPEED_FREQ_HIGH);
-	BSP_GPIO_PinCfg(PIN_IRQ_TOUCH,GPIO_MODE_INPUT,GPIO_PULLDOWN,GPIO_SPEED_FREQ_HIGH);
+	SPI_init();
+	GPIO_configure(XPT2046_PIN_CS, NRF_GPIO_PIN_NOPULL, TRUE);
+	GPIO_configure(XPT2046_PIN_IRQ, NRF_GPIO_PIN_PULLDOWN, TRUE);
+
 	XPT2046_CS_SET();
 
 	XPT2046_getReading(CONTROL_BYTE_START
@@ -137,10 +139,10 @@ void XPT2046_init(void){
 }
 
 /*
- * @brief Reconfigure SPI speed (currently not working)
+ * @brief Reconfigure SPI speed
  */
 void XPT2046_setConfig(void){
-	SPI_setBaudRate(XPT2046_SPI, SPI_BAUDRATEPRESCALER_256);
+	SPI_setFrequency(SPI_FREQUENCY_FREQUENCY_K125);
 }
 
 /*
@@ -185,7 +187,7 @@ bool_e XPT2046_getCoordinates(Sint16 * pX, Sint16 * pY, XPT2046_coordinateMode_e
 	}
 
 #ifdef XPT2046_USE_PIN_IRQ_TO_CHECK_TOUCH
-	if(!HAL_GPIO_ReadPin(PIN_IRQ_TOUCH))
+	if(!GPIO_read(XPT2046_PIN_IRQ))
 		ret = TRUE;
 	else
 		ret =  FALSE;
@@ -317,12 +319,14 @@ bool_e XPT2046_getMedianCoordinates(Sint16 * pX, Sint16 * pY, XPT2046_coordinate
 static Uint16 XPT2046_getReading(controlByte_t controlByte){
 
 	Uint16 ret;
-
+	uint8_t tmp8;
 	XPT2046_CS_RESET();
-	SPI_WriteNoRegister(XPT2046_SPI,controlByte);
+	SPI_write(&controlByte, 1);
 
-	ret = (Uint16)((Uint16)(SPI_ReadNoRegister(XPT2046_SPI)) << 5);
-	ret |= (Uint16)(SPI_ReadNoRegister(XPT2046_SPI) >> (Uint16)(3));
+	SPI_read(&tmp8, 1);
+	ret = (Uint16)((Uint16)(tmp8 << 5));
+	SPI_read(&tmp8, 1);
+	ret |= (Uint16)(tmp8 >> (Uint16)(3));
 
 	XPT2046_CS_SET();
 
