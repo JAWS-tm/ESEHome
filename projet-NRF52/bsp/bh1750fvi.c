@@ -88,7 +88,7 @@ void BH1750FVI_init()
  */
 void BH1750FVI_powerOn()
 {
-	I2C_register_write(BH1750FVI_ADDR<<1, BH1750FVI_ON);
+	BH1750FVI_register_write(BH1750FVI_ADDR, BH1750FVI_ON);
 }
 
 /**
@@ -96,7 +96,7 @@ void BH1750FVI_powerOn()
  */
 void BH1750FVI_powerDown()
 {
-	I2C_register_write(BH1750FVI_ADDR<<1, BH1750FVI_OFF);
+	BH1750FVI_register_write(BH1750FVI_ADDR, BH1750FVI_OFF);
 }
 
 /**
@@ -104,7 +104,7 @@ void BH1750FVI_powerDown()
  */
 void BH1750FVI_reset()
 {
-	I2C_register_write(BH1750FVI_ADDR<<1, BH1750FVI_RESET);
+	BH1750FVI_register_write(BH1750FVI_ADDR, BH1750FVI_RESET);
 }
 
 /**
@@ -115,7 +115,7 @@ void BH1750FVI_reset()
  */
 void BH1750FVI_measureMode(uint8_t mode)
 {
-	I2C_register_write(BH1750FVI_ADDR<<1, mode);
+	BH1750FVI_register_write(BH1750FVI_ADDR, mode);
 }
 
 
@@ -140,8 +140,18 @@ uint16_t BH1750FVI_readLuminosity()
 uint16_t BH1750FVI_read()
 {
 	uint8_t ret[3];
-	I2C_register_read(BH1750FVI_ADDR<<1, &ret, 2);
+	BH1750FVI_register_read(BH1750FVI_ADDR, ret, 3);
 	return ret[1] | ((uint16_t)(ret[0])) << 8;
+}
+
+void BH1750FVI_register_read(uint8_t register_address, uint8_t * destination, uint8_t number_of_bytes)
+{
+	while(I2C_register_read(register_address,  destination, number_of_bytes)==IN_PROGRESS);
+}
+
+void BH1750FVI_register_write(uint8_t register_address, uint8_t value)
+{
+	while(I2C_register_write(register_address, value)==IN_PROGRESS);
 }
 
 #endif
