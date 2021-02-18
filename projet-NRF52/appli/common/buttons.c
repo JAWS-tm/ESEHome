@@ -2,12 +2,11 @@
  * buttons.c
  *
  *  Created on: 20 janv. 2021
- *      Author: Nirgal
+ *      Author: Nirgal & Thbault Malary & Yannis Verhasselt
  */
 #include "buttons.h"
 #include "systick.h"
 #include "gpio.h"
-#include "leds.h"
 
 #define FIVE_FAST_PRESS_DURATION 2000	//unité : [1ms] => 2 seconde.
 
@@ -16,7 +15,10 @@ typedef struct
 	bool_e initialized;
 	uint8_t pin;
 	bool_e pullup;
-	callback_fun_t callback;
+	callback_fun_t callback_short_press;
+	callback_fun_t callback_short_release;
+	callback_fun_t callback_long_press;
+	callback_fun_t callback_long_release;
 }button_t;
 
 static button_t buttons[BUTTON_NB];
@@ -36,7 +38,10 @@ void BUTTONS_init(void)
 	for(button_id_e b = 0; b< BUTTON_NB; b++)
 	{
 		buttons[b].initialized = FALSE;
-		buttons[b].callback = NULL;
+		buttons[b].callback_short_press = NULL;
+		buttons[b].callback_short_release = NULL;
+		buttons[b].callback_long_press = NULL;
+		buttons[b].callback_long_release = NULL;
 		buttons[b].pullup = TRUE;
 	}
 	Systick_add_callback_function(&BUTTONS_process_ms);
@@ -73,11 +78,11 @@ void BUTTONS_process_main(void)
 					nb_fast_press = 0;
 					state = BUTTON_5_FAST_PRESS;            			//alors c'est l'événement que lon cherchait
 				}
-			}
-			else if(t_for_5_fast_press == 0 && nb_fast_press != 0)
-			{
-				nb_fast_press = 0;
-				state = SIMPLE_PRESS;
+				else
+				{
+					if(buttons[button].callback_short_press != NULL)
+						buttons[button].callback_short_press();
+				}
 			}
 			break;
 
@@ -89,10 +94,16 @@ void BUTTONS_process_main(void)
 			}
 			if(event == BUTTON_RELEASE_EVENT)
 			{
-				state = IDLE_READING_BUTTON;        //c'était un appui court !
+				if(buttons[button].callback_short_release != NULL)
+					buttons[button].callback_short_release();
+				state = IDLE_READING_BUTTON;     //c'était un appui court !
 			}
-			if(!t_for_long_press)
+			else if(!t_for_long_press)
+			{
+				if(buttons[button].callback_long_press != NULL)
+					buttons[button].callback_long_press();
 				state = WAIT_RELEASE_BUTTON;    //c'était un appui long, le temps est écoulé !
+			}
 			break;
 
 		case WAIT_RELEASE_BUTTON:
@@ -100,24 +111,21 @@ void BUTTONS_process_main(void)
 			{
 				nb_fast_press = 0;
 				state = POWERDOWN;
+				if(buttons[button].callback_long_release != NULL)
+					buttons[button].callback_long_release();
 			}
 			break;
 
 		case BUTTON_5_FAST_PRESS:
-			//TODO ce que l'on veut faire...
+			//TODO BUTTON_5_FAST_PRESS
 
 			state = IDLE_READING_BUTTON;
 			break;
 
-		case SIMPLE_PRESS:
-			if(buttons[button].callback != NULL)
-			{
-				buttons[button].callback();
-			}
-			state = IDLE_READING_BUTTON;
-			break;
 
 		case POWERDOWN:
+			//TODO POWERDOWN
+
 			state = IDLE_READING_BUTTON;
 			break;
 
@@ -128,7 +136,7 @@ void BUTTONS_process_main(void)
 }
 
 
-void BUTTONS_add(button_id_e id, uint8_t pin, bool_e pullup, callback_fun_t callback)
+void BUTTONS_add(button_id_e id, uint8_t pin, bool_e pullup, callback_fun_t callback_short_press, callback_fun_t callback_short_release, callback_fun_t callback_long_press, callback_fun_t callback_long_release)
 {
 	//configure la pin du bouton concernée en entrée
 	//enregistre le bouton comme "initialisée"
@@ -138,24 +146,51 @@ void BUTTONS_add(button_id_e id, uint8_t pin, bool_e pullup, callback_fun_t call
 	GPIO_init();
 	//on part du principe que tout les boutons sont no pullup
 	GPIO_configure(buttons[id].pin, (pullup)?NRF_GPIO_PIN_PULLUP:NRF_GPIO_PIN_NOPULL, 0);
-	if(callback != NULL){
-		buttons[id].callback = callback;
-	}else {
-		buttons[id].callback = NULL;
-	}
+	buttons[id].callback_short_press = callback_short_press;
+	buttons[id].callback_short_release = callback_short_release;
+	buttons[id].callback_long_press = callback_long_press;
+	buttons[id].callback_long_release = callback_long_release;
 	buttons[id].pullup = pullup;
 	buttons[id].initialized = TRUE;
+}
+
+void BUTTONS_set_short_press_callback(button_id_e id, callback_fun_t callback)
+{
+	buttons[id].callback_short_press = callback;
+}
+
+void BUTTONS_set_short_release_callback(button_id_e id, callback_fun_t callback)
+{
+	buttons[id].callback_short_release = callback;
+}
+
+void BUTTONS_set_long_press_callback(button_id_e id, callback_fun_t callback)
+{
+	buttons[id].callback_long_press = callback;
+}
+
+void BUTTONS_set_long_release_callback(button_id_e id, callback_fun_t callback)
+{
+	buttons[id].callback_long_release = callback;
 }
 
 
 void BUTTONS_process_ms(void)
 {
     if(t)
-        t--;
+    {
+    	t--;
+    }
+
     if(t_for_5_fast_press)
+    {
         t_for_5_fast_press--;
+    }
+
     if(t_for_long_press)
+    {
     	t_for_long_press--;
+    }
 }
 
 void BUTTONS_get_event(button_event_e * event, button_id_e * button)
@@ -209,26 +244,6 @@ bool_e BUTTONS_read(button_id_e id){
 		read = !read;
 	return read;
 }
-
-void BUTTONS_network_process(void)
-{
-	LED_toggle(LED_ID_NETWORK);
-}
-
-//fonction de test du bouton network
-void BUTTONS_network_test(void){
-	bool_e init = TRUE;
-	if(init){
-		BUTTONS_add(BUTTON_NETWORK, PIN_BUTTON_NETWORK, TRUE, &BUTTONS_network_process);
-		LED_add(LED_ID_NETWORK, PIN_LED_NETWORK);
-		init = FALSE;
-	}
-}
-
-
-
-
-
 
 
 

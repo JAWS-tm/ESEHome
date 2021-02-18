@@ -6,7 +6,7 @@
  * Example code:
 */
  
-#include "config.h"
+#include "appli/config.h"
 #include "components/libraries/delay/nrf_delay.h"
 #include "nrfx_gpiote.h"
 #include "modules/nrfx/mdk/nrf52.h"
@@ -32,14 +32,14 @@ static bool_e updated = FALSE;
 static neopixel_strip_t strip;
 
 
-void LEDS_init(uint32_t pin_num, uint16_t num_leds)
+void WS2812_init(uint32_t pin_num, uint16_t num_leds)
 {
 	strip.pin_id = pin_num;
 	strip.leds_number = num_leds;
 	nrf_gpio_cfg_output(pin_num);
 
-	LEDS_clear();
-	LEDS_refresh();
+	WS2812_clear();
+	WS2812_refresh();
 }
 
 
@@ -56,7 +56,7 @@ volatile uint32_t t_leds = 0;
  * @param 	pixels est un tableau de 64 cases absolument...
  * @note	attention, le tableau de pixels correspond aux leds dans l'ordre où elles sont câblées. Sur la matrice 8x8, elles sont reliées en serpentin ! (et non en recommancant à gauche à chaque nouvelle ligne)...
  */
-void LEDS_refresh(void)
+void WS2812_refresh(void)
 {
 	//nrf_gpio_pin_clear(PIN);
 	uint32_t pin;
@@ -72,13 +72,13 @@ void LEDS_refresh(void)
 	__enable_irq();
 }
 
-void LEDS_wait_before_next_refresh(void)
+void WS2812_wait_before_next_refresh(void)
 {
 	NRF_P0->OUTCLR = (1UL << strip.pin_id);
 	nrf_delay_us(50);
 }
 
-void LEDS_clear(void)
+void WS2812_clear(void)
 {
 	for(uint32_t i = 0; i < strip.leds_number; i++)
 		strip.pixels[i] = COLOR_BLACK;
@@ -87,21 +87,21 @@ void LEDS_clear(void)
 
 
 
-void LEDS_display_only_one_pixel(uint32_t pixel, uint32_t background, uint8_t rank)
+void WS2812_display_only_one_pixel(uint32_t pixel, uint32_t background, uint8_t rank)
 {
 	uint32_t i;
 	for(i=0;i<strip.leds_number;i++)
 		strip.pixels[i]=(i==rank)?pixel:background;
 }
 
-void LEDS_display_full(uint32_t pixel)
+void WS2812_display_full(uint32_t pixel)
 {
 	uint32_t i;
 	for(i=0;i<strip.leds_number;i++)
 		strip.pixels[i]=pixel;
 }
 
-void LEDS_display_matrix(uint32_t * pixels, uint32_t size)
+void WS2812_display_matrix(uint32_t * pixels, uint32_t size)
 {
 	uint32_t nb_leds;
 	nb_leds = MIN(size, strip.leds_number);

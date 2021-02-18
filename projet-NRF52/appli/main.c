@@ -20,12 +20,19 @@
 #include "common/leds.h"
 #include "common/buttons.h"
 #include "common/gpio.h"
+#include "common/parameters.h"
 
 //Tout les includes des header des objets.
 #include "objects/object_tracker_gps.h"
 #include "objects/object_fall_sensor.h"
 #include "objects/object_station_meteo_int.h"
 #include "objects/object_rfid.h"
+#include "objects/object_out_weather_station.h"
+#include "objects/object_smart_light.h"
+
+void button_network_process_short_press(void);
+void button_network_process_long_press(void);
+void button_network_process_5press(void);
 
 #undef NRF_LOG_ENABLED
 #define NRF_LOG_ENABLED 1
@@ -76,9 +83,17 @@ int main(void)
     volatile char id;
     id = OBJECT_ID;
     debug_printf("My id is %d. I am \"%s\"\n", id, object_id_to_string(id));
+
+    PARAMETERS_init();
+
+    LED_add(LED_ID_NETWORK, PIN_LED_NETWORK);
 	LED_add(LED_ID_BATTERY, PIN_LED_BATTERY);
 	LED_set(LED_ID_BATTERY, LED_MODE_ON);
-	BUTTONS_network_test();
+
+	SECRETARY_init();
+
+	BUTTONS_add(BUTTON_NETWORK, PIN_BUTTON_NETWORK, TRUE, &button_network_process_short_press, NULL, &button_network_process_long_press, &button_network_process_5press);
+
     while (1)
     {
     	//Code commun à tout les objets
@@ -93,11 +108,11 @@ int main(void)
 
 
     		#if OBJECT_ID == OBJECT_SMART_LIGHT
-
+				Smart_light_Main();
     		#endif
 
     		#if OBJECT_ID == OBJECT_NIGHT_LIGHT
-
+    			OBJECT_NIGHT_LIGHT_state_machine();
 
     		#endif
 
@@ -137,7 +152,7 @@ int main(void)
     		#endif
 
     		#if OBJECT_ID == OBJECT_VENTILATOR
-
+				object_ventilator_activation();
 
     		#endif
 
@@ -226,4 +241,28 @@ char * object_id_to_string(uint8_t id)
 	}
 	return ret;
 }
+
+
+
+void button_network_process_short_press(void)
+{
+	LED_toggle(LED_ID_NETWORK);
+	//TODO envoi d'un ping... (avec éventuellement extinction de la led à la réception du Pong ?)
+}
+
+void button_network_process_long_press(void)
+{
+
+}
+
+
+void button_network_process_5press(void)
+{
+	// TODO reset usine...
+}
+
+
+
+
+
 

@@ -193,17 +193,22 @@ void SECRETARY_send_msg(uint8_t size, uint8_t * datas)
 	{
 		tx_payload.data[i] = datas[i];
 	}
-	tx_payload.noack = FALSE;	//On demande un acquittement !
+	tx_payload.noack = TRUE;	//On demande pas d'acquittement !
 	nrf_esb_stop_rx();
 
 	if (nrf_esb_write_payload(&tx_payload) == NRF_SUCCESS)
 	{
+		debug_printf("msgsent:");
 
 	}
 	else
 	{
 		nrf_esb_flush_tx();
+		debug_printf("failtosend:");
 	}
+	for(uint8_t i = 0; i<tx_payload.length; i++)
+		debug_printf("%02x ", tx_payload.data[i]);
+	debug_printf("\n");
 }
 
 

@@ -52,6 +52,16 @@
 	#endif
 
 	#if OBJECT_ID == OBJECT_SMART_LIGHT
+		
+		#define MOSFET_LED_FROIDE2 					12
+		#define MOSFET_LED_FROIDE 					11
+		#define MOSFET_LED_CHAUDE2					10
+		#define MOSFET_LED_CHAUDE					9
+		#define INPUT_A_ENCODEUR_ROTATIF  			27
+		#define INPUT_B_ENCODEUR_ROTATIF 			26
+		#define INPUT_SW_ENCODEUR_ROTATIF 			25
+
+		#define PIN_BUTTON_LOCAL					17
 
 	#endif
 
@@ -60,7 +70,7 @@
 	#endif
 
 	#if OBJECT_ID == OBJECT_NIGHT_LIGHT
-		
+		#define WS2812_PIN	9
 
 	#endif
 
@@ -71,6 +81,8 @@
 
 	#if OBJECT_ID == OBJECT_STATION_METEO_INT
 		#define USE_DHT11	1
+		#define USE_BMP180	1
+
 		#define USE_NMOS_GND	1
 
 		#define MOSFET_GND  27
@@ -117,6 +129,7 @@
 
 	#if OBJECT_ID == OBJECT_VENTILATOR
 
+		#define MOSFET_PIN		9
 
 	#endif
 
@@ -128,6 +141,7 @@
 	#if OBJECT_ID == OBJECT_FALL_SENSOR
 		#define USE_MPU6050 1
 		#define MPU6050_VCC_PIN 27
+		#define PIN_BUTTON_ALERT 16
 	#endif
 
 	#if OBJECT_ID == OBJECT_TRACKER_GPS
@@ -137,14 +151,17 @@
 	#endif
 
 	#if OBJECT_ID == OBJECT_RFID
+
+		#define SPI_INSTANCE		0
+		#define SPI_SCK_PIN			12
+		#define SPI_MISO_PIN 		14
+		#define SPI_MOSI_PIN		13
+
 		#define RC522_RST_PIN   11
-		#define RC522_MOSI_PIN  13
-		#define RC522_MISO_PIN 14
 		#define RC522_IRQ_PIN 15
-		#define RC522_SCK_PIN 12
 		#define RC522_CS_PIN	25
 		#define USE_RC522	1
-		#define RC522_SPI_INSTANCE	0
+
 	#endif
 
 
@@ -154,17 +171,24 @@
 	#endif
 
 	#if OBJECT_ID == OBJECT_TOUCH_SCREEN
-		#define USE_ILI9341			1
-		#define ILI9341_ENABLED		1
-		#define ILI9341_SPI_INSTANCE	0
-		#define ILI9341_DC_PIN		11
-		#define ILI9341_SCK_PIN		12
-		#define ILI9341_MISO_PIN 	14
-		#define ILI9341_MOSI_PIN	13
-		#define	ILI9341_SS_PIN		9
-		#define ILI9341_RST_PIN		10
-		#define ILI9341_HEIGHT	240
-		#define ILI9341_WIDTH	320
+		#define USE_ILI9341				1
+		#define ILI9341_ENABLED			1
+
+		#define SPI_INSTANCE		0
+		#define SPI_SCK_PIN			12
+		#define SPI_MISO_PIN 		14
+		#define SPI_MOSI_PIN		13
+
+		#define ILI9341_DC_PIN			11
+		#define	ILI9341_SS_PIN			9
+		#define ILI9341_RST_PIN			10
+		#define XPT2046_PIN_CS 			22
+		#define XPT2046_PIN_IRQ			15
+
+		#define ILI9341_HEIGHT			240
+		#define ILI9341_WIDTH			320
+		#define USE_FONT11x18			1
+		#define USE_XPT2046				1
 
 	#endif
 
@@ -210,7 +234,7 @@
 
 #define USE_SPI	(OBJECT_ID == OBJECT_TOUCH_SCREEN || OBJECT_ID == OBJECT_RFID)
 
-#define USE_TWI	(OBJECT_ID == OBJECT_FALL_SENSOR || OBJECT_ID == OBJECT_OUT_WEATHER_STATION ||OBJECT_ID == OBJECT_BRIGHTNESS_SENSOR)
+#define USE_TWI	(OBJECT_ID == OBJECT_FALL_SENSOR || OBJECT_ID == OBJECT_STATION_METEO_INT || OBJECT_ID == OBJECT_OUT_WEATHER_STATION ||OBJECT_ID == OBJECT_BRIGHTNESS_SENSOR)
 
 
 
@@ -254,10 +278,6 @@ uint32_t debug_printf(char * format, ...);
 #if OBJECT_ID == OBJECT_VENTILATOR
 	#define CHANNEL_ADC_MCP9701			1
 #endif
-
-
-
-
 
 #ifndef USE_DHT11
 	#define USE_DHT11		0

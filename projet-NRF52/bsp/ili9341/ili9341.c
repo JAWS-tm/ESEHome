@@ -12,7 +12,7 @@
 #if USE_ILI9341
 
 #include "nrf_lcd.h"
-#include "nrfx_spi.h"
+#include "bsp/nrf52_spi.h"
 #include "nrf_delay.h"
 #include "nrf_gpio.h"
 #include "boards.h"
@@ -167,29 +167,21 @@ uint16_t ILI9341_y;
 ILI931_Options_t ILI9341_Opts;
 uint8_t ILI9341_INT_CalledFromPuts = 0;
 
-static const nrfx_spi_t spi = NRFX_SPI_INSTANCE(ILI9341_SPI_INSTANCE);
-
-static inline void spi_write(const void * data, size_t size)
-{
-	nrfx_spi_xfer_desc_t desc = {
-	.p_rx_buffer = NULL,
-	.tx_length = size,
-	.p_tx_buffer = data,
-	.rx_length = 0
-	};
-    APP_ERROR_CHECK(nrfx_spi_xfer(&spi, &desc, 0));
-}
-
 static inline void write_command(uint8_t c)
 {
-    nrf_gpio_pin_clear(ILI9341_DC_PIN);
-    spi_write(&c, sizeof(c));
+    ILI9341_DC_RESET();
+    ILI9341_SS_RESET();
+    SPI_write(&c, sizeof(c));
+    ILI9341_SS_SET();
 }
 
 static inline void write_data(uint8_t c)
 {
-    nrf_gpio_pin_set(ILI9341_DC_PIN);
-    spi_write(&c, sizeof(c));
+
+    ILI9341_DC_SET();
+    ILI9341_SS_RESET();
+    SPI_write(&c, sizeof(c));
+    ILI9341_SS_SET();
 }
 
 static void set_addr_window(uint16_t x_0, uint16_t y_0, uint16_t x_1, uint16_t y_1)
@@ -465,21 +457,12 @@ static void command_list(void)
     	write_command(ILI9341_DISPLAY_ON);
 }
 
-static ret_code_t hardware_init(void)
+static void hardware_init(void)
 {
-    ret_code_t err_code;
-
     nrf_gpio_cfg_output(ILI9341_DC_PIN);
     nrf_gpio_cfg_output(ILI9341_SS_PIN);
 
-    nrfx_spi_config_t spi_config = NRFX_SPI_DEFAULT_CONFIG;
-
-    spi_config.sck_pin  = ILI9341_SCK_PIN;
-    spi_config.miso_pin = ILI9341_MISO_PIN;
-    spi_config.mosi_pin = ILI9341_MOSI_PIN;
-    spi_config.ss_pin   = ILI9341_SS_PIN;
-
-    err_code = nrfx_spi_init(&spi, &spi_config, NULL, NULL);
+    SPI_init();
 
     //RESET TFT...
     nrf_gpio_cfg_output(ILI9341_RST_PIN);
@@ -487,31 +470,21 @@ static ret_code_t hardware_init(void)
     SYSTICK_delay_ms(2);	//> 10us
     GPIO_write(ILI9341_RST_PIN, 1);
     SYSTICK_delay_ms(10);	// > 5 ms before sending command !
-
-    return err_code;
 }
 
-static ret_code_t ili9341_init(void)
+ret_code_t ILI9341_init(void)
 {
-    ret_code_t err_code;
-
-    err_code = hardware_init();
-    if (err_code != NRF_SUCCESS)
-    {
-        return err_code;
-    }
-
+    hardware_init();
     command_list();
-
-    return err_code;
+    return NRF_SUCCESS;
 }
 
-static void ili9341_uninit(void)
+static void ILI9341_uninit(void)
 {
-    nrfx_spi_uninit(&spi);
+    SPI_uninit();
 }
 
-static void ili9341_pixel_draw(uint16_t x, uint16_t y, uint32_t color)
+static void ILI9341_pixel_draw(uint16_t x, uint16_t y, uint32_t color)
 {
     set_addr_window(x, y, x, y);
 
@@ -519,18 +492,19 @@ static void ili9341_pixel_draw(uint16_t x, uint16_t y, uint32_t color)
 
     nrf_gpio_pin_set(ILI9341_DC_PIN);
 
-    spi_write(data, sizeof(data));
+    SPI_write(data, sizeof(data));
 
     nrf_gpio_pin_clear(ILI9341_DC_PIN);
 }
 
-static void ili9341_rect_draw(uint16_t x, uint16_t y, uint16_t width, uint16_t height, uint32_t color)
+static void ILI9341_rect_draw(uint16_t x, uint16_t y, uint16_t width, uint16_t height, uint32_t color)
 {
     set_addr_window(x, y, x + width - 1, y + height - 1);
 
     const uint8_t data[2] = {color >> 8, color};
 
-    nrf_gpio_pin_set(ILI9341_DC_PIN);
+    ILI9341_DC_SET();
+    ILI9341_SS_RESET();
 
     // Duff's device algorithm for optimizing loop.
     uint32_t i = (height * width + 7) / 8;
@@ -539,36 +513,37 @@ static void ili9341_rect_draw(uint16_t x, uint16_t y, uint16_t width, uint16_t h
     switch ((height * width) % 8) {
         case 0:
             do {
-                spi_write(data, sizeof(data));
+                SPI_write(data, sizeof(data));
         case 7:
-                spi_write(data, sizeof(data));
+                SPI_write(data, sizeof(data));
         case 6:
-                spi_write(data, sizeof(data));
+                SPI_write(data, sizeof(data));
         case 5:
-                spi_write(data, sizeof(data));
+                SPI_write(data, sizeof(data));
         case 4:
-                spi_write(data, sizeof(data));
+                SPI_write(data, sizeof(data));
         case 3:
-                spi_write(data, sizeof(data));
+                SPI_write(data, sizeof(data));
         case 2:
-                spi_write(data, sizeof(data));
+                SPI_write(data, sizeof(data));
         case 1:
-                spi_write(data, sizeof(data));
+                SPI_write(data, sizeof(data));
             } while (--i > 0);
         default:
             break;
     }
 /*lint -restore */
 
-    nrf_gpio_pin_clear(ILI9341_DC_PIN);
+    ILI9341_SS_SET();
+    ILI9341_DC_RESET();
 }
 
-static void ili9341_dummy_display(void)
+static void ILI9341_dummy_display(void)
 {
     /* No implementation needed. */
 }
 
-static void ili9341_rotation_set(nrf_lcd_rotation_t rotation)
+static void ILI9341_rotation_set(nrf_lcd_rotation_t rotation)
 {
     write_command(ILI9341_MADCTL);
     switch (rotation) {
@@ -611,8 +586,8 @@ void ILI9341_Fill(uint16_t color) {
 void ILI9341_INT_Fill(uint16_t x0, uint16_t y0, uint16_t x1, uint16_t y1, uint16_t color) {
 	uint32_t pixels_count;
 	uint8_t datas[2];
-	datas[1] = HIGHINT(color);
-	datas[0] = LOWINT(color);
+	datas[0] = HIGHINT(color);
+	datas[1] = LOWINT(color);
 
 	/* Set cursor position */
 	set_addr_window(x0, y0, x1, y1);
@@ -633,7 +608,7 @@ void ILI9341_INT_Fill(uint16_t x0, uint16_t y0, uint16_t x1, uint16_t y1, uint16
 	//SPI_DMA_SendHalfWord(ILI9341_SPI, color, (pixels_count > 0xFFFF) ? 0xFFFF : pixels_count);
 	int32_t i;
 	for(i=0;i<pixels_count;i++){
-		spi_write(datas, 2);
+		SPI_write(datas, 2);
 	}
 	/* Wait till done */
 	//while (SPI_DMA_Working(ILI9341_SPI));
@@ -809,7 +784,7 @@ void ILI9341_Putc(uint16_t x, uint16_t y, char c, FontDef_t *font, uint16_t fore
 			b = 0;	//should never happen
 		for (j = 0; j < font->FontWidth; j++) {
 			if ((b << j) & 0x8000) {
-				ili9341_pixel_draw(ILI9341_x + j, (ILI9341_y + i), foreground);
+				ILI9341_pixel_draw(ILI9341_x + j, (ILI9341_y + i), foreground);
 			}
 		}
 	}
@@ -866,7 +841,7 @@ void ILI9341_PutBigc(uint16_t x, uint16_t y, char c, FontDef_t *font, uint16_t f
 
 				for(k=0;k<full_in_bigger;k++)
 					for(l=0;l<full_in_bigger;l++)
-						ili9341_pixel_draw(ILI9341_x + bigger*j+l, (ILI9341_y + bigger*i+k), foreground);
+						ILI9341_pixel_draw(ILI9341_x + bigger*j+l, (ILI9341_y + bigger*i+k), foreground);
 			}
 		}
 	}
@@ -930,7 +905,7 @@ void ILI9341_DrawLine(uint16_t x0, uint16_t y0, uint16_t x1, uint16_t y1, uint16
         di = dy_x2 - dx;
         while (x0 != x1) {
 
-        	ili9341_pixel_draw(x0, y0, color);
+        	ILI9341_pixel_draw(x0, y0, color);
             x0 += dx_sym;
             if (di<0) {
                 di += dy_x2;
@@ -939,11 +914,11 @@ void ILI9341_DrawLine(uint16_t x0, uint16_t y0, uint16_t x1, uint16_t y1, uint16
                 y0 += dy_sym;
             }
         }
-        ili9341_pixel_draw(x0, y0, color);
+        ILI9341_pixel_draw(x0, y0, color);
     } else {
         di = dx_x2 - dy;
         while (y0 != y1) {
-        	ili9341_pixel_draw(x0, y0, color);
+        	ILI9341_pixel_draw(x0, y0, color);
             y0 += dy_sym;
             if (di < 0) {
                 di += dx_x2;
@@ -952,7 +927,7 @@ void ILI9341_DrawLine(uint16_t x0, uint16_t y0, uint16_t x1, uint16_t y1, uint16
                 x0 += dx_sym;
             }
         }
-        ili9341_pixel_draw(x0, y0, color);
+        ILI9341_pixel_draw(x0, y0, color);
     }
     return;
 }
@@ -972,10 +947,10 @@ void ILI9341_DrawCircle(int16_t x0, int16_t y0, int16_t r, uint16_t color) {
 	int16_t x = 0;
 	int16_t y = r;
 
-	ili9341_pixel_draw(x0, y0 + r, color);
-	ili9341_pixel_draw(x0, y0 - r, color);
-	ili9341_pixel_draw(x0 + r, y0, color);
-	ili9341_pixel_draw(x0 - r, y0, color);
+	ILI9341_pixel_draw(x0, y0 + r, color);
+	ILI9341_pixel_draw(x0, y0 - r, color);
+	ILI9341_pixel_draw(x0 + r, y0, color);
+	ILI9341_pixel_draw(x0 - r, y0, color);
 
     while (x < y) {
         if (f >= 0) {
@@ -987,15 +962,15 @@ void ILI9341_DrawCircle(int16_t x0, int16_t y0, int16_t r, uint16_t color) {
         ddF_x += 2;
         f += ddF_x;
 
-        ili9341_pixel_draw(x0 + x, y0 + y, color);
-        ili9341_pixel_draw(x0 - x, y0 + y, color);
-        ili9341_pixel_draw(x0 + x, y0 - y, color);
-        ili9341_pixel_draw(x0 - x, y0 - y, color);
+        ILI9341_pixel_draw(x0 + x, y0 + y, color);
+        ILI9341_pixel_draw(x0 - x, y0 + y, color);
+        ILI9341_pixel_draw(x0 + x, y0 - y, color);
+        ILI9341_pixel_draw(x0 - x, y0 - y, color);
 
-        ili9341_pixel_draw(x0 + y, y0 + x, color);
-        ili9341_pixel_draw(x0 - y, y0 + x, color);
-        ili9341_pixel_draw(x0 + y, y0 - x, color);
-        ili9341_pixel_draw(x0 - y, y0 - x, color);
+        ILI9341_pixel_draw(x0 + y, y0 + x, color);
+        ILI9341_pixel_draw(x0 - y, y0 + x, color);
+        ILI9341_pixel_draw(x0 + y, y0 - x, color);
+        ILI9341_pixel_draw(x0 - y, y0 - x, color);
     }
 }
 
@@ -1014,10 +989,10 @@ void ILI9341_DrawFilledCircle(int16_t x0, int16_t y0, int16_t r, uint16_t color)
 	int16_t x = 0;
 	int16_t y = r;
 
-	ili9341_pixel_draw(x0, y0 + r, color);
-	ili9341_pixel_draw(x0, y0 - r, color);
-	ili9341_pixel_draw(x0 + r, y0, color);
-	ili9341_pixel_draw(x0 - r, y0, color);
+	ILI9341_pixel_draw(x0, y0 + r, color);
+	ILI9341_pixel_draw(x0, y0 - r, color);
+	ILI9341_pixel_draw(x0 + r, y0, color);
+	ILI9341_pixel_draw(x0 - r, y0, color);
     ILI9341_DrawLine(x0 - r, y0, x0 + r, y0, color);
 
     while (x < y) {
@@ -1100,9 +1075,9 @@ void ILI9341_putImage(int16_t x0, int16_t y0, int16_t width, int16_t height, con
 	for(i=0; i < size; i++){
 		datas[1] = HIGHINT(img[i]);
 		datas[0] = LOWINT(img[i]);
-		spi_write(datas, 2);
-		//SPI_WriteNoRegister(ILI9341_SPI,0x07E0);
-		//SPI_Write(img[i]);
+		SPI_write(datas, 2);
+		//SPI_writeNoRegister(ILI9341_SPI,0x07E0);
+		//SPI_write(img[i]);
 	}
 #else
 	SPI2_DMA_send16BitArray((Uint16 *)img, size);
@@ -1146,7 +1121,7 @@ void ILI9341_putImage_monochrome(uint16_t color_front, uint16_t color_background
 		else
 			datas = datas_front;
 
-		spi_write(datas, 2);
+		SPI_write(datas, 2);
 	}
 
 
@@ -1154,25 +1129,25 @@ void ILI9341_putImage_monochrome(uint16_t color_front, uint16_t color_background
 }
 #endif	//ndef LCD_DMA
 
-static void ili9341_display_invert(bool invert)
+static void ILI9341_display_invert(bool invert)
 {
     write_command(invert ? ILI9341_INVON : ILI9341_INVOFF);
 }
 
-static lcd_cb_t ili9341_cb = {
+static lcd_cb_t ILI9341_cb = {
     .height = ILI9341_HEIGHT,
     .width = ILI9341_WIDTH
 };
 
 
 const nrf_lcd_t nrf_lcd_ili9341 = {
-    .lcd_init = ili9341_init,
-    .lcd_uninit = ili9341_uninit,
-    .lcd_pixel_draw = ili9341_pixel_draw,
-    .lcd_rect_draw = ili9341_rect_draw,
-    .lcd_display = ili9341_dummy_display,
-    .lcd_rotation_set = ili9341_rotation_set,
-    .lcd_display_invert = ili9341_display_invert,
+    .lcd_init = ILI9341_init,
+    .lcd_uninit = ILI9341_uninit,
+    .lcd_pixel_draw = ILI9341_pixel_draw,
+    .lcd_rect_draw = ILI9341_rect_draw,
+    .lcd_display = ILI9341_dummy_display,
+    .lcd_rotation_set = ILI9341_rotation_set,
+    .lcd_display_invert = ILI9341_display_invert,
 	.lcd_fill = ILI9341_Fill,
 	.lcd_int_fill = ILI9341_INT_Fill,
 	.lcd_delay = ILI9341_Delay,
@@ -1188,7 +1163,7 @@ const nrf_lcd_t nrf_lcd_ili9341 = {
 	.lcd_printf = ILI9341_printf,
 	.lcd_putimage = ILI9341_putImage,
 	.lcd_putimagemonochrome = ILI9341_putImage_monochrome,
-    .p_lcd_cb = &ili9341_cb
+    .p_lcd_cb = &ILI9341_cb
 };
 
 #endif // USE_ILI9341

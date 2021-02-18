@@ -27,6 +27,12 @@
    ----------------------------------------------------------------------
 @endverbatim
  */
+
+
+#include "../appli/config.h"
+
+#if OBJECT_ID == OBJECT_TOUCH_SCREEN
+
 #ifndef ILI9341_H
 #define ILI9341_H 130
 
@@ -125,7 +131,6 @@ VCC          3.3V         Positive power supply
 
 #include "nrf.h"
 #include "ili9341_fonts.h"
-#include "../appli/config.h"
 
 /* Colors */
 #define ILI9341_COLOR_WHITE			0xFFFF
@@ -217,7 +222,11 @@ typedef struct {
  * @{
  */
 
+ret_code_t ILI9341_init(void);
+
 void ILI9341_Fill(uint16_t color);
+
+void ILI9341_INT_Fill(uint16_t x0, uint16_t y0, uint16_t x1, uint16_t y1, uint16_t color);
 
 void ILI9341_Putc(uint16_t x, uint16_t y, char c, FontDef_t* font, uint16_t foreground, uint16_t background);
 
@@ -263,3 +272,5 @@ void ILI9341_putImage_monochrome(uint16_t color_front, uint16_t color_background
 
 #endif
 
+
+#endif

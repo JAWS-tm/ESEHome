@@ -69,7 +69,7 @@ void BH1750FVI_demo()
 	{
 		SYSTICK_delay_ms(200);
 		luminosity = BH1750FVI_readLuminosity();
-		printf("\nLuminosite = %d lx", luminosity);
+		debug_printf("\nLuminosite = %d lx", luminosity);
 	}
 }
 
@@ -80,7 +80,7 @@ void BH1750FVI_demo()
  */
 void BH1750FVI_init()
 {
-	I2C_init(0);
+	I2C_init(BH1750FVI_ADDR);
 }
 
 /**
