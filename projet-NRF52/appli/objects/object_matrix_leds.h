@@ -12,5 +12,6 @@
 
 void MATRIX_afficheur(uint32_t colorDonnees, uint32_t colorType);
 
+void MATRIX_reset(matrix_t matrix[32][32]);
 
 #endif /* APPLI_OBJECTS_OBJECT_MATRIX_LEDS_H_ */

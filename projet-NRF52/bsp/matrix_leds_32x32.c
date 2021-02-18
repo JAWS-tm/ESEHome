@@ -600,5 +600,17 @@ void MATRIX_show_value(matrix_t matrix[32][32], uint32_t valeur, bool_e positif,
 
 
 }
+
+void MATRIX_reset(matrix_t matrix[32][32]){
+    if(!initialized)
+    	MATRIX_init();
+	for(uint8_t i = 0; i < 32; i++){
+		for(uint8_t j = 0; j < 32; j++){
+			matrix[i][j] = COLOR_BLACK;
+		}
+	}
+	MATRIX_display(matrix);
+}
+
 #endif
 

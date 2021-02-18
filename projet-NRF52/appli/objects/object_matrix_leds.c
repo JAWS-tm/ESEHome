@@ -15,8 +15,7 @@
 static volatile uint32_t value = 0;
 static volatile param_id_e param_id = PARAM_TEMPERATURE;
 
-void OBJECT_MATRIX_LEDS_value_updated_callback(param_id_e new_param_id, uint32_t new_value){
-	param_id = new_param_id;
+void OBJECT_MATRIX_LEDS_value_updated_callback(uint32_t new_value){
 	value = new_value;
 }
 
@@ -36,18 +35,21 @@ void MATRIX_afficheur(uint32_t colorDonnees, uint32_t colorType){
 	switch(state){
 	case INIT_DATA:
 		//value = 28;
-		PARAMETERS_enable(PARAM_TEMPERATURE, 19, TRUE, &OBJECT_MATRIX_LEDS_value_updated_callback);
+		PARAMETERS_enable(PARAM_TEMPERATURE, 0, TRUE, &OBJECT_MATRIX_LEDS_value_updated_callback);
+		MATRIX_init();
 		state = INIT_MATRIX;
 		break;
 	case INIT_MATRIX:{
 		if(value != pre_value){
+			MATRIX_reset(matrix);
 			bool_e positif = TRUE;
 			if(value < 0)
 				positif = FALSE;
 			MATRIX_show_value(matrix, value, positif, colorDonnees, param_id, colorType);
+			pre_value = value;
 		}
-		//MATRIX_show_value(matrix, value, positif, colorDonnees, param_id, colorType);
-		state = DISPLAY;
+		MATRIX_display(matrix);
+		//MATRIX_show_value(matrix, 29, TRUE, colorDonnees, param_id, colorType);
 		break;
 	}
 	case DISPLAY:{
