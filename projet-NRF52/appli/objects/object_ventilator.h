@@ -10,6 +10,11 @@
 
 void object_ventilator_activation(void);
 
-
+typedef enum{
+	 VENTILATOR_INIT,
+	 VENTILATOR_ON,
+	 VENTILATOR_OFF,
+	 VENTILATOR_NB		//nombre max d'etat
+}ventilator_e;
 
 #endif /* APPLI_OBJECTS_OBJECT_VENTILATOR_H_ */
