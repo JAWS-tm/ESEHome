@@ -10,8 +10,15 @@ static volatile uint32_t my_color = 0;
 
 void OBJECT_NIGHT_LIGHT_color_updated_callback(int32_t new_color)
 {
-	debug_printf("nouvelle couleur envoyée depuis la station de base : %lx\n", new_color);
+	debug_printf("nouvelle couleur envoye depuis la station de base : %lx\n", new_color);
 	my_color = new_color;
+}
+
+void OBJECT_NIGHT_LIGHT_chenillard(my_color){
+	for (int var = 0; var <= 30; ++var) {
+		WS2812_display_only_one_pixel(my_color,COLOR_BLACK,var);
+		WS2812_refresh();
+	}
 }
 
 
