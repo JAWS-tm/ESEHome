@@ -2,6 +2,16 @@
 #define OBJECT_SMART_LIGHTH
 #include "../config.h"
 
+
+typedef enum{
+			DEBUT,
+			ALLUMAGE,
+			CHAUD,
+			FROID,
+			EXTINCTION,
+		}mode_e;
+		static mode_e mode = DEBUT;
+
 void Configuration(void);
 void Eteindre(void);
 void AllumageTotale(void);

@@ -9,6 +9,7 @@
 #include "object_smart_light.h"
 #include "appli/common/buttons.h"
 #include "appli/common/parameters.h"
+#include "appli/common/serial_dialog.h"
 
 
 
@@ -18,14 +19,6 @@
 
 #if OBJECT_ID == OBJECT_SMART_LIGHT
 
-	typedef enum{
-			DEBUT,
-			ALLUMAGE,
-			CHAUD,
-			FROID,
-			EXTINCTION,
-		}mode_e;
-		static mode_e mode = DEBUT;
 
 
 static bool_e appui;
@@ -97,13 +90,14 @@ void Smart_light_Main(void){
 				case DEBUT:
 					Configuration();
 					PARAMETERS_enable(PARAM_MODE,DEBUT, TRUE, &OBJECT_SMART_LIGHT_UPDATED_MODE_callback);
-					//gestion du parametre mode
+
 						mode = ALLUMAGE;
 
 					break;
 				case ALLUMAGE:
 
 					AllumageTotale();
+					PARAMETERS_enable(PARAM_MODE,DEBUT, TRUE, &OBJECT_SMART_LIGHT_UPDATED_MODE_callback);
 							if(appui)
 							{
 								appui = FALSE;
