@@ -168,7 +168,8 @@
 
 
 	#if OBJECT_ID == OBJECT_VOICE_CONTROL
-
+		#define LED_PIN				2
+		#define TOUCH_SCREEN_PIN	3
 
 	#endif
 

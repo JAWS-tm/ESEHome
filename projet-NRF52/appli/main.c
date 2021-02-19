@@ -29,6 +29,7 @@
 #include "objects/object_rfid.h"
 #include "objects/object_out_weather_station.h"
 #include "objects/object_smart_light.h"
+#include "objects/object_voice_control.h"
 
 void button_network_process_short_press(void);
 void button_network_process_long_press(void);
@@ -183,7 +184,7 @@ int main(void)
     		#endif
 
     		#if OBJECT_ID == OBJECT_VOICE_CONTROL
-
+				VOICE_CONTROL_process_main();
 
     		#endif
 
