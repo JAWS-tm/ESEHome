@@ -29,7 +29,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-#include "config.h"
+#include "../../appli/config.h"
 //#if USE_EPAPER
 #include <stdlib.h>
 #include "epd4in2.h"
@@ -277,7 +277,7 @@ const unsigned char lut_wb[] ={
 
 
 /* END OF FILE */
-#endif
+
 
 
 

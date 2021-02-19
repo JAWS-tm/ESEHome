@@ -15,7 +15,7 @@
  *  Copyright (C) Waveshare     July 4 2017
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documnetation files (the "Software"), to deal
+ * of this software and associated documentation files (the "Software"), to deal
  * in the Software without restriction, including without limitation the rights
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  * copies of the Software, and to permit persons to  whom the Software is
@@ -32,8 +32,8 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-#include "config.h"
-//#if USE_EPAPER
+#include "../../appli/config.h"
+#if USE_EPAPER
 extern const unsigned char IMAGE_BUTTERFLY[];
 
 
@@ -41,3 +41,4 @@ extern const unsigned char IMAGE_BUTTERFLY[];
 
 
 #endif /* BSP_EPAPER_IMAGEDATA_H_ */
+#endif

@@ -31,10 +31,10 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-#include "config.h"
+#include "../../appli/config.h"
 #include "Fonts/fonts.h"
 
-// #if USE_EPAPER
+ #if USE_EPAPER
 #ifndef BSP_EPAPER_EPD4IN2_H_
 #define BSP_EPAPER_EPD4IN2_H_
 

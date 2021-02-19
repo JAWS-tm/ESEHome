@@ -6,18 +6,19 @@
  */
 
 
-#include "config.h"
+#include "../config.h"
 
-#include "stm32f1xx_hal.h"
-#include "stm32f1xx_nucleo.h"
-#include "stm32f1_uart.h"
-#include "stm32f1_sys.h"
-#include "macro_types.h"
-#include "stm32f1_gpio.h"
-#include "epaper/epd4in2.h"
-#include "epaper/epdif.h"
-#include "epaper/epdpaint.h"
-#include "epaper/imagedata.h"
+//#include "stm32f1xx_hal.h"
+//#include "stm32f1xx_nucleo.h"
+//#include "stm32f1_uart.h"
+//#include "stm32f1_sys.h"
+#include "../common/macro_types.h"
+//#include "stm32f1_gpio.h"
+#include "../bsp/epaper/epd4in2.h"
+#include "../bsp/epaper/epdif.h"
+#include "../bsp/epaper/epdpaint.h"
+#include "../bsp/epaper/imagedata.h"
+#include "../common/systick.h"
 #define COLORED      1
 #define UNCOLORED    0
 
@@ -55,11 +56,13 @@ int EPAPER_demo(void)
 		/* Display the frame_buffer */
 		EPD_DisplayFrame(&epd, frame_buffer);
 
-		HAL_Delay(5000);
+//		HAL_Delay(5000);
+		SYSTICK_delay_ms(5000);
 		/* Display the image buffer */
 		EPD_DisplayFrame(&epd, IMAGE_BUTTERFLY);
 
-		HAL_Delay(5000);
+
+		SYSTICK_delay_ms(5000);
 	}
 }
 

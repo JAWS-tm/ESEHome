@@ -42,8 +42,8 @@
   *
   ******************************************************************************
   */
-#include "config.h"
-//#if USE_EPAPER
+#include "../../../appli/config.h"
+#if USE_EPAPER
 /* Define to prevent recursive inclusion -------------------------------------*/
 #ifndef BSP_EPAPER_FONTS_FONTS_H_
 #define BSP_EPAPER_FONTS_FONTS_H_
