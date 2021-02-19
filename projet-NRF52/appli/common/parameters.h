@@ -26,6 +26,7 @@ typedef enum
 	PARAM_BRIGHTNESS,
 	PARAM_WINDSPEED,
 	PARAM_PLUVIOMETRY,
+	PARAM_SCREEN_COLOR,
 
 	PARAM_32_BITS_NB,	//au dessus de ce define, tout les paramètres tiennent sur 32 bits.
 

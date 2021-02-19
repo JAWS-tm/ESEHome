@@ -14,7 +14,9 @@
 #include "bsp/ili9341/ili9341.h"
 #include "nrfx_spi.h"
 #include "bsp/ili9341/ili9341_xpt2046.h"
-#define COLORMESSAGE 		ILI9341_COLOR_RED //ici on peut penser à recuperer la couleur depuis un parametre envoye de la station de base
+#include "../common/parameters.h"
+
+#define COLORMESSAGE 		PARAM_SCREEN_COLOR //ici on peut penser à recuperer la couleur depuis un parametre envoye de la station de base
 
 extern const nrf_lcd_t nrf_lcd_ili9341;
 
