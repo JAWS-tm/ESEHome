@@ -29,22 +29,30 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-#include "config.h"
-//#if USE_EPAPER
+#include "../../appli/config.h"
+#if USE_EPAPER
 #ifndef BSP_EPAPER_EPDIF_H_
 #define BSP_EPAPER_EPDIF_H_
 
-#include "stm32f1xx_hal.h"
+//#include "stm32f1xx_hal.h"
 
 // Pin definition
-#define CS_PIN           0
-#define RST_PIN          1
-#define DC_PIN           2
-#define BUSY_PIN         3
 
 // Pin level definition
 #define LOW             0
 #define HIGH            1
+
+//Brief General purpose I/O
+typedef struct
+{
+  __IO uint32_t CRL;
+  __IO uint32_t CRH;
+  __IO uint32_t IDR;
+  __IO uint32_t ODR;
+  __IO uint32_t BSRR;
+  __IO uint32_t BRR;
+  __IO uint32_t LCKR;
+} GPIO_TypeDef;
 
 typedef struct {
   GPIO_TypeDef* port;
@@ -58,6 +66,6 @@ void EpdDelayMsCallback(unsigned int delaytime);
 void EpdSpiTransferCallback(unsigned char data);
 
 #endif /* EPDIF_H */
-#endif
+
 
 #endif /* BSP_EPAPER_EPDIF_H_ */

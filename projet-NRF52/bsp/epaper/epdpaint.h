@@ -31,8 +31,8 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-#include "config.h"
-//#if USE_EPAPER
+#include "../../appli/config.h"
+#if USE_EPAPER
 #ifndef BSP_EPAPER_EPDPAINT_H_
 #define BSP_EPAPER_EPDPAINT_H_
 

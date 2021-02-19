@@ -28,8 +28,8 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-#include "config.h"
-//#if USE_EPAPER
+#include "../../appli/config.h"
+#if USE_EPAPER
 #include "imagedata.h"
 
 const unsigned char IMAGE_BUTTERFLY[15000] = {

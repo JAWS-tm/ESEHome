@@ -40,13 +40,13 @@
 
 
 ///////////////////////////////////////////////////////////////////////////////////
-//Numéro de l'objet pour lequel on compile
+//Numï¿½ro de l'objet pour lequel on compile
 #include "config_perso.h"
 ///////////////////////////////////////////////////////////////////////////////////
 
 
 ///////////////////////////////////////////////////////////////////////////////////
-//Config propres à chaque objets.
+//Config propres ï¿½ chaque objets.
 	#if OBJECT_ID == OBJECT_BASE_STATION
 
 	#endif
@@ -88,8 +88,8 @@
 		#define MOSFET_GND  27
 		#define DHT11_PIN	2
 
-		#define PIN_UART_TX	8		//pour ne pas faire comme tout le monde (et résoudre un pb hardware !)
-		#define PIN_UART_RX	6		//pour ne pas faire comme tout le monde (et résoudre un pb hardware !)
+		#define PIN_UART_TX	8		//pour ne pas faire comme tout le monde (et rï¿½soudre un pb hardware !)
+		#define PIN_UART_RX	6		//pour ne pas faire comme tout le monde (et rï¿½soudre un pb hardware !)
 	#endif
 
 	#if OBJECT_ID == OBJECT_OUT_WEATHER_STATION
@@ -196,7 +196,13 @@
 	#endif
 
 	#if OBJECT_ID == OBJECT_E_PAPER
-
+		#define USE_EPAPER	1
+		#define CS_PIN           10
+		#define RST_PIN          7
+		#define DC_PIN           9
+		#define BUSY_PIN         13
+//		#define EPAPER_SPI		SPI1
+		EPAPER_demo();
 
 	#endif
 
@@ -216,7 +222,7 @@
 ///////////////////////////////////////////////////////////////////////////////////
 
 ///////////////////////////////////////////////////////////////////////////////////
-//Configs communes à tout les objets.
+//Configs communes ï¿½ tout les objets.
 
 
 #ifndef PIN_UART_TX
@@ -231,7 +237,7 @@
 #define PIN_LED_BATTERY		20
 #define PIN_RESET			21
 
-//TODO compléter la liste des objets dotés d'une led batterie !
+//TODO complï¿½ter la liste des objets dotï¿½s d'une led batterie !
 #define I_HAVE_LED_BATTERY	(OBJECT_ID == OBJECT_BASE_STATION || OBJECT_ID == 6 || OBJECT_ID == OBJECT_FALL_SENSOR || OBJECT_ID == OBJECT_WINE_DEGUSTATION || OBJECT_ID == 10 || OBJECT_ID == 13||OBJECT_ID == OBJECT_BRIGHTNESS_SENSOR)
 #define I_HAVE_MEASURE_VBAT	(OBJECT_ID == OBJECT_BASE_STATION || OBJECT_ID == 6 || OBJECT_ID == OBJECT_FALL_SENSOR || OBJECT_ID == OBJECT_WINE_DEGUSTATION || OBJECT_ID == 10 || OBJECT_ID == 13||OBJECT_ID == OBJECT_BRIGHTNESS_SENSOR)
 
@@ -241,10 +247,10 @@
 
 
 
-#define ENABLE_POWERDOWN_FROM_MCU		1	//si 1 : permet de couper l'alim avec un appui long sur le bouton poussoir. Impose le maintient du bouton pendant 1 seconde au démarrage.
+#define ENABLE_POWERDOWN_FROM_MCU		1	//si 1 : permet de couper l'alim avec un appui long sur le bouton poussoir. Impose le maintient du bouton pendant 1 seconde au dï¿½marrage.
 
 
-#ifndef USE_SERIAL_DIALOG		//si aucun objet n'a défini ceci à 0... alors on active la brique SERIAL_DIALOG
+#ifndef USE_SERIAL_DIALOG		//si aucun objet n'a dï¿½fini ceci ï¿½ 0... alors on active la brique SERIAL_DIALOG
 	#define USE_SERIAL_DIALOG	1
 #endif
 
@@ -254,7 +260,7 @@
 #define SP_DEBUG_RADIO_IRQ_RESET()		NRF_P0->OUTCLR = (1 << (12))
 
 
-#define OFF_BUTTON_LONG_PRESS_DURATION	2000	//durée de l'appui sur le bouton OFF qui déclenche l'extinction.
+#define OFF_BUTTON_LONG_PRESS_DURATION	2000	//durï¿½e de l'appui sur le bouton OFF qui dï¿½clenche l'extinction.
 #define AUTO_OFF_IF_NO_EVENT_DURATION	(30*60*1000)	//extinction automatique au bout de 30mn
 
 #define TIMESLOT_DURATION	1	//ms
