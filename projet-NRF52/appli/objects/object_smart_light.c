@@ -8,12 +8,25 @@
 #include "appli/common/gpio.h"
 #include "object_smart_light.h"
 #include "appli/common/buttons.h"
+#include "appli/common/parameters.h"
+
+
 
 
 
 
 
 #if OBJECT_ID == OBJECT_SMART_LIGHT
+
+	typedef enum{
+			DEBUT,
+			ALLUMAGE,
+			CHAUD,
+			FROID,
+			EXTINCTION,
+		}mode_e;
+		static mode_e mode = DEBUT;
+
 
 static bool_e appui;
 
@@ -30,11 +43,17 @@ void Configuration(void){
 	GPIO_configure(MOSFET_LED_FROIDE, NRF_GPIO_PIN_NOPULL, TRUE);
 	GPIO_configure(MOSFET_LED_CHAUDE2, NRF_GPIO_PIN_NOPULL, TRUE);
 	GPIO_configure(MOSFET_LED_CHAUDE, NRF_GPIO_PIN_NOPULL, TRUE);
-	BUTTONS_add(BUTTON_USER0, PIN_BUTTON_LOCAL, TRUE, &DetectAppui, NULL, NULL, NULL);
+	BUTTONS_add(BUTTON_USER0, PIN_BUTTON_LOCAL, TRUE, &DetectAppui,NULL,NULL,NULL);
 	}
 
 
+void OBJECT_SMART_LIGHT_UPDATED_MODE_callback(mode_e new_mode){
 
+debug_printf("nouveau mode envoyé depuis la station de base : %lx\n", mode);
+mode = new_mode;
+
+
+}
 
 
 void Eteindre(void){
@@ -71,20 +90,13 @@ void Smart_light_Main(void){
 		/*static mode_e previous_mode = DEBUT; //Sauvegarder l'état précédent.
 		bool_e entrance = (mode != previous_mode)?TRUE:FALSE;*/
 
-		typedef enum{
-			DEBUT,
-			ALLUMAGE,
-			CHAUD,
-			FROID,
-			EXTINCTION,
-		}mode_e;
-		static mode_e mode = DEBUT;
 
 
 		switch(mode)
 			{
 				case DEBUT:
 					Configuration();
+					PARAMETERS_enable(PARAM_MODE,DEBUT, TRUE, &OBJECT_SMART_LIGHT_UPDATED_MODE_callback);
 
 						mode = ALLUMAGE;
 
@@ -92,7 +104,6 @@ void Smart_light_Main(void){
 				case ALLUMAGE:
 
 					AllumageTotale();
-
 							if(appui)
 							{
 								appui = FALSE;

@@ -9,6 +9,7 @@ void Smart_light_Main(void);
 void AllumageFroid(void);
 void AllumageChaud(void);
 bool_e DetectAppui(void);
+void OBJECT_SMART_LIGHT_UPDATED_MODE_callback(mode_e new_mode);
 
 
 
