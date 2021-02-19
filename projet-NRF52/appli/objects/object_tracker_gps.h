@@ -43,15 +43,18 @@ typedef enum
 {
 	INIT = 0,	//Une trame est en cours de réception
 	CONTAINER_TRAM,
+	WAIT,
 	SENT_CONTAINER_TRAM,
 	STOP,
 
 }tracker_gps_state;
 
 
+
 void GPS_main(void);
 void GPS_On(void);
 void GPS_test(void);
+double gps_calcul_distance(double lat_a_rad, double lon_a_rad, double lat_b_rad, double lon_b_rad);
 void GPS_process_rx(uint8_t c);
 
 

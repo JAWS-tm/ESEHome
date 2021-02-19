@@ -157,10 +157,6 @@ running_e I2C_register_read(uint8_t register_address, uint8_t * destination, uin
 
 running_e I2C_register_write(uint8_t register_address, uint8_t value)
 {
-//  transfer_succeeded  = twi_master_transfer(m_device_address, &register_address, 1, TWI_DONT_ISSUE_STOP);
- //   transfer_succeeded &= twi_master_transfer(m_device_address|TWI_READ_BIT, destination, number_of_bytes, TWI_ISSUE_STOP);
-  //   nrf_twi_sensor_reg_write(&p_instance, m_device_address, w2_data, 2);
-	//TODO gérer la callback... !!!
 	typedef enum
 	{
 		INIT = 0,
@@ -218,6 +214,133 @@ running_e I2C_register_write(uint8_t register_address, uint8_t value)
 	}
 
 	return ret;
+}
+
+
+
+running_e I2C_write(uint8_t * data, uint8_t size)
+{
+	typedef enum
+	{
+		INIT = 0,
+		IDLE,
+		TX,
+		RX,
+		TIMEOUT
+	}state_e;
+	static state_e state = INIT;
+	static state_e previous_state = INIT;
+	bool_e entrance;
+	entrance = (previous_state != state)?TRUE:FALSE;
+	previous_state = state;
+
+	running_e ret = IN_PROGRESS;
+	ret_code_t err_code;
+
+	switch(state)
+	{
+		case INIT:
+			//if(initialized)
+			state = IDLE;
+			break;
+		case IDLE:
+			state = TX;
+		break;
+		case TX:
+			if(entrance)
+			{
+				t = 100;
+				flag_event = FALSE;
+				err_code = nrfx_twi_tx(&m_twi, m_device_address, data, size, false);
+				if(err_code != NRF_SUCCESS)
+				{
+					ret = END_ERROR;
+					state = IDLE;
+				}
+			}
+			if(flag_event)
+			{
+				state = IDLE;
+				ret = END_OK;
+			}
+			else if(!t)
+				state = TIMEOUT;
+			break;
+		case TIMEOUT:
+			ret = END_TIMEOUT;
+			state = IDLE;
+			break;
+
+		default:
+			break;
+	}
+
+	return ret;
+}
+
+
+
+running_e I2C_read(uint8_t * data, uint8_t size)
+{
+    typedef enum
+    {
+    	INIT = 0,
+		IDLE,
+		TX,
+		RX,
+		TIMEOUT
+    }state_e;
+    static state_e state = INIT;
+    static state_e previous_state = INIT;
+    bool_e entrance;
+    entrance = (previous_state != state)?TRUE:FALSE;
+    previous_state = state;
+
+	running_e ret = IN_PROGRESS;
+    ret_code_t err_code;
+
+	switch(state)
+	{
+		case INIT:
+			if(initialized)
+				state = IDLE;
+			else
+				ret = END_ERROR;
+			break;
+		case IDLE:
+			state = RX;
+		break;
+		case RX:
+			if(entrance)
+			{
+				flag_event = FALSE;
+				err_code = nrfx_twi_rx(&m_twi, m_device_address, data, size);
+				t = 100;
+				if(err_code != NRF_SUCCESS)
+				{
+					state = IDLE;
+					ret = END_ERROR;
+				}
+			}
+
+			if(flag_event)
+			{
+				state = IDLE;
+				ret = END_OK;
+			}
+			else if(!t)
+				state = TIMEOUT;
+			break;
+		case TIMEOUT:
+			ret = END_TIMEOUT;
+			state = IDLE;
+			break;
+
+		default:
+			break;
+	}
+
+    return ret;
 }
 
 #endif

@@ -14,12 +14,14 @@
 
 #if OBJECT_ID == OBJECT_BRIGHTNESS_SENSOR
 
-void state_machine(void)
+void OBJECT_BRIGHTNESS_SENSOR_state_machine(void)
 {
-	static state state = INIT1;
+	static state state = INIT;
+	static volatile uint16_t luminosite;
+	static volatile uint16_t luminosite_precedente;
 	switch(state)
 	{
-	case INIT1 :
+	case INIT :
 		LED_add(LED_ID_BATTERY, PIN_LED_BATTERY);
 		LED_add(LED_ID_NETWORK, PIN_LED_NETWORK);
 		GPIO_configure(BH1750FVI_VCC_PIN, GPIO_PIN_CNF_PULL_Pullup, TRUE);
@@ -27,28 +29,32 @@ void state_machine(void)
 		state = GET_DATA;
 		BUTTONS_add(BUTTON_NETWORK, PIN_BUTTON_NETWORK, TRUE, &BUTTON_action_sleep, NULL, NULL, NULL);
 		BH1750FVI_init();
-		uint16_t luminosite;
 		break;
 	case GET_DATA :
-		LED_set(LED_ID_NETWORK, LED_MODE_OFF);
+		LED_set(LED_ID_NETWORK, LED_MODE_ON);
 		LED_set(LED_ID_BATTERY, LED_MODE_OFF);
-
+		luminosite_precedente = luminosite;
 		BH1750FVI_powerOn();
 		BH1750FVI_measureMode(BH1750FVI_CON_H1);
 		luminosite = BH1750FVI_readLuminosity();
 		debug_printf("\nLuminosite = %d lx", luminosite);
-		state = SEND_DATA;
+		BH1750FVI_powerDown();
+		if (luminosite>luminosite_precedente+10){
+			state = SEND_DATA;
+		}else if(luminosite<luminosite_precedente+10){
+			state = SEND_DATA;
+		}
 		break;
 	case SEND_DATA :
 
-		LED_set(LED_ID_NETWORK, LED_MODE_ON);
+		LED_set(LED_ID_NETWORK, LED_MODE_OFF);
 		state = GET_DATA;
 		break;
 	case SLEEP :
 		LED_set(LED_ID_NETWORK, LED_MODE_OFF);
 		LED_set(LED_ID_BATTERY, LED_MODE_BLINK);
 		break;
-	case STOP1 :
+	case STOP :
 
 		break;
 

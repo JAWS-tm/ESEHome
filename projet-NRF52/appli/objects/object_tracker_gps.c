@@ -12,7 +12,7 @@
 
 #include <math.h>
 #include <stdlib.h>
-//Constantes priv�es
+//Constantes privï¿½es
 #define BUFFER_SIZE	256
 
 /** \brief NMEA message start-of-message (SOM) character */
@@ -31,53 +31,97 @@
 
 
 
-//Fonctions priv�es
+//Fonctions privï¿½es
 static nmea_frame_e GPS_parse(uint8_t * buffer, gps_datas_t * gps_datas);
 static bool_e GPS_parse_gprmc(uint8_t * string, gps_datas_t * coordinates);
 static uint8_t hextoint(char c);
 	/*
- * Cette fonction r�cup�re le nouveau caract�re fourni (c) et le range dans son propre buffer
- * Si l'on atteint le d�but de la trame ($) -> on reset l'index de lecture
- * Lorsqu'on atteint la fin de la trame (d�tection d'un caract�re '\n') -> on sous-traite le d�coupage de la trame au parser.
- * Une trame correctement lue donne lieu au remplissage de la structure gps_datas et au renvoi d'une valeur de retour diff�rente de NO_TRAME_RECEIVED (0)
+ * Cette fonction rï¿½cupï¿½re le nouveau caractï¿½re fourni (c) et le range dans son propre buffer
+ * Si l'on atteint le dï¿½but de la trame ($) -> on reset l'index de lecture
+ * Lorsqu'on atteint la fin de la trame (dï¿½tection d'un caractï¿½re '\n') -> on sous-traite le dï¿½coupage de la trame au parser.
+ * Une trame correctement lue donne lieu au remplissage de la structure gps_datas et au renvoi d'une valeur de retour diffï¿½rente de NO_TRAME_RECEIVED (0)
  */
 
 void GPS_main(void)
 {
 	static tracker_gps_state state = INIT;
-	switch(state)
-			{
-				case INIT:
-					// initialisation du gps
-					GPS_On();
-					Systick_init();
-					SECRETARY_init();
-					state = CONTAINER_TRAM;
-					break;
-				case CONTAINER_TRAM:
-					SERIAL_DIALOG_set_rx_callback(&GPS_process_rx);
+		switch(state)
+				{
+					case INIT:
+						// initialisation du gps
 
-					break;
-				case SENT_CONTAINER_TRAM:
-					// mise en sommeil de la carte pour �viter une consomation top importante du module
-					break;
-				case STOP:
-					//arret de l'utilisation du module gps
-					break;
-				default:
-					break;
-			}
+						debug_printf("init");
+						LED_add(LED_ID_BATTERY, PIN_LED_BATTERY);
+						LED_add(LED_ID_NETWORK, PIN_LED_NETWORK);
+						LED_set(LED_ID_BATTERY, LED_MODE_ON);
+						LED_set(LED_ID_NETWORK, LED_MODE_ON);
+
+						GPS_On();
+						Systick_init();
+						SECRETARY_init();
+
+
+						BUTTONS_init();
+						BUTTONS_add(BUTTON_NETWORK, PIN_BUTTON_NETWORK, TRUE, &BUTTONS_network_process);
+
+
+						state = CONTAINER_TRAM;
+						break;
+					case CONTAINER_TRAM: //recup곡tion des marker gps et stockage
+						LED_set_flash_limited_nb(LED_ID_NETWORK, 3, 500);
+						SERIAL_DIALOG_set_rx_callback(&GPS_process_rx);
+
+    					state = WAIT;
+
+						if(BUTTONS_read(BUTTON_NETWORK) == TRUE)
+							state = SENT_CONTAINER_TRAM;
+
+						break;
+					case WAIT: // on attend 1min avant de retourner dans la case CONTAINER_TRAM pour reffaire un prelevement de coordonnꥍ
+						LED_set(LED_ID_NETWORK, LED_MODE_BLINK);
+						SYSTICK_delay_ms(10000);
+						state = CONTAINER_TRAM;
+
+						break;
+					case SENT_CONTAINER_TRAM: // envoie des donnꥠvers la base
+						LED_set(LED_ID_NETWORK, LED_MODE_FLASH);
+
+						// test d'envoie message en uart
+						for(int i = 0; i<33; i++)
+						{
+							debug_printf("%d\n",gps_lat[i]);
+						}
+
+						//SECRETARY_send_msg(8, gps_lat);
+						//SECRETARY_send_msg(8, gps_long);
+						break;
+					case STOP: //arret de l'utilisation du module gps
+
+						break;
+					default:
+						break;
+				}
 }
 void GPS_On(void)
 {
-	GPIO_configure(MOSFET_GND_GPS, NRF_GPIO_PIN_NOPULL, true);//configure la pin de du gps concern�e en sortie
+	GPIO_configure(MOSFET_GND_GPS, NRF_GPIO_PIN_NOPULL, true);//configure la pin de du gps concernée en sortie
 	GPIO_write(MOSFET_GND_GPS, true);
 }
 
 
 static gps_datas_t gps_datas;
-static uint8_t gps_tables[128];
-static uint8_t i;
+double gps_lat[32];
+double gps_long[32];
+double gps_date[24];
+double gps_heure[24];
+
+uint8_t y = 0;
+double lat_a_rad = 0;
+double lon_a_rad = 0;
+
+double lat_b_rad = 0;
+double lon_b_rad = 0;
+uint8_t compteur = 0;
 
 void GPS_process_rx(uint8_t c)
 {
@@ -92,35 +136,62 @@ void GPS_process_rx(uint8_t c)
 		index++;
 	if(c=='\n')
 	{
-		buffer[index] = '\0';
+		//lorsqu'une trame compl鵥 et valide a 굩 re趥, on peut traiter les donn꦳ interpret꦳.
+		//debug_printf("%d, %d\n",gps_datas.latitude_deg, gps_datas.longitude_deg);
 
-		index = 0;
-		//trame termin�e, on l'envoie !
-		if(GPS_parse(buffer, &gps_datas) == TRAME_GPRMC)
+		//SECRETARY_send_msg(8, gps_datas);
+
+		if(compteur %2 == 0) // tout les paire on stock la coordonnꥠdans a
+			{
+				lat_a_rad = gps_datas.latitude_rad;
+				lon_a_rad = gps_datas.longitude_rad;
+			}
+
+		if(compteur %2 == 1) // tout les impaire on stock la coordonnꥠdans b
+			{
+				lat_b_rad = gps_datas.latitude_rad;
+				lon_b_rad = gps_datas.longitude_rad;
+			}
+
+		compteur++;
+
+		double distance = 0;
+		distance = gps_calcul_distance(lat_a_rad, lon_a_rad, lat_b_rad, lon_b_rad);
+
+		if(distance > 1000)
 		{
-			//lorsqu'une trame compl�te et valide a �t� re�ue, on peut traiter les donn�es interpret�es.
-			//printf("%lf, %lf\n",gps_datas.latitude_deg, gps_datas.longitude_deg);
 
-			SECRETARY_send_msg(8, gps_datas);
-			/*
-			gps_tables[i] = gps_datas;
-			i++;
-			*/
+			gps_lat[y] = gps_datas.latitude_rad;      // voir s'il faut mettre en degre pour le site
+			gps_long[y] = gps_datas.longitude_rad;
+			gps_date[y] =  gps_datas.date32;
+			gps_heure[y] =  gps_datas.time;
+			//debug_printf("%lf\n",gps_lat[y]);
+			y++;
+
+		}else // cas ou la distance n'est pas assez grande, on viens redonner l'ancienne valeur pour garder un bon referenciel
+		{
+			if(compteur %2 == 0)
+				{
+					lat_a_rad = lat_b_rad;
+					lon_a_rad = lon_b_rad;
+				}
+			if(compteur %2 == 1)
+				{
+					lat_b_rad = lat_a_rad;
+					lon_b_rad = lon_a_rad;
+				}
 		}
 	}
 }
 
-uint8_t gps_calcul_distance(lat_a_degre, lon_a_degre, lat_b_degre, lon_b_degre)
+double gps_calcul_distance(double lat_a_rad, double lon_a_rad, double lat_b_rad, double lon_b_rad)
 {
+	//formule certainement fausse, aller voir la formule de Haversine
+	double distance =  EARTHRADIUS_M* (acos(sin(lat_a_rad) * sin(lat_b_rad) + cos(lat_a_rad) * cos(lat_b_rad) *cos(lon_b_rad - lon_a_rad)));
 
-	uint8_t lat_a = lat_a_degre*PI/180; // convertisseur degr� en rad
-	uint8_t lon_a = lon_a_degre*PI/180;
-	uint8_t lat_b = lat_b_degre*PI/180;
-	uint8_t lon_b = lon_b_degre*PI/180;
-
-	uint8_t distance =  EARTHRADIUS_M* (PI/2 - asin(sin(lat_b) * sin(lat_a) + cos(lon_b - lon_a) *cos(lat_b) * cos(lat_a)));
 	return distance;
 }
+/*
 
 void GPS_test(void)
 {
@@ -128,9 +199,7 @@ void GPS_test(void)
 	//https://www.coordonnees-gps.fr/
 
 	#define NB_TEST_STRINGS 7
-	/*
-	 * changer le char et récupérer
-	 */
+
 
 	char * test_strings[NB_TEST_STRINGS] = {
 			"$GPRMC,063355.00,A,4729.60520,N,00033.05755,W,0.022,,170614,,,D*6F\r\n",
@@ -152,7 +221,7 @@ void GPS_test(void)
 		switch(err)
 		{
 			case TRAME_GPRMC:
-				printf("%lf, %lf\n",gps_datas.latitude_deg, gps_datas.longitude_deg);	//On affiche les coordonn�es lues
+				printf("%lf, %lf\n",gps_datas.latitude_deg, gps_datas.longitude_deg);	//On affiche les coordonnï¿½es lues
 				break;
 			case TRAME_INVALID:
 				printf("Invalid trame\n");
@@ -168,7 +237,7 @@ void GPS_test(void)
 		}
 	}
 }
-
+*/
 
 
 
@@ -180,7 +249,7 @@ static bool_e string_begins_with(uint8_t * string, uint8_t * begin)
 {
 	bool_e b;
 	uint16_t i;
-	b = TRUE;	//On fait l'hypoth�se que tout se passe bien...
+	b = TRUE;	//On fait l'hypothï¿½se que tout se passe bien...
 	for(i=0;begin[i];i++)
 	{
 		if(string[i] == '\0' || (string[i] != begin[i]))
@@ -194,26 +263,26 @@ static bool_e string_begins_with(uint8_t * string, uint8_t * begin)
 
 /*
  * Cette fonction a pour but de :
- * - v�rifier si la trame founie dans "buffer" commence par un identifiant connu (GPRMC, ...)
- * - v�rifier la valeur du checksum
- * - sous-traiter la lecture de la trame reconnue � la bonne fonction
+ * - vï¿½rifier si la trame founie dans "buffer" commence par un identifiant connu (GPRMC, ...)
+ * - vï¿½rifier la valeur du checksum
+ * - sous-traiter la lecture de la trame reconnue ï¿½ la bonne fonction
  * Si le checksum est faux -> renvoit CHECKSUM_INVALID
  * Si la trame n'est pas reconnue -> renvoit NO_TRAME_RECEIVED
- * Si la trame est jug�e invalide par les fonctions sous-traitantes -> renvoit TRAME_INVALID
+ * Si la trame est jugï¿½e invalide par les fonctions sous-traitantes -> renvoit TRAME_INVALID
  */
 static nmea_frame_e GPS_parse(uint8_t * buffer, gps_datas_t * gps_datas)
 {
 	const char string_gprmc[] = "$GPRMC";
 	nmea_frame_e ret;
 	Uint8 i, checksum;
-	ret = NO_TRAME_RECEIVED;	//On fait l'hypoth�se qu'aucune trame correcte est re�ue
+	ret = NO_TRAME_RECEIVED;	//On fait l'hypothï¿½se qu'aucune trame correcte est reï¿½ue
 
 	if(string_begins_with(buffer, (uint8_t *)string_gprmc))
 		ret = TRAME_GPRMC;
 
 	//TODO ajouter d'autres trames si besoin..
 
-	if(ret != NO_TRAME_RECEIVED)	//un ent�te connu a �t� trouv�... calcul du checksum
+	if(ret != NO_TRAME_RECEIVED)	//un entï¿½te connu a ï¿½tï¿½ trouvï¿½... calcul du checksum
 	{
 		checksum = 0;
 		for(i=1; buffer[i]!='*' && buffer[i] != '\0'; i++)
@@ -240,16 +309,16 @@ static nmea_frame_e GPS_parse(uint8_t * buffer, gps_datas_t * gps_datas)
 
 
 /*
- * Cette fonction d�coupe une trame GPRMC fournie dans string et remplit la structure coordinates
+ * Cette fonction dï¿½coupe une trame GPRMC fournie dans string et remplit la structure coordinates
  * - Si la trame est invalide (notamment lorsque le GPS ne capte pas !) -> renvoit FALSE
  * - Si la trame est valide -> renvoit TRUE
- * Attention, cette fonction �crase la chaine pass�e en remplacant notamment certains caract�res ',' par des '\0' !!!
+ * Attention, cette fonction ï¿½crase la chaine passï¿½e en remplacant notamment certains caractï¿½res ',' par des '\0' !!!
  */
 bool_e GPS_parse_gprmc(uint8_t * string, gps_datas_t * coordinates)
 {
 	uint8_t i;
 	uint8_t *message_field[14] = {'\0'};	//tableau des pointeur sur champ
-	//tableau des pointeurs sur champ d�cimal
+	//tableau des pointeurs sur champ dï¿½cimal
 	//Header : $GPRMC
 	//Data : 											,hhmmss.sss,A,ddmm.mmmm,N,ddmm.mmmm,W,X,X,ddmmyy,X,X,X*<CR><LF>
 	//Chaine final :							\0		 hhmmss . sss \0 A \0 ddmm . mmmm \0 N \0 ddmm . mmmm \0 W \0 X \0 X \0 ddmmyy \0 X \0 X \0 X \0 <CR><LF>
@@ -304,7 +373,7 @@ bool_e GPS_parse_gprmc(uint8_t * string, gps_datas_t * coordinates)
 
 		uint32_t current_date;
 		current_date =  (uint32_t)atoi((char*)message_field[9]);
-		coordinates->date32 = 	(	((Uint32)(current_date%100) + 20) << 25 ) 	//20 est la diff�rence entre 2000 et 1980.
+		coordinates->date32 = 	(	((Uint32)(current_date%100) + 20) << 25 ) 	//20 est la diffï¿½rence entre 2000 et 1980.
 				| 	((Uint32)((current_date/100)%100) << 21 )
 				| 	((Uint32)(current_date/10000) << 16 )
 				| 	((Uint32)(coordinates->time/10000) << 11 )
@@ -317,7 +386,7 @@ bool_e GPS_parse_gprmc(uint8_t * string, gps_datas_t * coordinates)
 }
 
 
-//converti un caract�re hexa (par exemple '4', ou 'B') en un nombre (dans cet exemple : 4, 11)
+//converti un caractï¿½re hexa (par exemple '4', ou 'B') en un nombre (dans cet exemple : 4, 11)
 static uint8_t hextoint(char c)
 {
 	if(c >= 'A' && c <= 'F')

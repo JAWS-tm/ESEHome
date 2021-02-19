@@ -18,7 +18,6 @@ typedef enum{
 	INIT,
 	GET_DATA,
 	ALERT,
-	SLEEP,
 	STOP
 }state_e;
 
@@ -57,7 +56,7 @@ void OBJECT_FALL_SENSOR_state_machine(void){
 			gyro_z += mpu_datas.Gyroscope_Z;
 			acc_y = mpu_datas.Accelerometer_Y;
 			acc_z = mpu_datas.Accelerometer_Z;
-			debug_printf("AX%4d\tAY%4d\tAZ%4d\tGX%4d\tGY%4d\tGZ%4d\tgx%4ld°\tgy%4ld°\tgz%4ld°\tT%3.1f°\n",
+			debug_printf("AX%4d\tAY%4d\tAZ%4d\tGX%4d\tGY%4d\tGZ%4d\tgx%4ld°\tgy%4ld°\tgz%4ld°\n",
 							mpu_datas.Accelerometer_X/410,	//environ en %
 							mpu_datas.Accelerometer_Y/410,	//environ en %
 							mpu_datas.Accelerometer_Z/410,	//environ en %
@@ -66,8 +65,7 @@ void OBJECT_FALL_SENSOR_state_machine(void){
 							mpu_datas.Gyroscope_Z,
 							gyro_x/16400,						//environ en °
 							gyro_y/16400,						//environ en °
-							gyro_z/16400,						//environ en °
-							mpu_datas.Temperature);
+							gyro_z/16400);						//environ en °
 
 			LED_set(LED_ID_BATTERY, LED_MODE_OFF);
 
@@ -87,9 +85,8 @@ void OBJECT_FALL_SENSOR_state_machine(void){
 
 			break;}
 
-		case SLEEP:
-			break;
 		case STOP:
+			//Mode OFF à coder
 			break;
 		default:
 			break;
@@ -97,30 +94,37 @@ void OBJECT_FALL_SENSOR_state_machine(void){
 }
 
 
-void BUTTON_action_sleep(state_e state)
-{
-	if(state == GET_DATA){
-		state = SLEEP;
-	}else if (state == SLEEP){
-		state = GET_DATA;
-	}
-}
-
-//action a effectuer dans fonction btn alerte
+//fonction à appeler dans BUTTONS_alerte pour afficher msg alerte et eteindre led_battery
 void BUTTONS_alerte_process(void)
 {
 	LED_set(LED_ID_BATTERY, LED_MODE_ON);
 	debug_printf("ALERT ! FALL DETECTED.");
 }
 
-//fonction du bouton ALERTE
+//fonction envoi d'alerte lors de l'appui sur bouton
 void BUTTONS_alerte(void){
 	bool_e init = TRUE;
 	if(init){
-		BUTTONS_add(BUTTON_ALERTE, PIN_BUTTON_ALERT, TRUE, &BUTTONS_alerte_process, NULL, NULL, NULL);
+		BUTTONS_add(BUTTON_ALERTE, PIN_BUTTON_ALERTE, TRUE, &BUTTONS_alerte_process, NULL, NULL, NULL);
 		LED_add(LED_ID_BATTERY, PIN_LED_BATTERY);
 		init = FALSE;
 	}
 }
+
+/*//fonction à appeler dans BUTTON_MPU6050 pour eteindre le module
+void BUTTON_MPU6050_process(void)
+{
+	//mpu6050_register_write(MPU6050_PWR_MGMT_1, 0x01); //on
+	debug_printf("test");
+}
+
+//fonction envoi d'alerte lors de l'appui sur bouton
+void BUTTON_MPU6050(void){
+	bool_e init = TRUE;
+	if(init){
+		BUTTONS_add(BUTTON_ON, PIN_BUTTON_MPU, TRUE, &BUTTON_MPU6050_process, NULL, NULL, NULL);
+		init = FALSE;
+	}
+}*/
 
 #endif

@@ -5,14 +5,21 @@
  *      Author: lebihata
  */
 
-#ifndef APPLI_OBJECTS_OBJECT_WINE_DEGUSTATION_H_
-#define APPLI_OBJECTS_OBJECT_WINE_DEGUSTATION_H_
+#ifndef OBJECT_WINE_DEGUSTATION_H_
+#define OBJECT_WINE_DEGUSTATION_H_
 
 
-static void object_wine_degustation_process_main();
-//bool_e wine_status; //la bouteille est à bonne température ou non
+void Wine_Degustation_Main(void);
 
-
+#define PIN_LED_VERTE (9) //led verte = bouteille chambrée
+#define PIN_LED_JAUNE (10) //led jaune = bouteille non chambrée
+const int temp;
+const int mcp9804_address=0x35; // 00110101 : adresse prise de température (TA)
+const int UpperByte;
+const int LowerByte;
+const int ACK=0x0; // bit d'acquittement
+const int NAK=0x1; // bit de non acquittement
+const int prctBatt;
 
 
 

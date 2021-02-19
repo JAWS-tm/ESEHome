@@ -15,4 +15,9 @@ running_e I2C_register_read(uint8_t register_address, uint8_t * destination, uin
 
 running_e I2C_register_write(uint8_t register_address, uint8_t value);
 
+running_e I2C_write(uint8_t * data, uint8_t size);
+
+running_e I2C_read(uint8_t * data, uint8_t size);
+
+
 #endif /* BSP_NRF52_I2C_H_ */

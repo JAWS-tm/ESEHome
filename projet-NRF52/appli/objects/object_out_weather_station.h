@@ -11,7 +11,10 @@
 #if OBJECT_ID == OBJECT_OUT_WEATHER_STATION
 
 void OUT_WEATHER_STATION_MAIN(void);
-bool_e RJ12_ReadWindTest(void);
+void RJ12_WindInit(void);
+void RJ12_RainInit(void);
+float RJ12_ReadWindTest(void);
+uint8_t RJ12_ReadRainTest(void);
 
 #endif /* APPLI_OBJECTS_OBJECT_OUT_WEATHER_STATION_H_ */
 

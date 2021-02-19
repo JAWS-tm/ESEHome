@@ -10,15 +10,15 @@
 #if OBJECT_ID == OBJECT_BRIGHTNESS_SENSOR
 
 typedef enum{
-	INIT1 = 0,
+	INIT = 0,
 	GET_DATA,
 	SEND_DATA,
 	SLEEP,
-	STOP1
+	STOP
 }state;
 
 
-void state_machine();
+void OBJECT_BRIGHTNESS_SENSOR_state_machine();
 void BUTTON_action_sleep(state state);
 #endif
 #endif /* APPLI_OBJECTS_OBJECT_BRIGHTNESS_SENSOR_H_ */

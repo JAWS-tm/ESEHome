@@ -21,12 +21,12 @@ void object_ventilator_changement_etat(void);
 void object_ventilator_activation(void)
 {
 	switch(state) {
-	case VENTILATOR_INIT:
-		GPIO_init();
-		GPIO_configure(MOSFET_PIN, NRF_GPIO_PIN_PULLUP, true);
-		BUTTONS_set_short_press_callback(BUTTON_NETWORK, &object_ventilator_changement_etat);
-		state = VENTILATOR_OFF;	//Changement d'état
-		break;
+		case VENTILATOR_INIT:
+			GPIO_init();
+			GPIO_configure(MOSFET_PIN, NRF_GPIO_PIN_PULLUP, true);
+			BUTTONS_add(BUTTON_NETWORK, PIN_BUTTON_NETWORK, TRUE, &object_ventilator_changement_etat, NULL, NULL, NULL);
+			state = VENTILATOR_OFF;	//Changement d'état
+			break;
 
 		case VENTILATOR_ON:
 			GPIO_write(MOSFET_PIN, true);
@@ -63,6 +63,7 @@ void object_ventilator_activation(void)
 
 void object_ventilator_changement_etat(void)
 {
+
 	state_changement = TRUE;
 }
 
