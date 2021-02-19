@@ -526,6 +526,10 @@ void MATRIX_show_value(matrix_t matrix[32][32], uint32_t valeur, bool_e positif,
 	uint32_t ligne = 7;
 	uint32_t colonne = 8;
 
+	//on limite l'utilisateur
+	if(9999 < valeur)
+		valeur = 9999;
+
 	//on considere que la valeur est inférieur a 9999
 	uint32_t thousands = valeur / 1000;
 	valeur = valeur - thousands * 1000;
