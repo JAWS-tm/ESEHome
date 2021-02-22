@@ -5,9 +5,11 @@
  *      Author: Nirgal
  */
 
+#include "uart_soft.h"
+#if USE_UART_SOFT
 #define MAX_UART_NB	3
 
-#include "uart_soft.h"
+
 #include "appli/common/gpio.h"
 #include "appli/common/systick.h"
 #include <stdio.h>
@@ -124,4 +126,5 @@ void UART_SOFT_test(void)
 	}
 }
 
+#endif
 

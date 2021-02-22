@@ -320,6 +320,10 @@ uint32_t debug_printf(char * format, ...);
 	#define USE_EPAPER		0
 #endif
 
+#ifndef USE_UART_SOFT
+	#define USE_UART_SOFT	0
+#endif
+
 
 #if USE_MPU6050 || USE_BMP180 ||USE_BH1750FVI//   || USE_... || USE...
 	#ifndef I2C_SDA_PIN_NB
