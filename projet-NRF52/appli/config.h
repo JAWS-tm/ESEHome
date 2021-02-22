@@ -40,13 +40,13 @@
 
 
 ///////////////////////////////////////////////////////////////////////////////////
-//Numï¿½ro de l'objet pour lequel on compile
+//Numéro de l'objet pour lequel on compile
 #include "config_perso.h"
 ///////////////////////////////////////////////////////////////////////////////////
 
 
 ///////////////////////////////////////////////////////////////////////////////////
-//Config propres ï¿½ chaque objets.
+//Config propres a chaque objets.
 	#if OBJECT_ID == OBJECT_BASE_STATION
 
 	#endif
@@ -88,8 +88,8 @@
 		#define MOSFET_GND  27
 		#define DHT11_PIN	2
 
-		#define PIN_UART_TX	8		//pour ne pas faire comme tout le monde (et rï¿½soudre un pb hardware !)
-		#define PIN_UART_RX	6		//pour ne pas faire comme tout le monde (et rï¿½soudre un pb hardware !)
+		#define PIN_UART_TX	8		//pour ne pas faire comme tout le monde (et résoudre un pb hardware !)
+		#define PIN_UART_RX	6		//pour ne pas faire comme tout le monde (et résoudre un pb hardware !)
 	#endif
 
 	#if OBJECT_ID == OBJECT_OUT_WEATHER_STATION
@@ -222,7 +222,7 @@
 ///////////////////////////////////////////////////////////////////////////////////
 
 ///////////////////////////////////////////////////////////////////////////////////
-//Configs communes ï¿½ tout les objets.
+//Configs communes é tout les objets.
 
 
 #ifndef PIN_UART_TX
@@ -237,7 +237,7 @@
 #define PIN_LED_BATTERY		20
 #define PIN_RESET			21
 
-//TODO complï¿½ter la liste des objets dotï¿½s d'une led batterie !
+//TODO compléter la liste des objets dotés d'une led batterie !
 #define I_HAVE_LED_BATTERY	(OBJECT_ID == OBJECT_BASE_STATION || OBJECT_ID == 6 || OBJECT_ID == OBJECT_FALL_SENSOR || OBJECT_ID == OBJECT_WINE_DEGUSTATION || OBJECT_ID == 10 || OBJECT_ID == 13||OBJECT_ID == OBJECT_BRIGHTNESS_SENSOR)
 #define I_HAVE_MEASURE_VBAT	(OBJECT_ID == OBJECT_BASE_STATION || OBJECT_ID == 6 || OBJECT_ID == OBJECT_FALL_SENSOR || OBJECT_ID == OBJECT_WINE_DEGUSTATION || OBJECT_ID == 10 || OBJECT_ID == 13||OBJECT_ID == OBJECT_BRIGHTNESS_SENSOR)
 
@@ -247,10 +247,10 @@
 
 
 
-#define ENABLE_POWERDOWN_FROM_MCU		1	//si 1 : permet de couper l'alim avec un appui long sur le bouton poussoir. Impose le maintient du bouton pendant 1 seconde au dï¿½marrage.
+#define ENABLE_POWERDOWN_FROM_MCU		1	//si 1 : permet de couper l'alim avec un appui long sur le bouton poussoir. Impose le maintient du bouton pendant 1 seconde au démarrage.
 
 
-#ifndef USE_SERIAL_DIALOG		//si aucun objet n'a dï¿½fini ceci ï¿½ 0... alors on active la brique SERIAL_DIALOG
+#ifndef USE_SERIAL_DIALOG		//si aucun objet n'a défini ceci é 0... alors on active la brique SERIAL_DIALOG
 	#define USE_SERIAL_DIALOG	1
 #endif
 
@@ -260,7 +260,7 @@
 #define SP_DEBUG_RADIO_IRQ_RESET()		NRF_P0->OUTCLR = (1 << (12))
 
 
-#define OFF_BUTTON_LONG_PRESS_DURATION	2000	//durï¿½e de l'appui sur le bouton OFF qui dï¿½clenche l'extinction.
+#define OFF_BUTTON_LONG_PRESS_DURATION	2000	//durée de l'appui sur le bouton OFF qui déclenche l'extinction.
 #define AUTO_OFF_IF_NO_EVENT_DURATION	(30*60*1000)	//extinction automatique au bout de 30mn
 
 #define TIMESLOT_DURATION	1	//ms
@@ -288,20 +288,26 @@ uint32_t debug_printf(char * format, ...);
 	#define CHANNEL_ADC_MCP9701			1
 #endif
 
+#ifndef USE_PWM
+	#define USE_PWM			0
+#endif
+
 #ifndef USE_DHT11
 	#define USE_DHT11		0
 #endif
 
 #ifndef USE_NMOS_GND
-	#define USE_NMOS_GND		0
+	#define USE_NMOS_GND	0
 #endif
 
 #ifndef USE_MPU6050
 	#define USE_MPU6050		0
 #endif
+
 #ifndef USE_BH1750FVI
-	#define USE_BH1750FVI		0
+	#define USE_BH1750FVI	0
 #endif
+
 #ifndef USE_MATRIX
 	#define USE_MATRIX		0
 #endif
@@ -309,6 +315,11 @@ uint32_t debug_printf(char * format, ...);
 #ifndef USE_BMP180
 	#define USE_BMP180		0
 #endif
+
+#ifndef USE_EPAPER
+	#define USE_EPAPER		0
+#endif
+
 
 #if USE_MPU6050 || USE_BMP180 ||USE_BH1750FVI//   || USE_... || USE...
 	#ifndef I2C_SDA_PIN_NB

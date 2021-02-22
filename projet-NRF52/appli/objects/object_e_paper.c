@@ -7,7 +7,7 @@
 
 
 #include "../config.h"
-
+#if OBJECT_ID == OBJECT_E_PAPER
 //#include "stm32f1xx_hal.h"
 //#include "stm32f1xx_nucleo.h"
 //#include "stm32f1_uart.h"
@@ -66,6 +66,6 @@ int EPAPER_demo(void)
 	}
 }
 
-
+#endif
 
 

@@ -30,7 +30,7 @@
  * THE SOFTWARE.
  */
 #include "../../appli/config.h"
-//#if USE_EPAPER
+#if USE_EPAPER
 #include <stdlib.h>
 #include "epd4in2.h"
 #include "epdif.h"
@@ -279,7 +279,7 @@ const unsigned char lut_wb[] ={
 /* END OF FILE */
 
 
-
+#endif
 
 
 

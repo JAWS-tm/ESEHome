@@ -51,6 +51,8 @@ void clocks_start( void )
     NRF_CLOCK->TASKS_HFCLKSTART = 1;
 
     while (NRF_CLOCK->EVENTS_HFCLKSTARTED == 0);
+
+    NRF_NVMC->ICACHECNF = 1;	//Turn CPU cache ON.
 }
 
 void button_network_process(void)
@@ -94,6 +96,7 @@ int main(void)
 	SECRETARY_init();
 
 	BUTTONS_add(BUTTON_NETWORK, PIN_BUTTON_NETWORK, TRUE, &button_network_process_short_press, NULL, &button_network_process_long_press, &button_network_process_5press);
+
 
     while (1)
     {
