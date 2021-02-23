@@ -21,18 +21,14 @@ typedef enum
 typedef enum
 {
 	INIT_VOICE_CONTROL,
-    READ_COMMAND_1,
-    READ_COMMAND_2,
-    READ_COMMAND_3,
-    READ_COMMAND_4,
-    READ_COMMAND_5,
-    READ_COMMAND_6,
-    READ_COMMAND_7,
-    READ_COMMAND_8,
-}voice_control_read_e;
+    WAIT_UPDATE,
+	UPDATE,
+}voice_control_state_e;
 
 void VOICE_CONTROL_init(void);
 
 void VOICE_CONTROL_process_main(void);
 
 void VOICE_CONTROL_add(voice_control_e id, uint8_t pin, bool_e pullup);
+
+void VOICE_CONTROL_read(void);
