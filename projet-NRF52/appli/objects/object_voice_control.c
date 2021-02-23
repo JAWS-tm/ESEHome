@@ -8,29 +8,30 @@
 #include "../config.h"
 
 #if OBJECT_ID == OBJECT_VOICE_CONTROL
+	#include "../common/leds.h"
 	#include "../common/gpio.h"
 	#include "object_voice_control.h"
 
 	typedef struct
 	{
 		bool_e initialized;
+		bool_e changed;
+		bool_e state;
+		bool_e old_state;
 		uint8_t pin;
 	}voice_control_t;
 
 	static voice_control_t voice_control_var[VOICE_CONTROL_NB];
-	static voice_control_read_e state;
+	static voice_control_state_e state = INIT_VOICE_CONTROL;
 
-	bool_e LED = FALSE;
-	bool_e touch_screen = FALSE;
+	bool_e update = FALSE;
 
 	void VOICE_CONTROL_init(void)
 	{
 		for(voice_control_e b = 0; b < VOICE_CONTROL_NB; b++)
 		{
-			voice_control_var[b].initialized = TRUE;
+			voice_control_var[b].initialized = FALSE;
 		}
-
-		state = INIT_VOICE_CONTROL;
 	}
 
 	void VOICE_CONTROL_process_main(void)
@@ -43,43 +44,30 @@
 				VOICE_CONTROL_add(VOICE_CONTROL_COMMAND_1, LED_PIN, TRUE);
 				VOICE_CONTROL_add(VOICE_CONTROL_COMMAND_2, TOUCH_SCREEN_PIN, TRUE);
 
-				state = READ_COMMAND_1;	//Changement d'état
+				state = WAIT_UPDATE;	//Changement d'état
 				break;
 
-			case READ_COMMAND_1:
-				LED = GPIO_read(voice_control_var[0].pin);
+			case WAIT_UPDATE:
+				VOICE_CONTROL_read();
 
-				state = READ_COMMAND_2;	//Changement d'état
+				if(update) {
+					update = FALSE;
+					state = UPDATE;	//Changement d'état
+				}
 				break;
 
-			case READ_COMMAND_2:
-				touch_screen = GPIO_read(voice_control_var[1].pin);
+			case UPDATE:
+				for(voice_control_e b = 0; b < VOICE_CONTROL_NB; b++)
+				{
+					if(voice_control_var[b].changed)
+					{
+						//TODO Envoyer à la station de base..
 
-				state = READ_COMMAND_3;	//Changement d'état
-				break;
-
-			case READ_COMMAND_3:
-				state = READ_COMMAND_4;	//Changement d'état
-				break;
-
-			case READ_COMMAND_4:
-				state = READ_COMMAND_5;	//Changement d'état
-				break;
-
-			case READ_COMMAND_5:
-				state = READ_COMMAND_6;	//Changement d'état
-				break;
-
-			case READ_COMMAND_6:
-				state = READ_COMMAND_7;	//Changement d'état
-				break;
-
-			case READ_COMMAND_7:
-				state = READ_COMMAND_8;	//Changement d'état
-				break;
-
-			case READ_COMMAND_8:
-				state = READ_COMMAND_1;	//Changement d'état
+						voice_control_var[b].changed = FALSE;
+						debug_printf("Commande %d : %d\n", b, voice_control_var[b].state);
+					}
+				}
+				state = WAIT_UPDATE;	//Changement d'état
 				break;
 
 			default:
@@ -99,6 +87,28 @@
 		//on part du principe que tout les boutons sont no pullup
 		GPIO_configure(voice_control_var[id].pin, (pullup)?NRF_GPIO_PIN_PULLUP:NRF_GPIO_PIN_NOPULL, 0);
 		voice_control_var[id].initialized = TRUE;
+
+		voice_control_var[id].changed = FALSE;
+		voice_control_var[id].state = FALSE;
+		voice_control_var[id].old_state = FALSE;
+	}
+
+	void VOICE_CONTROL_read(void)
+	{
+		for (voice_control_e b = 0; b < VOICE_CONTROL_NB; b++)
+		{
+			if(voice_control_var[b].initialized && !update)
+			{
+				voice_control_var[b].state = GPIO_read(voice_control_var[b].pin);
+
+				if(voice_control_var[b].old_state != voice_control_var[b].state)
+				{
+					voice_control_var[b].old_state = voice_control_var[b].state;
+					voice_control_var[b].changed = TRUE;
+					update = TRUE;
+				}
+			}
+		}
 	}
 
 #endif
