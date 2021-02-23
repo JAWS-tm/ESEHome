@@ -144,7 +144,7 @@ uint16_t BH1750FVI_readLuminosity()
 uint16_t BH1750FVI_read()
 {
 	uint8_t ret[2];
-	while(I2C_write(ret, 2)==IN_PROGRESS);
+	while(I2C_read(ret, 2)==IN_PROGRESS);
 	return ret[1] | ((uint16_t)(ret[0])) << 8;
 }
 

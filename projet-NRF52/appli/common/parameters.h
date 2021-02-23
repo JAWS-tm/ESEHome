@@ -29,7 +29,7 @@ typedef enum
 	PARAM_SCREEN_COLOR,
 	PARAM_MODE,
 
-	PARAM_32_BITS_NB,	//au dessus de ce define, tout les paramètres tiennent sur 32 bits.
+	PARAM_32_BITS_NB,	//avant ce define, tout les paramètres tiennent sur 32 bits.
 
 	//Paramètres dont la taille dépasse 32 bits... et dont le traitement est spécifiquement confié à l'objet par des fonctions de callback.
 	PARAM_TEXT_PART0,
@@ -38,7 +38,8 @@ typedef enum
 	PARAM_TEXT_PART3,
 	PARAM_TEXT_PART4,
 	PARAM_TEXT_PART5,
-
+	PARAM_TEXT_PART6,
+	PARAM_TEXT_PART7,
 	PARAM_NB
 }param_id_e;
 
