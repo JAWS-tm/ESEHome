@@ -17,9 +17,9 @@
 void Wine_Degustation_Main(void) {
 
 	//init battery
-	MEASURE_VBAT_init();
+	/*MEASURE_VBAT_init();
 	prctBatt= MEASURE_VBAT_get_level();
-	printf("La batterie est à %u", prctBatt,"%.") ;
+	printf("La batterie est à %u", prctBatt,"%.") ;*/
 
 	//initialisation led verte et jaune
 	LEDS_init(I_HAVE_LED_BATTERY);
@@ -32,9 +32,17 @@ void Wine_Degustation_Main(void) {
 
 
 	//configuration registre du mcp9804 via I2C
-	I2C_init(mcp9804_address);
+	I2C_init();
 
-	i2c_start(); // send START command
+	//ecrire dans un registre
+	I2C_write(datas, 3);
+
+	//lire dans un registre
+	I2C_write(reg, 1);
+	I2C_read(reg, 2);
+
+	/*i2c_start(); // send START command
+	// 00110101 : adresse prise de température (TA)
 	i2c_write (mcp9804_address && 0xFE); //WRITE Command
 	//also, make sure bit 0 is cleared ‘0’
 	i2c_write(0x05); // Write TA Register Address
@@ -65,7 +73,7 @@ void Wine_Degustation_Main(void) {
 	}
 	else {  //TA ≥ 0°C
 		temp = (UpperByte*16 + LowerByte / 16);
-	}
+	}*/
 
 	// exemple d'assistance de dégustation avec un Reuilly "pinot gris" entre 11 et 13 °C
 	if( temp >=11 && temp<=13){

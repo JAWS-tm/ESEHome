@@ -30,6 +30,7 @@
 #include "objects/object_out_weather_station.h"
 #include "objects/object_smart_light.h"
 #include "objects/object_voice_control.h"
+#include "objects/object_wine_degustation.h"
 
 void button_network_process_short_press(void);
 void button_network_process_long_press(void);

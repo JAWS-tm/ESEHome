@@ -125,8 +125,12 @@
 	#endif
 
 	#if OBJECT_ID == OBJECT_WINE_DEGUSTATION
-
-
+		#define PIN_LED_VERTE (9) //led verte = bouteille chambrée
+		#define PIN_LED_JAUNE (10) //led jaune = bouteille non chambrée
+		const int temp;
+		const int prctBatt;
+		const int datas;
+		const int reg;
 	#endif
 
 	#if OBJECT_ID == OBJECT_VENTILATOR
