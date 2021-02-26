@@ -94,14 +94,14 @@ int main(void)
 	LED_add(LED_ID_BATTERY, PIN_LED_BATTERY);
 	LED_set(LED_ID_BATTERY, LED_MODE_ON);
 
+
 	SECRETARY_init();
 
 	BUTTONS_add(BUTTON_NETWORK, PIN_BUTTON_NETWORK, TRUE, &button_network_process_short_press, NULL, &button_network_process_long_press, &button_network_process_5press);
 
-
     while (1)
     {
-    	//Code commun � tout les objets
+    	//Code commun à tout les objets
     	SECRETARY_process_main();
 
     	BUTTONS_process_main();

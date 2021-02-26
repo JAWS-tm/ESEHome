@@ -7,19 +7,22 @@
 
 #if OBJECT_ID == OBJECT_WINE_DEGUSTATION
 
+#include "bsp/nrf52_i2c.h"
 #include "../config.h"
 #include <stdio.h>
 #include "object_wine_degustation.h"
-#include "leds.h"
-#include "battery.h"
-#include "../nrf52_i2c.h"
+#include "../common/leds.h"
+#include "../common/battery.h"
+#include "../common/serial_dialog.h"
+#include "../common/parameters.h"
+
 
 void Wine_Degustation_Main(void) {
 
 	//init battery
-	/*MEASURE_VBAT_init();
+	MEASURE_VBAT_init();
 	prctBatt= MEASURE_VBAT_get_level();
-	printf("La batterie est à %u", prctBatt,"%.") ;*/
+	debug_printf("La batterie est à %u", prctBatt,"%.") ;
 
 	//initialisation led verte et jaune
 	LEDS_init(I_HAVE_LED_BATTERY);
@@ -27,35 +30,44 @@ void Wine_Degustation_Main(void) {
 	LED_add(LED_ID_USER0, PIN_LED_VERTE);
 	LED_add(LED_ID_USER1, PIN_LED_JAUNE);
 
-	LED_set(LED_ID_USER0, LED_MODE_OFF);
-	LED_set(LED_ID_USER1, LED_MODE_ON);
+	LED_set(LED_ID_USER0, LED_MODE_BLINK);
+	LED_set(LED_ID_USER1, LED_MODE_BLINK);
+
+	SERIAL_DIALOG_init();
+	callback_fun_i32_t callback;
 
 
 	//configuration registre du mcp9804 via I2C
-	I2C_init();
+	wd_device_address[0]=0x3;
+	wd_device_address[1]=0x5;
+	I2C_init(wd_device_address);
+
+
+	wd_datas=&wd_device_address;
+	wd_reg=wd_device_address[1];
 
 	//ecrire dans un registre
-	I2C_write(datas, 3);
-
+	while(wd_write!=1){
+		wd_write=I2C_write(wd_datas, 3);
+	}
 	//lire dans un registre
-	I2C_write(reg, 1);
-	I2C_read(reg, 2);
+	while(wd_read!=1){
+		I2C_write(wd_datas, 1);
+		wd_read=I2C_read(wd_reg, 2);
+	}
 
-	/*i2c_start(); // send START command
-	// 00110101 : adresse prise de température (TA)
-	i2c_write (mcp9804_address && 0xFE); //WRITE Command
-	//also, make sure bit 0 is cleared ‘0’
-	i2c_write(0x05); // Write TA Register Address
+	PARAMETERS_enable(PARAM_TEMPERATURE, 0xC, TRUE, callback);
 
-	i2c_start(); //Repeat START
-	i2c_write(mcp9804_address || 0x01); // READ Command
 
-	//also, make sure bit 0 is Set ‘1’
-	UpperByte = i2c_read(ACK); // READ 8 bits
+	/*//also, make sure bit 0 is Set ‘1’
+	int UpperByte;
+	uint8_t* ACK;
+	UpperByte = I2C_read(ACK,1); // READ 8 bits
 	//and Send ACK bit
-	LowerByte = i2c_read(NAK); // READ 8 bits
+	int LowerByte;
+	uint8_t* NAK;
+	LowerByte = I2C_read(NAK,1); // READ 8 bits
 	//and Send NAK bit
-	i2c_stop(); // send STOP command
 
 	//Convertire la donnée du capteur en degres Celsus (°C)
 	//First Check flag bits
@@ -69,25 +81,24 @@ void Wine_Degustation_Main(void) {
 
 	if ((UpperByte & 0x10) == 0x10){ //TA < 0°C
 		UpperByte = UpperByte & 0x0F; //Clear SIGN
-		temp = 256 - (UpperByte*16 + LowerByte / 16);
+		temp_wd = 256 - (UpperByte*16 + LowerByte / 16);
 	}
 	else {  //TA ≥ 0°C
-		temp = (UpperByte*16 + LowerByte / 16);
-	}*/
-
-	// exemple d'assistance de dégustation avec un Reuilly "pinot gris" entre 11 et 13 °C
-	if( temp >=11 && temp<=13){
-		LED_set(LED_ID_USER0, LED_MODE_OFF);
-		LED_set(LED_ID_USER1, LED_MODE_BLINK);
+		temp_wd = (UpperByte*16 + LowerByte / 16);
 	}
-	else if(temp<11){
+	// exemple d'assistance de dégustation avec un Reuilly "pinot gris" entre 11 et 13 °C
+	if( temp_wd >=11 && temp_wd <=13){
+		LED_set(LED_ID_USER0, LED_MODE_OFF);
+		LED_set(LED_ID_USER1, LED_MODE_ON);
+	}
+	else if(temp_wd <11){
 		LED_set(LED_ID_USER0, LED_MODE_BLINK);
 		LED_set(LED_ID_USER1, LED_MODE_OFF);
 	}
-	else if(temp>13){
+	else if(temp_wd >13){
 		LED_set(LED_ID_USER0, LED_MODE_ON);
 		LED_set(LED_ID_USER1, LED_MODE_OFF);
-	}
+	}*/
 
 }
 

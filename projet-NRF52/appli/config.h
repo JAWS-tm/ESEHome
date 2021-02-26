@@ -125,12 +125,17 @@
 	#endif
 
 	#if OBJECT_ID == OBJECT_WINE_DEGUSTATION
+		#define USE_MCP9804 1
 		#define PIN_LED_VERTE (9) //led verte = bouteille chambrée
 		#define PIN_LED_JAUNE (10) //led jaune = bouteille non chambrée
-		const int temp;
-		const int prctBatt;
-		const int datas;
-		const int reg;
+		uint8_t *wd_device_address[2];
+		uint8_t *wd_datas;
+		uint8_t *wd_reg;
+		uint8_t wd_write;
+		uint8_t wd_read;
+		uint8_t temp_wd;
+		int prctBatt;
+		#define TWI_INSTANCE_ID     	0
 	#endif
 
 	#if OBJECT_ID == OBJECT_VENTILATOR
@@ -226,7 +231,7 @@
 ///////////////////////////////////////////////////////////////////////////////////
 
 ///////////////////////////////////////////////////////////////////////////////////
-//Configs communes é tout les objets.
+//Configs communes à tout les objets.
 
 
 #ifndef PIN_UART_TX
@@ -247,7 +252,7 @@
 
 #define USE_SPI	(OBJECT_ID == OBJECT_TOUCH_SCREEN || OBJECT_ID == OBJECT_RFID)
 
-#define USE_TWI	(OBJECT_ID == OBJECT_FALL_SENSOR || OBJECT_ID == OBJECT_STATION_METEO_INT || OBJECT_ID == OBJECT_OUT_WEATHER_STATION ||OBJECT_ID == OBJECT_BRIGHTNESS_SENSOR)
+#define USE_TWI	(OBJECT_ID == OBJECT_FALL_SENSOR || OBJECT_ID == OBJECT_STATION_METEO_INT || OBJECT_ID == OBJECT_OUT_WEATHER_STATION ||OBJECT_ID == OBJECT_BRIGHTNESS_SENSOR || OBJECT_ID == OBJECT_WINE_DEGUSTATION)
 
 
 
@@ -328,6 +333,9 @@ uint32_t debug_printf(char * format, ...);
 	#define USE_UART_SOFT	0
 #endif
 
+#ifndef USE_MCP9804
+	#define USE_MCP9804     0
+#endif
 
 #if USE_MPU6050 || USE_BMP180 ||USE_BH1750FVI//   || USE_... || USE...
 	#ifndef I2C_SDA_PIN_NB
@@ -337,6 +345,16 @@ uint32_t debug_printf(char * format, ...);
 		#define	I2C_SCL_PIN_NB	26
 	#endif
 #endif
+
+#if USE_MCP9804
+	#ifndef I2C_SDA_PIN_NB
+		#define	I2C_SDA_PIN_NB	5
+	#endif
+	#ifndef I2C_SCL_PIN_NB
+		#define	I2C_SCL_PIN_NB	6
+	#endif
+#endif
+
 ///////////////////////////////////////////////////////////////////////////////////
 #ifndef NRF52832_XXAA
 	#define NRF52832_XXAA

@@ -30,6 +30,7 @@ SRC_FILES += \
   $(PROJ_DIR)/appli/objects/object_out_weather_station.c \
   $(PROJ_DIR)/appli/objects/object_voice_control.c \
   $(PROJ_DIR)/appli/objects/object_e_paper.c \
+  $(PROJ_DIR)/appli/objects/object_wine_degustation.c \
   $(PROJ_DIR)/bsp/nmos_gnd.c \
   $(PROJ_DIR)/bsp/WS2812B_asm.s \
   $(PROJ_DIR)/bsp/WS2812.c \
