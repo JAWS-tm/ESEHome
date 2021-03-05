@@ -12,11 +12,22 @@
 #include "nrf_gpio.h"
 #include "nrf52.h"
 #include "appli/common/buttons.h"
+#include "appli/common/adc.h"
 #include "object_ventilator.h"
+#include "modules/nrfx/drivers/include/nrfx_saadc.h"
 
 static ventilator_e state = VENTILATOR_INIT;
+int16_t temperature;
 static bool_e state_changement = FALSE;
 void object_ventilator_changement_etat(void);
+
+void object_ventilator_temperature(void)
+{
+	ADC_init();
+
+	ADC_read(TEMP_OUTPUT, &temperature);
+
+}
 
 void object_ventilator_activation(void)
 {
@@ -71,5 +82,3 @@ void object_ventilator_changement_etat(void)
 	//GPIO_write(MOSFET_PIN, false);
 
 #endif
-
-

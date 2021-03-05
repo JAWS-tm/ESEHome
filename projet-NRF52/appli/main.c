@@ -158,6 +158,7 @@ int main(void)
 
     		#if OBJECT_ID == OBJECT_VENTILATOR
 				object_ventilator_activation();
+				object_ventilator_temperature();
 
     		#endif
 

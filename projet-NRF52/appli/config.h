@@ -141,6 +141,7 @@
 	#if OBJECT_ID == OBJECT_VENTILATOR
 
 		#define MOSFET_PIN		9
+		#define TEMP_OUTPUT		3
 
 	#endif
 
