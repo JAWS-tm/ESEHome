@@ -41,10 +41,4 @@
 			<location>C:/Ac6/nRF5_SDK_17.0.2_d674dde/modules</location>
 		</link>
 	</linkedResources>
-	<variableList>
-		<variable>
-			<name>copy_PARENT</name>
-			<value>$%7BPARENT-1-ECLIPSE_HOME%7D/workspace/nRF5_SDK_16.0.0_98a08e2</value>
-		</variable>
-	</variableList>
 </projectDescription>
