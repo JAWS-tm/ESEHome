@@ -4,11 +4,11 @@
  *  Created on: 8 févr. 2021
  *      Author: lebihata
  */
-
+#include "../config.h"
 #if OBJECT_ID == OBJECT_WINE_DEGUSTATION
 
 #include "bsp/nrf52_i2c.h"
-#include "../config.h"
+
 #include <stdio.h>
 #include "object_wine_degustation.h"
 #include "../common/leds.h"
@@ -16,6 +16,30 @@
 #include "../common/serial_dialog.h"
 #include "../common/parameters.h"
 
+
+
+uint8_t wd_reg[2];
+uint8_t wd_write;
+uint8_t wd_read;
+uint8_t temp_wd;
+int prctBatt;
+
+void MCP9804_write(uint8_t reg, uint16_t value)
+{
+	uint8_t wd_datas[3];
+	wd_datas[0] = reg;
+	wd_datas[1] = HIGHINT(value);
+	wd_datas[2] = LOWINT(value);
+	while(I2C_write(wd_datas, 3)==IN_PROGRESS);
+}
+
+void MCP9804_read(uint8_t reg, uint16_t * value)
+{
+	uint8_t wd_datas[2];
+	while(I2C_write(&reg, 1)==IN_PROGRESS);
+	while(I2C_read(wd_datas, 2)==IN_PROGRESS);
+	*value = U16FROMU8(wd_datas[0], wd_datas[1]);
+}
 
 void Wine_Degustation_Main(void) {
 
@@ -38,17 +62,17 @@ void Wine_Degustation_Main(void) {
 
 
 	//configuration registre du mcp9804 via I2C
-	wd_device_address[0]=0x3;
-	wd_device_address[1]=0x5;
-	I2C_init(wd_device_address);
+	I2C_init(0x18);
 
 
-	wd_datas=&wd_device_address;
+	/*wd_datas=&wd_device_address;
 	wd_reg=wd_device_address[1];
+
+
 
 	//ecrire dans un registre
 	while(wd_write!=1){
-		wd_write=I2C_write(wd_datas, 3);
+		wd_write=
 	}
 	//lire dans un registre
 	while(wd_read!=1){
@@ -57,6 +81,15 @@ void Wine_Degustation_Main(void) {
 	}
 
 	PARAMETERS_enable(PARAM_TEMPERATURE, 0xC, TRUE, callback);
+
+*/
+	while(1)
+	{
+		uint16_t value;
+		MCP9804_read(0x05, &value);	//Temperature register
+		debug_printf("t=%d\n",value);
+		SYSTICK_delay_ms(100);
+	}
 
 
 	/*//also, make sure bit 0 is Set ‘1’

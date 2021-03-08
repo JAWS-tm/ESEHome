@@ -128,13 +128,6 @@
 		#define USE_MCP9804 1
 		#define PIN_LED_VERTE (9) //led verte = bouteille chambrée
 		#define PIN_LED_JAUNE (10) //led jaune = bouteille non chambrée
-		uint8_t *wd_device_address[2];
-		uint8_t *wd_datas;
-		uint8_t *wd_reg;
-		uint8_t wd_write;
-		uint8_t wd_read;
-		uint8_t temp_wd;
-		int prctBatt;
 		#define TWI_INSTANCE_ID     	0
 	#endif
 

@@ -105,7 +105,7 @@ void BUTTONS_alerte_process(void)
 void BUTTONS_alerte(void){
 	bool_e init = TRUE;
 	if(init){
-		BUTTONS_add(BUTTON_ALERTE, PIN_BUTTON_ALERTE, TRUE, &BUTTONS_alerte_process, NULL, NULL, NULL);
+		BUTTONS_add(BUTTON_ALERTE, PIN_BUTTON_ALERT, TRUE, &BUTTONS_alerte_process, NULL, NULL, NULL);
 		LED_add(LED_ID_BATTERY, PIN_LED_BATTERY);
 		init = FALSE;
 	}
