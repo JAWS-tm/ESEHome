@@ -8,6 +8,7 @@
 #ifndef APPLI_COMMON_RF_DIALOG_H_
 #define APPLI_COMMON_RF_DIALOG_H_
 #include "appli/config.h"
+#include "nrf_esb.h"
 
 //Constitution d'un message.
 //				Master Group RECIPIENTS(6) MSG_ID DATASIZE DATAS

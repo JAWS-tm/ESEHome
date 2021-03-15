@@ -13,8 +13,19 @@
 #include "nrf52.h"
 #include "appli/common/buttons.h"
 #include "appli/common/adc.h"
+#include "appli/common/serial_dialog.h"
 #include "object_ventilator.h"
 #include "modules/nrfx/drivers/include/nrfx_saadc.h"
+#include "appli/common/parameters.h"
+#include "appli/common/rf_dialog.h"
+
+static volatile uint32_t my_temp = 0;
+
+void OBJECT_VENTILATOR_temp_updated_callback(int32_t new_temp)
+{
+
+	my_temp = new_temp;
+}
 
 static ventilator_e state = VENTILATOR_INIT;
 int16_t temperature;
@@ -23,17 +34,30 @@ void object_ventilator_changement_etat(void);
 
 void object_ventilator_temperature(void)
 {
-	ADC_init();
+	debug_printf("1");
+
 
 	ADC_read(TEMP_OUTPUT, &temperature);
 
+	debug_printf("Temperature est %d.\n", temperature);
+	debug_printf("1");
+
+	float temp_deg;
+
+	temp_deg = (float)(temperature) / 19.5 ;
+
+	debug_printf("La temperature en degre est %f. \n", temp_deg);
+
+	/*(19,5mV/°C)*/
 }
 
 void object_ventilator_activation(void)
 {
 	switch(state) {
 		case VENTILATOR_INIT:
+			PARAMETERS_enable(PARAM_TEMPERATURE, 0, TRUE, &OBJECT_VENTILATOR_temp_updated_callback);
 			GPIO_init();
+			ADC_init();
 			GPIO_configure(MOSFET_PIN, NRF_GPIO_PIN_PULLUP, true);
 			BUTTONS_add(BUTTON_NETWORK, PIN_BUTTON_NETWORK, TRUE, &object_ventilator_changement_etat, NULL, NULL, NULL);
 			state = VENTILATOR_OFF;	//Changement d'état
@@ -41,6 +65,7 @@ void object_ventilator_activation(void)
 
 		case VENTILATOR_ON:
 			GPIO_write(MOSFET_PIN, true);
+
 
 			if(state_changement)
 			{

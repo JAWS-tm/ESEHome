@@ -31,6 +31,7 @@
 #include "objects/object_smart_light.h"
 #include "objects/object_voice_control.h"
 #include "objects/object_wine_degustation.h"
+#include "objects/object_ventilator.h"
 
 void button_network_process_short_press(void);
 void button_network_process_long_press(void);
@@ -151,14 +152,17 @@ int main(void)
 
     		#endif
 
-    		#if OBJECT_ID == OBJECT_WINE_DEGUSTATION
+			#if OBJECT_ID == OBJECT_WINE_DEGUSTATION
 				Wine_Degustation_Main();
 
     		#endif
 
-    		#if OBJECT_ID == OBJECT_VENTILATOR
-				object_ventilator_activation();
-				object_ventilator_temperature();
+			#if OBJECT_ID == OBJECT_VENTILATOR
+			object_ventilator_activation();
+			object_ventilator_temperature();
+			OBJECT_VENTILATOR_temp_updated_callback();
+
+
 
     		#endif
 
