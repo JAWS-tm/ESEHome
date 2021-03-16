@@ -19,15 +19,16 @@
 #include "appli/common/parameters.h"
 #include "appli/common/rf_dialog.h"
 
-static volatile uint32_t etat = 0;
+static volatile int etat = 0;
+
 
 void OBJECT_VENTILATOR_etat_updated_callback(int new_etat)
 {
 
 	etat = new_etat;
 
-
 }
+
 
 static ventilator_e state = VENTILATOR_INIT;
 int16_t temperature;
@@ -36,7 +37,7 @@ void object_ventilator_changement_etat(void);
 
 void object_ventilator_temperature(void)
 {
-	debug_printf("1");
+
 
 
 	ADC_read(TEMP_OUTPUT, &temperature);
