@@ -160,7 +160,7 @@ int main(void)
 			#if OBJECT_ID == OBJECT_VENTILATOR
 			object_ventilator_activation();
 			object_ventilator_temperature();
-			OBJECT_VENTILATOR_temp_updated_callback();
+			OBJECT_VENTILATOR_etat_updated_callback();
 
 
 
