@@ -23,7 +23,7 @@
 #define OBJECT_BRIGHTNESS_SENSOR    4
 #define OBJECT_STATION_METEO_INT    5
 #define OBJECT_OUT_WEATHER_STATION  6
-#define OBJECT_ROLLER_SHUTTER       7
+#define OBJECT_VOLET_ROULANT        7
 #define OBJECT_ALARM                8
 #define OBJECT_FIRE_DETECTOR        9
 #define OBJECT_WINE_DEGUSTATION     10
@@ -107,10 +107,12 @@
 
 	#endif
 
-	#if OBJECT_ID == OBJECT_ROLLER_SHUTTER
 
-
+	#if OBJECT_ID == OBJECT_VOLET_ROULANT
+		#define BP_UP_PIN           2
+		#define BP_DOWN_PIN         3
 	#endif
+
 
 	#if OBJECT_ID == OBJECT_ALARM
 		#define MOSFET_PIN		7
@@ -292,7 +294,7 @@ uint32_t debug_printf(char * format, ...);
 #endif
 
 #ifndef USE_PWM
-	#define USE_PWM			0
+	#define USE_PWM			1
 #endif
 
 #ifndef USE_DHT11

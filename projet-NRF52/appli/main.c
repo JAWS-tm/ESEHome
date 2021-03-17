@@ -31,6 +31,8 @@
 #include "objects/object_smart_light.h"
 #include "objects/object_voice_control.h"
 #include "objects/object_wine_degustation.h"
+#include "objects/object_ventilator.h"
+#include "objects/objet_volet_roulant.h"
 
 void button_network_process_short_press(void);
 void button_network_process_long_press(void);
@@ -151,14 +153,17 @@ int main(void)
 
     		#endif
 
-    		#if OBJECT_ID == OBJECT_WINE_DEGUSTATION
+			#if OBJECT_ID == OBJECT_WINE_DEGUSTATION
 				Wine_Degustation_Main();
 
     		#endif
 
-    		#if OBJECT_ID == OBJECT_VENTILATOR
-				object_ventilator_activation();
-				object_ventilator_temperature();
+			#if OBJECT_ID == OBJECT_VENTILATOR
+			object_ventilator_activation();
+			object_ventilator_temperature();
+			OBJECT_VENTILATOR_etat_updated_callback();
+
+
 
     		#endif
 
@@ -203,6 +208,12 @@ int main(void)
 
     		#endif
 
+			#if OBJECT_ID == OBJECT_VOLET_ROULANT
+    			VOLET_ROULANT_MAIN(void);
+
+			#endif
+
+
     		#if OBJECT_ID == OBJECT_MATRIX_LEDS
 
 
@@ -240,7 +251,8 @@ char * object_id_to_string(uint8_t id)
 		case OBJECT_VOICE_CONTROL:		ret = "Voice Control";		break;
 		case OBJECT_TOUCH_SCREEN:		ret = "Touch Screen";		break;
 		case OBJECT_E_PAPER:			ret = "E Paper";			break;
-		case OBJECT_MATRIX_LEDS:		ret = "Matrix Leds";		break;		//TODO
+		case OBJECT_MATRIX_LEDS:		ret = "Matrix Leds";		break;
+		case OBJECT_VOLET_ROULANT:       ret = "Volet Roulant";      break;//TODO
 		default:
 			break;
 	}
