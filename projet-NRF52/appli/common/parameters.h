@@ -7,7 +7,8 @@
 
 #ifndef BSP_PARAMETERS_H_
 #define BSP_PARAMETERS_H_
-
+#include "macro_types.h"
+#include "../config.h"
 
 //Liste des paramètres, tout objets confondus.
 typedef enum
