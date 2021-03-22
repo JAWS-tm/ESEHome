@@ -213,7 +213,7 @@ void SERIAL_DIALOG_process_main()
 static void SERIAL_DIALOG_parse_rx(uint8_t c)
 {
 	static uint8_t datas[255];
-
+	static bool_e flag_FA = FALSE;
 	static uint16_t index = 0;
 	static uint8_t size;
 	switch(index)
@@ -238,9 +238,17 @@ static void SERIAL_DIALOG_parse_rx(uint8_t c)
 					SERIAL_DIALOG_process_msg(size, datas);
 				index = 0;
 			}
-			else if(c == SOH)				//ATTENTION, ce faisant, on interdit le SOH comme data !
+			else if(flag_FA)
+			{
+				datas[index-2] = c&0xFA;
+				flag_FA = FALSE;
+				index++;
+			}
+			else if(c == 0xFA)
+				flag_FA = TRUE;		//on ne touche pas à l'index, le prochain caractère sera compté et pris en compte avec le masque &0xFA
+			else if(c == SOH)
 				index = 1;
-			else if(c == EOT)				//ATTENTION, ce faisant, on interdit le EOT comme data !
+			else if(c == EOT)
 				index = 0;
 			else if(index-2 < size)
 			{
@@ -262,22 +270,24 @@ void SERIAL_DIALOG_send_msg(uint8_t size, uint8_t * datas)
 {
 	uint8_t i;
 	char c;
-	char s[64];
 	if(size > 0 && datas == NULL)
 		return;
 
-	s[0] = SOH;			//SOH
-	s[1] = size;			//size
+	SERIAL_DIALOG_putc(SOH);
+	SERIAL_DIALOG_putc(size);
+
 	for(i=0; i<size; i++)
 	{
 		c = datas[i];
-		if(c==SOH || c==EOT)	//si vous avez la mauvaise idée d'envoyer les mêmes octets que ceux utilisés pour SOH ou EOT... alors on les flingue. Par principe.
-			c++;
-		s[2+i]=c;	//datas...
+		if(c == 0xBA || c == 0xDA || c == 0xFA)		//si l'octet à transmettre est 0xBA, 0xDA, 0xFA
+		{
+			SERIAL_DIALOG_putc(0xFA);				//on transmet 0xFA...
+			SERIAL_DIALOG_putc(c|0x0F);				//suivi de 0xBF, 0xDF ou 0xFF
+		}
+		else
+			SERIAL_DIALOG_putc(c);					//sinon, on transmets c directement
 	}
-	s[2+i] = EOT;			//EOT
-	s[3+i] = '\0';
-	SERIAL_DIALOG_puts(s);
+	SERIAL_DIALOG_putc(EOT);	//EOT
 }
 
 /**
