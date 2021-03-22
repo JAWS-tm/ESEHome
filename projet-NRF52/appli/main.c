@@ -139,7 +139,7 @@ int main(void)
     		#endif
 
     		#if OBJECT_ID == OBJECT_ROLLER_SHUTTER
-
+				VOLET_ROULANT_MAIN(void);
 
     		#endif
 
@@ -208,12 +208,6 @@ int main(void)
 
     		#endif
 
-			#if OBJECT_ID == OBJECT_VOLET_ROULANT
-    			VOLET_ROULANT_MAIN(void);
-
-			#endif
-
-
     		#if OBJECT_ID == OBJECT_MATRIX_LEDS
 
 
@@ -252,7 +246,6 @@ char * object_id_to_string(uint8_t id)
 		case OBJECT_TOUCH_SCREEN:		ret = "Touch Screen";		break;
 		case OBJECT_E_PAPER:			ret = "E Paper";			break;
 		case OBJECT_MATRIX_LEDS:		ret = "Matrix Leds";		break;
-		case OBJECT_VOLET_ROULANT:       ret = "Volet Roulant";      break;//TODO
 		default:
 			break;
 	}

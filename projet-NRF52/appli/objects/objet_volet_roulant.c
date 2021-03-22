@@ -7,7 +7,7 @@
 #include "serial_dialog.h"
 #include "secretary.h"
 
-#if OBJECT_ID == OBJECT_VOLET ROULANT
+#if OBJECT_ID == OBJECT_VOLET_ROULANT
 
 
 void VOLET_ROULANT_MAIN(void){
