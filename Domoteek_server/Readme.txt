@@ -1,0 +1,1 @@
+Le logiciel Domoteek-server, rédigé en JAVA, gère le lien entre la station de base (connectée via son port série virtuel) et la base de donnée.
