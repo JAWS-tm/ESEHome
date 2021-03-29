@@ -29,7 +29,8 @@
 #define EARTHRADIUS_KM         (6378)                     /**< Earth's mean radius in km */
 #define EARTHRADIUS_M          (EARTHRADIUS_KM * 1000)    /**< Earth's mean radius in m */
 
-
+#define WAIT_TIME              10 //temps d'attente avant d'enregistrer un nouveau point
+#define DISTANCE               1 // distance a atteindre avant d'enregistrer un nouveau point
 
 //Fonctions privÃ¯Â¿Â½es
 static nmea_frame_e GPS_parse(uint8_t * buffer, gps_datas_t * gps_datas);
@@ -71,32 +72,17 @@ void GPS_main(void)
 						LED_set_flash_limited_nb(LED_ID_NETWORK, 3, 500);
 						SERIAL_DIALOG_set_rx_callback(&GPS_process_rx);
 
-    					state = WAIT;
-
 						if(BUTTONS_read(BUTTON_NETWORK) == TRUE)
 							state = SENT_CONTAINER_TRAM;
 
 						break;
-					case WAIT: // on attend 1min avant de retourner dans la case CONTAINER_TRAM pour reffaire un prelevement de coordonnê¥
-						LED_set(LED_ID_NETWORK, LED_MODE_BLINK);
-						SYSTICK_delay_ms(10000);
-						state = CONTAINER_TRAM;
-
-						break;
 					case SENT_CONTAINER_TRAM: // envoie des donnê¥ vers la base
 						LED_set(LED_ID_NETWORK, LED_MODE_FLASH);
-
 						// test d'envoie message en uart
-						for(int i = 0; i<33; i++)
-						{
-							debug_printf("%d\n",gps_lat[i]);
-						}
 
-						//SECRETARY_send_msg(8, gps_lat);
-						//SECRETARY_send_msg(8, gps_long);
 						break;
 					case STOP: //arret de l'utilisation du module gps
-
+						GPS_Off();
 						break;
 					default:
 						break;
@@ -107,21 +93,28 @@ void GPS_On(void)
 	GPIO_configure(MOSFET_GND_GPS, NRF_GPIO_PIN_NOPULL, true);//configure la pin de du gps concernÃ©e en sortie
 	GPIO_write(MOSFET_GND_GPS, true);
 }
-
+void GPS_Off(void)
+{
+	GPIO_configure(MOSFET_GND_GPS, NRF_GPIO_PIN_NOPULL, true);//configure la pin de du gps concernée en sortie
+	GPIO_write(MOSFET_GND_GPS, false);
+}
 
 static gps_datas_t gps_datas;
-double gps_lat[32];
-double gps_long[32];
-double gps_date[24];
-double gps_heure[24];
+static double gps_lat[32];
+static double gps_long[32];
+static double gps_date[24];
+static double gps_heure[24];
 
-uint8_t y = 0;
-double lat_a_rad = 0;
-double lon_a_rad = 0;
+static uint8_t y = 0;
+static double lat_a_rad = 0;
+static double lon_a_rad = 0;
 
-double lat_b_rad = 0;
-double lon_b_rad = 0;
-uint8_t compteur = 0;
+static double lat_b_rad = 0;
+static double lon_b_rad = 0;
+static uint8_t compteur = 0;
+
+static uint8_t heure_a = 0;
+static uint8_t heure_b = 0;
 
 void GPS_process_rx(uint8_t c)
 {
@@ -136,21 +129,26 @@ void GPS_process_rx(uint8_t c)
 		index++;
 	if(c=='\n')
 	{
-		//lorsqu'une trame compléµ¥ et valide a êµ© reè¶¥, on peut traiter les donnê¦³ interpretê¦³.
-		//debug_printf("%d, %d\n",gps_datas.latitude_deg, gps_datas.longitude_deg);
+	buffer[index] = '\0';
 
-		//SECRETARY_send_msg(8, gps_datas);
+		index = 0;
+		//trame terminée, on l'envoie !
+		if(GPS_parse(buffer, &gps_datas) == TRAME_GPRMC)
+		{
+		//lorsqu'une trame compléµ¥ et valide a êµ© reè¶¥, on peut traiter les donnê¦³ interpretê¦³.
 
 		if(compteur %2 == 0) // tout les paire on stock la coordonnê¥ dans a
 			{
 				lat_a_rad = gps_datas.latitude_rad;
 				lon_a_rad = gps_datas.longitude_rad;
+				heure_a = gps_datas.time;
 			}
 
 		if(compteur %2 == 1) // tout les impaire on stock la coordonnê¥ dans b
 			{
 				lat_b_rad = gps_datas.latitude_rad;
 				lon_b_rad = gps_datas.longitude_rad;
+				heure_b = gps_datas.time;
 			}
 
 		compteur++;
@@ -158,7 +156,10 @@ void GPS_process_rx(uint8_t c)
 		double distance = 0;
 		distance = gps_calcul_distance(lat_a_rad, lon_a_rad, lat_b_rad, lon_b_rad);
 
-		if(distance > 1000)
+		uint8_t delta_heure = 0;
+		delta_heure = calcul_delta_heure(heure_a, heure_b);
+
+		if(distance > DISTANCE && delta_heure < WAIT_TIME)
 		{
 
 			gps_lat[y] = gps_datas.latitude_rad;      // voir s'il faut mettre en degre pour le site
@@ -168,76 +169,67 @@ void GPS_process_rx(uint8_t c)
 			//debug_printf("%lf\n",gps_lat[y]);
 			y++;
 
-		}else // cas ou la distance n'est pas assez grande, on viens redonner l'ancienne valeur pour garder un bon referenciel
-		{
-			if(compteur %2 == 0)
-				{
-					lat_a_rad = lat_b_rad;
-					lon_a_rad = lon_b_rad;
-				}
-			if(compteur %2 == 1)
-				{
-					lat_b_rad = lat_a_rad;
-					lon_b_rad = lon_a_rad;
-				}
+			}else // cas ou la distance n'est pas assez grande, on viens redonner l'ancienne valeur pour garder un bon referenciel
+			{
+				if(compteur %2 == 0)
+					{
+						lat_a_rad = lat_b_rad;
+						lon_a_rad = lon_b_rad;
+						heure_a = heure_b;
+					}
+				if(compteur %2 == 1)
+					{
+						lat_b_rad = lat_a_rad;
+						lon_b_rad = lon_a_rad;
+						heure_a = heure_b;
+					}
+
+			}
+
 		}
+
 	}
+
 }
 
-double gps_calcul_distance(double lat_a_rad, double lon_a_rad, double lat_b_rad, double lon_b_rad)
+uint8_t calcul_delta_heure(uint8_t heure_a, uint8_t heure_b)
 {
-	//formule certainement fausse, aller voir la formule de Haversine
-	double distance =  EARTHRADIUS_M* (acos(sin(lat_a_rad) * sin(lat_b_rad) + cos(lat_a_rad) * cos(lat_b_rad) *cos(lon_b_rad - lon_a_rad)));
-
-	return distance;
+	if (heure_a > heure_b)
+		return heure_a - heure_b;
+	if(heure_b > heure_a)
+		return heure_b - heure_a;
+	if(heure_a == heure_b)
+		return 0;
 }
-/*
 
-void GPS_test(void)
+double gps_calcul_distance(double old_lat, double old_lon, double new_lat, double new_lon)
 {
-	//checksum calculator : http://www.hhhh.org/wiml/proj/nmeaxor.html
-	//https://www.coordonnees-gps.fr/
+	double latRad, lonRad;
+	double tlatRad, tlonRad;
+	double midLat, midLon;
+	double dist = 0.0;
 
-	#define NB_TEST_STRINGS 7
 
+  //convertion des valeures du degree vers le radian
+  latRad = old_lat* 0.017453293;
+  lonRad = old_lon* 0.017453293;
+  tlatRad = new_lat * 0.017453293;
+  tlonRad = new_lon * 0.017453293;
 
-	char * test_strings[NB_TEST_STRINGS] = {
-			"$GPRMC,063355.00,A,4729.60520,N,00033.05755,W,0.022,,170614,,,D*6F\r\n",
-			"$GPRMC,Q63355.00,A,4729.60520,N,00033.05755,W,0.022,,170614,,,D*6F\r\n",	//checksum fail
-			"$GPRMC,225446,A,4916.45,N,12311.12,W,000.5,054.7,191194,020.3,E*68\r\n",
-			"$GPRMC,081836,A,3751.65,S,14507.36,E,000.0,360.0,130998,011.3,E*62\r\n",
-			"$GPABC,ABCDEFGHIJKLMNOPQRSTUVWXYZ,E*09\r\n",		//Unknow frame
-			"$GPGLL,3751.65,S,14507.36,E*77\r\n",				//GPGGL
-			"$GPRMC,010203.00,A,8959.99999,N,17959.99999,E,254.000,,010418,,,D*74\r\n"};
-	uint16_t i;
-	gps_datas_t gps_datas;
-	uint8_t buf[128];
-	nmea_frame_e err;
+  midLat = tlatRad - latRad;
+  midLon = tlonRad - lonRad;
 
-	for(i=0;i<NB_TEST_STRINGS; i++)
-	{
-		sprintf((char*)buf, "%s", (uint8_t*)test_strings[i]);	//On recopie la chaine en RAM
-		err = GPS_parse(buf, &gps_datas);	//On parse
-		switch(err)
-		{
-			case TRAME_GPRMC:
-				printf("%lf, %lf\n",gps_datas.latitude_deg, gps_datas.longitude_deg);	//On affiche les coordonnÃ¯Â¿Â½es lues
-				break;
-			case TRAME_INVALID:
-				printf("Invalid trame\n");
-				break;
-			case CHECKSUM_INVALID:
-				printf("Invalid checksum\n");
-				break;
-			case TRAME_UNKNOW:
-				//No break;
-			default:
-				printf("unknow trame\n");
-				break;
-		}
-	}
+  //Calcule de la distance en Km
+  double latSin = sin((latRad - tlatRad)/2);
+  double lonSin = sin((lonRad - tlonRad)/2);
+
+  dist = 2 * asin(sqrt((latSin*latSin) + cos(latRad) * cos(tlatRad) * (lonSin * lonSin)));
+
+  dist = dist * EARTHRADIUS_KM; // pour la distance en Km il faut multiplier la valeure trouvée par le rayon de la terre
+
+  return dist;
+
 }
-*/
 
 
 
@@ -273,12 +265,15 @@ static bool_e string_begins_with(uint8_t * string, uint8_t * begin)
 static nmea_frame_e GPS_parse(uint8_t * buffer, gps_datas_t * gps_datas)
 {
 	const char string_gprmc[] = "$GPRMC";
+	const char string_gpgga[] = "$GPGGA";
 	nmea_frame_e ret;
 	Uint8 i, checksum;
 	ret = NO_TRAME_RECEIVED;	//On fait l'hypothÃ¯Â¿Â½se qu'aucune trame correcte est reÃ¯Â¿Â½ue
 
 	if(string_begins_with(buffer, (uint8_t *)string_gprmc))
 		ret = TRAME_GPRMC;
+	if(string_begins_with(buffer, (uint8_t *)string_gpgga))
+			ret = TRAME_GPGGA;
 
 	//TODO ajouter d'autres trames si besoin..
 
@@ -297,6 +292,10 @@ static nmea_frame_e GPS_parse(uint8_t * buffer, gps_datas_t * gps_datas)
 	{
 		case TRAME_GPRMC:
 			if(!GPS_parse_gprmc(buffer, gps_datas))
+				ret = TRAME_INVALID;
+			break;
+		case TRAME_GPGGA:
+			if(!GPS_parse_gpgga(buffer, gps_datas))
 				ret = TRAME_INVALID;
 			break;
 		default:
@@ -385,6 +384,82 @@ bool_e GPS_parse_gprmc(uint8_t * string, gps_datas_t * coordinates)
 	return FALSE;
 }
 
+bool_e GPS_parse_gpgga(uint8_t * string, gps_datas_t * coordinates)
+{
+	uint8_t i;
+	uint8_t *message_field[14] = {'\0'};	//tableau des pointeur sur champ
+	//tableau des pointeurs sur champ dï¿½cimal
+	//Header : $GPGGA
+	/*
+	 * $GPGGA,064036.289,4836.5375,N,00740.9373,E,1,04,3.2,200.2,M,,,,0000*0E
+	$GPGGA       : Type de trame
+	064036.289   : Trame envoyée à 06 h 40 min 36 s 289 (heure UTC)
+	4836.5375,N  : Latitude 48,608958° Nord = 48° 36' 32.25" Nord
+	00740.9373,E : Longitude 7,682288° Est = 7° 40' 56.238" Est
+	1            : Type de positionnement (le 1 est un positionnement GPS)
+	04           : Nombre de satellites utilisés pour calculer les coordonnées
+	3.2          : Précision horizontale ou HDOP (Horizontal dilution of precision)
+	200.2,M      : Altitude 200,2, en mètres
+	,,,,,0000    : D'autres informations peuvent être inscrites dans ces champs
+	*0E          : Somme de contrôle de parité, un simple XOR sur les caractères entre $ et *3
+	*/
+
+	//Data : 											,hhmmss.sss,ddmm.mmmm,N,ddmm.mmmm,E,X,X,X,ddmm.mmmm,M,X,X,X*<CR><LF>
+	//Chaine final :							\0		 hhmmss . sss \0 ddmm . mmmm \0 N \0 ddmm . mmmm \0 E \0 X \0 X \0 X \0 ddmm . mmmm \0 M \0 X \0 X \0 X \0 <CR><LF>
+	//indice de tableau dans la chaine : F0S0 = \0 ensuite F1	       \0 F2 \0 F3          \0 F4 \ F5           \0 F6\0 F7\0 F8\0 F9	 \0F10\0F11\0F12\0 F13
+
+	i = 0;
+	message_field[i] = string;
+	while (*string != '\0' && *string != '\r' && *string != '\n')
+	{
+		if ((*string == NMEA_MESSAGE_FIELD_SEPARATOR) || (*string == NMEA_MESSAGE_EOM) )
+		{
+			// save position of the next token
+			if(i<14)
+				message_field[++i] = string + 1;
+			*string = '\0';	// terminate string after field separator or end-of-message characters
+		}
+		string++;
+	}
+
+	if(i>2 && *message_field[2] == 'A')
+	{
+		coordinates->time =  (uint32_t)atoi((char*)message_field[1]); //conversion 32 bits
+		coordinates->seconds = 	  ((uint32_t)(message_field[1][0] - '0')) * 36000
+								+ ((uint32_t)(message_field[1][1] - '0')) * 3600
+								+ ((uint32_t)(message_field[1][2] - '0')) * 600
+								+ ((uint32_t)(message_field[1][3] - '0')) * 60
+								+ ((uint32_t)(message_field[1][4] - '0')) * 10
+								+ ((uint32_t)(message_field[1][5] - '0'));
+
+		coordinates->north	= (message_field[3][0] == 'S')?FALSE:TRUE;
+		coordinates->east	= (message_field[5][0] == 'W')?FALSE:TRUE;
+
+		coordinates->lat_minutes = atof((char*)message_field[2]);
+		coordinates->lat_degrees = (int16_t)(trunc(coordinates->lat_minutes));
+		coordinates->lat_minutes -= (float)((coordinates->lat_degrees/100)*100);
+		coordinates->lat_degrees = coordinates->lat_degrees/100;
+		coordinates->latitude_deg = (double)coordinates->lat_degrees + coordinates->lat_minutes/60;
+		if(coordinates->north==0)
+			coordinates->latitude_deg*=-1;
+		coordinates->latitude_rad = coordinates->latitude_deg * PI180;	//--> radians !
+
+		coordinates->long_degrees = (int16_t)atoi((char*)message_field[4]);
+		coordinates->long_minutes = atof((char*)message_field[4]);
+		coordinates->long_minutes -= (float)((coordinates->long_degrees/100)*100);
+		coordinates->long_degrees = coordinates->long_degrees/100;
+		coordinates->longitude_deg = (double)coordinates->long_degrees + coordinates->long_minutes/60;
+		if(coordinates->east==0)
+			coordinates->longitude_deg*=-1;
+		coordinates->longitude_rad = coordinates->longitude_deg * PI180;	//--> radians !
+
+		coordinates->altitude_metre =  (double)atoi((char*)message_field[9]);
+
+
+		return TRUE;
+	}
+	return FALSE;
+}
 
 //converti un caractÃ¯Â¿Â½re hexa (par exemple '4', ou 'B') en un nombre (dans cet exemple : 4, 11)
 static uint8_t hextoint(char c)

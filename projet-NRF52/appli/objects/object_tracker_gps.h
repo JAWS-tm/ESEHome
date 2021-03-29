@@ -25,6 +25,7 @@ typedef struct
 	bool_e 		east;
 	uint16_t	ground_speed;
 	uint32_t 	date32;
+	uint8_t 	altitude_metre;
 	uint8_t checksum;
 }gps_datas_t;
 
@@ -35,7 +36,7 @@ typedef enum
 	TRAME_INVALID,
 	TRAME_UNKNOW,			//Une trame inconnue a été reçue
 	TRAME_GPRMC,			//Une trame GPRMC a été reçue
-	TRAME_GPGGA				//Une trame GPGGA a été reçue
+	TRAME_GPGGA,				//Une trame GPGGA a été reçue
 }nmea_frame_e;
 
 
@@ -52,11 +53,18 @@ typedef enum
 
 
 void GPS_main(void);
+
 void GPS_On(void);
+
+void GPS_Off(void);
+
 void GPS_test(void);
-double gps_calcul_distance(double lat_a_rad, double lon_a_rad, double lat_b_rad, double lon_b_rad);
+
 void GPS_process_rx(uint8_t c);
 
+uint8_t calcul_delta_heure(uint8_t heure_a, uint8_t heure_b);
+
+double gps_calcul_distance(double lat_a_rad, double lon_a_rad, double lat_b_rad, double lon_b_rad);
 
 
 #endif /* APPLI_OBJECTS_OBJECT_TRACKER_GPS_H_ */
