@@ -1,10 +1,13 @@
 package serial_dialog;
 
-import java.io.ByteArrayOutputStream;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+
 import java.sql.Connection;
+
+import bdd.Bdd;
 
 public class Serial_dialog {
 	
@@ -71,38 +74,57 @@ public class Serial_dialog {
 	public static void SERIAL_DIALOG_process_msg(int size, int [] datas)
 	{
 		
-		// affichage tram entière
-		for(int y=0; y< size; y++){
-			System.out.print(datas[y]);
-		}
-		System.out.println("fin");
+		Datas.datas_parse(datas, size);
 		
-		// récupération des donnée qui nous interesse 
+//		// affichage tram entière
+//		System.out.print("Tram entière : ");
+//		for(int y=0; y< size; y++){
+//			System.out.print(datas[y]);
+//		}
+//		System.out.println("");
+//		
+//		/*
+//		 * récupération des donnée qui nous interesse 
+//		 */
+//		
+//		int index_size = 11; // on commence a récupérer après l'info de la taille de la tram (11ème octet)
+//		int [] message = new int [size-11]; 
+//
+//		System.out.print("Partie données  : ");
+//		for(int i = 0; i<size - 11; i++){
+//			message[i] = datas[index_size] ;   
+//			index_size++;
+//			System.out.print(message[i]);
+//		}
+//		System.out.println("");
+//		
+///*
+//        int convertedValue = Integer.decode(arg0)
+//        System.out.print(convertedValue)
+//        
+//*/
+//		
+//		/*
+//		 * recuperation de l'identifiant de l'objet qui à envoyé le message à la station de base 
+//		 */
+//		
+//		int index_object_id = 4; 
+//		int [] object_id = new int [4]; 
+//		
+//		System.out.print("Partie identifiant : ");
+//		for(int y = 0; y< 4 ; y++){
+//			object_id[y] = datas[index_object_id];
+//			index_object_id++;
+//			System.out.print(object_id[y]);
+//		}
+//		System.out.println("");
 		
-		int index_size = 11; // on commence a récupérer après l'info de la taille de la tram (11ème octet)
-		int [] message = new int [size-11]; 
 		
-		for(int i = 0; i<size - 11; i++){
-			message[i] = datas[index_size];
-			index_size++;
-			System.out.print(message[i]);
-		}
-		System.out.println("");
 		
-		//recuperation de l'identifiant de l'objet qui à envoyé le message à la station de base 
 		
-		int index_object_id = 4; 
-		int [] object_id = new int [4]; 
 		
-		for(int y = 0; y< 4 ; y++){
-			object_id[y] = datas[index_object_id];
-			index_object_id++;
-			System.out.print(object_id[y]);
-		}
-		System.out.println("");
-		//int object_id = datas[4]; // récupération du numéro de l'objet qui a envoyé le message
 		
-		// insert_into(int data, object_id);
+		//Bdd.insert_into(message, object_id);
 	}
 	
 	public static void SERIAL_DIALOG_send_msg(int size, int [] datas, OutputStream ostream) throws IOException
@@ -141,9 +163,7 @@ public class Serial_dialog {
 				//déclaration d'un index initialisé à 0
 				int index_buffer = 0;
 				int i = 0;
-				int [] command_buffer = new int[BUFFER_SIZE];
-				int index_command_buffer = 0;
-				
+
 
 					//Lecture des octets reçus sur le port série depuis notre dernier passage ici
 					index_buffer = istream.read(byteBuffer, 0, BUFFER_SIZE);
@@ -155,9 +175,8 @@ public class Serial_dialog {
 					 	//on viens traiter chaque octet que l'on reçoit sur le port serie
 					 	SERIAL_DIALOG_parse_rx(byteBuffer[i]);
 					 	
-						th.sleep(10);
-						
 					}
+					th.sleep(10);
 	
 	}
 	
@@ -168,7 +187,9 @@ public class Serial_dialog {
 		 * pour size la meme chose.
 		 */
 		int size = 16;
-		int [] datas = new int[128];
+		int [] datas = {0x00, 0x00, 0x00, 0x02, 0xEE, 0xEE,0xEE, 0x00, 0xA2, 0x42, 0x05, 0x08, 0xCA, 0xFE, 0xDE, 0xCA};
+		// à remplacer par la donnée qui sera recup dans la bdd
+		
 		SERIAL_DIALOG_send_msg(size, datas, ostream);
 	}
 }

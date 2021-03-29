@@ -1,24 +1,12 @@
 package serv_comm;
 
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.io.OutputStream;
-import java.nio.ByteBuffer;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.List;
-import java.util.Scanner;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
-import java.io.BufferedReader;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
 
-import dk.thibaut.serial.SerialConfig;
+
 import dk.thibaut.serial.SerialPort;
 import dk.thibaut.serial.enums.BaudRate;
 import dk.thibaut.serial.enums.DataBits;
@@ -43,6 +31,8 @@ import serial_dialog.Serial_dialog;
 		
 		// ouverture du port COM8
 		SerialPort port = SerialPort.open("COM8");
+		//SerialPort portWrite = null;
+		
 		System.out.println("le port est ouvet");
 		
 		
@@ -55,10 +45,14 @@ import serial_dialog.Serial_dialog;
 		
 		OutputStream ostream = port.getOutputStream();
 		
-
+		//int test = (int) 0xCA;
+		//System.out.println(test);
+		
 		
 		while(true) {
+			
 			Serial_dialog.SERIAL_DIALOG_read(istream);
+			//Serial_dialog.SERIAL_DIALOG_write(ostream);
 		}
 		
 			
