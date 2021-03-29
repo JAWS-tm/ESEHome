@@ -1,6 +1,6 @@
 package serial_dialog;
 
-public class Datas {
+public class Data {
 	
 	private static int [] destinataire = new int [4];
 	private static int [] emetteur = new int [4]; 
@@ -9,7 +9,7 @@ public class Datas {
 	private static int size_donnees = 0 ; 
 	private static int [] donnees = new int [16]; 
 	
-	public static void datas_parse(int [] datas, int size) {
+	public static void data_parse(int [] datas, int size) {
 		
 		/*
 		 * destinataire

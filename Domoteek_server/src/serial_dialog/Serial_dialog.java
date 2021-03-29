@@ -42,6 +42,7 @@ public class Serial_dialog {
 				{
 					if(c == EOT)
 						//ok, fin du message !
+						
 						SERIAL_DIALOG_process_msg(size, datas);
 						System.out.println("");
 					index = 0;
@@ -74,57 +75,10 @@ public class Serial_dialog {
 	public static void SERIAL_DIALOG_process_msg(int size, int [] datas)
 	{
 		
-		Datas.datas_parse(datas, size);
-		
-//		// affichage tram entière
-//		System.out.print("Tram entière : ");
-//		for(int y=0; y< size; y++){
-//			System.out.print(datas[y]);
-//		}
-//		System.out.println("");
-//		
-//		/*
-//		 * récupération des donnée qui nous interesse 
-//		 */
-//		
-//		int index_size = 11; // on commence a récupérer après l'info de la taille de la tram (11ème octet)
-//		int [] message = new int [size-11]; 
-//
-//		System.out.print("Partie données  : ");
-//		for(int i = 0; i<size - 11; i++){
-//			message[i] = datas[index_size] ;   
-//			index_size++;
-//			System.out.print(message[i]);
-//		}
-//		System.out.println("");
-//		
-///*
-//        int convertedValue = Integer.decode(arg0)
-//        System.out.print(convertedValue)
-//        
-//*/
-//		
-//		/*
-//		 * recuperation de l'identifiant de l'objet qui à envoyé le message à la station de base 
-//		 */
-//		
-//		int index_object_id = 4; 
-//		int [] object_id = new int [4]; 
-//		
-//		System.out.print("Partie identifiant : ");
-//		for(int y = 0; y< 4 ; y++){
-//			object_id[y] = datas[index_object_id];
-//			index_object_id++;
-//			System.out.print(object_id[y]);
-//		}
-//		System.out.println("");
-		
-		
-		
-		
-		
-		
+		Data.data_parse(datas, size);
 		//Bdd.insert_into(message, object_id);
+		
+		
 	}
 	
 	public static void SERIAL_DIALOG_send_msg(int size, int [] datas, OutputStream ostream) throws IOException
