@@ -72,13 +72,11 @@ public class Serial_dialog {
 	/*
 	 * traitement de datas que l'on vien segmenter pour récupérer les info qui nous interresse (donnée, object_id)
 	 */
-	public static void SERIAL_DIALOG_process_msg(int size, int [] datas)
-	{
-		
-		Data.data_parse(datas, size);
-		//Bdd.insert_into(message, object_id);
-		
-		
+	public static void SERIAL_DIALOG_process_msg(int size, int [] datas) {
+
+				Data.data_parse(datas, size);
+				Bdd.insert_into(Data.getDonnees(), Data.getEmetteur());
+				
 	}
 	
 	public static void SERIAL_DIALOG_send_msg(int size, int [] datas, OutputStream ostream) throws IOException
@@ -108,8 +106,7 @@ public class Serial_dialog {
 
 	private static Thread th = new Thread();
 	
-	public static void SERIAL_DIALOG_read(InputStream istream)throws  IOException, InterruptedException
-	{
+	public static void SERIAL_DIALOG_read(InputStream istream)throws  IOException, InterruptedException{
 		//Déclaration d'un buffer de 128 caractères
 		
 				byte[] byteBuffer = new byte[BUFFER_SIZE];

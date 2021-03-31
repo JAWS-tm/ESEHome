@@ -52,7 +52,11 @@ import serial_dialog.Serial_dialog;
 		while(true) {
 			
 			Serial_dialog.SERIAL_DIALOG_read(istream);
-			//Serial_dialog.SERIAL_DIALOG_write(ostream);
+			/*
+			 * if (changement dddans la bdd)
+			 * 		Serial_dialog.SERIAL_DIALOG_write(ostream);
+			 */
+			
 		}
 		
 			

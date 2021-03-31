@@ -1,43 +1,62 @@
 package bdd;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
+import serial_dialog.Data;
+
 public class Bdd {
+
 	
-	/*
-	 * à faire quand la bdd est faite
-	 */
-	
-	public static void insert_into(int data, int object_id)
+	static Connection connexion ;
+	public static void insert_into(String [] data, String [] object_id) 
 	{
 		
-	 /*   
-		boolean verif = false;
-		int id = 0;
-
-	    Class.forName("org.mariadb.jdbc.Driver");
-
-	    try {
-	        Connection connection = DriverManager.getConnection("jdbc:mariadb://172.24.0.59:3306/PDS_grp3", "grp6", "mdp");
-	        
-	        
-	        
-	        PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO OBJET" + 
-	    			"(nom, prenom, sexe, date, email, password, habitudes, frequence, statut, id)" + 
-	    			"VALUES(?, ?, ?, ?, ?, md5(?), ?, ?, ?, ?);"; {
-	                preparedStatement.setString(1, utilisateur.getLogin());
-	                preparedStatement.setString(2, utilisateur.getMdp());
-
-	                System.out.println(preparedStatement);
-	                ResultSet rs = preparedStatement.executeQuery();
-	               
-	        }
-	        
-	    }
-
-	    catch (SQLException e) {
-	    	e.printStackTrace();
-	    }
-	   
-	*/
+		String int_object_id = object_id[3];
+		
+		
+		loadDatabase();
+	    
+		for(int i = 0; i < Data.getSize_donnees(); i++) {
+			try {
+			    PreparedStatement preparedStatement = connexion.prepareStatement("INSERT INTO DATA(valeur_data, id_object)VALUES(?,?);"); {
+			            preparedStatement.setString(1, data[i]);
+			            preparedStatement.setString(2, int_object_id);
+			            System.out.println("");
+			            System.out.println(preparedStatement);
+			            preparedStatement.executeUpdate();   
+			    }
+		        
+		    }
+		
+		    catch (SQLException e) {
+		    	e.printStackTrace();
+		    }
+			
 	}
+	    
+	  
+	
+	}
+	
+    private static void loadDatabase() {
+        // Chargement du driver
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+        } catch (ClassNotFoundException e) {
+        	 e.printStackTrace();
+        }
+
+        try {
+        	 connexion = DriverManager.getConnection("jdbc:mysql://localhost:3306/Domoteek", "root", "");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+	
 
 }
