@@ -8,6 +8,7 @@ import java.io.OutputStream;
 import java.sql.Connection;
 
 import bdd.Bdd;
+import bdd.Select;
 
 public class Serial_dialog {
 	
@@ -43,7 +44,7 @@ public class Serial_dialog {
 					if(c == EOT)
 						//ok, fin du message !
 						
-						SERIAL_DIALOG_process_msg(size, datas);
+						Data.data_parse(datas, size);
 						System.out.println("");
 					index = 0;
 				}
@@ -72,12 +73,20 @@ public class Serial_dialog {
 	/*
 	 * traitement de datas que l'on vien segmenter pour récupérer les info qui nous interresse (donnée, object_id)
 	 */
-	public static void SERIAL_DIALOG_process_msg(int size, int [] datas) {
+	
+	private static final int message_en_attente = 0;
+	
+	
+	public static void SERIAL_DIALOG_process_msg() {
 
-				Data.data_parse(datas, size);
-				Bdd.insert_into(Data.getDonnees(), Data.getEmetteur());
+				
+				if( Data.getMsg() == "I_HAVE_NO_SERVER_ID") {
+					Select.Objet();
+				}
+				
 				
 	}
+				
 	
 	public static void SERIAL_DIALOG_send_msg(int size, int [] datas, OutputStream ostream) throws IOException
 	{

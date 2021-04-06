@@ -2,10 +2,12 @@ package serv_comm;
 
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
 import java.util.List;
+
 import java.io.IOException;
-
-
 
 import dk.thibaut.serial.SerialPort;
 import dk.thibaut.serial.enums.BaudRate;
@@ -15,13 +17,20 @@ import dk.thibaut.serial.enums.StopBits;
 
 import serial_dialog.Serial_dialog;
 
- 
+
 
  public class main {
-
 	 
+		// JDBC Driver Name & Database URL
+	    static final String JDBC_DRIVER = "com.mysql.jdbc.Driver";  
+	    static final String JDBC_DB_URL = "jdbc:mysql://localhost:3306/Domoteek";
+	 
+	    // JDBC Database Credentials
+	    static final String JDBC_USER = "root";
+	    static final String JDBC_PASS = "";
+
 	
-	public static void main(String[] args) throws IOException, InterruptedException{
+	public static void main(String[] args) throws IOException, InterruptedException, ClassNotFoundException{
 		
 		
 		
@@ -45,25 +54,34 @@ import serial_dialog.Serial_dialog;
 		
 		OutputStream ostream = port.getOutputStream();
 		
-		//int test = (int) 0xCA;
-		//System.out.println(test);
+		/*
+		 * connexion a la base de donnée
+		 */
+		try {
+	    	Class.forName(JDBC_DRIVER);  
+	        Connection connObj = DriverManager.getConnection(JDBC_DB_URL, JDBC_USER, JDBC_PASS);
+	    
+	    }catch(SQLException e) {
+	    	
+	    }
 		
 		
 		while(true) {
 			
 			Serial_dialog.SERIAL_DIALOG_read(istream);
-			/*
-			 * if (changement dddans la bdd)
-			 * 		Serial_dialog.SERIAL_DIALOG_write(ostream);
-			 */
+			
+			
+			 
 			
 		}
 		
-			
 		
 		
+		/*
+		 * gestion changement BDD
+		 */
 		
-	}
+	}	
 
 	
 
