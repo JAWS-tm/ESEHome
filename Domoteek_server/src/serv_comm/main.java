@@ -29,7 +29,8 @@ import serial_dialog.Serial_dialog;
 	    static final String JDBC_USER = "root";
 	    static final String JDBC_PASS = "";
 
-	
+	    public static OutputStream  ostream ;
+	    
 	public static void main(String[] args) throws IOException, InterruptedException, ClassNotFoundException{
 		
 		
@@ -52,7 +53,7 @@ import serial_dialog.Serial_dialog;
 		
 		InputStream istream = port.getInputStream();
 		
-		OutputStream ostream = port.getOutputStream();
+		ostream = port.getOutputStream();
 		
 		/*
 		 * connexion a la base de donnée

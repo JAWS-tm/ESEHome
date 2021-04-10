@@ -11,7 +11,8 @@ CREATE TABLE Objet(
         objet_type         VARBINARY (32) NOT NULL ,
         objet_numero       Int NOT NULL ,
         objet_appartenance VARBINARY (32) NOT NULL ,
-        objet_adresse      Int NOT NULL 
+        objet_adresse      Int NOT NULL ,
+        objet_associer     BOOLEAN NOT NULL, 
 	,CONSTRAINT Objet_PK PRIMARY KEY (objet_id)
 )ENGINE=InnoDB;
 
@@ -26,8 +27,13 @@ CREATE TABLE Regle(
         regle_operateur        VARBINARY (32) NOT NULL ,
         regle_operand_2        VARBINARY (32) NOT NULL ,
         regle_action_parametre VARBINARY (32) NOT NULL ,
-        regle_action_value     VARBINARY (32) NOT NULL
+        regle_action_value     VARBINARY (32) NOT NULL ,
+        parametre_id           Int NOT NULL ,
 	,CONSTRAINT Regle_PK PRIMARY KEY (regle_id)
+	/*
+	 * Clés étrangères
+	 */
+	,CONSTRAINT Parametre_Parametre_FK FOREIGN KEY (parametre_id) REFERENCES Parametre(parametre_id)
 )ENGINE=InnoDB;
 
 #------------------------------------------------------------
@@ -38,7 +44,7 @@ CREATE TABLE Parametre(
         parametre_id      Int  Auto_increment  NOT NULL ,
         parametre_type    VARBINARY (32) NOT NULL ,
         parametre_contenu VARBINARY (32) NOT NULL ,
-        objet_id          Int NOT NULL
+        objet_id          Int NOT NULL 
 	,CONSTRAINT Parametre_PK PRIMARY KEY (parametre_id)
     /*
 	 * Clés étrangères
