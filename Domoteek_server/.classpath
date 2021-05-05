@@ -6,7 +6,8 @@
 			<attribute name="module" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="C:/Users/fabie/Documents/PDS/embarque/embarque/Domoteek_server/library/jna-4.2.0.jar"/>
-	<classpathentry kind="lib" path="C:/Users/fabie/Documents/PDS/embarque/embarque/Domoteek_server/library/JSerial-1.0.3.jar"/>
+	<classpathentry kind="lib" path="library/jna-4.2.0.jar"/>
+	<classpathentry kind="lib" path="library/JSerial-1.0.3.jar"/>
+	<classpathentry kind="lib" path="library/mysql-connector-java-8.0.23.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

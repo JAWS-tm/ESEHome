@@ -8,6 +8,8 @@ import java.io.OutputStream;
 import java.sql.Connection;
 
 import bdd.Bdd;
+import bdd.Insert_into;
+import bdd.Select;
 
 public class Serial_dialog {
 	
@@ -16,15 +18,15 @@ public class Serial_dialog {
 	
 	private static int BUFFER_SIZE = 128;
 	
-	private static int [] datas = new int[255];
+	private static byte [] datas = new byte[255];
 	private static boolean flag_FA = false;
 	private static int index = 0;
-	private static int size = 0;
+	private static byte size = 0;
 	
 
 	 private Connection connection;
 	
-	public static void SERIAL_DIALOG_parse_rx(int c)
+	public static void SERIAL_DIALOG_parse_rx(byte c)
 	{
 
 		switch(index)
@@ -43,13 +45,13 @@ public class Serial_dialog {
 					if(c == EOT)
 						//ok, fin du message !
 						
-						SERIAL_DIALOG_process_msg(size, datas);
+						Data.data_parse(datas, size);
 						System.out.println("");
 					index = 0;
 				}
 				else if(flag_FA)
 				{
-					datas[index-2] = c&0xFA;
+					datas[index-2] = (byte) (c&0xFA);
 					flag_FA = false;
 					index++;
 				}
@@ -69,20 +71,13 @@ public class Serial_dialog {
 				break;
 		}
 	}
-	/*
-	 * traitement de datas que l'on vien segmenter pour récupérer les info qui nous interresse (donnée, object_id)
-	 */
-	public static void SERIAL_DIALOG_process_msg(int size, int [] datas) {
-
-				Data.data_parse(datas, size);
-				Bdd.insert_into(Data.getDonnees(), Data.getEmetteur());
-				
-	}
 	
-	public static void SERIAL_DIALOG_send_msg(int size, int [] datas, OutputStream ostream) throws IOException
+				
+	
+	public static void SERIAL_DIALOG_send_msg(byte size, byte [] datas, OutputStream ostream) throws IOException
 	{
-		int i;
-		int c;
+		byte i;
+		byte c;
 		if(size > 0 && datas == null)
 			return;
 		ostream.write(SOH);
@@ -137,10 +132,24 @@ public class Serial_dialog {
 		 * quand la bdd sera faite il faudra que datas soit remplis avec les donné qui en sorte. 
 		 * pour size la meme chose.
 		 */
-		int size = 16;
-		int [] datas = {0x00, 0x00, 0x00, 0x02, 0xEE, 0xEE,0xEE, 0x00, 0xA2, 0x42, 0x05, 0x08, 0xCA, 0xFE, 0xDE, 0xCA};
+		//byte size = 16;
+		//byte [] datas = {0x00, 0x00, 0x00, 0x02, 0xEE, 0xEE,0xEE, 0x00, 0xA2, 0x42, 0x05, 0x08, 0xCA, 0xFE, 0xDE, 0xCA};
 		// à remplacer par la donnée qui sera recup dans la bdd
 		
 		SERIAL_DIALOG_send_msg(size, datas, ostream);
 	}
+	
+	public static enum statut_message{
+
+		KEEP_ALWAYS_NOT_SENT,
+		KEEP_ALWAYS_ALREADY_SENT,
+		KEEP_ALWAYS_ACKNOWLEDGED,
+		ONLY_ONCE_NOT_SENT,
+		ONLY_ONCE_SENT,
+		TRANSMITTED 
+
+	}
+	
+	
+	
 }

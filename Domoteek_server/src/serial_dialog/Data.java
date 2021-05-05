@@ -2,50 +2,60 @@ package serial_dialog;
 
 public class Data {
 	
-	private static String [] destinataire = new String [4];
-	private static String [] emetteur = new String [4]; 
-	private static String cnt = null; 
-	private static String msg = null; 
-	private static int size_donnees = 0 ; 
-	private static String [] donnees = new String [16]; 
+	private static byte [] destinataire = new byte[4];
+	private static byte [] emetteur = new byte [4]; 
+	private static byte cnt = 0; 
+	private static byte msg = 0; 
+	private static byte size_donnees = 0 ; 
+	private static byte type_donnees = 0 ;
+	private static byte [] donnees = new byte [16]; 
 	
-	public static void data_parse(int [] datas, int size) {
+	public static void data_parse(byte [] datas, byte size) {
 		
 		/*
 		 * destinataire
 		 */
-		
+		//String str_destinataire = null ;
 		System.out.print("destinataire : ");
-		for(int i = 0; i < 4 ; i++){
-			destinataire[i] = Integer.toHexString(datas[i]);
-			System.out.print("0x" + destinataire[i] + " , ");
+		for(int i=0; i<4; i++) {
+			destinataire[i] = datas[i];
+			//str_destinataire = Integer.toHexString(destinataire[i]);
+			
+			System.out.print(destinataire[i]+", ");
 		}
-		System.out.println("");
 		
+		System.out.println("");
+
+			
 		/*
 		 * émetteur
 		 */
-		int index_emetteur = 0;
+		//String str_emetteur = null;
 		System.out.print("émetteur : ");
-		for(int i = 4; i < 8; i++){
-			emetteur[index_emetteur] = Integer.toHexString(datas[i]);
-			System.out.print("0x" +emetteur[index_emetteur]+ " , ");
-			index_emetteur++;
+		for(int i = 0; i<4; i++)
+		{
+			emetteur[i] = datas[i+4];
+			//str_emetteur = Integer.toHexString(emetteur[i]);
+			System.out.print(emetteur[i] + ", ");
+			
 		}
+		
 		System.out.println("");
+		
 		
 		/*
 		 * cnt
 		 */
-		
-		cnt = Integer.toHexString(datas[8]);
-		System.out.println("cnt : " + "0x" +cnt);
+		//String str_cnt = null;
+		cnt = datas[8];
+		//str_cnt = Integer.toHexString(cnt);
+		System.out.println("cnt : "  +cnt);
 	
 		/*
 		 * msg
 		 */
-		msg = Integer.toHexString(datas[9]);
-		System.out.println("msg : " + "0x" +msg);
+		msg = datas[9];
+		System.out.println("msg : " +msg);
 		
 		/*
 		 * size
@@ -54,13 +64,21 @@ public class Data {
 		System.out.println("size : "  + size_donnees);
 		
 		/*
+		 * Type de données
+		 */
+		type_donnees = datas[11];
+		System.out.println("type de données : "  + type_donnees);
+		/*
 		 * Données
 		 */
+		
 		int index_donnees = 0;
+		String str_donnees = null;
 		System.out.print("données : ");
-		for(int i = 11; i < size; i++) {
-			donnees[index_donnees] = Integer.toHexString(datas[i]);
-			System.out.print("0x" +donnees[index_donnees]+ " , ");
+		for(int i = 12; i < size; i++) {
+			donnees[index_donnees] = datas[i];
+			str_donnees = Integer.toHexString(donnees[index_donnees]);
+			System.out.print(donnees[index_donnees]+ " , ");
 			index_donnees++;
 		}
 		System.out.println("");
@@ -71,22 +89,25 @@ public class Data {
 		
 	
 	
-	public static String[] getDestinataire() {
+	public static byte [] getDestinataire() {
         return destinataire;
     }
-	public static String[] getEmetteur() {
+	public static byte [] getEmetteur() {	
         return emetteur;
     }
-	public static String getCnt() {
+	public static byte getCnt() {
         return cnt;
     }
-	public static String getMsg() {
+	public static byte getMsg() {
         return msg;
     }
-	public static int getSize_donnees() {
+	public static byte getSize_donnees() {
         return size_donnees ;
     }
-	public static String[] getDonnees() {
+	public static byte getType_donnees() {
+		return type_donnees ;
+	}
+	public static byte[] getDonnees() {
         return donnees ;
     }
 	
