@@ -56,7 +56,7 @@ typedef enum
 void PARAMETERS_init(void);
 
 //chaque objet doit appeler cette fonction pour chacun de ses paramètres
-void PARAMETERS_enable(param_id_e param_id, int32_t default_value, bool_e value_saved_in_flash, callback_fun_i32_t callback);
+void PARAMETERS_enable(param_id_e param_id, int32_t default_value, bool_e value_saved_in_flash, callback_fun_i32_t callback_after_set_from_RF, callback_i32_fun_t callback_if_get_from_RF);
 
 //cette fonction est appelée soit par l'objet qui met à jour une valeur (accessible sur demande par la station)
 //  soit suite à la station qui met à jour une valeur (accessible sur demande de l'objet)

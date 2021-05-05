@@ -35,7 +35,7 @@ void OBJECT_NIGHT_LIGHT_state_machine(void){
 	switch(state)
 	{
 		case INIT:
-			PARAMETERS_enable(PARAM_COLOR, 0xCAFEDECA, TRUE, &OBJECT_NIGHT_LIGHT_color_updated_callback);
+			PARAMETERS_enable(PARAM_COLOR, 0xCAFEDECA, TRUE, &OBJECT_NIGHT_LIGHT_color_updated_callback, NULL);
 			WS2812_init(WS2812_PIN, 30);
 			state = RUN;
 		break;

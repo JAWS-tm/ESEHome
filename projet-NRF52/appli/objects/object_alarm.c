@@ -100,7 +100,7 @@ void OBJECT_ALARM_state_machine(void){
 	switch(state)
 	{
 		case INIT:
-			PARAMETERS_enable(PARAM_ALARM_WAY, 0xCAFEDECA, TRUE, &OBJECT_ALARM_updated_callback);
+			PARAMETERS_enable(PARAM_ALARM_WAY, 0xCAFEDECA, TRUE, &OBJECT_ALARM_updated_callback, NULL);
 			WS2812_init(PIN_UART_RX, 30);
 			state = RUN;
 		break;

@@ -89,7 +89,7 @@ void Smart_light_Main(void){
 			{
 				case DEBUT:
 					Configuration();
-					PARAMETERS_enable(PARAM_MODE,DEBUT, TRUE, &OBJECT_SMART_LIGHT_UPDATED_MODE_callback);
+					PARAMETERS_enable(PARAM_MODE,DEBUT, TRUE, &OBJECT_SMART_LIGHT_UPDATED_MODE_callback, NULL);
 
 						mode = ALLUMAGE;
 
@@ -97,7 +97,7 @@ void Smart_light_Main(void){
 				case ALLUMAGE:
 
 					AllumageTotale();
-					PARAMETERS_enable(PARAM_MODE,DEBUT, TRUE, &OBJECT_SMART_LIGHT_UPDATED_MODE_callback);
+					PARAMETERS_enable(PARAM_MODE,DEBUT, TRUE, &OBJECT_SMART_LIGHT_UPDATED_MODE_callback, NULL);
 							if(appui)
 							{
 								appui = FALSE;

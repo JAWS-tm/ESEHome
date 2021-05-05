@@ -80,7 +80,7 @@ void Wine_Degustation_Main(void) {
 		wd_read=I2C_read(wd_reg, 2);
 	}
 
-	PARAMETERS_enable(PARAM_TEMPERATURE, 0xC, TRUE, callback);
+	PARAMETERS_enable(PARAM_TEMPERATURE, 0xC, TRUE, callback, NULL);
 
 */
 	while(1)

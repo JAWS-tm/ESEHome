@@ -15,10 +15,26 @@ typedef struct
 	bool_e updated;
 	bool_e value_saved_in_flash;	//TODO gérer cette fonctionnalité
 	uint32_t value;
-	callback_fun_i32_t	callback;
+	callback_fun_i32_t callback_after_set_from_RF;	//Cette callback sera appelée si un message demande le changement d'un paramètre
+	callback_i32_fun_t callback_if_get_from_RF;		//Cette fonction sera appelée si un message demande à lire un paramètre
 }params_t;
 
 static params_t params[PARAM_NB];
+
+
+/*
+ * Explications :
+ * 	Il existe deux catégories de paramètres.
+ * 		1- Les paramètres qui sont pilotés depuis la station de base (donc depuis la liaison RF) :
+ 	 	 	 Ils n'ont pas besoin de la callback_if_get_from_RF
+ 	 	 	 Ils peuvent être associés à une  callback_after_set_from_RF.
+ 	 	 	 	 Ainsi, lorsque la station provoquera une écriture de ce paramètre, la fonction de callback associée sera appelée pour agir en conséquence.
+ 	 	2- Les paramètres qui sont fournis par l'objet et lu par la station de base (typiquement, la valeur d'un capteur).
+ 	 		  Ils n'ont pas besoin d'être associés à une callback_after_set_from_RF, puisque la station n'a pas de raison d'écrire dans cette valeur !
+ 	 		  Ils peuvent être associés à une callback_if_get_from_RF.
+ 	 		  	  Cette fonction sera appelée pour mettre à jour ce paramètre lorsque la station en demandera la valeur.
+ 	 		  	  	  Cela permet de ne pas avoir à mettre à jour de façon régulière la valeur du paramètre à chaque mesure capteur !
+ */
 
 
 //Cette fonction doit être appelée lors de l'init, avant l'init des objets.
@@ -30,18 +46,20 @@ void PARAMETERS_init(void)
 			.enable = FALSE,
 			.updated = FALSE,
 			.value = 0,
-			.callback = NULL
+			.callback_after_set_from_RF = NULL,
+			.callback_if_get_from_RF = NULL
 			};
 	}
 	FLASHWRITER_init();
 }
 
 //chaque objet doit appeler cette fonction pour chacun de ses paramètres
-void PARAMETERS_enable(param_id_e param_id, int32_t default_value, bool_e value_saved_in_flash, callback_fun_i32_t callback)
+void PARAMETERS_enable(param_id_e param_id, int32_t default_value, bool_e value_saved_in_flash, callback_fun_i32_t callback_after_set_from_RF, callback_i32_fun_t callback_if_get_from_RF)
 {
 	params[param_id].enable = TRUE;
 	params[param_id].value_saved_in_flash = value_saved_in_flash;
-	params[param_id].callback = callback;
+	params[param_id].callback_after_set_from_RF = callback_after_set_from_RF;
+	params[param_id].callback_if_get_from_RF = callback_if_get_from_RF;
 	params[param_id].updated = FALSE;
 	params[param_id].value = default_value;
 	if(value_saved_in_flash)
@@ -56,8 +74,8 @@ void PARAMETERS_update(param_id_e param_id, int32_t new_value)
 	{
 		params[param_id].value = new_value;
 		params[param_id].updated = TRUE;
-		if(params[param_id].callback != NULL)
-			params[param_id].callback(new_value);
+		if(params[param_id].callback_after_set_from_RF != NULL)
+			params[param_id].callback_after_set_from_RF(new_value);
 
 		if(params[param_id].value_saved_in_flash)
 		{
@@ -75,8 +93,8 @@ void PARAMETERS_update_custom(param_id_e param_id, uint8_t * datas)
 	if(param_id > PARAM_32_BITS_NB && param_id < PARAM_NB && params[param_id].enable)
 	{
 		params[param_id].updated = TRUE;
-		if(params[param_id].callback != NULL)
-			params[param_id].callback((uint32_t)datas);	//on transmets l'adresse des données à traiter.... de façon un peu violente.
+		if(params[param_id].callback_after_set_from_RF != NULL)
+			params[param_id].callback_after_set_from_RF((uint32_t)datas);	//on transmets l'adresse des données à traiter.... de façon un peu violente.
 	}
 }
 
@@ -90,16 +108,15 @@ void PARAMETERS_read_from_flash(param_id_e param_id)
 
 	if(params[param_id].enable && params[param_id].value_saved_in_flash){
 		uint32_t address = (uint32_t)param_id * 4;
-		uint32_t save_flash = FLASHWRITER_read(address);
-		if(save_flash != 0){
-			PARAMETERS_get(address);
-		}
+		uint32_t flash_value = FLASHWRITER_read(address);
+		if(flash_value != 0xFFFFFFFF)
+			params[param_id].value = flash_value;
 	}
 
 }
 
 
-//Cette fonction sauvegarde en flash tout les paramètres dont la value_saved_in_flash est vrai, et dont la valeur est différente ce celle présente en flash !
+//Cette fonction sauvegarde en flash tout les paramètres dont la value_saved_in_flash est vrai, et dont la valeur est différente de celle présente en flash !
 void PARAMETERS_save_to_flash(void)
 {
 	PARAMETERS_init();
@@ -113,164 +130,7 @@ void PARAMETERS_save_to_flash(void)
 
 int32_t PARAMETERS_get(param_id_e param_id)
 {
+	if(params[param_id].callback_if_get_from_RF != NULL)
+		params[param_id].value = params[param_id].callback_if_get_from_RF();
 	return params[param_id].value;
 }
-
-/*
-//Orientation du main vers chaque code de chaque objets
-    		#if id_object == OBJECT_BASE_STATION
-
-
-    		#endif
-
-
-    		#if id_object == OBJECT_SMART_LIGHT
-
-			state_e state_led;
-
-			typedef enum{
-				DAY,
-				NIGHT,
-				FILM
-			}mode_e;
-
-			uint32_t brightness;
-
-    		#endif
-
-    		#if id_object == OBJECT_NIGHT_LIGHT
-
-			state_e state_led;
-
-			color_t color;
-
-    		#endif
-
-    		#if id_object == OBJECT_BRIGHTNESS_SENSOR
-
-			uint32_t brightness;
-
-    		#endif
-
-    		#if id_object == OBJECT_STATION_METEO_INT
-
-			uint32_t temperature;
-
-			uint32_t pressure;
-
-			uint32_t humidity;
-
-    		#endif
-
-    		#if id_object == OBJECT_OUT_WEATHER_STATION
-
-			uint32_t temperature;
-
-			uint32_t pressure;
-
-			uint32_t humidity;
-
-			uint32_t wind_speed;
-
-			uint32_t rain;
-
-    		#endif
-
-    		#if id_object == OBJECT_ROLLER_SHUTTER
-
-
-
-    		#endif
-
-    		#if id_object == OBJECT_ALARM
-
-			state_e alert;
-
-    		#endif
-
-    		#if id_object == OBJECT_FIRE_DETECTOR
-
-			uint32_t smoke_concentration;
-
-			uint32_t CO_concentration;
-
-			uint32_t gas_concentration;
-
-    		#endif
-
-    		#if id_object == OBJECT_WINE_DEGUSTATION
-
-			uint32_t temperature;
-
-    		#endif
-
-    		#if id_object == OBJECT_VENTILATOR
-
-			uint32_t temperature;
-
-    		#endif
-
-    		#if id_object == OBJECT_GSM
-
-			state_e sending_alert;
-
-			//a compléter
-
-    		#endif
-
-    		#if id_object == OBJECT_FALL_SENSOR
-
-			uint32_t limit_alert;
-
-			parameters_e limit;
-
-			state_e alert;
-
-			state_e state_object;
-
-    		#endif
-
-    		#if id_object == OBJECT_TRACKER_GPS
-
-
-
-    		#endif
-
-    		#if id_object == OBJECT_RFID
-
-
-
-    		#endif
-
-    		#if id_object == OBJECT_TRACKER_GPS
-
-
-    		#endif
-
-    		#if id_object == OBJECT_VOICE_CONTROL
-
-
-    		#endif
-
-    		#if id_object == OBJECT_TOUCH_SCREEN
-
-
-    		#endif
-
-    		#if id_object == OBJECT_E_PAPER
-
-
-    		#endif
-
-    		#if id_object == OBJECT_MATRIX_LEDS
-
-			state_e state_object;
-
-    		#endif
-
-    		#if id_object == OBJECTS_NB
-
-
-    		#endif
-
-*/

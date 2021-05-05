@@ -33,7 +33,7 @@ void MATRIX_afficheur(uint32_t colorDonnees, uint32_t colorType){
 
 	switch(state){
 	case INIT_DATA:
-		PARAMETERS_enable(PARAM_TEMPERATURE, 0, TRUE, &OBJECT_MATRIX_LEDS_value_updated_callback);
+		PARAMETERS_enable(PARAM_TEMPERATURE, 0, TRUE, &OBJECT_MATRIX_LEDS_value_updated_callback, NULL);
 		MATRIX_init();
 		state = DISPLAY_MATRIX;
 		break;

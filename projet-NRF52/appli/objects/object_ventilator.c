@@ -60,7 +60,7 @@ void object_ventilator_activation(void)
 {
 	switch(state) {
 		case VENTILATOR_INIT:
-			PARAMETERS_enable(PARAM_ACTUATOR_STATE, 0, TRUE, &OBJECT_VENTILATOR_etat_updated_callback);
+			PARAMETERS_enable(PARAM_ACTUATOR_STATE, 0, TRUE, &OBJECT_VENTILATOR_etat_updated_callback, NULL);
 			GPIO_init();
 			ADC_init();
 			GPIO_configure(MOSFET_PIN, NRF_GPIO_PIN_PULLUP, true);
