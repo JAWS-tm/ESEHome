@@ -1,7 +1,7 @@
 /*
  * ili9341.c
  *
- *  Created on: 9 fï¿½vr. 2021
+ *  Created on: 9 févr. 2021
  *      Author: Nirgal
  */
 
@@ -669,7 +669,7 @@ void ILI9341_Puts(uint16_t x, uint16_t y, char *str, FontDef_t *font, uint16_t f
 		}
 		if(ILI9341_x > ILI9341_Opts.width - font->FontWidth)
 		{
-			//on passe ï¿½ la ligne suivante, en s'alignant sous le dï¿½but de la premiï¿½re ligne
+			//on passe à la ligne suivante, en s'alignant sous le début de la première ligne
 			ILI9341_y += font->FontHeight + 1;
 			ILI9341_x = startX;
 		}
@@ -679,9 +679,9 @@ void ILI9341_Puts(uint16_t x, uint16_t y, char *str, FontDef_t *font, uint16_t f
 }
 
 /*
- *	permet l'affichage de "gros caractï¿½res" ('bigger' fois plus gros que la 'font' fournie)
- *	full_in_bigger dï¿½fini le taux de remplissage des gros pixels gï¿½nï¿½rï¿½s. Testez pour comprendre et apprï¿½cier le style !
- *	@pre : full_in_bigger doit ï¿½tre infï¿½rieur ou ï¿½gal ï¿½ bigger.
+ *	permet l'affichage de "gros caractêres" ('bigger' fois plus gros que la 'font' fournie)
+ *	full_in_bigger défini le taux de remplissage des gros pixels générés. Testez pour comprendre et apprécier le style !
+ *	@pre : full_in_bigger doit être inférieur ou égal à bigger.
  *	exemples :
  *		ILI9341_PutBigs(20, 40, "tst4,3",&Font_16x26, ILI9341_COLOR_BLUE,ILI9341_COLOR_BLACK, 4, 3);
  *	 	ILI9341_PutBigs(20, 40, "test2,2",&Font_16x26, ILI9341_COLOR_BLUE,ILI9341_COLOR_BLACK, 2, 2);
@@ -712,7 +712,7 @@ void ILI9341_PutBigs(uint16_t x, uint16_t y, char *str, FontDef_t *font, uint16_
 		}
 		if(ILI9341_x > ILI9341_Opts.width - font->FontWidth*bigger)
 		{
-			//on passe ï¿½ la ligne suivante, en s'alignant sous le dï¿½but de la premiï¿½re ligne
+			//on passe à la ligne suivante, en s'alignant sous le début de la première ligne
 			ILI9341_y += font->FontHeight*bigger + bigger;
 			ILI9341_x = startX;
 		}
@@ -795,8 +795,8 @@ void ILI9341_Putc(uint16_t x, uint16_t y, char c, FontDef_t *font, uint16_t fore
 
 
 /*
- * bigger : amplification de la taille du caractï¿½re
- * full_in_bigger : sorte de "pourcentage de remplissage" : mettre la mï¿½me valeur que bigger... ou moins (essayez pour voir si ï¿½a vous plait)
+ * bigger : amplification de la taille du caractêre
+ * full_in_bigger : sorte de "pourcentage de remplissage" : mettre la même valeur que bigger... ou moins (essayez pour voir si ça vous plait)
  */
 void ILI9341_PutBigc(uint16_t x, uint16_t y, char c, FontDef_t *font, uint16_t foreground, uint16_t background, uint8_t bigger, uint8_t full_in_bigger) {
 	uint32_t i, b, j;
@@ -1051,7 +1051,7 @@ void ILI9341_printf(int16_t x, int16_t y, FontDef_t *font, int16_t foreground, i
  * @param  width: width of image
  * @param  height: height of image
  * @param  img: Pointeur sur le tableau des pixels de l'image en BMP 565
- * @param  size: Nombre d'ï¿½lï¿½ment dans le tableau
+ * @param  size: Nombre d'élément dans le tableau
  * @retval None
  */
 
@@ -1090,8 +1090,8 @@ void ILI9341_putImage(int16_t x0, int16_t y0, int16_t width, int16_t height, con
 #ifndef LCD_DMA
 //size : nombre de pixel (1 pixel = 1 bit !)
 //img : tableau contenant une image en monochrome, 1 octet = 8 pixels ! (bit de poids fort = premier pixel)
-//    tout bit ï¿½ 1 est du blanc. tout bit ï¿½ 0 est du noir.
-//La taille (width et height) doit ï¿½tre multiple de 8 !
+//    tout bit à 1 est du blanc. tout bit à 0 est du noir.
+//La taille (width et height) doit être multiple de 8 !
 void ILI9341_putImage_monochrome(uint16_t color_front, uint16_t color_background, int16_t x0, int16_t y0, int16_t width, int16_t height, const uint8_t *img, int32_t size)
 {
 	set_addr_window(x0, y0, x0 + width-1, y0 + height-1);

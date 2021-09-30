@@ -83,11 +83,11 @@ static void XPT2046_convertCoordinateScreenMode(Sint16 * pX, Sint16 * pY);
 
 
 /*
- * Cette fonction blocante a pour but de vous aider ï¿½ apprï¿½hender les fonctionnalitï¿½s de ce module logiciel.
+ * Cette fonction blocante a pour but de vous aider à appréhender les fonctionnalités de ce module logiciel.
  */
 void XPT2046_demo(void)
 {
-	ILI9341_init();	//initialisation de l'ï¿½cran TFT
+	ILI9341_init();	//initialisation de l'écran TFT
 	//ILI9341_Rotate(ILI9341_Orientation_Landscape_2);
 	ILI9341_Fill(ILI9341_COLOR_WHITE);
 	ILI9341_DrawCircle(20,20,5,ILI9341_COLOR_BLUE);
@@ -270,23 +270,23 @@ bool_e XPT2046_getMedianCoordinates(Sint16 * pX, Sint16 * pY, XPT2046_coordinate
 	Sint16 index;
 
 	index = 0;
-	XPT2046_getCoordinates(&tab[0].x , &tab[0].y, coordinateMode);	//on place le premier point dans la premiï¿½re case du tableau.
+	XPT2046_getCoordinates(&tab[0].x , &tab[0].y, coordinateMode);	//on place le premier point dans la première case du tableau.
 
 
 	for(n=1; n<NB_POINTS_FOR_MEDIAN; n++)
 	{
-		if(XPT2046_getCoordinates(&current.x , &current.y, coordinateMode))	//rï¿½cup d'un point
+		if(XPT2046_getCoordinates(&current.x , &current.y, coordinateMode))	//récup d'un point
 		{
 			for(i=0; i<index; i++)		//parcours des valeurs plus faibles
 			{
 				if(current.x < tab[i].x)
 					break;
 			}
-			for(j=(uint8_t)index; j>i; j--)	//dï¿½placement des valeurs plus grandes de 1 case
+			for(j=(uint8_t)index; j>i; j--)	//déplacement des valeurs plus grandes de 1 case
 			{
 				tab[j] = tab[j-1];
 			}
-			tab[i] = current;	//ï¿½criture de la nouvelle valeur ï¿½ sa position
+			tab[i] = current;	//écriture de la nouvelle valeur à sa position
 
 			index++;
 		}

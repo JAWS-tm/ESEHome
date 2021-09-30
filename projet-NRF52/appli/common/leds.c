@@ -27,10 +27,9 @@ void LEDS_init(bool_e i_have_led_battery)
 	for(uint8_t i = 0; i<LED_ID_NB; i++)
 		leds[i].initialized = FALSE;			//nettoyage du tableau.
 
-	//TODO   //ajoute par défaut la led network + led battery si indiqué
 
 	Systick_add_callback_function(&LED_process_ms);
-	//TODO déclare au systick la fonction LED_process_ms() qui sera désormais appelée à chaque ms.
+	//déclare au systick la fonction LED_process_ms() qui sera désormais appelée à chaque ms.
 }
 
 

@@ -388,7 +388,7 @@ bool_e GPS_parse_gpgga(uint8_t * string, gps_datas_t * coordinates)
 {
 	uint8_t i;
 	uint8_t *message_field[14] = {'\0'};	//tableau des pointeur sur champ
-	//tableau des pointeurs sur champ dï¿½cimal
+	//tableau des pointeurs sur champ décimal
 	//Header : $GPGGA
 	/*
 	 * $GPGGA,064036.289,4836.5375,N,00740.9373,E,1,04,3.2,200.2,M,,,,0000*0E
