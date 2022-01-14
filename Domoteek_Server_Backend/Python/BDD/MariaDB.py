@@ -18,7 +18,7 @@ def connect():
 
         )
         logger.debug("MariaDB.py : Connected to database")
-    except mysql.Error as e:
+    except Exception as e:
         logger.error(f"MariaDB.py : Error connecting to MariaDB Platform: {e}")
         sys.exit(1)
 
