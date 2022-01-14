@@ -1,1 +1,5 @@
 2022-01-14 14:36:03,461:data_com_logs.txt:DEBUG:Starting application
+2022-01-14 15:39:58,446:data_com_logs.txt:DEBUG:Starting application
+2022-01-14 15:39:58,471:data_com_logs.txt:DEBUG:MariaDB.py : Connected to database
+2022-01-14 15:40:43,423:data_com_logs.txt:DEBUG:Starting applicationa
+2022-01-14 15:40:43,427:data_com_logs.txt:DEBUG:MariaDB.py : Connected to database

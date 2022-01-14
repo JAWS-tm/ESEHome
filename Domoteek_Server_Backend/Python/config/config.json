@@ -1,16 +1,17 @@
 {
     "data_communication":{
-        "logs":{
-            "fileName": "data_com_logs.txt",
-            "filter": "DEBUG",
-            "format": "default"
-        },
         "UART_baudrate":115000
     },
     "BDD":{
         "port": 3306,
-        "host":"localhost",
-        "BDD_name": "",
-        "password": ""
+        "host":"127.0.0.1",
+        "BDD_name": "prjtsnths",
+        "user": "root",
+        "password": "azerty"
+    },
+    "logs":{
+        "fileName": "data_com_logs.txt",
+        "filter": "DEBUG",
+        "format": "default"
     }
 }

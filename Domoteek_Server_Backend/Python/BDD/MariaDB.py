@@ -1,21 +1,21 @@
 # Module Imports
 import mariadb
+from config.app_config import BDD_CONFIG, logger
+
 import sys
 
-# Connect to MariaDB Platform
-try:
-    conn = mariadb.connect(
-        user="root",
-        password="azerty",
-        host="127.0.0.1",
-        port=3306,
-        database="prjtsnths"
+def connect():
+    # Connect to MariaDB Platform
+    try:
+        conn = mariadb.connect(
+            user=BDD_CONFIG["user"],
+            password=BDD_CONFIG["password"],
+            host=BDD_CONFIG["host"],
+            port=BDD_CONFIG["port"],
+            database=BDD_CONFIG["BDD_name"]
 
-    )
-    print("Connected")
-except mariadb.Error as e:
-    print(f"Error connecting to MariaDB Platform: {e}")
-    sys.exit(1)
-
-# Get Cursor
-cur = conn.cursor()
+        )
+        logger.debug("MariaDB.py : Connected to database")
+    except mariadb.Error as e:
+        logger.error(f"MariaDB.py : Error connecting to MariaDB Platform: {e}")
+        sys.exit(1)
