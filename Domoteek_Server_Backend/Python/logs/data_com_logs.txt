@@ -1,0 +1,1 @@
+2022-01-14 14:36:03,461:data_com_logs.txt:DEBUG:Starting application
