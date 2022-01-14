@@ -46,12 +46,22 @@ public class Controleur extends HttpServlet {
 		if(destination != null) {
 			
 			switch(destination) {
-			
+				case "accueil":
+					request.getRequestDispatcher("/JSP/Accueil.jsp").forward(request, response);
+					break;
+				case "connexion":
+					request.setAttribute("connecte", "oui");
+					request.getRequestDispatcher("/JSP/Accueil.jsp").forward(request, response);
+				default:
+					//On ne doit pas se retrouver ici !
+					request.getRequestDispatcher("/JSP/Accueil.jsp").forward(request, response);
+					break;
 			}
 			
 		}else {
 			//On arrive sur le site et on n'a pas encore mis de destination --> renvoie à l'accueil
-			request.getRequestDispatcher("accueil.jsp");
+			request.setAttribute("connecte", "non");
+			request.getRequestDispatcher("/JSP/Accueil.jsp").forward(request, response);
 		}
 		
 	}
