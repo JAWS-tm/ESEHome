@@ -2,7 +2,7 @@ import json
 from logs.appli_logger import AppliLogger
 
 CONFIG = {}
-with open('Domoteek_Server_Backend/Python/config/config.json', "r") as jsonFile:
+with open('config/config.json', "r") as jsonFile:
     CONFIG = json.load(jsonFile)
     jsonFile.close()
 
