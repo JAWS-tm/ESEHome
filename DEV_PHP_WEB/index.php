@@ -8,9 +8,6 @@
 <body>
 <?php
 phpinfo();
-
-
-
 ?>
 </body>
 </html>
