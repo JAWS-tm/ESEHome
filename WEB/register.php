@@ -48,9 +48,7 @@ if(!empty($_POST)){
 <link rel="stylesheet" href="css/register.css"/>
 </head>
 <body>
-    <h1>S'inscrire</h1>
-    
-    <?php if(!empty($errors)): ?>
+<?php if(!empty($errors)): ?>
         <div class="alert">
             <p>Vous n'avez pas rempli le formulaire correctement</p>
             <ul>
@@ -60,11 +58,12 @@ if(!empty($_POST)){
             </ul>
         </div>
     <?php endif; ?>
-
+    <h1>S'inscrire</h1>
     <div class="container">
         <div class="contact-form">
 			<div class="left"></div>
 			<div class="right">
+                <h2>Inscription</h2>
                 <form action="" method="POST">
                     <input type="text" name="username" placeholder="Pseudo" class="champ" require/>
                     <input type="email" name="email" placeholder="Email" class="champ" require/>
