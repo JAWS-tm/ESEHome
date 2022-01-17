@@ -37,6 +37,12 @@ h1{
     background-color: #3991FF;
 }
 
+.left .logo{
+	 height: 75%;
+	 width: 75%;
+	 margin-top: 15%;
+}
+
 .right{
     padding: 25px 40px;
 }
@@ -92,6 +98,12 @@ h1{
     transition: 0.3s;
 }
 
+@media screen and (max-width:690px){
+	.contact-form{
+		grid-template-columns: 1fr;
+	}
+}
+
 /*MESSAGE D'ERREUR*/
 
 .alert{
@@ -107,3 +119,5 @@ h1{
     height: 100%;
     
 }
+
+

@@ -40,7 +40,8 @@ if(!empty($_POST)){
 
     <div class="container">
         <div class="contact-form">
-			<div class="left"></div>
+			<div class="left"><img class="logo" src="css/img/logo.PNG">
+     </div>
 			<div class="right">
                 <h2>Se Connecter</h2>
                 <form action="" method="POST">
