@@ -4,10 +4,10 @@
     },
     "BDD":{
         "port": 3306,
-        "host":"127.0.0.1",
+        "host":"172.24.0.71",
         "BDD_name": "prjtsnths",
-        "user": "root",
-        "password": "azerty"
+        "user": "python",
+        "password": "python"
     },
     "logs":{
         "fileName": "data_com_logs.txt",
