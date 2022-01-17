@@ -44,8 +44,9 @@ if(!empty($_POST)){
 		$email = htmlspecialchars($_POST['email']);
 		$password = password_hash($_POST['password'], PASSWORD_BCRYPT);
 		$type = $_POST["optradio"];
-		
 		$req->execute([$username, $email, $password, $type]);
+
+		
 	}
 }
 
