@@ -9,25 +9,49 @@ public class DAOUtilisateurBDD implements DAOUtilisateur {
 	}
 
 	@Override
-	public void addUtilisateur(String pseudo, String mdp, int permission) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
 	public void deleteUtilisateur(int id) {
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	public void updateUtilisateur(int id, String pseudo, int permission) {
+	public Utilisateur getUtilisateurById(int id) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void ajouterUtilisateur(String pseudo, String mdp, int permission) {
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	public Utilisateur getUtilisateurById(int id) {
+	public void updateUtilisateur(int id, String pseudo, String mdp, int permission) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void modifPseudo(int id, String pseudo) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void modifMDP(int id, String mdp) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void modifPermission(int id, int permission) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public Utilisateur getUtilisateurByPseudo(String pseudo) {
 		// TODO Auto-generated method stub
 		return null;
 	}
