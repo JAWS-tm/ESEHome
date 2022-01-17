@@ -34,7 +34,7 @@ public class DAOUtilisateurMariaDB implements DAOUtilisateur {
 			
 			try {					
 				PreparedStatement prepST1 = connexion.prepareStatement(
-						"SELECT * FROM Utilisateur WHERE Pseudo=?;");
+						"SELECT * FROM utilisateur WHERE Pseudo=?;");
 				prepST1.setString(1, pseudo);
 				
 				try (ResultSet result = prepST1.executeQuery()) {
@@ -44,14 +44,13 @@ public class DAOUtilisateurMariaDB implements DAOUtilisateur {
 					}
 				}
 			
-				if(checkPseudo == false) {
+				if(!checkPseudo) {
 					
 					PreparedStatement prepST = connexion.prepareStatement(
-							"INSERT INTO Utilisateur(Pseudo, MotDePasse, Permission)"
-							+ "VALUES(?,?,?);");
+							"INSERT INTO utilisateur(Pseudo, MotDePasse, Admin) VALUES(?,?,?);");
 					prepST.setString(1, pseudo);
 					prepST.setString(2, mdp);
-					prepST.setInt(3, permission);
+					prepST.setInt(3, 0);			//On met à 0 de base, l'admin a déjà été créé
 					
 					prepST.executeUpdate();
 	
@@ -91,7 +90,7 @@ public class DAOUtilisateurMariaDB implements DAOUtilisateur {
 		try (Connection connexion = daoFactory.getConnection()) {
 			
 			PreparedStatement prepST = connexion.prepareStatement( 
-				"UPDATE Utilisateur SET Pseudo=?, MotDePasse=?, Permission=? WHERE Identifiant=?;");
+				"UPDATE utilisateur SET Pseudo=?, MotDePasse=?, Admin=? WHERE id=?;");
 			
 			prepST.setString(1, pseudo);
 			prepST.setString(2, mdp);
@@ -123,7 +122,7 @@ public class DAOUtilisateurMariaDB implements DAOUtilisateur {
 		try (Connection connexion = daoFactory.getConnection()) {
 			
 			PreparedStatement prepST = connexion.prepareStatement( 
-				"UPDATE Utilisateur SET Pseudo=? WHERE Identifiant=?;");
+				"UPDATE utilisateur SET Pseudo=? WHERE id=?;");
 			
 			prepST.setString(1, pseudo);
 			prepST.setInt(2, id);
@@ -153,7 +152,7 @@ public class DAOUtilisateurMariaDB implements DAOUtilisateur {
 		try (Connection connexion = daoFactory.getConnection()) {
 			
 			PreparedStatement prepST = connexion.prepareStatement( 
-				"UPDATE Utilisateur SET MotDePasse=? WHERE Identifiant=?;");
+				"UPDATE utilisateur SET MotDePasse=? WHERE id=?;");
 			
 			prepST.setString(1, mdp);
 			prepST.setInt(2, id);
@@ -183,7 +182,7 @@ public class DAOUtilisateurMariaDB implements DAOUtilisateur {
 		try (Connection connexion = daoFactory.getConnection()) {
 			
 			PreparedStatement prepST = connexion.prepareStatement( 
-				"UPDATE Utilisateur SET Permission=? WHERE Identifiant=?;");
+				"UPDATE utilisateur SET Admin=? WHERE id=?;");
 			
 			prepST.setInt(1, permission);
 			prepST.setInt(2, id);
@@ -214,7 +213,7 @@ public class DAOUtilisateurMariaDB implements DAOUtilisateur {
 		try (Connection connexion = daoFactory.getConnection()) {
 			
 			PreparedStatement prepST = connexion.prepareStatement(
-					"SELECT * FROM Utilisateur WHERE Identifiant=?;");
+					"SELECT * FROM utilisateur WHERE id=?;");
 			
 			prepST.setInt(1, id);
 			
@@ -223,10 +222,10 @@ public class DAOUtilisateurMariaDB implements DAOUtilisateur {
 				
 				if (result.next()) {
 					
-					int identifiant = result.getInt("Identifiant");
+					int identifiant = result.getInt("id");
 					String pseudo = result.getString("Pseudo");
 					String mdp = result.getString("MotDePasse");
-					int permission = result.getInt("Permission");
+					int permission = result.getInt("Admin");
 					
 					utilisateur = new Utilisateur(identifiant, pseudo, mdp, permission);
 				
@@ -258,7 +257,7 @@ public class DAOUtilisateurMariaDB implements DAOUtilisateur {
 		try (Connection connexion = daoFactory.getConnection()) {
 			
 			PreparedStatement prepST = connexion.prepareStatement(
-					"SELECT * FROM Utilisateur WHERE Pseudo=?;");
+					"SELECT * FROM utilisateur WHERE Pseudo=?;");
 			
 			prepST.setString(1, pseudo);
 			
@@ -267,10 +266,10 @@ public class DAOUtilisateurMariaDB implements DAOUtilisateur {
 				
 				if (result.next()) {
 					
-					int identifiant = result.getInt("Identifiant");
+					int identifiant = result.getInt("id");
 					String pseudonyme = result.getString("Pseudo");
 					String mdp = result.getString("MotDePasse");
-					int permission = result.getInt("Permission");
+					int permission = result.getInt("Admin");
 					
 					utilisateur = new Utilisateur(identifiant, pseudonyme, mdp, permission);
 				
@@ -300,7 +299,7 @@ public class DAOUtilisateurMariaDB implements DAOUtilisateur {
 		try (Connection connexion = daoFactory.getConnection()) {
 			
 			PreparedStatement prepST = connexion.prepareStatement( 
-				"DELETE FROM Utilisateur WHERE Identifiant=?;");
+				"DELETE FROM utilisateur WHERE id=?;");
 			
 			prepST.setInt(1, id);
 			
