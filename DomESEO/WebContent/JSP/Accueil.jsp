@@ -14,7 +14,11 @@
 				<input type="password" name="mot_de_passe" />
 				<input type="submit" name="connexion" value="se connecter" />
 			</form>
-			<p>${ connecte }</p>
+			<c:choose>
+			<c:when test="${connecte == 'oui'}">  
+      	 			test concluant  
+    		</c:when>
+    		</c:choose>
 	</header>
 	
 	
