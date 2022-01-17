@@ -71,16 +71,16 @@ if(!empty($_POST)){
                     <input type="email" name="email" placeholder="Email" class="champ" require/>
                     <input type="password" name="password" placeholder="Mot De Passe" class="champ" require/>
                     <input type="password" name="password_confirm" placeholder="Confirmez votre mot de passe" class="champ" require/>
-					<?php 
+					<!--<?php 
 					require_once 'inc/db.php';
 					$req = $pdo->prepare('SELECT * FROM users WHERE admin = 1');
 					$req->execute();
-					$user = $req->fetch();
-					if(empty($user)):?>
+					$admin = $req->fetchAll();
+					if(empty($admin)):?>
                         <input name="admin"  type="hidden" value="1" require/>
                     <?php else: ?>
                      	<input name="admin"  type="hidden" value="0" require/>
-					<?php endif; ?>
+					<?php endif; ?>-->
                     <button type="submit" class="btn">M'inscrire</button>
                 </form>
             </div>    
