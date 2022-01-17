@@ -65,6 +65,7 @@ if(!empty($_POST)){
         <div class="contact-form">
 			<div class="left"></div>
 			<div class="right">
+				<h2>Inscription</h2>
                 <form action="" method="POST">
                     <input type="text" name="username" placeholder="Pseudo" class="champ" require/>
                     <input type="email" name="email" placeholder="Email" class="champ" require/>
