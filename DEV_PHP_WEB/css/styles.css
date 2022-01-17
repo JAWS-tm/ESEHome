@@ -1,0 +1,9 @@
+h2 {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-top: 5rem;
+    border-bottom: 5px solid #000;
+    display: inline-block;
+    padding-bottom: 10px;
+    font-family: sans-serif;
+}
