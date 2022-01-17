@@ -63,7 +63,6 @@ if(!empty($_POST)){
 
 	<?php require '../inc/header.php';?>
 	<h1>ADMIN</h1>
-	
 	<?php if(!empty($errors)): ?>
 		<div class="alert">
 			<p>Vous n'avez pas rempli le formulaire correctement</p>
@@ -77,10 +76,11 @@ if(!empty($_POST)){
 
 	<div class="container">
 		<div class="contact-form">
-			<div class="left"></div>
-			<div class="right">
-				<h2>Ajout d'un utilisateur</h2>
-				<form action="" method="POST">
+			
+			<div class="main">
+					
+				<p>Ajout d'un utilisateur</p>
+					<form action="" method="POST">
 					<input type="text" name="username" placeholder="Pseudo" class="champ" require/>
 					<input type="email" name="email" placeholder="Email" class="champ" require/>
 				  
