@@ -7,13 +7,22 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import beans.Utilisateur;
+import dao.DAOFactory;
+import dao.DAOUtilisateur;
+import dao.DAOUtilisateurMariaDB;
+
 /**
  * Servlet implementation class Controleur
  */
 @WebServlet("/Controleur")
 public class Controleur extends HttpServlet {
+	
 	private static final long serialVersionUID = 1L;
-       
+    private Utilisateur utilisateur;   
+    private DAOUtilisateur daoUtilisateur;
+    
+    
     /**
      * @see HttpServlet#HttpServlet()
      */
@@ -22,6 +31,12 @@ public class Controleur extends HttpServlet {
         // TODO Auto-generated constructor stub
     }
 
+    public void init() {
+    	DAOFactory daoFactory = DAOFactory.getInstance();
+    	this.daoUtilisateur = daoFactory.getDAOUtilisateur("MariaDB");
+    	
+    }
+    
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
@@ -50,7 +65,22 @@ public class Controleur extends HttpServlet {
 					request.getRequestDispatcher("/JSP/Accueil.jsp").forward(request, response);
 					break;
 				case "connexion":
-					request.setAttribute("connecte", "oui");
+					System.out.println("1");
+					if((request.getParameter("identifiant") !="") && (request.getParameter("mot_de_passe") != "")) {
+						
+						System.out.println("2");
+						
+						if(this.daoUtilisateur.checkLogin(request.getParameter("identifiant"), request.getParameter("mot_de_passe"))) {
+							request.setAttribute("connecte", "oui");
+							System.out.println("3");
+							
+						}else {
+							System.out.println("4");
+						}
+						
+					}else {
+						System.out.println("5");
+					}
 					request.getRequestDispatcher("/JSP/Accueil.jsp").forward(request, response);
 				default:
 					//On ne doit pas se retrouver ici !
@@ -59,8 +89,8 @@ public class Controleur extends HttpServlet {
 			}
 			
 		}else {
+			
 			//On arrive sur le site et on n'a pas encore mis de destination --> renvoie à l'accueil
-			request.setAttribute("connecte", "non");
 			request.getRequestDispatcher("/JSP/Accueil.jsp").forward(request, response);
 		}
 		

@@ -20,5 +20,9 @@ public interface DAOUtilisateur {
 	
 	public abstract void deleteUtilisateur(int id);
 	
+	public abstract boolean checkLogin(String login, String mdp);
+	
+	public abstract boolean checkPseudo(String pseudo);
+	
 }
 

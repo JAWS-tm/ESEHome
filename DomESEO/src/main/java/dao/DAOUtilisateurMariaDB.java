@@ -311,6 +311,55 @@ public class DAOUtilisateurMariaDB implements DAOUtilisateur {
 			e.printStackTrace();
 		}
 	}
+
+
+	@Override
+	public boolean checkLogin(String login, String mdp) {
+		try (Connection connexion = daoFactory.getConnection()) {
+			
+			PreparedStatement prepST = connexion.prepareStatement( 
+				"SELECT * FROM utilisateur WHERE Pseudo=? AND MotDePasse=? ;");
+			
+			prepST.setString(1, login);
+			prepST.setString(2, mdp);
+			
+			try (ResultSet result = prepST.executeQuery()){
+				if(result.next()) {
+					return true;
+				}
+			}
+			
+		} catch(SQLException e) {
+			
+			System.out.println("ERROR : deleteUtilisateur()");
+			e.printStackTrace();
+		}
+		return false;
+	}
+
+
+	@Override
+	public boolean checkPseudo(String pseudo) {
+		try (Connection connexion = daoFactory.getConnection()) {
+			
+			PreparedStatement prepST = connexion.prepareStatement( 
+				"SELECT * FROM utilisateur WHERE Pseudo=?;");
+			
+			prepST.setString(1, pseudo);
+			
+			try (ResultSet result = prepST.executeQuery()){
+				if(result.next()) {
+					return true;
+				}
+			}
+			
+		} catch(SQLException e) {
+			
+			System.out.println("ERROR : deleteUtilisateur()");
+			e.printStackTrace();
+		}
+		return false;
+	}
 	
 	
 }
