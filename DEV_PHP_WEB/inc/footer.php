@@ -18,7 +18,7 @@
 				<p>0102030405</p>
 			</div>
 			<div class="box2">
-				<i class="bi bi-envelope fa-2x" ></i>
+				<i class="bi bi-envelope fa-2x"></i>
 				<p>equipe@esehome.net</p>
 			</div>
 		</div>
@@ -36,6 +36,10 @@
 		</ul>
 	</div>
 </footer>
- 
+</div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+	<script type="text/javascript" src="../js/header.js"></script>
+</div>
 </body>
+
 </html>
