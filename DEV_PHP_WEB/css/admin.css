@@ -38,6 +38,7 @@ h1{
 
 .main{
     padding: 25px 40px;
+    text-align: center;
 }
 
 .main p{
@@ -93,6 +94,13 @@ h1{
     color: #fff;
     transition: 0.3s;
 }
+
+
+.main table { 
+    margin : 0 auto;
+}
+
+
 
 @media screen and (max-width:690px){
 	.contact-form{

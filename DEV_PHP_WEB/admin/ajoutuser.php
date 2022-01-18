@@ -1,5 +1,3 @@
-
-
 <?php
 
 if(!empty($_POST)){
@@ -62,7 +60,7 @@ if(!empty($_POST)){
 </head>
 <body>
 
-	<?php require '../inc/header.php';?>
+	<?php /*require '../inc/header.php'; */?>
 	<h1>ADMIN</h1>
 	<?php if(!empty($errors)): ?>
 		<div class="alert">
@@ -99,7 +97,7 @@ if(!empty($_POST)){
 		</div>
 	</div>
 
-	<?php "require '../inc/footer.php';"?>
+	<?php /*require '../inc/footer.php';*/?>
 </body>
 </html>
 
