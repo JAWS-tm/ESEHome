@@ -90,8 +90,8 @@ if(isset($_POST['formdeleteuser']) AND isset($_POST['datadelet'])){
 					<form action="" method="post">
 						<tr>
 							<td><?php echo $recipe->id;?></td>
-							<td><?php echo $recipe->username;?></td>
-							<td><?php echo $recipe->admin;?></td>
+							<td><?php echo $recipe->Pseudo;?></td>
+							<td><?php echo $recipe->Admin;?></td>
 							<td id="espace"><input type="hidden" name="datapromo" value="<?php echo $recipe->id; ?>">
 								<button type="submit" name="formpromouser">Promouvoir</button>
 							</td>

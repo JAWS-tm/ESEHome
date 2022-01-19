@@ -78,7 +78,7 @@ if(!empty($_POST)){
 					
 				<p>Ajout d'un utilisateur</p>
 					<form action="" method="POST">
-					<input type="text" name="username" placeholder="Pseudo" class="champ" require/>
+					<input type="text" name="username" placeholder="Nom d'utilisateur ou adresse e-mail" class="champ" require/>
 					  
 					<input type="password" name="password" placeholder="Mot De Passe" class="champ" require/>
 					<input type="password" name="password_confirm" placeholder="Confirmez le mot de passe" class="champ" require/>

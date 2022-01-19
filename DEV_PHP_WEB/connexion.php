@@ -45,7 +45,7 @@ $page = "connexion.php";
 			<div class="right">
                 <h2>Se Connecter</h2>
                 <form action="" method="POST">
-                    <input type="text" name="username" placeholder="Pseudo" class="champ" require/>
+                    <input type="text" name="username" placeholder="Nom d'utilisateur ou adresse e-mail" class="champ" require/>
                     <input type="password" name="password" placeholder="Mot De Passe" class="champ" require/>
                     <button type="submit" class="btn">Login</button>
                 </form>

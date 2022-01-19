@@ -49,7 +49,7 @@ if(!empty($_POST)){
 					
 				<p>Demander la rétrogradation d'un admin</p>
 					<form action="" method="POST">
-					<input type="text" name="username" placeholder="Pseudo" class="champ" require/>
+					<input type="text" name="username" placeholder="Nom d'utilisateur ou adresse e-mail" class="champ" require/>
 
 					<button type="submit" class="btn" name="btndemande">Faire une demande</button>
 				</form>
