@@ -11,17 +11,17 @@ class UtilisateurTest {
 	private int id = 2;
 	private String pswd = "test";
 	private String pseudo = "le pseudo";
-	private int Permission = 1;
+	private int Admin = 1;
 	
 	
 	@Test
 	void testUtilisateurIntStringStringInt() {
-		Utilisateur util = new Utilisateur(id,pseudo,pswd,Permission);
+		Utilisateur util = new Utilisateur(id,pseudo,pswd,Admin);
 		
 		assertEquals(id,util.getId(),"id non correct");
 		assertTrue(util.getMdp().contains(pswd),"mdp_incorect");
 		assertTrue(util.getPseudo().contains(pseudo), "pseudo incorect");
-		assertEquals(Permission,util.getPermission(),"permission incorecte");
+		assertEquals(Admin,util.getAdmin(),"permission incorecte");
 		
 	}
 
@@ -42,8 +42,8 @@ class UtilisateurTest {
 	@Test
 	void testSetPermission() {
 		Utilisateur util = new Utilisateur();
-		util.setPermission(Permission);
-		assertEquals(Permission,util.getPermission(),"permission incorecte");
+		util.setAdmin(Admin);
+		assertEquals(Admin,util.getAdmin(),"permission incorecte");
 	}
 
 	@Test

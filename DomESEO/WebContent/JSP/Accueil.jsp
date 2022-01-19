@@ -10,36 +10,40 @@
 <body>
 	<header>
 			
-			<c:choose>
+		<c:choose>
 			<c:when test="${connecte == 'oui'}">  
-      	 			test concluant  
+				<c:if test="${ admin == 'oui' }">
+					<button onclick="window.location.href ='Controleur?dest=page_admin'">Partie Admin</button>
+				</c:if>
     		</c:when>
-    		</c:choose>
+    		
+    		<c:otherwise>
+    			<div id="leftPart">
+					<div id="connexion">
+						<form method="POST" name="formulaire_connexion" action="Controleur?dest=connexion">
+							<input type="text" name="identifiant" />
+							<input type="password" name="mot_de_passe" />
+							<input type="submit" name="connexion" value="se connecter" /><br>
+							<p>${ error }</p>
+						</form>
+					</div>
+				<div id="Demande de privilège">
+					<p>Faire une demande de privilège </p>
+					<button type="button" onclick="window.location.href ='Controleur?dest=add_user_page'">Demande</button>
+				</div>
+					<div id="Accès Visiteur">
+						<p>Accéder au dashboard en accès visiteur</p>
+						<button type="button">Accès</button>
+					</div>
+				</div>
+    		</c:otherwise>
+    	</c:choose>
 	</header>
-		<div id="leftPart">
-			<div id="connexion">
-				<form method="POST" name="formulaire_connexion" action="Controleur?dest=connexion">
-					<input type="text" name="identifiant" />
-					<input type="password" name="mot_de_passe" />
-					<input type="submit" name="connexion" value="se connecter" />
-				</form>
-			</div>
-			<div id="Accès Visiteur">
-				<p>Accéder au dashboard en accès visiteur</p>
-				<button type="button">Accès</button>
-			</div>
-			<div id="Demande de privilège">
-				<p>Faire une demande de privilage </p>
-				<button type="button">Demande</button>
-			</div>
-		</div>
 		<div id="rightPart">
 			<div id="Présentation">
 				<p>Ici, courte présentation de l'application + projet</p>
 			</div>
-		</div>
-		
-	
+		</div>	
 	<footer>
 	
 	

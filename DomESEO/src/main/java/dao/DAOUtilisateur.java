@@ -14,7 +14,7 @@ public interface DAOUtilisateur {
 	
 	public abstract void modifMDP(int id, String mdp);
 	
-	public abstract void modifPermission(int id, int permission);
+	public abstract void modifAdmin(int id, int permission);
 	
 	public abstract Utilisateur getUtilisateurById(int id);
 	
