@@ -91,11 +91,10 @@ public class Controleur extends HttpServlet {
 				case "add_user":
 					if(request.getParameter("password").equals(request.getParameter("confirm_password"))) {
 						
-						if(this.daoUtilisateur.checkPseudo(request.getParameter("pseudo"))) {
+						if(!this.daoUtilisateur.checkPseudo(request.getParameter("pseudo"))) {
 							
 							this.daoUtilisateur.ajouterUtilisateur(request.getParameter("pseudo"), request.getParameter("password"), 0);
 							request.setAttribute("info", "Utilisateur créé !");
-							request.getRequestDispatcher("/JSP/AddUser.jsp").forward(request, response);
 						}else { 
 							
 							request.setAttribute("info", "Le pseudo a déjà été utilisé !");
@@ -104,6 +103,7 @@ public class Controleur extends HttpServlet {
 						
 						request.setAttribute("info", "Les deux mots de passe ne sont pas équivalents !");
 					}
+					request.getRequestDispatcher("/JSP/AddUser.jsp").forward(request, response);
 					break;
 				default:
 					//On ne doit pas se retrouver ici !

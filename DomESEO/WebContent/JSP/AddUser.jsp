@@ -10,9 +10,10 @@
 <body>
 	<p>${ info }</p>
 	<form name="ajouter_utilisateur" method="POST" action="Controleur?dest=add_user">
-		<input type="text" name="pseudo">
-		<input type="password" name="password">
-		<input type="password" name="confirm_password">
+		pseudo :<input type="text" name="pseudo"><br>
+		mot de passe :<input type="password" name="password"><br>
+		confirmer le mot de passe :<input type="password" name="confirm_password"><br>
+		<input type="submit" value="ajouter">
 	</form>
 </body>
 </html>
