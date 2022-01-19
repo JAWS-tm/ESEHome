@@ -4,15 +4,16 @@ public class Objet {
 	private int id;
 	private int type_id;
 	private boolean state;
-	private Valeur valeur;
-	private Type type;
 	
-	public Objet(int id, int type_id, boolean state, Valeur val, Type type) {
+	public Objet(int id, int type_id, int state) {
 		this.id = id;
 		this.type_id = type_id;
-		this.state = state;
-		this.valeur = val;
-		this.type = type;
+		
+		if(state == 0) {
+			this.state = false;
+		}else {
+			this.state = true;
+		}
 	}
 	
 	public void setId(int id) {
@@ -23,17 +24,14 @@ public class Objet {
 		this.type_id = id;
 	}
 	
-	public void setState(boolean state) {
-		this.state = state;
+	public void setState(int state) {
+		if(state == 0) {
+			this.state = false;
+		}else {
+			this.state = true;
+		}
 	}
 	
-	public void setValeur(Valeur val) {
-		this.valeur = val;
-	}
-	
-	public void setType(Type type) {
-		this.type = type;
-	}
 	
 	public int getId() {
 		return this.id;
@@ -45,13 +43,5 @@ public class Objet {
 	
 	public boolean getState() {
 		return this.state;
-	}
-	
-	public Valeur getValeur() {
-		return this.valeur;
-	}
-	
-	public Type getType() {
-		return this.type;
 	}
 }

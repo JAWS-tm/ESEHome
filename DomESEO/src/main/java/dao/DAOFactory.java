@@ -48,5 +48,15 @@ public class DAOFactory {
 				return null;	
 		}
 	}
+	
+	public DAOObjet getDAOObjet(String type) {
+		switch(type) {
+		case "MariaDB":
+			setParamMariaDB("jdbc:mysql://localhost:3306/domeseo?characterEncoding=UTF-8", "root", "pteroDOND91");
+			return new DAOObjetMariaDB(this);
+		default:
+			return null;	
+	}
+	}
 
 }

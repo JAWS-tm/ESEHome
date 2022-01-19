@@ -4,9 +4,9 @@ public class Valeur {
 	private int id;
 	private int id_parametre;
 	private int id_objet;
-	private int valeur;
+	private String valeur;
 	
-	public Valeur(int id, int id_param, int id_obj,int val) {
+	public Valeur(int id, int id_param, int id_obj,String val) {
 		this.id = id;
 		this.id_parametre = id_param;
 		this.id_objet = id_obj;
@@ -25,7 +25,7 @@ public class Valeur {
 		this.id_objet = id;
 	}
 	
-	public void setValeur(int val) {
+	public void setValeur(String val) {
 		this.valeur = val;
 	}
 	
@@ -41,7 +41,7 @@ public class Valeur {
 		return this.id_objet;
 	}
 	
-	public int getValeur() {
+	public String getValeur() {
 		return this.valeur;
 	}
 
