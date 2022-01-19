@@ -22,6 +22,14 @@ public interface DAOUtilisateur {
 	
 	public abstract void deleteUtilisateur(int id);
 	
-	public abstract List<Utilisateur> listDB();
+	public static List<Utilisateur> listDB() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	public abstract boolean checkLogin(String login, String mdp);
+	
+	public abstract boolean checkPseudo(String pseudo);
+	
 }
 
