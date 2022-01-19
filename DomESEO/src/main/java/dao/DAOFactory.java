@@ -37,13 +37,12 @@ public class DAOFactory {
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		} 	
-	 // tu branles pas grand chose quand meme ....
-	}
+	     }
 	
 	public DAOUtilisateur getDAOUtilisateur(String type) {
 		switch(type) {
 			case "MariaDB":
-				//setParamMariaDB("jdbc:mysql://", "", "");
+				setParamMariaDB("jdbc:mysql://", "root", "pteroDOND91");
 				return new DAOUtilisateurMariaDB(this);
 			default:
 				return null;	

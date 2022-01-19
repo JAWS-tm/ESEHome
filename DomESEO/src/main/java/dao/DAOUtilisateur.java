@@ -1,5 +1,7 @@
 package dao;
 
+import java.util.List;
+
 import beans.Utilisateur;
 
 public interface DAOUtilisateur {
@@ -20,5 +22,6 @@ public interface DAOUtilisateur {
 	
 	public abstract void deleteUtilisateur(int id);
 	
+	public abstract List<Utilisateur> listDB();
 }
 
