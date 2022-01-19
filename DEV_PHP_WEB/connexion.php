@@ -3,7 +3,7 @@
 if(!empty($_POST)){
     $errors = array();
     require_once 'inc/db.php';
-    $req = $pdo->prepare('SELECT * FROM users WHERE username = :username OR email = :username');
+    $req = $pdo->prepare('SELECT * FROM utilisateur WHERE Pseudo = :username');
     $req->execute(['username' => $_POST['username']]);
     $user = $req->fetch();
 
