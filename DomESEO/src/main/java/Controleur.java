@@ -104,22 +104,13 @@ public class Controleur extends HttpServlet {
 					} else {
 						request.setAttribute("error", "Veuillez indiquer le pseudonyme de l'utilisateur.");
 					}
-<<<<<<< HEAD
 					request.getRequestDispatcher("/JSP/Accueil.jsp").forward(request, response);
 				case "gestion_droit":
 
 					List<Utilisateur> liste = DAOUtilisateur.listDB();
 					request.setAttribute("liste", liste);
 					request.getRequestDispatcher("/JSP/Gestion_permission.jsp").forward(request, response);
-					break;
-=======
-						
-						
-					request.getRequestDispatcher("/JSP/Accueil.jsp").forward(request, response);				
-					
-					
-				break;
-					
+					break;				
 				case "add_user_page":
 					
 					request.getRequestDispatcher("/JSP/AddUser.jsp").forward(request, response);
@@ -150,9 +141,6 @@ public class Controleur extends HttpServlet {
 					}
 					request.getRequestDispatcher("/JSP/AddUser.jsp").forward(request, response);
 					break;
-					
-					
->>>>>>> branch 'dev_JEE' of https://172.24.0.69/b3/synthese/2021-2022/embarque.git
 				default:
 					//On ne doit pas se retrouver ici !
 					request.getRequestDispatcher("/JSP/Accueil.jsp").forward(request, response);
