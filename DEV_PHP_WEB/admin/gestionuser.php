@@ -5,7 +5,7 @@ if ($_SESSION['statu'] == '') {
 }
 require_once '../inc/db.php';
 
-$sqlQueryAffiche = 'SELECT id, username, email, admin FROM users WHERE admin = 0 ORDER BY username';
+$sqlQueryAffiche = 'SELECT id, Pseudo, Admin FROM utilisateur WHERE Admin = 0 ORDER BY Pseudo';
 $recipesStatementAffiche = $pdo->prepare($sqlQueryAffiche);
 $recipesStatementAffiche->execute();
 $users = $recipesStatementAffiche->fetchAll();
@@ -14,7 +14,7 @@ $users = $recipesStatementAffiche->fetchAll();
 if(isset($_POST['formpromouser']) AND isset($_POST['datapromo'])){
 	
 	$data = $_POST['datapromo'];
-	$sqlQueryPromot = 'UPDATE users SET admin = 1 WHERE id="'.$data.'"';
+	$sqlQueryPromot = 'UPDATE utilisateur SET Admin = 1 WHERE id="'.$data.'"';
 	$recipesStatementPromot = $pdo->prepare($sqlQueryPromot);
 	$recipesStatementPromot->execute();
 	
@@ -32,7 +32,7 @@ if(isset($_POST['formpromouser']) AND isset($_POST['datapromo'])){
 if(isset($_POST['formdeleteuser']) AND isset($_POST['datadelet'])){
 	
 	$data = $_POST['datadelet'];
-	$sqlQueryEfface = 'DELETE FROM users WHERE id="'.$data.'"';
+	$sqlQueryEfface = 'DELETE FROM utilisateur WHERE id="'.$data.'"';
 	$recipesStatementEfface = $pdo->prepare($sqlQueryEfface);
 	$recipesStatementEfface->execute();
 	
@@ -81,7 +81,6 @@ if(isset($_POST['formdeleteuser']) AND isset($_POST['datadelet'])){
 				<tr>
 					<th>ID</th>
 					<th>PSEUDO</th>
-					<th>EMAIL</th>
 					<th>STATUT</th>
 				</tr>
 				<?php
@@ -92,7 +91,6 @@ if(isset($_POST['formdeleteuser']) AND isset($_POST['datadelet'])){
 						<tr>
 							<td><?php echo $recipe->id;?></td>
 							<td><?php echo $recipe->username;?></td>
-							<td><?php echo $recipe->email;?></td>
 							<td><?php echo $recipe->admin;?></td>
 							<td id="espace"><input type="hidden" name="datapromo" value="<?php echo $recipe->id; ?>">
 								<button type="submit" name="formpromouser">Promouvoir</button>

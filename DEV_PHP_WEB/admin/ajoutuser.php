@@ -8,7 +8,7 @@ if(!empty($_POST)){
 	if(empty($_POST['username']) || !preg_match('/^[a-zA-Z0-9_]+$/',$_POST['username'])){
 		$errors['username'] = "Le pseudo n'est pas valide";
 	}else{
-		$req = $pdo->prepare('SELECT id FROM users WHERE username = ?');
+		$req = $pdo->prepare('SELECT id FROM utilisateur WHERE Pseudo = ?');
 		$username = htmlspecialchars($_POST['username']);
 		$req->execute([$username]);
 		$user = $req->fetch();
@@ -17,17 +17,6 @@ if(!empty($_POST)){
 		}
 	}
 
-	if(empty($_POST['email'])){
-		$errors['email'] = "L'email n'est pas valide";
-	}else{
-		$req = $pdo->prepare('SELECT id FROM users WHERE email = ?');
-		$email = htmlspecialchars($_POST['email']);
-		$req->execute([$email]);
-		$user = $req->fetch();
-		if($user){
-			$errors['email'] = 'Cet email est déjà pris !!';
-		}
-	}
 
 	if(empty($_POST['password']) || $_POST['password'] != $_POST['password_confirm']){
 		$errors['password'] = "Vous devez entrer un mot de passe valide";
@@ -46,13 +35,12 @@ if(!empty($_POST)){
 
 
 	if(empty($errors)){
-		$req = $pdo->prepare("INSERT INTO users SET username = ?, email = ?, mdp = ?, admin = ?, droit = ?");
+		$req = $pdo->prepare("INSERT INTO utilisateur SET Pseudo = ?, MotDePasse = ?, Admin = ?, droit = ?");
 		
 		$username = htmlspecialchars($_POST['username']);
-		$email = htmlspecialchars($_POST['email']);
 		$password = password_hash($_POST['password'], PASSWORD_BCRYPT);
 		$admin = htmlspecialchars($_POST['admin']);
-		$req->execute([$username, $email, $password, $admin, $droits]);
+		$req->execute([$username, $password, $admin, $droits]);
 
 		
 	}
@@ -91,10 +79,7 @@ if(!empty($_POST)){
 				<p>Ajout d'un utilisateur</p>
 					<form action="" method="POST">
 					<input type="text" name="username" placeholder="Pseudo" class="champ" require/>
-					<input type="email" name="email" placeholder="Email" class="champ" require/>
-				  
-
-					
+					  
 					<input type="password" name="password" placeholder="Mot De Passe" class="champ" require/>
 					<input type="password" name="password_confirm" placeholder="Confirmez le mot de passe" class="champ" require/>
 
