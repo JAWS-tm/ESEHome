@@ -43,6 +43,7 @@ if(!empty($_POST)){
         $req->execute([$username, $email, $password, $admin]);
     }
 }
+$page = "inscription.php";
 ?>
 
 <!-- PARTI HTML -->

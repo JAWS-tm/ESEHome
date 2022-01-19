@@ -19,7 +19,7 @@ if(!empty($_POST)){
     }
 }
 
-
+$page = "connexion.php";
 ?>
 
 <link rel="stylesheet" href="css/inscription.css"/>
