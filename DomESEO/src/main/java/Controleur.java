@@ -63,7 +63,6 @@ public class Controleur extends HttpServlet {
 					request.getRequestDispatcher("/JSP/Accueil.jsp").forward(request, response);
 					break;
 				case "connexion":
-					System.out.println("1");
 					if((request.getParameter("identifiant") !="") && (request.getParameter("mot_de_passe") != "")) {
 						
 						if(this.daoUtilisateur.checkLogin(request.getParameter("identifiant"), request.getParameter("mot_de_passe"))) {
@@ -89,19 +88,24 @@ public class Controleur extends HttpServlet {
 					}
 					break;
 				case "add_user":
-					if(request.getParameter("password").equals(request.getParameter("confirm_password"))) {
+					if((request.getParameter("pseudo") !="") && (request.getParameter("password") != "")&& (request.getParameter("confirm_password") != "")) {
 						
-						if(!this.daoUtilisateur.checkPseudo(request.getParameter("pseudo"))) {
+						if(request.getParameter("password").equals(request.getParameter("confirm_password"))) {
 							
-							this.daoUtilisateur.ajouterUtilisateur(request.getParameter("pseudo"), request.getParameter("password"), 0);
-							request.setAttribute("info", "Utilisateur créé !");
-						}else { 
+							if(!this.daoUtilisateur.checkPseudo(request.getParameter("pseudo"))) {
+								
+								this.daoUtilisateur.ajouterUtilisateur(request.getParameter("pseudo"), request.getParameter("password"), 0);
+								request.setAttribute("info", "Utilisateur créé !");
+							}else { 
+								
+								request.setAttribute("info", "Le pseudo a déjà été utilisé !");
+							}
+						}else {
 							
-							request.setAttribute("info", "Le pseudo a déjà été utilisé !");
+							request.setAttribute("info", "Les deux mots de passe ne sont pas équivalents !");
 						}
 					}else {
-						
-						request.setAttribute("info", "Les deux mots de passe ne sont pas équivalents !");
+						request.setAttribute("info", "Tous les champs ne sont pas complétés !");
 					}
 					request.getRequestDispatcher("/JSP/AddUser.jsp").forward(request, response);
 					break;
