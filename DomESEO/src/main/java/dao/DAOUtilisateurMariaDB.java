@@ -37,7 +37,7 @@ public class DAOUtilisateurMariaDB implements DAOUtilisateur {
 							"INSERT INTO utilisateur(Pseudo, MotDePasse, Admin) VALUES(?,?,?);");
 					prepST.setString(1, pseudo);
 					prepST.setString(2, mdp);
-					prepST.setInt(3, permission);			//On met à 0 de base, l'admin a déjà été créé
+					prepST.setInt(3, permission);//On met à 0 de base, l'admin a déjà été créé
 					
 					prepST.executeUpdate();
 	
@@ -294,6 +294,14 @@ public class DAOUtilisateurMariaDB implements DAOUtilisateur {
 	}
 
 
+	/**
+	    * Détermine si les identifiants de l'utilisateur sont valides
+	    *
+	    * @param  login     pseudonyme de l'utilisateur
+	    * @param  mdp       mot de passe du compte de l'utilisateur
+	    * 
+	    * @return boolean
+	*/
 	@Override
 	public boolean checkLogin(String login, String mdp) {
 		try (Connection connexion = daoFactory.getConnection()) {
@@ -312,13 +320,21 @@ public class DAOUtilisateurMariaDB implements DAOUtilisateur {
 			
 		} catch(SQLException e) {
 			
-			System.out.println("ERROR : deleteUtilisateur()");
+			System.out.println("ERROR : checkLogin()");
 			e.printStackTrace();
 		}
 		return false;
 	}
 
 
+	
+	/**
+	    * Détermine si un compte avec le pseudo indiqué existe
+	    *
+	    * @param  pseudo     pseudonyme de l'utilisateur
+	    * 
+	    * @return boolean
+	*/
 	@Override
 	public boolean checkPseudo(String pseudo) {
 		try (Connection connexion = daoFactory.getConnection()) {
@@ -336,7 +352,7 @@ public class DAOUtilisateurMariaDB implements DAOUtilisateur {
 			
 		} catch(SQLException e) {
 			
-			System.out.println("ERROR : deleteUtilisateur()");
+			System.out.println("ERROR : checkPseudo()");
 			e.printStackTrace();
 		}
 		return false;
