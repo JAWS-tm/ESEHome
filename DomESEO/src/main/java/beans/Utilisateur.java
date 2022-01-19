@@ -4,7 +4,7 @@ public class Utilisateur {
 	private int id;
 	private String pseudo;
 	private String mdp;
-	private int permission;
+	private int admin;
 	
 	public Utilisateur() {}
 	
@@ -12,7 +12,7 @@ public class Utilisateur {
 		this.setId(id);
 		this.setPseudo(pseudo);
 		this.setMdp(mdp);
-		this.setPermission(permission);
+		this.setAdmin(permission);
 	
 	}
 
@@ -32,12 +32,12 @@ public class Utilisateur {
 		this.mdp = mdp;
 	}
 
-	public int getPermission() {
-		return permission;
+	public int getAdmin() {
+		return admin;
 	}
 
-	public void setPermission(int permission) {
-		this.permission = permission;
+	public void setAdmin(int permission) {
+		this.admin = permission;
 	}
 
 	public String getPseudo() {

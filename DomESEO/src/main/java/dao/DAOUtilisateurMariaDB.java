@@ -158,7 +158,7 @@ public class DAOUtilisateurMariaDB implements DAOUtilisateur {
 	    * @return void
 	*/
 	@Override
-	public void modifPermission(int id, int permission) {
+	public void modifAdmin(int id, int permission) {
 		
 		try (Connection connexion = daoFactory.getConnection()) {
 			
