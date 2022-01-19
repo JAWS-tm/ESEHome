@@ -20,13 +20,9 @@ public class Controleur extends HttpServlet {
     private Utilisateur utilisateur;   
     private DAOUtilisateur daoUtilisateur;
     
-    
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
+
     public Controleur() {
         super();
-        // TODO Auto-generated constructor stub
     }
 
     public void init() {
@@ -35,68 +31,92 @@ public class Controleur extends HttpServlet {
     	
     }
     
-	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
-	 */
+	
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
+		
 		processRequest(request, response, request.getParameter("dest"));
-		//response.getWriter().append("Served at: ").append(request.getContextPath());
 	}
 
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
-	 */
+	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		//doGet(request, response);
+		
 		processRequest(request, response, request.getParameter("dest"));
 	}
 	
+	
+	
 	protected void processRequest(HttpServletRequest request, HttpServletResponse response,String dest) throws ServletException, IOException {
+		
 		String destination = dest;
 		
 		if(destination != null) {
 			
 			switch(destination) {
+			
 				case "accueil":
+					
 					request.getRequestDispatcher("/JSP/Accueil.jsp").forward(request, response);
-					break;
+					
+				break;
+					
+					
 				case "connexion":
-					if((request.getParameter("identifiant") !="") && (request.getParameter("mot_de_passe") != "")) {
+					
+					if(request.getParameter("identifiant") != null && !request.getParameter("identifiant").isEmpty()) {
 						
-						if(this.daoUtilisateur.checkLogin(request.getParameter("identifiant"), request.getParameter("mot_de_passe"))) {
+						if(request.getParameter("mot_de_passe") != null && !request.getParameter("mot_de_passe").isEmpty()) {
+					
+							if(this.daoUtilisateur.checkPseudo(request.getParameter("identifiant"))) {
+						
+								if(this.daoUtilisateur.checkLogin(request.getParameter("identifiant"), request.getParameter("mot_de_passe"))) {
+									
+									this.utilisateur = this.daoUtilisateur.getUtilisateurByPseudo(request.getParameter("identifiant"));
+									
+									if(this.utilisateur.getAdmin() == 1) {
+										
+										request.setAttribute("connecte", "oui");
+										request.setAttribute("admin", "oui");
+										
+									} else if(this.utilisateur.getAdmin() == 0) {
+										
+										request.setAttribute("connecte", "oui");
+										request.setAttribute("admin", "non");
+										
+									} else {
+										request.setAttribute("error", "Votre compte n'a pas été vérifié !");
+									}
+									
+								} else {
+									request.setAttribute("error", "Mot de passe incorrect. Veuillez réessayer.");
+								}
 							
-							this.utilisateur = this.daoUtilisateur.getUtilisateurByPseudo(request.getParameter("identifiant"));
-							
-							if(this.utilisateur.getAdmin() == 1) {
-								
-								request.setAttribute("connecte", "oui");
-								request.setAttribute("admin", "oui");
-								
-							}else if(this.utilisateur.getAdmin() == 0) {
-								
-								request.setAttribute("connecte", "oui");
-								request.setAttribute("admin", "non");
-								
-							}else {
-								request.setAttribute("error", "Votre compte n'a pas été vérifié !");
+							} else {
+								request.setAttribute("error", "Cet utilisateur n'existe pas.");
 							}
 							
-						}else {
-							request.setAttribute("error", "La combinaison identifiant/mot de passe n'est pas valide !");
+						} else {
+							request.setAttribute("error", "Veuillez indiquer un mot de passe.");
 						}
 						
-					}else {
-						request.setAttribute("error", "Veuillez compléter tous les champs !");
+					} else {
+						request.setAttribute("error", "Veuillez indiquer le pseudonyme de l'utilisateur.");
 					}
-					request.getRequestDispatcher("/JSP/Accueil.jsp").forward(request, response);
+						
+						
+					request.getRequestDispatcher("/JSP/Accueil.jsp").forward(request, response);				
+					
+					
+				break;
+					
 				case "add_user_page":
 					
-						request.getRequestDispatcher("/JSP/AddUser.jsp").forward(request, response);
+					request.getRequestDispatcher("/JSP/AddUser.jsp").forward(request, response);
 						
 					break;
+					
+					
 				case "add_user":
+					
 					if((request.getParameter("pseudo") !="") && (request.getParameter("password") != "")&& (request.getParameter("confirm_password") != "")) {
 						
 						if(request.getParameter("password").equals(request.getParameter("confirm_password"))) {
@@ -118,13 +138,15 @@ public class Controleur extends HttpServlet {
 					}
 					request.getRequestDispatcher("/JSP/AddUser.jsp").forward(request, response);
 					break;
+					
+					
 				default:
 					//On ne doit pas se retrouver ici !
 					request.getRequestDispatcher("/JSP/Accueil.jsp").forward(request, response);
 					break;
 			}
 			
-		}else {
+		} else {
 			
 			//On arrive sur le site et on n'a pas encore mis de destination --> renvoie à l'accueil
 			request.getRequestDispatcher("/JSP/Accueil.jsp").forward(request, response);
