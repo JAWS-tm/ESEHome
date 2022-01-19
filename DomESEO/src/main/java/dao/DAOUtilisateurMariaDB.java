@@ -37,7 +37,7 @@ public class DAOUtilisateurMariaDB implements DAOUtilisateur {
 							"INSERT INTO utilisateur(Pseudo, MotDePasse, Admin) VALUES(?,?,?);");
 					prepST.setString(1, pseudo);
 					prepST.setString(2, mdp);
-					prepST.setInt(3, 0);			//On met à 0 de base, l'admin a déjà été créé
+					prepST.setInt(3, permission);			//On met à 0 de base, l'admin a déjà été créé
 					
 					prepST.executeUpdate();
 	

@@ -68,8 +68,20 @@ public class Controleur extends HttpServlet {
 						if(this.daoUtilisateur.checkLogin(request.getParameter("identifiant"), request.getParameter("mot_de_passe"))) {
 							
 							this.utilisateur = this.daoUtilisateur.getUtilisateurByPseudo(request.getParameter("identifiant"));
-							request.setAttribute("connecte", "oui");
-							request.setAttribute("admin", "oui");
+							
+							if(this.utilisateur.getAdmin() == 1) {
+								
+								request.setAttribute("connecte", "oui");
+								request.setAttribute("admin", "oui");
+								
+							}else if(this.utilisateur.getAdmin() == 0) {
+								
+								request.setAttribute("connecte", "oui");
+								request.setAttribute("admin", "non");
+								
+							}else {
+								request.setAttribute("error", "Votre compte n'a pas été vérifié !");
+							}
 							
 						}else {
 							request.setAttribute("error", "La combinaison identifiant/mot de passe n'est pas valide !");
@@ -80,12 +92,9 @@ public class Controleur extends HttpServlet {
 					}
 					request.getRequestDispatcher("/JSP/Accueil.jsp").forward(request, response);
 				case "add_user_page":
-					if(this.utilisateur.getAdmin() == 1) {
+					
 						request.getRequestDispatcher("/JSP/AddUser.jsp").forward(request, response);
-					}else {
-						request.setAttribute("connecte", "oui");
-						processRequest(request, response, "accueil");
-					}
+						
 					break;
 				case "add_user":
 					if((request.getParameter("pseudo") !="") && (request.getParameter("password") != "")&& (request.getParameter("confirm_password") != "")) {
@@ -94,8 +103,8 @@ public class Controleur extends HttpServlet {
 							
 							if(!this.daoUtilisateur.checkPseudo(request.getParameter("pseudo"))) {
 								
-								this.daoUtilisateur.ajouterUtilisateur(request.getParameter("pseudo"), request.getParameter("password"), 0);
-								request.setAttribute("info", "Utilisateur créé !");
+								this.daoUtilisateur.ajouterUtilisateur(request.getParameter("pseudo"), request.getParameter("password"), -1);
+								request.setAttribute("info", "Demande envoyé !");
 							}else { 
 								
 								request.setAttribute("info", "Le pseudo a déjà été utilisé !");

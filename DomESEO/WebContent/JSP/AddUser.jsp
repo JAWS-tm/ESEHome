@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Ajout d'un utilisateur</title>
+<title>Demande de privilège</title>
 </head>
 <body>
 	<p>${ info }</p>
