@@ -120,15 +120,16 @@ public class Controleur extends HttpServlet {
 					
 				case "add_user":
 					
-					if((request.getParameter("pseudo") !="") && (request.getParameter("password") != "")&& (request.getParameter("confirm_password") != "")) {
+					if((request.getParameter("pseudo") != null && !request.getParameter("pseudo").isEmpty()) && (request.getParameter("password") != null && !request.getParameter("password").isEmpty()) && (request.getParameter("confirm_password") != null && !request.getParameter("confirm_password").isEmpty())) {
 						
 						if(request.getParameter("password").equals(request.getParameter("confirm_password"))) {
 							
 							if(!this.daoUtilisateur.checkPseudo(request.getParameter("pseudo"))) {
 								
 								this.daoUtilisateur.ajouterUtilisateur(request.getParameter("pseudo"), request.getParameter("password"), -1);
-								request.setAttribute("info", "Demande envoyé !");
-							}else { 
+								request.setAttribute("succes", "Demande envoyée !");
+								
+							} else { 
 								
 								request.setAttribute("info", "Le pseudo a déjà été utilisé !");
 							}
@@ -136,7 +137,8 @@ public class Controleur extends HttpServlet {
 							
 							request.setAttribute("info", "Les deux mots de passe ne sont pas équivalents !");
 						}
-					}else {
+					} else {
+						
 						request.setAttribute("info", "Tous les champs ne sont pas complétés !");
 					}
 					request.getRequestDispatcher("/JSP/AddUser.jsp").forward(request, response);
