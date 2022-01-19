@@ -1,5 +1,3 @@
-
-
 import java.io.IOException;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -42,7 +40,7 @@ public class Controleur extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		processRequest(request, response);
+		processRequest(request, response, request.getParameter("dest"));
 		//response.getWriter().append("Served at: ").append(request.getContextPath());
 	}
 
@@ -52,11 +50,11 @@ public class Controleur extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		//doGet(request, response);
-		processRequest(request, response);
+		processRequest(request, response, request.getParameter("dest"));
 	}
 	
-	protected void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String destination = request.getParameter("dest");
+	protected void processRequest(HttpServletRequest request, HttpServletResponse response,String dest) throws ServletException, IOException {
+		String destination = dest;
 		
 		if(destination != null) {
 			
@@ -68,20 +66,45 @@ public class Controleur extends HttpServlet {
 					System.out.println("1");
 					if((request.getParameter("identifiant") !="") && (request.getParameter("mot_de_passe") != "")) {
 						
-						System.out.println("2");
-						
 						if(this.daoUtilisateur.checkLogin(request.getParameter("identifiant"), request.getParameter("mot_de_passe"))) {
+							
+							this.utilisateur = this.daoUtilisateur.getUtilisateurByPseudo(request.getParameter("identifiant"));
 							request.setAttribute("connecte", "oui");
-							System.out.println("3");
+							request.setAttribute("admin", "oui");
 							
 						}else {
-							System.out.println("4");
+							request.setAttribute("error", "La combinaison identifiant/mot de passe n'est pas valide !");
 						}
 						
 					}else {
-						System.out.println("5");
+						request.setAttribute("error", "Veuillez compléter tous les champs !");
 					}
 					request.getRequestDispatcher("/JSP/Accueil.jsp").forward(request, response);
+				case "add_user_page":
+					if(this.utilisateur.getAdmin() == 1) {
+						request.getRequestDispatcher("/JSP/AddUser.jsp").forward(request, response);
+					}else {
+						request.setAttribute("connecte", "oui");
+						processRequest(request, response, "accueil");
+					}
+					break;
+				case "add_user":
+					if(request.getParameter("password").equals(request.getParameter("confirm_password"))) {
+						
+						if(this.daoUtilisateur.checkPseudo(request.getParameter("pseudo"))) {
+							
+							this.daoUtilisateur.ajouterUtilisateur(request.getParameter("pseudo"), request.getParameter("password"), 0);
+							request.setAttribute("info", "Utilisateur créé !");
+							request.getRequestDispatcher("/JSP/AddUser.jsp").forward(request, response);
+						}else { 
+							
+							request.setAttribute("info", "Le pseudo a déjà été utilisé !");
+						}
+					}else {
+						
+						request.setAttribute("info", "Les deux mots de passe ne sont pas équivalents !");
+					}
+					break;
 				default:
 					//On ne doit pas se retrouver ici !
 					request.getRequestDispatcher("/JSP/Accueil.jsp").forward(request, response);
