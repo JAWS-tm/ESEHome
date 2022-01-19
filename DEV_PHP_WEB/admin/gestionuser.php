@@ -28,7 +28,6 @@ if(isset($_POST['formpromouser']) AND isset($_POST['datapromo'])){
 	
 }
 
-
 // Gestion du compte
 if(isset($_POST['formdeleteuser']) AND isset($_POST['datadelet'])){
 	

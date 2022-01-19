@@ -96,8 +96,7 @@ if(!empty($_POST)){
 			  </div>
 		</div>
 	</div>
-	
-	
+		
 	<div class="lien">
 		<p><a href="gestionuser.php">Gestion des utilisateurs</a></p>
 		<p><a href="rétrogradationuser.php">Demande de rétrogradation d'un admin</a></p>

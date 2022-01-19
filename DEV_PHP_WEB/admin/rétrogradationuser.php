@@ -59,7 +59,6 @@ if(!empty($_POST)){
 	</div>
 
 
-
 	<?php /*require '../inc/footer.php';*/?>
 </body>
 </html>
