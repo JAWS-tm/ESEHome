@@ -28,23 +28,10 @@ public class DAOUtilisateurMariaDB implements DAOUtilisateur {
 	@Override
 	public void ajouterUtilisateur(String pseudo, String mdp, int permission) {
 		
-		boolean checkPseudo = false;
-		
 		try (Connection connexion = daoFactory.getConnection()) {
 			
-			try {					
-				PreparedStatement prepST1 = connexion.prepareStatement(
-						"SELECT * FROM utilisateur WHERE Pseudo=?;");
-				prepST1.setString(1, pseudo);
-				
-				try (ResultSet result = prepST1.executeQuery()) {
-	
-					if(result.next()) {
-						checkPseudo = true;
-					}
-				}
 			
-				if(!checkPseudo) {
+				if(!checkPseudo(pseudo)) {
 					
 					PreparedStatement prepST = connexion.prepareStatement(
 							"INSERT INTO utilisateur(Pseudo, MotDePasse, Admin) VALUES(?,?,?);");
@@ -64,12 +51,6 @@ public class DAOUtilisateurMariaDB implements DAOUtilisateur {
 			System.out.println("ERROR1 : ajouterUtilisateur()");
 			e.printStackTrace();
 			}
-			
-		} catch(SQLException e) {
-			
-			System.out.println("ERROR2 : ajouterUtilisateur()");
-			e.printStackTrace();
-		}
 		
 	}
 	
