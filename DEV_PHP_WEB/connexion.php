@@ -7,7 +7,7 @@ if(!empty($_POST)){
     $req->execute(['username' => $_POST['username']]);
     $user = $req->fetch();
 
-    if(password_verify($_POST['password'], $user->mdp)){
+    if(password_verify($_POST['password'], $user->MotDePasse)){
         $_SESSION['auth'] = $user;
         $_SESSION['flash']['success'] = 'Vous êtes maintenant connecté';
         $errors['username'] = 'Vous êtes maintenant connecté';

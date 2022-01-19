@@ -23,7 +23,7 @@ if(!empty($_POST)){
     }
 
     if(empty($errors)){
-        $req = $pdo->prepare("INSERT INTO users SET username = ?, email = ?, mdp = ?, admin = ?");
+        $req = $pdo->prepare("INSERT INTO utilisateur SET Pseudo = ?, MotDePasse = ?, Admin = ?");
         $password = password_hash($_POST['password'], PASSWORD_BCRYPT);
         $username = htmlspecialchars($_POST['username']);
         $admin = htmlspecialchars($_POST['admin']);
