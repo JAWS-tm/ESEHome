@@ -17,7 +17,7 @@ if(!empty($_POST)){
             $errors['username'] = 'Ce pseudo est déjà pris !!';
         }
     }
-
+    
     if(empty($_POST['email'])){
         $errors['email'] = "Votre email n'est pas valide";
     }else{
@@ -35,11 +35,12 @@ if(!empty($_POST)){
     }
 
     if(empty($errors)){
-        $req = $pdo->prepare("INSERT INTO users SET username = ?, email = ?, mdp = ?");
+        $req = $pdo->prepare("INSERT INTO users SET username = ?, email = ?, mdp = ?, admin = ?");
         $password = password_hash($_POST['password'], PASSWORD_BCRYPT);
         $email = htmlspecialchars($_POST['email']);
         $username = htmlspecialchars($_POST['username']);
-        $req->execute([$username, $email, $password]);
+        $admin = htmlspecialchars($_POST['admin']);
+        $req->execute([$username, $email, $password, $admin]);
     }
 }
 ?>
@@ -63,7 +64,7 @@ if(!empty($_POST)){
 
     <div class="container">
         <div class="contact-form">
-			<div class="left"></div>
+			<div class="left"><img class="logo" src="css/img/logo.PNG"></div>
 			<div class="right">
 				<h2>Inscription</h2>
                 <form action="" method="POST">
@@ -71,7 +72,7 @@ if(!empty($_POST)){
                     <input type="email" name="email" placeholder="Email" class="champ" require/>
                     <input type="password" name="password" placeholder="Mot De Passe" class="champ" require/>
                     <input type="password" name="password_confirm" placeholder="Confirmez votre mot de passe" class="champ" require/>
-					<!--<?php 
+					<?php 
 					require_once 'inc/db.php';
 					$req = $pdo->prepare('SELECT * FROM users WHERE admin = 1');
 					$req->execute();
@@ -80,7 +81,7 @@ if(!empty($_POST)){
                         <input name="admin"  type="hidden" value="1" require/>
                     <?php else: ?>
                      	<input name="admin"  type="hidden" value="0" require/>
-					<?php endif; ?>-->
+					<?php endif; ?>
                     <button type="submit" class="btn">M'inscrire</button>
                 </form>
             </div>    

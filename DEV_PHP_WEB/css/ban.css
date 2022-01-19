@@ -1,0 +1,15 @@
+.ban{
+	height: 100vh;
+	background-image: url(img/ban.png);
+	background-position: center;
+	background-size: cover;
+}
+
+.ban-text{
+	margin-right: 100px;
+	margin-left: 100px;
+	font-family: 'Work Sans', sans-serif;
+	max-width: 350px;
+	margin-top: 140px;
+	font-size: 55px;
+}

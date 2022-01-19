@@ -1,3 +1,7 @@
+	</div>
+
+</div>
+
 <footer>
 
 	<div class="footer_element" id="about">
@@ -36,10 +40,9 @@
 		</ul>
 	</div>
 </footer>
-</div>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-	<script type="text/javascript" src="../js/header.js"></script>
+</div>	
 </div>
 </body>
-
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script type="text/javascript" src="js/header.js"></script>
 </html>
