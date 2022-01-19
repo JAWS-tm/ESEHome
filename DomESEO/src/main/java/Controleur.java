@@ -8,7 +8,7 @@ import javax.servlet.http.HttpServletResponse;
 import beans.Utilisateur;
 import dao.DAOFactory;
 import dao.DAOUtilisateur;
-import dao.DAOUtilisateurMariaDB;
+//import dao.DAOUtilisateurMariaDB;
 
 /**
  * Servlet implementation class Controleur
