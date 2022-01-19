@@ -4,8 +4,12 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 
 import beans.Utilisateur;
+
 
 public class DAOUtilisateurMariaDB implements DAOUtilisateur {
 	
@@ -356,6 +360,28 @@ public class DAOUtilisateurMariaDB implements DAOUtilisateur {
 			e.printStackTrace();
 		}
 		return false;
+	}
+	
+	public List<Utilisateur> listDB(){ 
+		List<Utilisateur> liste = new ArrayList<>();
+		try (Connection connect = daoFactory.getConnection()){
+			Statement state = connect.createStatement();
+			ResultSet result = state.executeQuery("SELECT `id`, `Pseudo`, `Admin` FROM `domeseo`.`utilisateur`;"); {
+				while (result.next()) {
+					int id = result.getInt("id");
+					String pseudo = result.getString("Pseudo");
+					int admin = result.getInt("Admin");
+					Utilisateur u = new Utilisateur();
+					u.setId(id);
+					u.setPseudo(pseudo);
+					u.setAdmin(admin);
+					liste.add(u);
+				}
+			} 
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return liste;
 	}
 	
 	

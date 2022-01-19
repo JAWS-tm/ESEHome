@@ -8,12 +8,11 @@ public class Utilisateur {
 	
 	public Utilisateur() {}
 	
-	public Utilisateur(int id, String pseudo, String mdp, int permission) {
+	public Utilisateur(int id, String pseudo, String mdp, int admin) {
 		this.setId(id);
 		this.setPseudo(pseudo);
 		this.setMdp(mdp);
-		this.setAdmin(permission);
-	
+		this.setAdmin(admin);
 	}
 
 	public int getId() {
@@ -35,11 +34,9 @@ public class Utilisateur {
 	public int getAdmin() {
 		return admin;
 	}
-
-	public void setAdmin(int permission) {
-		this.admin = permission;
+	public void setAdmin(int admin) {
+		this.admin = admin;
 	}
-
 	public String getPseudo() {
 		return pseudo;
 	}

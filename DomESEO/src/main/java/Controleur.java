@@ -1,4 +1,6 @@
 import java.io.IOException;
+import java.util.List;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -9,6 +11,7 @@ import beans.Utilisateur;
 import dao.DAOFactory;
 import dao.DAOUtilisateur;
 //import dao.DAOUtilisateurMariaDB;
+
 
 /**
  * Servlet implementation class Controleur
@@ -101,13 +104,13 @@ public class Controleur extends HttpServlet {
 					} else {
 						request.setAttribute("error", "Veuillez indiquer le pseudonyme de l'utilisateur.");
 					}
-						
-						
-					request.getRequestDispatcher("/JSP/Accueil.jsp").forward(request, response);				
-					
-					
-				break;
-					
+					request.getRequestDispatcher("/JSP/Accueil.jsp").forward(request, response);
+				case "gestion_droit":
+
+					List<Utilisateur> liste = DAOUtilisateur.listDB();
+					request.setAttribute("liste", liste);
+					request.getRequestDispatcher("/JSP/Gestion_permission.jsp").forward(request, response);
+					break;				
 				case "add_user_page":
 					
 					request.getRequestDispatcher("/JSP/AddUser.jsp").forward(request, response);
@@ -140,8 +143,6 @@ public class Controleur extends HttpServlet {
 					}
 					request.getRequestDispatcher("/JSP/AddUser.jsp").forward(request, response);
 					break;
-					
-					
 				default:
 					//On ne doit pas se retrouver ici !
 					request.getRequestDispatcher("/JSP/Accueil.jsp").forward(request, response);

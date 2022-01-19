@@ -1,5 +1,7 @@
 package dao;
 
+import java.util.List;
+
 import beans.Utilisateur;
 
 public interface DAOUtilisateur {
@@ -19,6 +21,11 @@ public interface DAOUtilisateur {
 	public abstract Utilisateur getUtilisateurByPseudo(String pseudo);
 	
 	public abstract void deleteUtilisateur(int id);
+	
+	public static List<Utilisateur> listDB() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 	
 	public abstract boolean checkLogin(String login, String mdp);
 	
