@@ -1,6 +1,8 @@
 .ban{
-	height: 100vh;
-	background-image: url(img/ban.png);
+	top: 66px;
+	height: 600px;
+	width: 100%;
+	background-image: url(../img/ban.png);
 	background-position: center;
 	background-size: cover;
 }
