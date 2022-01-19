@@ -8,7 +8,8 @@
 <title>Demande de privilège</title>
 </head>
 <body>
-	<p>${ info }</p>
+	<br><p style=color:red><em>${info }</em></p>
+	<br><p style=color:green><em>${succes }</em></p>
 	<form name="ajouter_utilisateur" method="POST" action="Controleur?dest=add_user">
 		pseudo :<input type="text" name="pseudo"><br>
 		mot de passe :<input type="password" name="password"><br>
