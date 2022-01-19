@@ -2,6 +2,7 @@
 
 if(!empty($_POST)){
 	$errors = array();
+	$droits = 0;
 	require_once '../inc/db.php';
 
 	if(empty($_POST['username']) || !preg_match('/^[a-zA-Z0-9_]+$/',$_POST['username'])){
@@ -31,18 +32,27 @@ if(!empty($_POST)){
 	if(empty($_POST['password']) || $_POST['password'] != $_POST['password_confirm']){
 		$errors['password'] = "Vous devez entrer un mot de passe valide";
 	}
-
+	
+	if(isset($_POST['chambre'])){
+	    $droits = $droits + $_POST['chambre'];
+	}
+	if(isset($_POST['Cuisine'])){
+	    $droits = $droits + $_POST['Cuisine'];
+	}
+	if(isset($_POST['SalleDeBain'])){
+	    $droits = $droits + $_POST['SalleDeBain'];
+	}
 
 
 
 	if(empty($errors)){
-		$req = $pdo->prepare("INSERT INTO users SET username = ?, email = ?, mdp = ?, admin = ?");
+		$req = $pdo->prepare("INSERT INTO users SET username = ?, email = ?, mdp = ?, admin = ?, droit = ?");
 		
 		$username = htmlspecialchars($_POST['username']);
 		$email = htmlspecialchars($_POST['email']);
 		$password = password_hash($_POST['password'], PASSWORD_BCRYPT);
-		$type = $_POST["optradio"];
-		$req->execute([$username, $email, $password, $type]);
+		$admin = htmlspecialchars($_POST['admin']);
+		$req->execute([$username, $email, $password, $admin, $droits]);
 
 		
 	}
@@ -88,8 +98,11 @@ if(!empty($_POST)){
 					<input type="password" name="password" placeholder="Mot De Passe" class="champ" require/>
 					<input type="password" name="password_confirm" placeholder="Confirmez le mot de passe" class="champ" require/>
 
-					<input type="radio" name="optradio" value="0" checked>User
-					<input type="radio" name="optradio" value="1" >Admin<br><br>
+					<input type="hidden" name="admin" value="0" require/>
+					<p>Choisir ses droits</p>
+					<input type="checkbox" name="chambre" value="1"> Chambre<br>
+					<input type="checkbox" name="Cuisine" value="2"> Cuisine<br>
+					<input type="checkbox" name="SalleDeBain" value="3"> Salle De Bain<br>
 					
 					<button type="submit" class="btn">Ajouter</button>
 				</form>
@@ -104,8 +117,7 @@ if(!empty($_POST)){
 
 
 
-	<?php /*require '../inc/footer.php';*/?>
-</body>
-</html>
+	<?php require '../inc/footer.php';?>
+
 
 

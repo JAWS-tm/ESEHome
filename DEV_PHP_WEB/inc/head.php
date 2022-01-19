@@ -14,4 +14,5 @@
 	<link rel="stylesheet" type="text/css" href="css/styles.css">
 	<link rel="stylesheet" type="text/css" href="css/header.css">
 	<link rel="stylesheet" type="text/css" href="css/ban.css">
+	<link rel="stylesheet" type="text/css" href="../css/admin.css">
 </head>
