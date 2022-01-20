@@ -117,13 +117,10 @@ public class Controleur extends HttpServlet {
 					request.getRequestDispatcher("/JSP/Gestion_permission.jsp").forward(request, response);
 					break;				
 				case "add_user_page":
-					List<Objet_General> liste2 = this.daoObjet.getInfosObjets();
-					request.setAttribute("liste2", liste2);
 					request.getRequestDispatcher("/JSP/AddUser.jsp").forward(request, response);
 						
 					break;
-					
-					
+
 				case "add_user":
 					
 					if((request.getParameter("pseudo") != null && !request.getParameter("pseudo").isEmpty()) && (request.getParameter("password") != null && !request.getParameter("password").isEmpty()) && (request.getParameter("confirm_password") != null && !request.getParameter("confirm_password").isEmpty())) {
@@ -150,9 +147,7 @@ public class Controleur extends HttpServlet {
 					request.getRequestDispatcher("/JSP/AddUser.jsp").forward(request, response);
 					break;
 				case "visitor_dashboard":
-					
-					
-					
+					List<Objet_General> liste2 = this.daoObjet.getInfosObjets();
 					request.getRequestDispatcher("/JSP/DashBoard.jsp").forward(request, response);
 					break;
 				default:
