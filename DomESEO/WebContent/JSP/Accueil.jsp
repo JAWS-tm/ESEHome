@@ -33,7 +33,7 @@
 				</div>
 					<div id="Accès Visiteur">
 						<p>Accéder au dashboard en accès visiteur</p>
-						<button type="button">Accès</button>
+						<button type="button" onclick="window.location.href = 'Controleur?dest=visitor_dashboard'">Accès</button>
 					</div>
 				</div>
     		</c:otherwise>

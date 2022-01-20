@@ -143,6 +143,12 @@ public class Controleur extends HttpServlet {
 					}
 					request.getRequestDispatcher("/JSP/AddUser.jsp").forward(request, response);
 					break;
+				case "visitor_dashboard":
+					
+					
+					
+					request.getRequestDispatcher("/JSP/DashBoard.jsp").forward(request, response);
+					break;
 				default:
 					//On ne doit pas se retrouver ici !
 					request.getRequestDispatcher("/JSP/Accueil.jsp").forward(request, response);

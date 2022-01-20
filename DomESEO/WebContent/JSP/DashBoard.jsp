@@ -11,7 +11,18 @@
 	<header></header>
 	<h1>Dashboard</h1><br>
 	<p>Informations sur les objets DomESEO en accès visiteur</p><br>
+	<div id="affichage_Objets">
+		<c:forEach var="u" items="${ liste }">
+			<div class="Nom_Objet">
+			
+			
+			</div>
+		
+		
+		
+		</c:forEach>
 	
+	</div>
 	
 	
 	<footer></footer>	
