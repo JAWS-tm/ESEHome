@@ -106,9 +106,9 @@ public class Controleur extends HttpServlet {
 					}
 					request.getRequestDispatcher("/JSP/Accueil.jsp").forward(request, response);
 				case "gestion_droit":
-
-					List<Utilisateur> liste = DAOUtilisateur.listDB();
+					List<Utilisateur> liste = this.daoUtilisateur.listDB();
 					request.setAttribute("liste", liste);
+					
 					request.getRequestDispatcher("/JSP/Gestion_permission.jsp").forward(request, response);
 					break;				
 				case "add_user_page":
