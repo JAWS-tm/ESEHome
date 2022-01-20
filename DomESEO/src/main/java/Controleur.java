@@ -69,6 +69,8 @@ public class Controleur extends HttpServlet {
 					
 					
 				case "connexion":
+					String page = "/JSP/Accueil.jsp";
+					boolean error = true;
 					
 					if(request.getParameter("identifiant") != null && !request.getParameter("identifiant").isEmpty()) {
 						
@@ -82,11 +84,13 @@ public class Controleur extends HttpServlet {
 									
 									if(this.utilisateur.getAdmin() == 1) {
 										
+										error = false;
 										request.setAttribute("connecte", "oui");
 										request.setAttribute("admin", "oui");
 										
 									} else if(this.utilisateur.getAdmin() == 0) {
 										
+										error = false;
 										request.setAttribute("connecte", "oui");
 										request.setAttribute("admin", "non");
 										
@@ -109,7 +113,23 @@ public class Controleur extends HttpServlet {
 					} else {
 						request.setAttribute("error", "Veuillez indiquer le pseudonyme de l'utilisateur.");
 					}
-					request.getRequestDispatcher("/JSP/Accueil.jsp").forward(request, response);
+					
+					
+					if(error) {
+						switch(request.getParameter("source")) {
+						case "Accueil":
+							page = "/JSP/Accueil.jsp";
+							break;
+						case "DashBoard":
+							page = "/JSP/DashBoard.jsp";
+							break;
+						default:
+							//On n'est pas censé arriver là
+							System.out.println("ERREUR : source dans connexion");
+							break;
+						}
+					}
+					request.getRequestDispatcher(page).forward(request, response);
 				case "gestion_droit":
 					List<Utilisateur> liste = this.daoUtilisateur.listDB();
 					request.setAttribute("liste", liste);
@@ -117,7 +137,7 @@ public class Controleur extends HttpServlet {
 					request.getRequestDispatcher("/JSP/Gestion_permission.jsp").forward(request, response);
 					break;				
 				case "add_user_page":
-					request.getRequestDispatcher("/JSP/AddUser.jsp").forward(request, response);
+					request.getRequestDispatcher("/JSP/Demande_privilege.jsp").forward(request, response);
 						
 					break;
 
@@ -144,7 +164,7 @@ public class Controleur extends HttpServlet {
 						
 						request.setAttribute("info", "Tous les champs ne sont pas complétés !");
 					}
-					request.getRequestDispatcher("/JSP/AddUser.jsp").forward(request, response);
+					request.getRequestDispatcher("/JSP/Demande_privilege.jsp").forward(request, response);
 					break;
 				case "visitor_dashboard":
 					List<Objet_General> liste2 = this.daoObjet.getInfosObjets();
