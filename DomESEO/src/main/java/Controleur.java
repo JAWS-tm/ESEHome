@@ -1,4 +1,5 @@
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -7,8 +8,10 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import beans.Objet_General;
 import beans.Utilisateur;
 import dao.DAOFactory;
+import dao.DAOObjet;
 import dao.DAOUtilisateur;
 //import dao.DAOUtilisateurMariaDB;
 
@@ -22,6 +25,7 @@ public class Controleur extends HttpServlet {
 	private static final long serialVersionUID = 1L;
     private Utilisateur utilisateur;   
     private DAOUtilisateur daoUtilisateur;
+    private DAOObjet daoObjet;
     
 
     public Controleur() {
@@ -31,6 +35,7 @@ public class Controleur extends HttpServlet {
     public void init() {
     	DAOFactory daoFactory = DAOFactory.getInstance();
     	this.daoUtilisateur = daoFactory.getDAOUtilisateur("MariaDB");
+    	this.daoObjet = daoFactory.getDAOObjet("MariaDB");
     	
     }
     
@@ -112,7 +117,8 @@ public class Controleur extends HttpServlet {
 					request.getRequestDispatcher("/JSP/Gestion_permission.jsp").forward(request, response);
 					break;				
 				case "add_user_page":
-					
+					List<Objet_General> liste2 = this.daoObjet.getInfosObjets();
+					request.setAttribute("liste2", liste2);
 					request.getRequestDispatcher("/JSP/AddUser.jsp").forward(request, response);
 						
 					break;
