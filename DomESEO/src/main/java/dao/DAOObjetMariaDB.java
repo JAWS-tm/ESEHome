@@ -1,6 +1,7 @@
 package dao;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -10,7 +11,9 @@ import java.util.List;
 import beans.Objet;
 import beans.Objet_General;
 import beans.Type;
+import beans.Utilisateur;
 import beans.Valeur;
+import beans.Groupe;
 
 public class DAOObjetMariaDB implements DAOObjet{
 	
@@ -98,7 +101,23 @@ public class DAOObjetMariaDB implements DAOObjet{
 			    }
 			    return liste;
 	}
-	
-	
-	
+	public int getIdByName(String groupe) {		
+		int identifiant = -1;
+		try (Connection connexion = daoFactory.getConnection()) {			
+			PreparedStatement prepST = connexion.prepareStatement(
+					"SELECT id FROM `JEE` WHERE nom_groupe=?;");			
+			prepST.setString(1, groupe);	
+			try (ResultSet result = prepST.executeQuery()) {		
+				if (result.next()) {
+					identifiant = result.getInt("id");
+				}
+			}
+		} catch (SQLException e) {
+			
+			System.out.println("ERROR : getUtilisateurById()");
+			e.printStackTrace();
+		}
+		
+		return identifiant;
+	}
 }

@@ -21,12 +21,18 @@
 				<td><c:out value="${ u.getPseudo() }"/></td>
 				<td><c:out value="${ u.getAdmin() }"/></td>
 				<td>
-				<form action="Process?state=changement_droit" id="form" method="post">
-      				<input type="submit" class="button" value="Changement_droit">
+				<form action="Controleur?dest=changement_groupe" name="groups" type="hidden" id="form" method="post">
+      				<select  name="groups" type="hidden" id="assignated_group">
+      					<option value="">--Modifier le groupe d'objet--</option>
+      					<option value="groupe_1">groupe 1</option>
+				   		<option value="groupe_2">groupe 2</option>
+					    <option value="groupe_3">groupe 3</option>
+					    <option value="groupe_4">groupe 4</option>
+      				</select>
 	       		</form> 
 	       		</td>
 				<td>  		        
-					<form action="Process?state=delete" id="form" method="post">
+				<form action="Controleur?dest=deleteUser" id="form" method="post">
 		        	<input type="submit" class="button" value="suppression">
 		        </form>
 		        </td>
