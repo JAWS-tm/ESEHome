@@ -2,10 +2,10 @@
     "data_communication":{
         "UART_baudrate":115000
     },
-    "BDD":{
+    "DB":{
         "port": 3306,
         "host":"172.24.0.71",
-        "BDD_name": "prjtsnths",
+        "DB_name": "prjtsnths",
         "user": "python",
         "password": "python"
     },
