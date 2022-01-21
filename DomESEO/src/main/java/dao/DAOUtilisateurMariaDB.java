@@ -366,11 +366,14 @@ public class DAOUtilisateurMariaDB implements DAOUtilisateur {
 		List<Utilisateur> liste = new ArrayList<>();
 		try (Connection connect = daoFactory.getConnection()){
 			Statement state = connect.createStatement();
-			ResultSet result = state.executeQuery("SELECT `id`, `Pseudo`, `Admin` FROM `domeseo`.`utilisateur`;"); {
+			ResultSet result = state.executeQuery("SELECT `id`, `Pseudo`, `Admin` FROM `JEE`.`utilisateur`;"); {
 				while (result.next()) {
 					int id = result.getInt("id");
 					String pseudo = result.getString("Pseudo");
 					int admin = result.getInt("Admin");
+					System.out.println(id);
+					System.out.println(pseudo);
+					System.out.println(admin);
 					Utilisateur u = new Utilisateur();
 					u.setId(id);
 					u.setPseudo(pseudo);
@@ -384,5 +387,20 @@ public class DAOUtilisateurMariaDB implements DAOUtilisateur {
 		return liste;
 	}
 	
-	
+	public void addgroup(int id) {
+		try (Connection connexion = daoFactory.getConnection()) {
+			PreparedStatement prepST = connexion.prepareStatement(
+					"INSERT INTO groupe_utilisateur(id_utilisateur, id_groupe, edition) VALUES(?,?,?);");
+			prepST.setInt(1, 2);
+			prepST.setInt(2, id);
+			prepST.setInt(3, 1);				
+			prepST.executeUpdate();
+
+		} catch(SQLException e) {
+		
+		System.out.println("ERROR1 : ajouterUtilisateur()");
+		e.printStackTrace();
+		}
+	}
+
 }
