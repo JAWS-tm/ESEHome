@@ -24,33 +24,19 @@ public class DAOObjetMariaDB implements DAOObjet{
 	
 		List<Objet_General> liste = new ArrayList<>();
 		
-		List<Valeur> listeValeurs = new ArrayList<>();
-		List<Objet> listeObjet = new ArrayList<>();
-		List<Type> listeTypes = new ArrayList<>();
-		
-		for (int i = 0; i < getObjet().size(); i++) {
-			listeObjet.add(getObjet().get(i));
-		}
-		for(int i = 0; i < getValue().size(); i++) {
-			listeValeurs.add(getValue().get(i));
-		}
-		for(int i = 0; i < getType().size(); i++) {
-			listeTypes.add(getType().get(i));
-		}
-		
-		for(int i = 0; i < listeObjet.size(); i++) {
-			for(int j = 0; j <listeValeurs.size(); j++) {
-				for(int k = 0; k<listeTypes.size(); k++) {
-					if((listeObjet.get(i).getId() == listeValeurs.get(j).getId_objet()) && (listeObjet.get(i).getId_type() == listeTypes.get(k).getId())) {
-						Objet_General objet = new Objet_General();
-						objet.setNom_Objet(listeTypes.get(k));
-						objet.setValeur(listeValeurs.get(j));
-						liste.add(objet);
-					}
-				}
-			}
-		}
-		return liste;
+		 try (Connection connexion = daoFactory.getConnection();
+				 Statement statement = connexion.createStatement();
+			     ResultSet result = statement.executeQuery("SELECT nom_type, valeur FROM type INNER JOIN objet ON type.id = objet.type_id INNER JOIN valeur ON objet.id = valeur.objet_id;")) {
+			     while (result.next()) {
+			    	String nom_type = result.getString("nom_type");
+			       	String value = result.getString("valeur");
+			       	Objet_General objet = new Objet_General(nom_type,value);
+			        	liste.add(objet);
+			     }
+		 } catch (SQLException e) {
+			 e.printStackTrace();
+		 	}
+		 return liste;
 	}
 	
 	public List<Objet> getObjet(){
@@ -112,5 +98,7 @@ public class DAOObjetMariaDB implements DAOObjet{
 			    }
 			    return liste;
 	}
+	
+	
 	
 }

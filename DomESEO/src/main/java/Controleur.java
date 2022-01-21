@@ -171,6 +171,18 @@ public class Controleur extends HttpServlet {
 					request.setAttribute("liste2", liste2);
 					request.getRequestDispatcher("/JSP/DashBoard.jsp").forward(request, response);
 					break;
+				case "user_dashboard" :
+					String choix =request.getParameter("choice");
+					
+					if(choix.contains("default")) {
+						List<Objet_General> liste_default = this.daoObjet.getInfosObjets();
+						request.setAttribute("liste2", liste_default);
+					}
+					
+					//faire un switch pour gérer les choix
+					
+					
+					request.getRequestDispatcher("/JSP/User_Dashboard.jsp").forward(request, response);
 				default:
 					//On ne doit pas se retrouver ici !
 					request.getRequestDispatcher("/JSP/Accueil.jsp").forward(request, response);
