@@ -168,6 +168,7 @@ public class Controleur extends HttpServlet {
 					break;
 				case "visitor_dashboard":
 					List<Objet_General> liste2 = this.daoObjet.getInfosObjets();
+					request.setAttribute("liste2", liste2);
 					request.getRequestDispatcher("/JSP/DashBoard.jsp").forward(request, response);
 					break;
 				default:
