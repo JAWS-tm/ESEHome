@@ -7,6 +7,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import beans.Objet_General;
 import beans.Utilisateur;
@@ -56,7 +57,7 @@ public class Controleur extends HttpServlet {
 	protected void processRequest(HttpServletRequest request, HttpServletResponse response,String dest) throws ServletException, IOException {
 		
 		String destination = dest;
-		
+		HttpSession session = request.getSession();
 		if(destination != null) {
 			
 			switch(destination) {
@@ -115,7 +116,13 @@ public class Controleur extends HttpServlet {
 					request.setAttribute("liste", liste);
 					
 					request.getRequestDispatcher("/JSP/Gestion_permission.jsp").forward(request, response);
-					break;				
+					break;	
+				case "changement_groupe":
+					String groupe=request.getParameter("groups");
+					int identifiant = this.daoObjet.getIdByName(groupe);
+					this.daoUtilisateur.addgroup(identifiant);
+					request.getRequestDispatcher("/JSP/Gestion_permission.jsp").forward(request, response);
+
 				case "add_user_page":
 					List<Objet_General> liste2 = this.daoObjet.getInfosObjets();
 					request.setAttribute("liste2", liste2);

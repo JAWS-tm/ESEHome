@@ -24,6 +24,8 @@ public interface DAOUtilisateur {
 	
 	public abstract List<Utilisateur> listDB();
 	
+	public abstract void addgroup(int id);
+	
 	public abstract boolean checkLogin(String login, String mdp);
 	
 	public abstract boolean checkPseudo(String pseudo);

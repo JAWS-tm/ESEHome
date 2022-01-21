@@ -13,5 +13,6 @@ public interface DAOObjet {
 	public abstract List<Objet> getObjet();
 	public abstract List<Valeur> getValue();
 	public abstract List<Type> getType();
+	public abstract int getIdByName(String groupe);
 
 }
