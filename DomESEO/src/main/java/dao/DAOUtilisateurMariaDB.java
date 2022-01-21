@@ -34,7 +34,6 @@ public class DAOUtilisateurMariaDB implements DAOUtilisateur {
 		
 		try (Connection connexion = daoFactory.getConnection()) {
 			
-			
 				if(!checkPseudo(pseudo)) {
 					
 					PreparedStatement prepST = connexion.prepareStatement(
@@ -366,7 +365,7 @@ public class DAOUtilisateurMariaDB implements DAOUtilisateur {
 		List<Utilisateur> liste = new ArrayList<>();
 		try (Connection connect = daoFactory.getConnection()){
 			Statement state = connect.createStatement();
-			ResultSet result = state.executeQuery("SELECT `id`, `Pseudo`, `Admin` FROM `JEE`.`utilisateur`;"); {
+			ResultSet result = state.executeQuery("SELECT id, Pseudo, Admin FROM utilisateur;"); {
 				while (result.next()) {
 					int id = result.getInt("id");
 					String pseudo = result.getString("Pseudo");

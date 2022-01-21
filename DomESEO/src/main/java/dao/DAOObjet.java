@@ -9,6 +9,7 @@ import beans.Valeur;
 
 public interface DAOObjet {
 	
+	public abstract List<Objet_General> getInfosObjets_FromGroup(int id_ut, int id_group); 
 	public abstract List<Objet_General> getInfosObjets(); 
 	public abstract List<Objet> getObjet();
 	public abstract List<Valeur> getValue();

@@ -9,11 +9,16 @@
 </head>
 <body>
 	<div id="object-view">
-		<form method="POST" name="formulaire_Choix" action="Controleur?dest=user_dashboard">
+		<form method="POST" name="formulaire_Choix" action="Controleur?dest=user_dashboard&verif=true">
 			<p>
 				<label for="choice">Choisissez les vues d'objets que vous souhaitez visualiser</label>
 				<select name="choice" id="choice">
 					<option value="default" selected>Dahsboard par défaut</option>
+				
+				<c:forEach var="u" items="${ listeVues }">
+					<option value="${ u.getId()}"><c:out value="${ u.getNom_groupe()}"/></option>
+				</c:forEach>
+				
 				</select>
 			</p>
 			<input type="submit" value="Changer de Vue"/>

@@ -23,6 +23,30 @@ public class DAOObjetMariaDB implements DAOObjet{
 		this.daoFactory = daoFactory;
 	}
 	
+	public List<Objet_General> getInfosObjets_FromGroup(int id_ut, int id_group){
+		List<Objet_General> liste = new ArrayList<>();
+		
+		try (Connection connexion = daoFactory.getConnection();
+				 Statement statement = connexion.createStatement();
+			     ResultSet result = statement.executeQuery("SELECT nom_type, valeur "
+			     		+ "FROM type "
+			     		+ "INNER JOIN objet ON type.id = objet.type_id "
+			     		+ "INNER JOIN valeur ON objet.id = valeur.objet_id "
+			     		+ "INNER JOIN objet_groupe ON valeur.objet_id = objet_groupe.id_objet "
+			     		+ "INNER JOIN groupe ON objet_groupe.id_groupe = groupe.id "
+			     		+ "INNER JOIN groupe_utilisateur ON groupe.id = groupe_utilisateur.id_groupe WHERE groupe_utilisateur.id_utilisateur =" + id_ut + " AND groupe.id =" + id_group +";")) {
+			     while (result.next()) {
+			    	String nom_type = result.getString("nom_type");
+			       	String value = result.getString("valeur");
+			       	Objet_General objet = new Objet_General(nom_type,value);
+			        	liste.add(objet);
+			     }
+		 } catch (SQLException e) {
+			 e.printStackTrace();
+		 }
+		return liste;
+	}
+	
 	public List<Objet_General> getInfosObjets(){
 	
 		List<Objet_General> liste = new ArrayList<>();

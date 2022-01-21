@@ -19,6 +19,25 @@ public class DAOGroupe_Objet_MariaDB implements DAOGroupe_Objet{
 		this.daoFactory = daoFactory;
 	}
 	
+	public List<Groupe> getNomGroupe(int id){
+		List<Groupe> liste = new ArrayList<>();
+		try (Connection connexion = daoFactory.getConnection();
+			      Statement statement = connexion.createStatement();
+			      ResultSet result = statement.executeQuery(
+			    		  "SELECT groupe.id, groupe.nom_groupe FROM groupe INNER JOIN groupe_utilisateur ON groupe.id = groupe_utilisateur.id_groupe WHERE groupe_utilisateur.id_utilisateur =" +id+ ";")) {
+			        while (result.next()) {
+			        	int id_grp = result.getInt("id");
+			        	String nom_groupe = result.getString("nom_groupe");
+			        	Groupe groupe = new Groupe(id_grp,nom_groupe);
+			        	liste.add(groupe);
+			        }
+			    } catch (SQLException e) {
+			        e.printStackTrace();
+			    }
+			    return liste;
+	}
+	
+	
 	public List<Groupe> getGroupe(){
 		List<Groupe> liste = new ArrayList<>();
 		try (Connection connexion = daoFactory.getConnection();
@@ -29,8 +48,8 @@ public class DAOGroupe_Objet_MariaDB implements DAOGroupe_Objet{
 			        	int id = result.getInt("id");
 			        	String nom_groupe = result.getString("nom_groupe");
 			 
-			        	Groupe type = new Groupe(id,nom_groupe);
-			        	liste.add(type);
+			        	Groupe groupe = new Groupe(id,nom_groupe);
+			        	liste.add(groupe);
 			        }
 			    } catch (SQLException e) {
 			        e.printStackTrace();
@@ -54,8 +73,8 @@ public class DAOGroupe_Objet_MariaDB implements DAOGroupe_Objet{
 			        	if(edit == 1) {
 			        		edition = true;
 			        	}
-			        	Groupe_utilisateur type = new Groupe_utilisateur(id,id_util,id_grp,edition);
-			        	liste.add(type);
+			        	Groupe_utilisateur groupe_Util = new Groupe_utilisateur(id,id_util,id_grp,edition);
+			        	liste.add(groupe_Util);
 			        }
 			    } catch (SQLException e) {
 			        e.printStackTrace();
@@ -73,8 +92,8 @@ public class DAOGroupe_Objet_MariaDB implements DAOGroupe_Objet{
 			        	int id = result.getInt("id");
 			        	int id_obj = result.getInt("id_objet");
 			        	int id_grp = result.getInt("id_groupe");
-			        	Groupe_objet type = new Groupe_objet(id,id_obj,id_grp);
-			        	liste.add(type);
+			        	Groupe_objet groupe_Objet = new Groupe_objet(id,id_obj,id_grp);
+			        	liste.add(groupe_Objet);
 			        }
 			    } catch (SQLException e) {
 			        e.printStackTrace();

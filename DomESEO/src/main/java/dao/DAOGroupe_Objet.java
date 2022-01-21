@@ -8,6 +8,8 @@ import beans.Groupe_utilisateur;
 
 public interface DAOGroupe_Objet {
 	
+	public abstract List<Groupe> getNomGroupe(int id);
+	
 	public abstract List<Groupe> getGroupe();
 	
 	public abstract List<Groupe_utilisateur> getGroupe_Utilisateur();

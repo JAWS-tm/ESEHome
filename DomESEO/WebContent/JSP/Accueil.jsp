@@ -15,6 +15,9 @@
 				<c:if test="${ admin == 'oui' }">
 					<button onclick="window.location.href ='Controleur?dest=page_admin'">Partie Admin</button>
 				</c:if>
+				<c:if test="${ admin == 'non' }">
+					<button onclick="window.location.href ='Controleur?dest=user_dashboard'">Accès au Dashboard de votre compte</button>
+				</c:if>
     		</c:when>
     		
     		<c:otherwise>
@@ -28,10 +31,13 @@
 							<p>${ error }</p>
 						</form>
 					</div>
-				<div id="Demande de privilège">
-					<p>Faire une demande de privilège </p>
-					<button type="button" onclick="window.location.href ='Controleur?dest=add_user_page'">Demande</button>
-				</div>
+				<c:if test="${ privilege != 'non' }">
+					<div id="Demande de privilège">
+						<p>Faire une demande de privilège </p>
+						<button type="button" onclick="window.location.href ='Controleur?dest=add_user_page'">Demande</button>
+					</div>
+				</c:if>
+				
 					<div id="Accès Visiteur">
 						<p>Accéder au dashboard en accès visiteur</p>
 						<button type="button" onclick="window.location.href = 'Controleur?dest=visitor_dashboard'">Accès</button>

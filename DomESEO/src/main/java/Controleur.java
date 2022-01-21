@@ -9,9 +9,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import beans.Groupe;
 import beans.Objet_General;
 import beans.Utilisateur;
 import dao.DAOFactory;
+import dao.DAOGroupe_Objet;
 import dao.DAOObjet;
 import dao.DAOUtilisateur;
 //import dao.DAOUtilisateurMariaDB;
@@ -27,6 +29,7 @@ public class Controleur extends HttpServlet {
     private Utilisateur utilisateur;   
     private DAOUtilisateur daoUtilisateur;
     private DAOObjet daoObjet;
+    private DAOGroupe_Objet daoGroupe_Objet;
     
 
     public Controleur() {
@@ -37,6 +40,7 @@ public class Controleur extends HttpServlet {
     	DAOFactory daoFactory = DAOFactory.getInstance();
     	this.daoUtilisateur = daoFactory.getDAOUtilisateur("MariaDB");
     	this.daoObjet = daoFactory.getDAOObjet("MariaDB");
+    	this.daoGroupe_Objet = daoFactory.getDAOGroupe_Objet("MariaDB");
     	
     }
     
@@ -97,6 +101,7 @@ public class Controleur extends HttpServlet {
 										
 									} else {
 										request.setAttribute("error", "Votre compte n'a pas été vérifié !");
+										request.setAttribute("privilege", "non");
 									}
 									
 								} else {
@@ -131,10 +136,10 @@ public class Controleur extends HttpServlet {
 						}
 					}
 					request.getRequestDispatcher(page).forward(request, response);
+					break;
 				case "gestion_droit":
 					List<Utilisateur> liste = this.daoUtilisateur.listDB();
 					request.setAttribute("liste", liste);
-					
 					request.getRequestDispatcher("/JSP/Gestion_permission.jsp").forward(request, response);
 					break;	
 				case "changement_groupe":
@@ -179,17 +184,30 @@ public class Controleur extends HttpServlet {
 					request.getRequestDispatcher("/JSP/DashBoard.jsp").forward(request, response);
 					break;
 				case "user_dashboard" :
-					String choix =request.getParameter("choice");
+					String verif;
+					String choix = "default";
+					int idGroupe;
+					List<Objet_General> liste_default = new ArrayList<>();
+					verif = request.getParameter("verif");
 					
-					if(choix.contains("default")) {
-						List<Objet_General> liste_default = this.daoObjet.getInfosObjets();
-						request.setAttribute("liste2", liste_default);
+					List<Groupe> liste_groupe = this.daoGroupe_Objet.getNomGroupe(this.utilisateur.getId());
+					request.setAttribute("listeVues", liste_groupe);
+					
+					if(verif != null) { 
+						choix = request.getParameter("choice");
 					}
 					
-					//faire un switch pour gérer les choix
-					
-					
+					if(choix.contains("default")) {
+						liste_default.clear();
+						liste_default = this.daoObjet.getInfosObjets();
+					}else{
+						idGroupe = Integer.valueOf(choix);
+						liste_default.clear();
+						liste_default = this.daoObjet.getInfosObjets_FromGroup(this.utilisateur.getId(), idGroupe);
+					}
+					request.setAttribute("liste2", liste_default);
 					request.getRequestDispatcher("/JSP/User_Dashboard.jsp").forward(request, response);
+					break;
 				default:
 					//On ne doit pas se retrouver ici !
 					request.getRequestDispatcher("/JSP/Accueil.jsp").forward(request, response);

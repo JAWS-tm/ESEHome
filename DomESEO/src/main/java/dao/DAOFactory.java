@@ -56,7 +56,17 @@ public class DAOFactory {
 			return new DAOObjetMariaDB(this);
 		default:
 			return null;	
+		}
 	}
+	
+	public DAOGroupe_Objet getDAOGroupe_Objet(String type) {
+		switch(type) {
+		case "MariaDB":
+			setParamMariaDB("jdbc:mysql://172.24.0.71/JEE", "python", "python");
+			return new DAOGroupe_Objet_MariaDB(this);
+		default:
+			return null;	
+		}
 	}
 
 }
