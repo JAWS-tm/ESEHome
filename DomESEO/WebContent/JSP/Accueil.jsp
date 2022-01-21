@@ -23,6 +23,7 @@
 						<form method="POST" name="formulaire_connexion" action="Controleur?dest=connexion">
 							<input type="text" name="identifiant" />
 							<input type="password" name="mot_de_passe" />
+							<input type="hidden" name="source" value="Accueil" />
 							<input type="submit" name="connexion" value="se connecter" /><br>
 							<p>${ error }</p>
 						</form>
