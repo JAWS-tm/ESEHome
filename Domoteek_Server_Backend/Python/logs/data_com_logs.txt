@@ -1,0 +1,20 @@
+2022-01-19 15:38:16,433:data_com_logs.txt:DEBUG:-------------------Starting application-------------------
+2022-01-19 15:38:16,433:data_com_logs.txt:ERROR:MariaDB.py : Error connecting to MariaDB Platform: 'DB_name'
+2022-01-19 15:39:02,850:data_com_logs.txt:DEBUG:-------------------Starting application-------------------
+2022-01-19 15:39:02,850:data_com_logs.txt:ERROR:MariaDB.py : Error connecting to MariaDB Platform: 'DB_name'
+2022-01-19 15:39:41,248:data_com_logs.txt:DEBUG:-------------------Starting application-------------------
+2022-01-19 15:39:41,323:data_com_logs.txt:DEBUG:MariaDB.py : Connected to database
+2022-01-19 15:40:36,327:data_com_logs.txt:DEBUG:-------------------Starting application-------------------
+2022-01-19 15:40:36,454:data_com_logs.txt:DEBUG:MariaDB.py : Connected to database
+2022-01-19 16:09:07,920:data_com_logs.txt:DEBUG:-------------------Starting application-------------------
+2022-01-19 16:09:08,002:data_com_logs.txt:DEBUG:MariaDB.py : Connected to database
+2022-01-19 16:10:07,048:data_com_logs.txt:DEBUG:-------------------Starting application-------------------
+2022-01-19 16:10:07,432:data_com_logs.txt:DEBUG:MariaDB.py : Connected to database
+2022-01-19 16:12:06,356:data_com_logs.txt:DEBUG:-------------------Starting application-------------------
+2022-01-19 16:12:06,466:data_com_logs.txt:DEBUG:MariaDB.py : Connected to database
+2022-01-19 16:13:24,723:data_com_logs.txt:DEBUG:-------------------Starting application-------------------
+2022-01-19 16:13:24,763:data_com_logs.txt:DEBUG:MariaDB.py : Connected to database
+2022-01-19 16:48:21,352:data_com_logs.txt:DEBUG:-------------------Starting application-------------------
+2022-01-19 16:48:21,454:data_com_logs.txt:DEBUG:MariaDB.py : Connected to database
+2022-01-19 16:50:21,081:data_com_logs.txt:DEBUG:-------------------Starting application-------------------
+2022-01-19 16:50:21,175:data_com_logs.txt:DEBUG:MariaDB.py : Connected to database
