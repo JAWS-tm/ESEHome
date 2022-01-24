@@ -5,6 +5,8 @@ from config.app_config import logger
 from db.dbRequest import dbRequest
 from dbProcess.dbMessage import dbMessage
 import datetime
+from config.app_config import UART_CONFIG
+from data_communication.UartController import UartController
 
 if __name__ == "__main__":
     logger.debug("-------------------Starting application-------------------")
@@ -19,9 +21,13 @@ if __name__ == "__main__":
     #Suppression d'un message de la table message
     # messageremove = 
     sys.exit(1)
-
-
-    
+    # '''Sous main pour l'uart'''
+    # print("Starting UART Test")
+    # uart_controller = UartController(UART_CONFIG)
+    # while True :
+    #     incoming_msg = uart_controller.get_last_message()
+    #     if(incoming_msg!=0):
+    #         print("INCOMING MSG FROM UART : "+incoming_msg)
 
 main()
 
