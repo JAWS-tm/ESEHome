@@ -9,6 +9,10 @@
 </head>
 <body>
 	<h2>Liste des utilisateurs</h2>
+	
+<!-- 	<p style=color:blue><em>Les utilisateurs affichés en bleu ont fait une demande de privilège. Veuillez modifier leur rôle.</em></p>
+ -->	
+	
 	<table>
 		<tr id="top">
 			<th>N°</th>
@@ -17,8 +21,12 @@
 		</tr>
 		<c:forEach  var="u" items="${ liste }" >
 			<tr>
+			
+			
+			<%-- <c:if test="${u.getAdmin() == -1 }"> --%>
 				<td><c:out value="${ u.getId() }"/></td>
 				<td><c:out value="${ u.getPseudo() }"/></td>
+			<%-- </c:if>	 --%>
 				<td>
 				
 					<form name="frm" method="post" action="Controleur?dest=modifUtil">
@@ -41,11 +49,7 @@
       				</select>
 	       		</form> 
 	       		</td> -->
-				<!-- <td>  		        
-				<form action="Controleur?dest=deleteUser" id="form" method="post">
-		        	<input type="submit" class="button" value="suppression">
-		        </form>
-		        </td> -->
+				
 			</tr>
 		</c:forEach>
 	</table>

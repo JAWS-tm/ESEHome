@@ -230,6 +230,23 @@ public class Controleur extends HttpServlet {
 					}
 					request.getRequestDispatcher("/JSP/Demande_privilege.jsp").forward(request, response);
 					break;
+					
+					
+				case "deleteUser":
+				
+					int idUtil2 = Integer.parseInt(request.getParameter("idUtil2"));
+					
+					daoUtilisateur.deleteUtilisateur(idUtil2);
+					
+					liste = this.daoUtilisateur.listDB();
+					request.setAttribute("liste", liste);
+					
+					request.getRequestDispatcher("/JSP/PageAdmin.jsp").forward(request, response);
+
+					
+					break;
+					
+					
 				case "visitor_dashboard":
 					List<Objet_General> liste2 = this.daoObjet.getInfosObjets();
 					request.setAttribute("liste2", liste2);
