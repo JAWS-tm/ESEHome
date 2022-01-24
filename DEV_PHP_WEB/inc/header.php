@@ -6,8 +6,8 @@
 			<a href="#" class="header_icon" id="header_icon"></a>
 			<a class="header_logo" href="index.php"><img src="img/Logo_ESEHome.PNG"></a>
 			<nav class="menu">
-				<a href="inscription.php">Inscription</a>
-				<a href="connexion.php">Connexion</a>
+				<a class="header_active" href="inscription.php">Inscription</a>
+				<a class="header_active" href="connexion.php">Connexion</a>
 			</nav>
 		</header>
 		<div class="site-pusher">

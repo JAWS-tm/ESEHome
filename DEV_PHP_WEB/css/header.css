@@ -17,7 +17,7 @@ a {
 }
 
 .container {
-    margin: 0 20px;
+    top: 66px;
 }
 
 .site-content {
@@ -36,7 +36,7 @@ a {
     background-color: #334E70;
 }
 
-.header_logo img{
+.header_logo img {
     padding-top: 7px;
     padding-left: 40px;
     max-height: 50px;
@@ -54,7 +54,7 @@ a {
     padding: 0 30px 0;
     margin: 0 0 0 0;
     font-size: 22px;
-    text-transform : uppercase;
+    text-transform: uppercase;
 
 }
 
@@ -63,9 +63,6 @@ a {
     font-weight: bold;
 }
 
-.menu .selected a{
-    color: #FF0000;
-}
 
 /*------------ RESPONSIVE ------------*/
 
@@ -74,12 +71,13 @@ a {
         overflow: hidden;
         height: 100%;
     }
+
     .site-pusher {
         height: 100%;
         transition-duration: 0.3s;
         transform: translateX(0);
     }
-    
+
     .site-content {
         position: absolute;
         top: 0;
@@ -142,7 +140,7 @@ a {
         transform: translateX(250px);
     }
 
-    .with-sidebar .site-cache{
+    .with-sidebar .site-cache {
         position: absolute;
         top: 0;
         left: 0;
