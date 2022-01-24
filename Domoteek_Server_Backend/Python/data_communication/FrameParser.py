@@ -9,16 +9,6 @@ class FrameParser :
     #Attributes
     def __init__(self, message):
         self.message = message
-        self.begin = message [:2]
-        self.data_size = message [2:4]
-        self.receiver = message [4:12]
-        self.emmiter = message [12:20]
-        self.counter = message [20:22]
-        self.id = message [22:24]
-        self.msg_size = message [24:26]
-        self.param_color = message[26:28]
-        self.data = message[28:-2]
-        self.end = message[-2:]
 
     def msgParsed(self):
         CONST_BEGIN = "BA"
@@ -31,41 +21,39 @@ class FrameParser :
             tab_msg.append(chaine)
         #print(tab_msg)
 
-        begin = tab_msg[0]
+        self.begin = tab_msg[0]
+        self.data_size = tab_msg[1]
+        self.emitter = "".join(tab_msg[2:6]) 
+        self.receiver = "".join(tab_msg[6:10])
+        self.cnt = tab_msg[10] 
+        self.id = tab_msg[11]
+        self.msg_size = tab_msg[12]
+        self.param_id_e = tab_msg[13]
+        self.data = tab_msg[14:-1]
+        self.end = tab_msg[-1]
+        self.data_concat = "".join(self.data) 
 
-        data_size = tab_msg[1]
-        emitter = "".join(tab_msg[2:6]) 
-        reciver = "".join(tab_msg[6:10])
-        cnt = tab_msg[10] 
-        id = tab_msg[11]
-        msg_size = tab_msg[12]
-        param_id_e = tab_msg[13]
-        data = tab_msg[14:-1]
-        end = tab_msg[-1]
-        data_concat = "".join(data) 
-        if begin != CONST_BEGIN:
+        if self.begin != CONST_BEGIN:
             print("Frame error")
-        elif end != CONST_END:
+        elif self.end != CONST_END:
             print("Frame error")
-        elif param_id_e > "24" :
+        elif self.param_id_e > "24" :
             print("Param id error")
         # elif len(reciver) != 8:
         #     print("Reciver error")
         else:
             tab_parse = []
-            tab_parse.insert(0,begin)
-            tab_parse.insert(1,data_size)
-            tab_parse.insert(2,emitter)
-            tab_parse.insert(3,reciver)
-            tab_parse.insert(4,cnt)
-            tab_parse.insert(5,id)
-            tab_parse.insert(6,msg_size)
-            tab_parse.insert(7,param_id_e)
-            tab_parse.insert(8,data_concat)
-            tab_parse.insert(9,end)
+            tab_parse.insert(0,self.begin)
+            tab_parse.insert(1,self.data_size)
+            tab_parse.insert(2,self.emitter)
+            tab_parse.insert(3,self.receiver)
+            tab_parse.insert(4,self.cnt)
+            tab_parse.insert(5,self.id)
+            tab_parse.insert(6,self.msg_size)
+            tab_parse.insert(7,self.param_id_e)
+            tab_parse.insert(8,self.data_concat)
+            tab_parse.insert(9,self.end)
             print(tab_parse)
-
-    
 
     def getInfoMessageId(self):
         if self.id == "02":

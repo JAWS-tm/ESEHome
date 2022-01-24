@@ -6,7 +6,7 @@ from db.dbRequest import dbRequest
 from dbProcess.dbMessage import dbMessage
 import datetime
 
-def main():
+if __name__ == "__main__":
     logger.debug("-------------------Starting application-------------------")
     db = dbRequest()
     #TEMPORAIRE - Test de message en attendant le code et décode
@@ -16,10 +16,7 @@ def main():
     #Ajout d'un message dans la table message
     message2pierre = dbMessage(db, dummy_parse.receiver, dummy_parse.emmiter ,dummy_parse.id, dummy_parse.param_color, dummy_parse.data, datetime.datetime.now() ,True)
     message2pierre.objectTX2DB()
-
     #Suppression d'un message de la table message
-    
-    
     # messageremove = 
     sys.exit(1)
 
