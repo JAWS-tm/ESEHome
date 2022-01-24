@@ -14,7 +14,7 @@ def main():
     dummy_parse = FrameParser(dummy_message)
     dummy_parse.msgParsed()
     #Ajout d'un message dans la table message
-    message2pierre = dbMessage(db, dummy_parse.id, dummy_parse.param_color+dummy_parse.data, datetime.datetime.now() ,True)
+    message2pierre = dbMessage(db, dummy_parse.receiver, dummy_parse.emmiter ,dummy_parse.id, dummy_parse.param_color, dummy_parse.data, datetime.datetime.now() ,True)
     message2pierre.objectTX2DB()
 
     #Suppression d'un message de la table message
