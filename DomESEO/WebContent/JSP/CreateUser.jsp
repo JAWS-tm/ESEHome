@@ -18,7 +18,7 @@
 		Confirmation du mot de passe :<input type="password" name="confirm_password"><br>
 		
 		<p><em>L'utilisateur a par défaut le rôle d'un utilisateur typique.</em></p>
-		<input type="button" onclick="javascript:history.go(-1)" value="Retour">
+		<input type="button" onclick="window.location.href ='Controleur?dest=pageAdmin'" value="Retour">
 		<input type="submit" value="Créer">
 	</form>
 

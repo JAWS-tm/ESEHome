@@ -137,7 +137,7 @@ public class Controleur extends HttpServlet {
 					}
 					request.getRequestDispatcher(page).forward(request, response);
 					break;
-				case "gestion_droit":
+				case "pageAdmin":
 					List<Utilisateur> liste = this.daoUtilisateur.listDB();
 					request.setAttribute("liste", liste);
 					request.getRequestDispatcher("/JSP/PageAdmin.jsp").forward(request, response);

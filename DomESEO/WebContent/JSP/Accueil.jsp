@@ -13,7 +13,7 @@
 		<c:choose>
 			<c:when test="${connecte == 'oui'}">  
 				<c:if test="${ admin == 'oui' }">
-					<button onclick="window.location.href ='Controleur?dest=gestion_droit'">Partie Admin</button>
+					<button onclick="window.location.href ='Controleur?dest=pageAdmin'">Partie Admin</button>
 				</c:if>
 				<c:if test="${ admin == 'non' }">
 					<button onclick="window.location.href ='Controleur?dest=user_dashboard'">Accès au Dashboard de votre compte</button>
