@@ -7,7 +7,7 @@ with open('config/config.json', "r") as jsonFile:
     jsonFile.close()
 
 DATA_COMMUNICATION_CONFIG = CONFIG["data_communication"]
-BDD_CONFIG = CONFIG["BDD"]
+DB_CONFIG = CONFIG["DB"]
 
 #AppliLogger("nomdufichier","DEBUG","default")
 logger = AppliLogger(CONFIG["logs"]["fileName"],CONFIG["logs"]['filter'],CONFIG["logs"]['format'])
