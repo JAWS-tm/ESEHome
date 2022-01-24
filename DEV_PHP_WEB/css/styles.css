@@ -9,8 +9,8 @@ footer{
 }
 
 .footer_element{
-    width: 25%;
-    padding: 1em;
+    width: 33%;
+    padding-left: 10%;
 }
 
 h2 {
@@ -27,10 +27,6 @@ h2 {
 .footer_element p{
     width: 70%;
     font-size: 1.1em;
-}
-
-.footer_element span{
-    margin-left: 13%;
 }
 
 .footer_element ul{
