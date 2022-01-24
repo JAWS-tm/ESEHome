@@ -140,14 +140,66 @@ public class Controleur extends HttpServlet {
 				case "gestion_droit":
 					List<Utilisateur> liste = this.daoUtilisateur.listDB();
 					request.setAttribute("liste", liste);
-					request.getRequestDispatcher("/JSP/Gestion_permission.jsp").forward(request, response);
+					request.getRequestDispatcher("/JSP/PageAdmin.jsp").forward(request, response);
 					break;	
 				case "changement_groupe":
 					String groupe=request.getParameter("groups");
 					int identifiant = this.daoObjet.getIdByName(groupe);
 					this.daoUtilisateur.addgroup(identifiant);
-					request.getRequestDispatcher("/JSP/Gestion_permission.jsp").forward(request, response);
+					request.getRequestDispatcher("/JSP/PageAdmin.jsp").forward(request, response);
+					break;
+					
+					
+					
+				case "modifUtil":
+					
+					System.out.println(dest);
+					int idUtil = Integer.parseInt(request.getParameter("idUtil"));
+					
+					Utilisateur us = daoUtilisateur.getUtilisateurById(idUtil);
+					
+					request.setAttribute("us", us);
+					
+					request.getRequestDispatcher("/JSP/ModifUtil.jsp").forward(request, response);
 
+					
+					break;
+				
+				case "create_user_page":
+					
+					System.out.println(dest);
+					request.getRequestDispatcher("/JSP/CreateUser.jsp").forward(request, response);
+				
+					break;
+					
+				case "create_user":
+					
+					if((request.getParameter("pseudo") != null && !request.getParameter("pseudo").isEmpty()) && (request.getParameter("password") != null && !request.getParameter("password").isEmpty()) && (request.getParameter("confirm_password") != null && !request.getParameter("confirm_password").isEmpty())) {
+						
+						if(request.getParameter("password").equals(request.getParameter("confirm_password"))) {
+							
+							if(!this.daoUtilisateur.checkPseudo(request.getParameter("pseudo"))) {
+								
+								this.daoUtilisateur.ajouterUtilisateur(request.getParameter("pseudo"), request.getParameter("password"), 0);
+								request.setAttribute("succesC", "L'utilisateur "+request.getParameter("pseudo")+" a été créé avec succès.");
+								
+							} else { 
+								
+								request.setAttribute("infoC", "Le pseudo a déjà été utilisé !");
+							}
+						}else {
+							
+							request.setAttribute("infoC", "Les deux mots de passe ne sont pas équivalents !");
+						}
+					} else {
+						
+						request.setAttribute("infoC", "Tous les champs ne sont pas complétés !");
+					}
+					request.getRequestDispatcher("/JSP/CreateUser.jsp").forward(request, response);
+					
+					
+					break;
+					
 				case "add_user_page":
 					request.getRequestDispatcher("/JSP/Demande_privilege.jsp").forward(request, response);
 						

@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>domESEO - Administrateur</title>
 </head>
 <body>
 	<h2>Liste des utilisateurs</h2>
@@ -13,16 +13,26 @@
 		<tr id="top">
 			<th>N°</th>
 		    <th>Pseudo</th>
-		    <th>Admin</th>
+		    <th>-</th>
 		</tr>
 		<c:forEach  var="u" items="${ liste }" >
 			<tr>
 				<td><c:out value="${ u.getId() }"/></td>
 				<td><c:out value="${ u.getPseudo() }"/></td>
-				<td><c:out value="${ u.getAdmin() }"/></td>
 				<td>
+				
+					<form name="frm" method="post" action="Controleur?dest=modifUtil">
+							
+						<input id="idUtil" type="hidden" name="idUtil" value="${u.getId() }" />		
+						<input id="modif" type="submit" name="btnModif" value="Modifier les attributs" />
+								
+					</form>
+					
+				</td>
+					
+				<!-- <td>
 				<form action="Controleur?dest=changement_groupe" name="groups" type="hidden" id="form" method="post">
-      				<select  name="groups" type="hidden" id="assignated_group">
+      				<select  name="utilisateurs" type="hidden" id="assignated_group">
       					<option value="">--Modifier le groupe d'objet--</option>
       					<option value="groupe_1">groupe 1</option>
 				   		<option value="groupe_2">groupe 2</option>
@@ -30,14 +40,19 @@
 					    <option value="groupe_4">groupe 4</option>
       				</select>
 	       		</form> 
-	       		</td>
-				<td>  		        
+	       		</td> -->
+				<!-- <td>  		        
 				<form action="Controleur?dest=deleteUser" id="form" method="post">
 		        	<input type="submit" class="button" value="suppression">
 		        </form>
-		        </td>
+		        </td> -->
 			</tr>
 		</c:forEach>
 	</table>
+	
+	<br><br>
+	
+	Création d'un nouvel utilisateur
+	<button onclick="window.location.href ='Controleur?dest=create_user_page'">Création</button>
 </body>
 </html>
