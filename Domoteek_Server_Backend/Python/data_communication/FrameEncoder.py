@@ -1,97 +1,81 @@
-#La classe doit modéliser un objet message qui contient toutes les informations d'un message interpretées et accessibles depuis ses méthodes.
-#import this
+class FrameEncoder:
+    #Attributes:
+    def __init__(self, msg):
+        self.msg = msg
+
+    def inputMessage(self):
+        msg = input("Msg en hexa : ")
+        print("Le message envoyé est : " ,msg)
+        data_size = hex(len(msg)//2)
+        print("data_size : ", data_size)
+        nb_bits =  data_size[2:]
+        #print ("Nombre bits : ",nb_bits)
+        len_bits = len(nb_bits)
+        print("Conv en hexa : ", len_bits)
+        if len_bits==1 :
+            zero = "0"
+            new_data_size = zero + nb_bits
+            print("conv en hexa : ", new_data_size)
+        else :
+            print("conv en hexa : ", nb_bits) 
 
 
-from email import message
+        msg_id_e = input("msg id e : ")
+        if len(msg_id_e) > 2 :
+            print("error msg") 
+        elif msg_id_e == "02" :
+            size == "00"
+        elif msg_id_e == "03" :
+            size == "00"
+        elif msg_id_e == "06" :
+            size == "00"
+        elif msg_id_e == "16" :
+            size == "00"
+        elif msg_id_e == "30" :
+            size == "01"
+        elif msg_id_e == "40" :
+            size == "05"
+        elif msg_id_e == "41" :
+            size == "01"
+        elif msg_id_e == "42" :
+            size == "05"
+        elif msg_id_e == "FD" :
+            size == "00"
+        elif msg_id_e == "FE" :
+            size == "00"
+
+        # if len_new_concat==1 :
+        #     concat = 0
+        #     data_size = concat + data_size
+        #     print(data_size)
 
 
-class FrameEncoder :
-    #Attributes
-    def __init__(self, message):
-        self.message = message
-        self.begin = message [:2]
-        self.data_size = message [2:4]
-        self.receiver = message [4:12]
-        self.emmiter = message [12:20]
-        self.counter = message [20:22]
-        self.id = message [22:24]
-        self.msg_size = message [24:26]
-        self.param_color = message[26:28]
-        self.data = message[28:-2]
-        self.end = message[-2:]
+        # print ("data size : ", data_size)
 
-    def msgParsed(self):
-        CONST_BEGIN = "BA"
-        CONST_END = "DA"
-        self.tram_size = len(self.message)//2
-
-        tab_msg = []
-        for x in range(self.tram_size):
-            chaine = self.message[x*2]+self.message[(x*2)+1]
-            tab_msg.append(chaine)
-        #print(tab_msg)
-
-        begin = tab_msg[0]
-
-        data_size = tab_msg[1]
-        emitter = "".join(tab_msg[2:6]) 
-        reciver = "".join(tab_msg[6:10])
-        cnt = tab_msg[10] 
-        id = tab_msg[11]
-        msg_size = tab_msg[12]
-        data = tab_msg[13:-1]
-        end = tab_msg[-1]
-        data_concat = "".join(data) 
-        if begin != CONST_BEGIN:
-            print("Frame error")
-        elif end != CONST_END:
-            print("Frame error")
-        else:
-            tab_parse = []
-            tab_parse.insert(0,begin)
-            tab_parse.insert(1,data_size)
-            tab_parse.insert(2,emitter)
-            tab_parse.insert(3,reciver)
-            tab_parse.insert(4,cnt)
-            tab_parse.insert(5,id)
-            tab_parse.insert(6,msg_size)
-            tab_parse.insert(7,data_concat)
-            tab_parse.insert(8,end)
-            print(tab_parse)
+        #print("le message envoyé est", input_dummy_msg)
 
 
-    def getInfoMessageId(self):
-        if self.id == "02":
-            print("RECENT_RESET")
-        elif self.id == "03":
-            print("ASK_FOR_SOFTWARE_RESET")
-        elif self.id == "16":
-            print("PING")
-        elif self.id == "06":
-            print("PONG")
-        elif self.id == "30":
-            print("EVENT_OCCURED")
-        elif self.id == "40":
-            print("PARAMETER_IS")
-        elif self.id == "41":
-            print("PARAMETER_ASK")
-        elif self.id == "42":  
-            print("PARAMETER_WRITE")
-        elif self.id == "FD":  
-            print("I_HAVE_NO_SERVER_ID")
-        elif self.id == "FE":  
-            print("YOUR_SERVER_ID_IS")
-        else:
-            print("message id error")
-    #Message attributes (ex dest, emitter, data, etc.)
 
-    #Constructor
-    #def __init__(self, ) :
-    #init attributes (en fonction du protocole de com)
-
-    #Methods
-    #Getters et setters
-
-
-    #def getMessageInfo():
-        #return "dest :"+self.dest+"emitter :"+self.emitter...etc.
+    """ def getInfoMessageId(self):
+    if self.id == "02":
+        print("RECENT_RESET")
+    elif self.id == "03":
+        print("ASK_FOR_SOFTWARE_RESET")
+    elif self.id == "16":
+        print("PING")
+    elif self.id == "06":
+        print("PONG")
+    elif self.id == "30":
+        print("EVENT_OCCURED")
+    elif self.id == "40":
+        print("PARAMETER_IS")
+    elif self.id == "41":
+        print("PARAMETER_ASK")
+    elif self.id == "42":
+        print("PARAMETER_WRITE")
+    elif self.id == "FD":
+        print("I_HAVE_NO_SERVER_ID")
+    elif self.id == "FE":
+        print("YOUR_SERVER_ID_IS")
+    else:
+        print("message id error") """
