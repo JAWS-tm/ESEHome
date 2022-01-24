@@ -5,7 +5,7 @@
 from email import message
 
 
-class FrameParser :
+class FrameEncoder :
     #Attributes
     def __init__(self, message):
         self.message = message
@@ -39,18 +39,13 @@ class FrameParser :
         cnt = tab_msg[10] 
         id = tab_msg[11]
         msg_size = tab_msg[12]
-        param_id_e = tab_msg[13]
-        data = tab_msg[14:-1]
+        data = tab_msg[13:-1]
         end = tab_msg[-1]
         data_concat = "".join(data) 
         if begin != CONST_BEGIN:
             print("Frame error")
         elif end != CONST_END:
             print("Frame error")
-        elif param_id_e > "24" :
-            print("Param id error")
-        # elif len(reciver) != 8:
-        #     print("Reciver error")
         else:
             tab_parse = []
             tab_parse.insert(0,begin)
@@ -60,12 +55,10 @@ class FrameParser :
             tab_parse.insert(4,cnt)
             tab_parse.insert(5,id)
             tab_parse.insert(6,msg_size)
-            tab_parse.insert(7,param_id_e)
-            tab_parse.insert(8,data_concat)
-            tab_parse.insert(9,end)
+            tab_parse.insert(7,data_concat)
+            tab_parse.insert(8,end)
             print(tab_parse)
 
-    
 
     def getInfoMessageId(self):
         if self.id == "02":
