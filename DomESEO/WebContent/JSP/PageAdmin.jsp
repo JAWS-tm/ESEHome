@@ -57,6 +57,15 @@
 	<br><br>
 	
 	Création d'un nouvel utilisateur
-	<button onclick="window.location.href ='Controleur?dest=create_user_page'">Création</button>
+	<button onclick="window.location.href ='Controleur?dest=create_user_page'">Création Utilisateur</button>
+	
+	<br>
+	
+	Création d'un nouveau groupe
+	<button onclick="window.location.href ='Controleur?dest=create_group_page'">Création Groupe</button>
+<!-- 	<input type="button" onclick="window.location.href ='Controleur?dest=connexion'" value="Retour">
+ -->	
+ 
+ <!-- à modifier une fois que les variables de session sont gérées -->
 </body>
 </html>

@@ -15,4 +15,8 @@ public interface DAOGroupe_Objet {
 	public abstract List<Groupe_utilisateur> getGroupe_Utilisateur();
 	
 	public abstract List<Groupe_objet> getGroupe_Objet();
+	
+	public abstract Groupe getGroupeByNom(String nom_groupe);
+	
+	public abstract void createNewGroup(String nom_groupe);
 }

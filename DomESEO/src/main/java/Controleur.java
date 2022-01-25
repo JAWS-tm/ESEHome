@@ -200,6 +200,43 @@ public class Controleur extends HttpServlet {
 					
 					break;
 					
+					
+				case "create_group_page":
+					
+					System.out.println(dest);
+					request.getRequestDispatcher("/JSP/CreateGroup.jsp").forward(request, response);
+					
+					break;
+					
+					
+				case "create_group":
+					
+					String groupname = request.getParameter("groupname").trim();
+					
+					if(groupname != null && !groupname.isEmpty()) {
+						
+						if(daoGroupe_Objet.getGroupeByNom(groupname) == null) {
+							
+							daoGroupe_Objet.createNewGroup(groupname);
+							request.setAttribute("succes3", "Le groupe "+groupname+" a été créé.");
+
+						} else {
+							
+							request.setAttribute("error", "Un groupe avec ce nom existe déjà. Veuillez réessayer.");
+						}
+						
+						
+						
+					} else {
+						
+						request.setAttribute("error", "Veuillez indiquer le nom du nouveau groupe.");
+					}
+					
+					
+					request.getRequestDispatcher("/JSP/CreateGroup.jsp").forward(request, response);
+					
+					break;
+					
 				case "add_user_page":
 					request.getRequestDispatcher("/JSP/Demande_privilege.jsp").forward(request, response);
 						

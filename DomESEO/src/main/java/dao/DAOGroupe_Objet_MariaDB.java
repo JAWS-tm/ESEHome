@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.PreparedStatement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -100,4 +101,92 @@ public class DAOGroupe_Objet_MariaDB implements DAOGroupe_Objet{
 			    }
 			    return liste;
 	}
+	
+	
+	
+	@Override
+	public Groupe getGroupeByNom(String nom_groupe) {
+		
+		Groupe group = null;
+		
+		try (Connection connexion = daoFactory.getConnection()) {
+			
+			PreparedStatement prepST = connexion.prepareStatement(
+					"SELECT * FROM groupe WHERE nom_groupe=?;");
+			
+			prepST.setString(1, nom_groupe);
+			
+			
+			try (ResultSet result = prepST.executeQuery()) {
+				
+				result.next();
+				int id = result.getInt("id");
+				
+				String nom = result.getString("nom_groupe");
+				
+				group = new Groupe(id, nom);
+				
+				
+			}
+		} catch (SQLException e) {
+			
+			System.out.println("ERROR : getGroupeByNom()");
+			e.printStackTrace();
+		}
+		
+		return group;
+	}
+	
+	
+	
+	
+	@Override
+	public void createNewGroup(String nom_groupe) {
+		
+		boolean check = false;
+		
+		try (Connection connexion = daoFactory.getConnection()) {
+			
+			try {					
+				PreparedStatement prepST1 = connexion.prepareStatement(
+						"SELECT * FROM groupe WHERE nom_groupe=?;");
+				prepST1.setString(1, nom_groupe);
+				
+				try (ResultSet result = prepST1.executeQuery()) {
+	
+					if(result.next()) {
+						check = true;
+					}
+				}
+				if(check == false) {
+					
+					PreparedStatement prepST = connexion.prepareStatement(
+							"INSERT INTO groupe(nom_groupe)"
+							+ "VALUES(?);");
+					prepST.setString(1, nom_groupe);
+					
+					prepST.executeUpdate();
+				
+				} else {
+					
+					System.out.println("Groupe avec ce nom déjà existant.");
+				}
+			
+		
+		} catch(SQLException e) {
+			
+			System.out.println("ERROR : createNewGroup???()");
+			e.printStackTrace();
+		}
+			
+		} catch(SQLException e) {
+			
+			System.out.println("ERROR : createNewGroup()");
+			e.printStackTrace();
+		}
+	
+		
+	}
+	
+	
 }
