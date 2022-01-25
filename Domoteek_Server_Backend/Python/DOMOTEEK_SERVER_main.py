@@ -22,7 +22,7 @@ if __name__ == "__main__":
                 logger.debug("INCOMING MSG FROM UART : "+incoming_msg)
                 parsed_message = FrameParser(incoming_msg)
                 parsed_message.msgParsed()
-                message2pierre = dbMessage(db, str(parsed_message.receiver), str(parsed_message.emitter) , str(parsed_message.id), str(parsed_message.param_id_e), str(parsed_message.data), datetime.datetime.now() ,True)
+                message2pierre = dbMessage(db, parsed_message.getReceiver(), parsed_message.getEmitter() , parsed_message.getId(), parsed_message.getParamID(), parsed_message.getData(), datetime.datetime.now() ,True)
                 message2pierre.objectTX2DB()
             uart_controller.send_new_message("Message sent from the main\n")
             #Rajouter ici le check des messages arrivant depuis la station de base vers les objets (emetteur)
