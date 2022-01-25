@@ -10,15 +10,7 @@ from data_communication.UartController import UartController
 import traceback
 
 if __name__ == "__main__":
-    logger.debug("-------------------Starting application-------------------")
-    # #TEMPORAIRE - Test de message en attendant le code et décode
-    # dummy_message = "BA1000000002EEEEEE00A2420508CAFEDECADA"#String
-    # dummy_parse = FrameParser(dummy_message)
-    # dummy_parse.msgParsed()
-    # #Ajout d'un message dans la table message
-    # message2pierre = dbMessage(db, dummy_parse.receiver, dummy_parse.emmiter ,dummy_parse.id, dummy_parse.param_color, dummy_parse.data, datetime.datetime.now() ,True)
-    # message2pierre.objectTX2DB()
-    '''MAIN'''
+    logger.info("-------------------Starting application-------------------")
     #Init values
     db = dbRequest()
     uart_controller = UartController(UART_CONFIG)
@@ -27,17 +19,18 @@ if __name__ == "__main__":
         try :
             incoming_msg = uart_controller.get_last_message()
             if(incoming_msg!=0):
-                print("INCOMING MSG FROM UART : "+incoming_msg)
+                logger.debug("INCOMING MSG FROM UART : "+incoming_msg)
                 parsed_message = FrameParser(incoming_msg)
                 parsed_message.msgParsed()
                 message2pierre = dbMessage(db, str(parsed_message.receiver), str(parsed_message.emitter) , str(parsed_message.id), str(parsed_message.param_id_e), str(parsed_message.data), datetime.datetime.now() ,True)
                 message2pierre.objectTX2DB()
+            uart_controller.send_new_message("Message sent from the main\n")
+            #Rajouter ici le check des messages arrivant depuis la station de base vers les objets (emetteur)
         except Exception as e :
-            print("ERROR : There was an error processing incoming messages")
-            print(str(e))
+            logger.error("ERROR : There was an error processing the incoming data. The message has been ignored")
+            logger.error(str(e))
             traceback.print_exc()
-            sys.exit(1)
-main()
+            #sys.exit(1)
 
 
 
