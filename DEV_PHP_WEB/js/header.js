@@ -20,6 +20,7 @@ function relief() {
             x.style.borderRadius = "60px";
             x.style.border = "10px solid #FFF"
             x.style.color = "#334E70";
+            x.style.fontWeight = "bold";
 
         }
     }
