@@ -10,6 +10,7 @@ if(!empty($_POST)){
     if(password_verify($_POST['password'], $user->MotDePasse)){
         $_SESSION['auth'] = $user;
         $_SESSION['flash']['success'] = 'Vous êtes maintenant connecté';
+        $_SESSION['loggedin'] = true;
         $errors['username'] = 'Vous êtes maintenant connecté';
         header('Location: mesobjets.php');
         exit();
