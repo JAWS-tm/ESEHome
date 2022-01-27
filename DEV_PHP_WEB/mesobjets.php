@@ -1,5 +1,6 @@
 <?php require 'inc/header.php';?>
 
+<div class="mesobjets">
 <div class="user_ban">
     <h1>Mes Objets</h1>
   </div>
@@ -80,6 +81,6 @@
           </div>
       </article>    
   </div>
-
+</div>
 
 <?php require 'inc/footer.php';?>
