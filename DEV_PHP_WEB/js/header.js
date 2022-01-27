@@ -16,9 +16,10 @@ function relief() {
     for (i = 0; i < dnl.length; i++) {
         var x = dnl.item(i);
         if (x.href == pageurl) {
-            x.style.backgroundColor = "#F5D1C6";
+            x.style.backgroundColor = "#FFF";
             x.style.borderRadius = "60px";
-            x.style.border = "10px solid #F5D1C6"
+            x.style.border = "10px solid #FFF"
+            x.style.color = "#334E70";
 
         }
     }
