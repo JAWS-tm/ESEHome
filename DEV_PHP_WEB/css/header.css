@@ -34,6 +34,7 @@ a {
     line-height: 66px;
     color: #fff;
     background-color: #334E70;
+    z-index: 1000;
 }
 
 .header_logo img {
