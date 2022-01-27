@@ -2,8 +2,10 @@
 
 
 <div class="ban">
-	<div class="ban-text">
+	<div class="text">
 		<h1>ESEHome</h1>
+		<h3>Le confort n'est plus un luxe.</h3>
+		<p>Connectez-vous, accédez à vos équipements<br> et profitez !</p>
 	</div>
 </div>
 

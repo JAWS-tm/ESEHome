@@ -11,7 +11,7 @@ if(!empty($_POST)){
         $_SESSION['auth'] = $user;
         $_SESSION['flash']['success'] = 'Vous êtes maintenant connecté';
         $errors['username'] = 'Vous êtes maintenant connecté';
-        header('Location: index.php');
+        header('Location: mesobjets.php');
         exit();
     }else{
         $_SESSION['flash']['danger'] = 'Identifiant ou mot de passe incorrecte';
