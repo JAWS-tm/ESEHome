@@ -87,17 +87,20 @@ public class Controleur extends HttpServlet {
 									
 									this.utilisateur = this.daoUtilisateur.getUtilisateurByPseudo(request.getParameter("identifiant"));
 									
+									session.setAttribute("user", utilisateur);
+									
 									if(this.utilisateur.getAdmin() == 1) {
 										
 										error = false;
-										request.setAttribute("connecte", "oui");
-										request.setAttribute("admin", "oui");
+										
+//										request.setAttribute("connecte", "oui");
+//										request.setAttribute("admin", "oui");
 										
 									} else if(this.utilisateur.getAdmin() == 0) {
 										
 										error = false;
-										request.setAttribute("connecte", "oui");
-										request.setAttribute("admin", "non");
+//										request.setAttribute("connecte", "oui");
+//										request.setAttribute("admin", "non");
 										
 									} else {
 										request.setAttribute("error", "Votre compte n'a pas été vérifié !");

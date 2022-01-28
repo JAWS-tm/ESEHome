@@ -28,15 +28,15 @@
 							<input type="password" name="mot_de_passe" />
 							<input type="hidden" name="source" value="Accueil" />
 							<input type="submit" name="connexion" value="se connecter" /><br>
-							<p>${ error }</p>
+							<p style=color:red>${ error }</p>
 						</form>
 					</div>
-				<c:if test="${ privilege != 'non' }">
+				<%-- <c:if test="${ privilege != 'non' }">
 					<div id="Demande de privilège">
 						<p>Faire une demande de privilège </p>
 						<button type="button" onclick="window.location.href ='Controleur?dest=add_user_page'">Demande</button>
 					</div>
-				</c:if>
+				</c:if> --%>
 				
 					<div id="Accès Visiteur">
 						<p>Accéder au dashboard en accès visiteur</p>
