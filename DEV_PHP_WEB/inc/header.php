@@ -33,4 +33,3 @@ require 'head.php'; ?>
 		<div class="site-pusher">
 			<div class="site-cache" id="site-cache"></div>
 			<div class="site-content">
-				<div class="container">
