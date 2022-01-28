@@ -1,5 +1,5 @@
 <?php require 'inc/header.php';?>
-
+<link rel="stylesheet" type="text/css" href="css/mesobjets.css">
 <div class="mesobjets">
 <div class="user_ban">
     <h1>Mes Objets</h1>
