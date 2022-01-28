@@ -1,0 +1,2 @@
+2022-01-28 10:40:35,411:data_com_logs.txt:DEBUG:-------------------Starting application-------------------
+2022-01-28 10:40:35,499:data_com_logs.txt:DEBUG:MariaDB.py : Connected to database

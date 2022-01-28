@@ -19,8 +19,9 @@ class dbMessage:
 
     def objectRX2DB(self):
         self.db.recieveData(getMessageSQLQuery)
-        for (msgTypeID, msgCONTENT, msgDATE, msgPerm) in self.db.getCursor():
-            print("Type ID : {}, Message : {}, Date : {}, Permanent : {}".format(msgTypeID, msgCONTENT, msgDATE, msgPerm))
+        for c in self.db.getCursor():
+           print(c)
+
 
     def objectRM2DB(self):
         self.db.sendData(removeMessageSQLQuery)
