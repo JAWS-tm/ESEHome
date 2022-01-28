@@ -2,6 +2,7 @@
 #import this
 
 
+
 from email import message
 
 
@@ -10,6 +11,11 @@ class FrameParser :
     def __init__(self, message):
         self.message = message
 
+    #Message attributes (ex dest, emitter, data, etc.)
+
+    #Constructor
+    #def __init__(self, ) :
+    #init attributes (en fonction du protocole de com)
     def msgParsed(self):
         CONST_BEGIN = "BA"
         CONST_END = "DA"
@@ -19,7 +25,7 @@ class FrameParser :
         for x in range(self.tram_size):
             chaine = self.message[x*2]+self.message[(x*2)+1]
             tab_msg.append(chaine)
-        #print(tab_msg)
+        print(tab_msg)
 
         self.begin = tab_msg[0]
         self.data_size = tab_msg[1]
@@ -37,10 +43,8 @@ class FrameParser :
             print("Frame error")
         elif self.end != CONST_END:
             print("Frame error")
-        elif self.param_id_e > "24" :
+        elif self.param_id_e > "24" or self.param_id_e == "16" :
             print("Param id error")
-        # elif len(reciver) != 8:
-        #     print("Reciver error")
         else:
             tab_parse = []
             tab_parse.insert(0,self.begin)
@@ -54,6 +58,7 @@ class FrameParser :
             tab_parse.insert(8,self.data_concat)
             tab_parse.insert(9,self.end)
             print(tab_parse)
+
 
     def getInfoMessageId(self):
         if self.id == "02":
@@ -77,15 +82,50 @@ class FrameParser :
         elif self.id == "FE":  
             print("YOUR_SERVER_ID_IS")
         else:
-            print("message id error")
-    #Message attributes (ex dest, emitter, data, etc.)
-
-    #Constructor
-    #def __init__(self, ) :
-    #init attributes (en fonction du protocole de com)
+            print("Message id error")
+    
 
     #Methods
     #Getters et setters
+    def getFrameBegin(self):
+        str_begin = "".join(self.begin)
+        return str_begin
+
+    def getDataSize(self):
+        str_dataSize = "".join(self.data_size)
+        return str_dataSize
+    
+    def getEmitter(self):
+        str_emitter = "".join(self.emitter)
+        return str_emitter
+    
+    def getReceiver(self):
+        str_receiver = "".join(self.receiver)
+        return str_receiver
+    
+    def getCounter(self):
+        str_counter = "".join(self.cnt)
+        return str_counter
+    
+    def getId(self):
+        str_id = "".join(self.id)
+        return str_id
+
+    def getMessageSize(self):
+        str_messageSize = "".join(self.msg_size)
+        return str_messageSize
+    
+    def getParamID(self):
+        str_paramId = "".join(self.param_id_e)
+        return str_paramId
+    
+    def getData(self):
+        str_Data = "".join(self.data_concat)
+        return str_Data
+    
+    def getEndFrame(self):
+        str_endFrame= "".join(self.end)
+        return str_endFrame
 
 
     #def getMessageInfo():

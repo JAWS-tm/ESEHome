@@ -1,2 +1,29 @@
+<<<<<<< HEAD
 2022-01-28 10:40:35,411:data_com_logs.txt:DEBUG:-------------------Starting application-------------------
 2022-01-28 10:40:35,499:data_com_logs.txt:DEBUG:MariaDB.py : Connected to database
+=======
+2022-01-24 11:25:00,270:data_com_logs.txt:DEBUG:-------------------Starting application-------------------
+2022-01-24 11:25:00,387:data_com_logs.txt:DEBUG:MariaDB.py : Connected to database
+2022-01-24 11:26:05,734:data_com_logs.txt:DEBUG:-------------------Starting application-------------------
+2022-01-24 11:26:05,785:data_com_logs.txt:DEBUG:MariaDB.py : Connected to database
+2022-01-24 11:27:11,964:data_com_logs.txt:DEBUG:-------------------Starting application-------------------
+2022-01-24 11:27:12,041:data_com_logs.txt:DEBUG:MariaDB.py : Connected to database
+2022-01-24 11:27:37,567:data_com_logs.txt:DEBUG:-------------------Starting application-------------------
+2022-01-24 11:27:37,615:data_com_logs.txt:DEBUG:MariaDB.py : Connected to database
+2022-01-24 11:37:29,838:data_com_logs.txt:DEBUG:-------------------Starting application-------------------
+2022-01-24 11:37:29,930:data_com_logs.txt:DEBUG:MariaDB.py : Connected to database
+2022-01-24 11:39:26,863:data_com_logs.txt:DEBUG:-------------------Starting application-------------------
+2022-01-24 11:39:26,915:data_com_logs.txt:DEBUG:MariaDB.py : Connected to database
+2022-01-24 11:40:19,295:data_com_logs.txt:DEBUG:-------------------Starting application-------------------
+2022-01-24 11:40:19,337:data_com_logs.txt:DEBUG:MariaDB.py : Connected to database
+2022-01-25 10:54:07,770:data_com_logs.txt:INFO:-------------------Starting application-------------------
+2022-01-25 10:54:07,860:data_com_logs.txt:DEBUG:MariaDB.py : Connected to database
+2022-01-25 10:54:38,677:data_com_logs.txt:INFO:-------------------Starting application-------------------
+2022-01-25 10:54:38,763:data_com_logs.txt:DEBUG:MariaDB.py : Connected to database
+2022-01-25 10:54:59,642:data_com_logs.txt:INFO:-------------------Starting application-------------------
+2022-01-25 10:54:59,697:data_com_logs.txt:DEBUG:MariaDB.py : Connected to database
+2022-01-25 10:55:49,127:data_com_logs.txt:INFO:-------------------Starting application-------------------
+2022-01-25 10:55:49,179:data_com_logs.txt:DEBUG:MariaDB.py : Connected to database
+2022-01-25 10:56:11,177:data_com_logs.txt:INFO:-------------------Starting application-------------------
+2022-01-25 10:56:11,279:data_com_logs.txt:DEBUG:MariaDB.py : Connected to database
+>>>>>>> 96f471dd228cc4d9d70c334f622848ca74b5f765

@@ -1,6 +1,11 @@
 {
     "data_communication":{
-        "UART_baudrate":115000
+        "UART":{
+            "port" : "/dev/tty.URT0",
+            "baudrate" : 115000,
+            "timeout" : 3.0,
+            "end_of_frame_character" : "\n"
+        }
     },
     "DB":{
         "port": 3306,

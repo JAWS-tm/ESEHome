@@ -8,6 +8,7 @@ with open('config/config.json', "r") as jsonFile:
 
 DATA_COMMUNICATION_CONFIG = CONFIG["data_communication"]
 DB_CONFIG = CONFIG["DB"]
+UART_CONFIG = CONFIG["data_communication"]["UART"]
 
 #AppliLogger("nomdufichier","DEBUG","default")
 logger = AppliLogger(CONFIG["logs"]["fileName"],CONFIG["logs"]['filter'],CONFIG["logs"]['format'])
