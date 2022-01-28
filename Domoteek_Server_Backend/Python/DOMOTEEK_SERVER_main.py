@@ -1,36 +1,40 @@
-from multiprocessing import dummy
 import sys
+import datetime
+import traceback
+from multiprocessing import dummy
 from data_communication.FrameParser import FrameParser
 from config.app_config import logger
-from db.dbRequest import dbRequest
-from dbProcess.dbMessage import dbMessage
-import datetime
 from config.app_config import UART_CONFIG
+from config.app_config import DB_CONFIG
 from data_communication.UartController import UartController
-import traceback
+from db.DbController import DbController
+
 
 if __name__ == "__main__":
     logger.info("-------------------Starting application-------------------")
-    #Init values
-    db = dbRequest()
+    db_controller = DbController(DB_CONFIG)
     uart_controller = UartController(UART_CONFIG)
-    #Boucle de fond
     while True :
         try :
-            incoming_msg = uart_controller.get_last_message()
-            if(incoming_msg!=0):
-                logger.debug("INCOMING MSG FROM UART : "+incoming_msg)
-                parsed_message = FrameParser(incoming_msg)
+            uart_incoming_msg = uart_controller.get_last_message()
+            if(uart_incoming_msg!=0):
+                logger.debug("INCOMING MSG FROM UART : "+str(uart_incoming_msg))
+                parsed_message = FrameParser(uart_incoming_msg)
                 parsed_message.msgParsed()
-                message2pierre = dbMessage(db, parsed_message.getReceiver(), parsed_message.getEmitter() , parsed_message.getId(), parsed_message.getParamID(), parsed_message.getData(), datetime.datetime.now() ,True)
-                message2pierre.objectTX2DB()
-                message2pierre.objectRX2DB()
-            uart_controller.send_new_message("Message sent from the main\n")
-            #Rajouter ici le check des messages arrivant depuis la station de base vers les objets (emetteur)
+                logger.debug("Parsed message : "+str(parsed_message))
+                #Send message to bdd (needs FrameParser msg type)
+                db_controller.put_message_in_bdd_sending_queue(parsed_message)
+            bdd_incoming_msg = db_controller.get_last_message()
+            if(bdd_incoming_msg!=0):
+                logger.debug("INCOMING MSG FROM BDD : "+str(bdd_incoming_msg))
+                #Concat dégueu ==> should be FrameEncoder
+                ret=str(bdd_incoming_msg[0])+str(bdd_incoming_msg[1])+str(bdd_incoming_msg[2])+str(bdd_incoming_msg[3])+str(bdd_incoming_msg[4])+str(bdd_incoming_msg[5])
+                #Send message to UART (needs str msg type)
+                uart_controller.put_message_in_uart_sending_queue(ret)
         except Exception as e :
             logger.error("ERROR : There was an error processing the incoming data. The message has been ignored")
             logger.error(str(e))
-            traceback.print_exc()
+            #traceback.print_exc()
             #sys.exit(1)
 
 

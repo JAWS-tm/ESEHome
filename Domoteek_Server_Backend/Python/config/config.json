@@ -1,7 +1,7 @@
 {
     "data_communication":{
         "UART":{
-            "port" : "/dev/tty.URT0",
+            "port" : "/dev/tty.usbmodem14203",
             "baudrate" : 115000,
             "timeout" : 3.0,
             "end_of_frame_character" : "\n"

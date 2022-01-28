@@ -1,5 +1,6 @@
 import serial
 from queue import Queue
+from config.app_config import logger
 
 class UartSerial :
     '''
@@ -69,10 +70,13 @@ class UartSerial :
             print("ERROR : You didn't launch the uart reader as a thread (ref to the constructor)")
     
     def get_next_message(self):
-        if(self.outgoing_message_queue.qsize()>0):
-            return self.outgoing_message_queue.get()
+        if(self.launched_as_thread):
+            if(self.outgoing_message_queue.qsize()>0):
+                return self.outgoing_message_queue.get()
+            else :
+                return None
         else :
-            return None
+            print("ERROR : You didn't launch the uart reader as a thread (ref to the constructor)")
 
     def print_port_info(self):
         print("Port : "+str(self.port)+"\n"
@@ -84,12 +88,12 @@ class UartSerial :
 def uart_process_main_thread(port : str, baudrate : int, timeout : int, incoming_message_queue : Queue, outgoing_message_queue : Queue, end_of_frame_character : str):
     uart = UartSerial(port, baudrate, timeout, True, incoming_message_queue, outgoing_message_queue)
     while True :
-        uart.read_uart_frame(end_of_frame_character) #Updates queue when a complete message is received
+        uart.read_uart_frame(end_of_frame_character) #Automatically updates queue when a complete message is received
         next_msg = uart.get_next_message() #Checks if there is a message to send
         if(next_msg): 
             if(uart.send_uart_frame(next_msg)==1):
-                print("Message successfully sent to UART : "+next_msg)
+                logger.debug("Message successfully sent to UART : "+next_msg)
             else :
-                print("ERROR : Failed to send msg to UART --> "+next_msg)
+                logger.debug("ERROR : Failed to send msg to UART --> "+next_msg)
             
         
