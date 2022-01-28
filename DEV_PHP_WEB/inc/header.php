@@ -11,13 +11,13 @@
 				<nav class="menu">
 					<a class="header_active" href="equipement.php">Les Ã©quipements</a>
 					<a class="header_active" href="admin.php">Le coin de l'admin</a>
-					<a class="header_active" href="compte.php">Mon compte</a>
+					<a class="header_active" href="moncompte.php">Mon compte</a>
 					<a class="header_active" href="deconnexion.php">Me déconnecter</a>
 				</nav>	
 			<?php } else {?>
 				<nav class="menu">
 					<a class="header_active" href="equipement.php">Les Ã©quipements</a>
-					<a class="header_active" href="connexion.php">Mon compte</a>
+					<a class="header_active" href="moncompte.php">Mon compte</a>
 					<a class="header_active" href="deconnexion.php">Me déconnecter</a>
 				</nav>
 			<?php

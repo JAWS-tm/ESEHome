@@ -29,7 +29,16 @@ if(!empty($_POST)){
         $username = htmlspecialchars($_POST['username']);
         $admin = htmlspecialchars($_POST['admin']);
         $req->execute([$username, $password, $admin]);
+        
+        $lastinsert = $pdo->lastInsertId();
+        $reqinsertgrp = $pdo->prepare("INSERT INTO groupe_utilisateur SET id_utilisateur = ?, id_groupe = ?, edition = ?");
+        $reqinsertgrp->execute(array($lastinsert, 0, false));
+
     }
+
+
+
+
 }
 $page = "inscription.php";
 ?>
