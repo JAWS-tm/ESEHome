@@ -23,7 +23,7 @@
 
 ?>
 
-<link rel="stylesheet" href="css/inscription.css"/>
+<link rel="stylesheet" href="css/admin.css"/>
 <body>
 
 	<div class="container">

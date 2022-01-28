@@ -1,4 +1,4 @@
-<?php session_start(); 
+?php session_start(); 
 require 'head.php'; ?>
 
 !-- PARTIE HTML -->
@@ -8,3 +8,4 @@ require 'head.php'; ?>
 </body>
 
 <?php require 'inc/footer.php';?>
+

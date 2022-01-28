@@ -1,5 +1,5 @@
 <?php 
-    $servername = 'localhost';
+   /* $servername = 'localhost';
     $username = 'root';
     $password = '';
     
@@ -26,5 +26,14 @@
     if(isset($_POST['SalleDeBain'])){
         $droits = $droits + $_POST['SalleDeBain'];
     }
-    
+    */
+    include("inc/db.php");
+    $lastinsertajouter = $pdo->lastInsertId();
+    echo $lastinsertajouter ;
+
+                            
+    $reqinsertgrpajouter = $pdo->prepare("INSERT INTO groupe_utilisateur SET id_utilisateur = ?, id_groupe = ?, edition = ?");
+    $reqinsertgrpajouter->execute(array($lastinsertajouter,0, false));
+
+
 ?>
