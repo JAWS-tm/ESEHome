@@ -12,9 +12,23 @@
 	if(isset($_POST['formgrpuser']) AND isset($_POST['datagrp']) AND !empty($_POST['choixgroupeobjet'])){
 	
 		$data = $_POST['datagrp'];
-		$sqlQueryGrp = 'INSERT INTO groupe_utilisateur SET id_utilisateur = ?, id_groupe = ?, edition = ?';
-		$recipesStatementGrp = $pdo->prepare($sqlQueryGrp);
-		$recipesStatementGrp->execute(array($data, $_POST['choixgroupeobjet'], false));
+		// POUR EVITER LES DOUBLON
+		$sqlGrp = 'SELECT * FROM groupe_utilisateur WHERE id_utilisateur ='.$data;
+		$reqGrp = $pdo->prepare($sqlGrp);
+		$reqGrp->execute();
+		if ($reqGrp->rowCount() !=0) {
+		 	$sqlGrp2 = 'INSERT INTO groupe_utilisateur SET id_utilisateur = ?, id_groupe = ?, edition = ?';
+		 	$reqGrp2 = $pdo->prepare($sqlGrp2);
+			$reqGrp2->execute(array($data, $_POST['choixgroupeobjet'], false));
+		 }
+		 else {
+		 	// PROBLEME DE CONCATENATION DE LA REQEUTE SQL
+		 	$sqlGrp3 = "UPDATE groupe_utilisateur SET id_groupe ='".$_POST['choixgroupeobjet'].'"' WHERE id_utilisateur ="".$data;
+		 	$reqGrp3 = $pdo->prepare($sqlGrp3);
+			$reqGrp3->execute();
+		 }
+
+
 
 		header("Location: gestionutilisateur.php");
 	}

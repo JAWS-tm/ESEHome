@@ -30,6 +30,7 @@ if(!empty($_POST)){
         $admin = htmlspecialchars($_POST['admin']);
         $req->execute([$username, $password, $admin]);
 
+        header("Location: connexion.php");
 
 
     }

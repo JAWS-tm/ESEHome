@@ -1,5 +1,5 @@
 <?php
-	
+	session_start();
 	if (!isset($_SESSION['auth']->id)) {
 
 		header("Location: index.php");
