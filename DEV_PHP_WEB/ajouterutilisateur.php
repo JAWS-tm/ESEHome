@@ -1,6 +1,5 @@
 <?php
 
-
  	require 'inc/header.php';
 	include("inc/db.php");
 
