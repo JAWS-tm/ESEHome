@@ -73,7 +73,8 @@
 	<div class="lien">
 		<p><a href="ajouterutilisateur.php">Ajouter un utilisateur</a></p>
 		<p><a href="promouvoirutilisateur.php">Promouvoir un utilisateur</a></p>
-		<p><a href="retrogradationadmin.php">Demande de rétrogradation d'un admin</a></p>
+		<p><a href="gestionutilisateur.php">Gestion des groupes utilisateur</a></p>
+		
 	</div>
 
 

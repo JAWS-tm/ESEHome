@@ -6,8 +6,8 @@
 	    $pseudoajout = htmlspecialchars($_POST['usernameajout']);
 	    $mdpajout = $_POST['passwordajout'];
 	    $mdpajout2 = $_POST['passwordajout_confirm'];
-	    $choix = $_POST['choixgroupeobjet'];
-	    if(!empty($_POST['usernameajout']) AND !empty($_POST['passwordajout']) AND !empty($_POST['passwordajout_confirm']) AND !empty($_POST['choixgroupeobjet']) ) {
+	    
+	    if(!empty($_POST['usernameajout']) AND !empty($_POST['passwordajout']) AND !empty($_POST['passwordajout_confirm'])) {
 	        $pseudoajoutlength = strlen($pseudoajout);
 	        if($pseudoajoutlength <= 255) {
 	            $reqpseudoajout = $pdo->prepare("SELECT * FROM utilisateur WHERE Pseudo = ?");
@@ -22,16 +22,9 @@
 	                    $reqinsertajout = $pdo->prepare("INSERT INTO utilisateur SET Pseudo = ?, MotDePasse = ?, Admin = ?");
 	                    $reqinsertajout->execute(array($pseudoajout, $mdpajout, $admin));
 
-	  
-	   
 	                    
-	                    $reqinsertgrpajouter = $pdo->prepare("INSERT INTO groupe_utilisateur SET id_utilisateur = LAST_INSERT_ID(), id_groupe = ?, edition = ?");
-	                   	$reqinsertgrpajouter->execute(array($choix, false));
-
-	                    header("Location: ajouterutilisateur.php");
-	                    
-	                    
-	                    
+                   		header("Location: ajouterutilisateur.php");
+	                    	                    
 	                }
 	                else {
 	                    $erreur = "Vos mots de passes ne correspondent pas !";
@@ -70,14 +63,6 @@
 					<input type="password" name="passwordajout_confirm" placeholder="Confirmez le mot de passe" class="champ" require/>
 
 
-					<select name="choixgroupeobjet" class="groupeobjet">
-						<option value="">CHOISIR UN GROUPE</option>
-                        <option value="1">Chambre</option>
-                        <option value="2">Cuisine</option>
-                        <option value="3">Exterieur</option>
-                        <option value="3">Salon</option>
-
-                    </select>
 					
 					<button type="submit" name="formajoutuser" class="btn">Ajouter</button>
 					<?php
@@ -91,9 +76,11 @@
 	</div>
 	<br>
 	<div class="lien">
-		<p><a href="supprimerutilisateur.php">Supprimer un utilisateur</a></p>
+		
 		<p><a href="promouvoirutilisateur.php">Promouvoir un utilisateur</a></p>
-		<p><a href="retrogradationadmin.php">Demande de rétrogradation d'un admin</a></p>
+		<p><a href="gestionutilisateur.php">Gestion des groupes utilisateur</a></p>
+		<p><a href="supprimerutilisateur.php">Supprimer un utilisateur</a></p>
+
 	</div>
 
 

@@ -16,7 +16,25 @@
 				  WHERE UT.id = ".$_SESSION['auth']->id;
 	$reqmoncompte = $pdo->prepare($sqlnomgrp);
     $reqmoncompte->execute();
-    $result = $reqmoncompte->fetch();
+    $count = $reqmoncompte->rowCount();
+
+    if ($count != 0) {
+    	 $result = $reqmoncompte->fetch();
+    	
+    }else{
+
+    	if ($_SESSION['auth']->Admin == 1) {
+    		$result = (object) [
+    			'nom_groupe' => 1
+			];
+    	}else{
+    		$result = (object) [
+    			'nom_groupe' => 0
+			];
+    	}
+
+    }
+   
 
     
   
@@ -36,6 +54,9 @@
 				
 				<?php if($result->nom_groupe == 0) {?>
 					<p> Appartient au groupe : PAS DE GROUPE ASSOS</p>
+				<?php } elseif ($result->nom_groupe == 1) { ?>
+					<p> Appartient au groupe : TOUT LES GROUPES</p>
+				
 				<?php } else{ ?>
 					<p> Appartient au groupe : <?php echo $result->nom_groupe;?></p>
                 <?php } ?>

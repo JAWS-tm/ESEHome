@@ -20,7 +20,7 @@
 			header("Location: promouvoirutilisateur.php");
 		}
 		else {
-			$erreur = "Erreur dans la base de données !";
+			$erreur = "Erreur !";
 		}	
 	}
 
@@ -73,8 +73,9 @@
 	</div>
 	<div class="lien">
 		<p><a href="ajouterutilisateur.php">Ajouter un utilisateur</a></p>
+		<p><a href="gestionutilisateur.php">Gestion des groupes utilisateur</a></p>
 		<p><a href="supprimerutilisateur.php">Supprimer un utilisateur</a></p>
-		<p><a href="retrogradationadmin.php">Demande de rétrogradation d'un admin</a></p>
+
 	</div>
 
 <?php require 'inc/footer.php';?>
