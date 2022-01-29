@@ -1,13 +1,11 @@
 <?php
-	require 'inc/header.php';
-
-	require_once 'inc/db.php';
+	
 
 	if (!isset($_SESSION['auth']->id)) {
 
 		header("Location: index.php");
 	}
-
+    require 'inc/header.php';
 	include("inc/db.php");
 	
 	$sqlnomgrp = "SELECT nom_groupe FROM groupe as GR

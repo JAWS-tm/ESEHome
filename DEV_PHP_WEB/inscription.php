@@ -1,7 +1,6 @@
-<?php require 'inc/header.php';?>
+<?php 
 
-
-<?php
+require 'inc/header.php';
 
 if(!empty($_POST)){
     $errors = array();

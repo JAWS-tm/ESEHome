@@ -23,8 +23,6 @@
 			$erreur = "Erreur dans la base de données !";
 		}
 	}
-
-
 ?>
 
 <link rel="stylesheet" href="css/inscription.css"/>

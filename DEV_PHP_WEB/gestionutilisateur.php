@@ -16,8 +16,6 @@
 		$recipesStatementGrp->execute(array($data, $_POST['choixgroupeobjet'], false));
 
 		header("Location: gestionutilisateur.php");
-		
-
 	}
 
 
