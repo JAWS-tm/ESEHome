@@ -21,12 +21,12 @@
 
     $result = $reqinfo->fetch();
 
-    echo $result->nom_type;
+    echo $result->nom_groupe;
+    echo " / " .$result->nom;
     echo " / " .$result->date_creation;
+    echo " / " .$result->nom_type;
     echo " / " .$result->state;
     echo " / " .$result->valeur;
-    echo " / " .$result->nom;
-    echo " / " .$result->nom_groupe;
     echo " / " .$result->modifiable;
     
     
