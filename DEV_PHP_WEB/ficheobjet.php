@@ -12,7 +12,9 @@
      INNER JOIN parametres as PA 
      INNER JOIN valeur as VA ON VA.objet_id = OB.id AND VA.parametre_id =PA.id
      WHERE OB.id =1";
-
+    
+	//faut recup l'id de l'objet a la place du 1
+	
 	$req = $pdo->prepare($sql);
     $req->execute();
 
