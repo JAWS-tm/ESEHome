@@ -1,33 +1,26 @@
 <?php 
 
     require 'inc/header.php';
-
 	include("inc/db.php");
 
+	// Affichage de tous les utilisateurs
 	$sqlQueryAffiche = 'SELECT id, Pseudo FROM utilisateur WHERE Admin = 0 ORDER BY Pseudo';
 	$recipesStatementAffiche = $pdo->prepare($sqlQueryAffiche);
 	$recipesStatementAffiche->execute();
 	$users = $recipesStatementAffiche->fetchAll();
 
+	// Si le formulaire est complet et valide
 	if(isset($_POST['formgrpuser']) AND isset($_POST['datagrp']) AND !empty($_POST['choixgroupeobjet'])){
 	
 		$data = $_POST['datagrp'];
-		// POUR EVITER LES DOUBLON
-		$sqlGrp = 'SELECT * FROM groupe_utilisateur WHERE id_utilisateur ='.$data;
-		$reqGrp = $pdo->prepare($sqlGrp);
-		$reqGrp->execute();
-		if ($reqGrp->rowCount() !=0) {
-		 	$sqlGrp2 = 'INSERT INTO groupe_utilisateur SET id_utilisateur = ?, id_groupe = ?, edition = ?';
-		 	$reqGrp2 = $pdo->prepare($sqlGrp2);
-			$reqGrp2->execute(array($data, $_POST['choixgroupeobjet'], false));
-		 }
-		 else {
-		 	// PROBLEME DE CONCATENATION DE LA REQEUTE SQL
-		 	$sqlGrp3 = "UPDATE groupe_utilisateur SET id_groupe ='".$_POST['choixgroupeobjet'].'"' WHERE id_utilisateur ="".$data;
-		 	$reqGrp3 = $pdo->prepare($sqlGrp3);
-			$reqGrp3->execute();
-		 }
+		$cgo = $_POST['choixgroupeobjet'];
 
+		$sqlGrpInsert = 'INSERT INTO groupe_utilisateur (id_utilisateur, id_groupe, edition) 
+							VALUES (?, ?, ?) 
+							ON DUPLICATE KEY UPDATE id_groupe='.$cgo;
+
+	 	$reqGrpInsert = $pdo->prepare($sqlGrpInsert);
+		$reqGrpInsert->execute(array($data, $cgo, false));
 
 
 		header("Location: gestionutilisateur.php");
