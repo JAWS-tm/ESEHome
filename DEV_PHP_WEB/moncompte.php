@@ -13,7 +13,7 @@
 				  INNER JOIN utilisateur as UT ON UT.id = GU.id_utilisateur
 				  WHERE UT.id = ".$_SESSION['auth']->id;
 	$reqmoncompte = $pdo->prepare($sqlnomgrp);
-    $reqmoncompte->execute();
+    $reqmoncompte->execute() or exit(print_r($reqmoncompte->errorInfo()));
     $count = $reqmoncompte->rowCount();
 
     if ($count != 0) {

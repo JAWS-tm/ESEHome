@@ -11,7 +11,7 @@ if(!empty($_POST)){
     }else{
         $req = $pdo->prepare('SELECT id FROM utilisateur WHERE Pseudo = ?');
         $username = htmlspecialchars($_POST['username']);
-        $req->execute([$username]);
+        $req->execute([$username]) or exit(print_r($recipesStatementEfface->errorInfo()));;
         $user = $req->fetch();
         if($user){
             $errors['username'] = 'Ce pseudo est déjà pris !!';

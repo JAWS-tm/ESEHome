@@ -6,7 +6,7 @@
 	// Affichage de tous les utilisateurs
 	$sqlQueryAffiche = 'SELECT id, Pseudo FROM utilisateur WHERE Admin = 0 ORDER BY Pseudo';
 	$recipesStatementAffiche = $pdo->prepare($sqlQueryAffiche);
-	$recipesStatementAffiche->execute();
+	$recipesStatementAffiche->execute() or exit(print_r($recipesStatementAffiche->errorInfo()));
 	$users = $recipesStatementAffiche->fetchAll();
 
 	// Si le formulaire est complet et valide
@@ -20,7 +20,7 @@
 							ON DUPLICATE KEY UPDATE id_groupe='.$cgo;
 
 	 	$reqGrpInsert = $pdo->prepare($sqlGrpInsert);
-		$reqGrpInsert->execute(array($data, $cgo, false));
+	 	$reqGrpInsert->execute(array($data, $cgo, false)) or exit(print_r($reqGrpInsert->errorInfo()));
 
 
 		header("Location: gestionutilisateur.php");

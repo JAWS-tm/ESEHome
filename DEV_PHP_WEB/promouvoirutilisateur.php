@@ -15,15 +15,10 @@
 		$data = $_POST['datapromo'];
 		$sqlQueryPromot = 'UPDATE utilisateur SET Admin = 1 WHERE id="'.$data.'"';
 		$recipesStatementPromot = $pdo->prepare($sqlQueryPromot);
-		$recipesStatementPromot->execute();
+		$recipesStatementPromot->execute() or exit(print_r($recipesStatementPromot->errorInfo()));
 		
-		if ($recipesStatementPromot) {
-
-			header("Location: promouvoirutilisateur.php");
-		}
-		else {
-			$erreur = "Erreur !";
-		}	
+		header("Location: promouvoirutilisateur.php");
+		
 	}
 
 ?>

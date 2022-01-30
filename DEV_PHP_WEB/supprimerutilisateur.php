@@ -15,15 +15,12 @@
 		$data = $_POST['datadelet'];
 		$sqlQueryEfface = 'DELETE FROM utilisateur WHERE id="'.$data.'"';
 		$recipesStatementEfface = $pdo->prepare($sqlQueryEfface);
-		$recipesStatementEfface->execute();
+		$recipesStatementEfface->execute() or exit(print_r($recipesStatementEfface->errorInfo()));
 		
-		if ($recipesStatementEfface) {
+	
 
-			header("Location: supprimerutilisateur.php");
-		}
-		else {
-			$erreur = "Erreur dans la base de données !";
-		}
+		header("Location: supprimerutilisateur.php");
+
 	}
 ?>
 
