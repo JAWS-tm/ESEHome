@@ -67,7 +67,7 @@
           <div class="card_body">
               <div class="card_cagtegory">Chambre</div>
               <h2 class="card_title">Gerer les elements de ma chambre</h2>
-              <div class="card_subtitle">Voir les diferents elements</div> 
+              <div class="card_subtitle">Voir les differents elements</div> 
               <div class="card_element">
                   <a href="#">Lumiere</a></br>
                   <a href="#">Alarme</a></br>
@@ -87,7 +87,7 @@
           <div class="card_body">
               <div class="card_cagtegory">Cuisine</div>
               <h2 class="card_title">Gerer les elements de ma cuisine</h2>
-              <div class="card_subtitle">Voir les diferents elements</div> 
+              <div class="card_subtitle">Voir les differents elements</div> 
               <div class="card_element">
                   <a href="#">Niveau eau</a></br>
                   <a href="#">Ventilateur</a></br>
@@ -108,7 +108,7 @@
           <div class="card_body">
               <div class="card_cagtegory">Salon</div>
               <h2 class="card_title">Gerer les elements de mon salon</h2>
-              <div class="card_subtitle">Voir les diferents elements</div> 
+              <div class="card_subtitle">Voir les differents elements</div> 
               <div class="card_element">
                   <a href="#">Eclairage intelligent</a></br>
                   <a href="#">Capteur de Luminosite</a></br>
@@ -129,7 +129,7 @@
           <div class="card_body">
               <div class="card_cagtegory">Exterieur</div>
               <h2 class="card_title">Gerer les elements extereur</h2>
-              <div class="card_subtitle">Voir les diferent elements</div> 
+              <div class="card_subtitle">Voir les differents elements</div> 
               <div class="card_element">
                   <a href="#">Eclairage nocturne</a></br>
                   <a href="#">Meteo Exterieur</a></br>
