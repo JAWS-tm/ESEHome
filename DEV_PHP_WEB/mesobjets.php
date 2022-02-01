@@ -69,7 +69,7 @@
                       <div class="card_element">
                         <?php foreach ($result as $value){
                             if ($value['nom_groupe'] == 'CHAMBRE'){
-                                echo '<a href="ficheobjet.php?id_objet="'.$value['id_objet'].'>CLIQUER ICI  '.$value['id_objet'].'</a>';
+                                echo '<a href="ficheobjet.php?id_objet="'.$value['id_objet'].'> '.$value['nom_type'].'</a>';
                                 echo "<br />"; 
                             }?> 	
                         <?php }?>
@@ -109,7 +109,7 @@
                       <div class="card_element">
                         <?php foreach ($result as $value){
                             if ($value['nom_groupe'] == 'CUISINE'){
-                                echo '<a href="ficheobjet.php?id_objet="'.$value['id_objet'].'>CLIQUER ICI  '.$value['id_objet'].'</a>';
+                                echo '<a href="ficheobjet.php?id_objet="'.$value['id_objet'].'> '.$value['nom_type'].'</a>';
                                 echo "<br />"; 
                             }?> 
                         <?php }?>
@@ -148,7 +148,7 @@
                           <div class="card_element">
                           	<?php foreach ($result as $value){
                                 if ($value['nom_groupe'] == 'SALON'){
-                                    echo '<a href="ficheobjet.php?id_objet="'.$value['id_objet'].'>CLIQUER ICI  '.$value['id_objet'].'</a>';
+                                    echo '<a href="ficheobjet.php?id_objet="'.$value['id_objet'].'> '.$value['nom_type'].'</a>';
                                     echo "<br />"; 
                                 }?> 
                             <?php }?>
@@ -187,7 +187,7 @@
                               <div class="card_element">
                 				<?php foreach ($result as $value){
                                     if ($value['nom_groupe'] == 'EXTERIEUR'){
-                                        echo '<a href="ficheobjet.php?id_objet="'.$value['id_objet'].'>CLIQUER ICI  '.$value['id_objet'].'</a>';
+                                        echo '<a href="ficheobjet.php?id_objet="'.$value['id_objet'].'> '.$value['nom_type'].'</a>';
                                         echo "<br />"; 
                                     }?> 
                                 <?php }?>

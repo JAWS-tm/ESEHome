@@ -66,8 +66,9 @@
         display: block  !important;
         height: 66px  !important;
         text-align: center  !important;
-        line-height: 66px  !important;
+        line-height: 30px  !important;
         border-bottom: 1px solid #334E70  !important;
+        font-size: 1rem;
     }
 
     .with-sidebar .site-pusher {
