@@ -1,17 +1,39 @@
 .ban{
+	margin:  0;
 	top: 66px;
-	height: 600px;
+	height: 740px;
 	width: 100%;
 	background-image: url(../img/ban.png);
 	background-position: center;
 	background-size: cover;
 }
 
-.ban-text{
+.text{
 	margin-right: 100px;
 	margin-left: 100px;
-	font-family: 'Work Sans', sans-serif;
+}
+
+.text h1{
+	font-family: 'Exo', sans-serif;	
 	max-width: 350px;
 	margin-top: 140px;
-	font-size: 55px;
+	font-size: 7em;
+	color: #63CCC8;
+	margin-bottom: 0;
+}
+
+.text h3{
+	transform: translateY(-20px);
+	font-size: 3.5em;
+	letter-spacing: 3px;
+	color: #63CCC8;
+	margin-top: 0;
+	font-family: 'Exo', cursive;
+	font-family: 'Reenie Beanie', cursive;
+	font-style: italic;
+}
+
+.text p{
+	font-size: 2em;
+	color: #63CCC8;
 }
