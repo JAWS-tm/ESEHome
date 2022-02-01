@@ -5,8 +5,8 @@
 <footer>
 
 	<div class="footer_element" id="about">
-		<h2>A propos de Domoteek</h2>
-		<p>Domoteek est une sociÃ©tÃ© qui vous offre la possibilitÃ© de garder le contrÃ´le sur votre domicile. Tout seul ou en famille, pilotez les diffÃ©rents paramÃ¨tres Ã  votre convenance pour faire de votre foyez un vrai nid douillet.<br></p>
+		<h2>A propos de ESEHome</h2>
+		<p>ESEHome est une société qui vous offre la possibilité de garder le contrôle sur votre domicile. Tout seul ou en famille, pilotez les différents paramètres Ã  votre convenance pour faire de votre foyez un vrai nid douillet.<br></p>
 		<p class="grey">#domotique #IoT #FrenchTech</p>
 	</div>
 
