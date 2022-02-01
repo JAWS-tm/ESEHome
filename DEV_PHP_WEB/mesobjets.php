@@ -50,96 +50,163 @@
     <h1>Mes Objets</h1>
   </div>
   <div class="artic">
-    <?php       foreach($result as $value) {
-          echo "Identifiant de l'objet : ".$value['id_objet'];
-          echo "( ".$value['nom_groupe']." : ".$value['nom_type']." )";
-        
-        echo '<a href="ficheobjet.php?id_objet="'.$value['id_objet'].'>CLIQUER ICI</a>';
-          echo "<br />";
-      
-      } ?>
-      <article class="card">
-          <div class="card_thumb">
-            <img src="img/chambre.jpg">
-          </div>
+    <?php
+      $chambre = 0;
+      foreach ($result as $value){
+          if ($value['nom_groupe'] == 'CHAMBRE'){
+              $chambre++;
+          }
+      }
+          if($chambre >= 1){?>
+              <article class="card">
+                  <div class="card_thumb">
+                    <img src="img/chambre.jpg">
+                  </div>
+                  <div class="card_body">
+                      <div class="card_cagtegory">Chambre</div>
+                      <h2 class="card_title">Gerer les elements de ma chambre</h2>
+                      <div class="card_subtitle">Voir les diferents elements</div> 
+                      <div class="card_element">
+                        <?php foreach ($result as $value){
+                            if ($value['nom_groupe'] == 'CHAMBRE'){
+                                echo '<a href="ficheobjet.php?id_objet="'.$value['id_objet'].'>CLIQUER ICI  '.$value['id_objet'].'</a>';
+                                echo "<br />"; 
+                            }?> 	
+                        <?php }?>
+                      </div>
+                  </div>
+                  <div class="card_footer">
+                   <?php
+                   $i = 0;
+                   foreach ($result as $value){
+                       if ($value['nom_groupe'] == 'CHAMBRE'){
+                           $i++;
+                       }
+                   }
+                   
+                   echo '<span class="icon icon--nombre"></span>'.$i.' elements';
+                   ?>
+                  </div>
+              </article>
+      <?php }?>
 
-
-          <div class="card_body">
-              <div class="card_cagtegory">Chambre</div>
-              <h2 class="card_title">Gerer les elements de ma chambre</h2>
-              <div class="card_subtitle">Voir les differents elements</div> 
-              <div class="card_element">
-                  <a href="#">Lumiere</a></br>
-                  <a href="#">Alarme</a></br>
-                  <a href="#">Horloge connectee</a></br>
-              </div>
-          </div>
-          <div class="card_footer">
-              <span class="icon icon--nombre"></span>3 elements
-          </div>
-      </article>
-
-
-      <article class="card">
-          <div class="card_thumb">
-            <img src="img/cuisine.jpg">
-          </div>
-          <div class="card_body">
-              <div class="card_cagtegory">Cuisine</div>
-              <h2 class="card_title">Gerer les elements de ma cuisine</h2>
-              <div class="card_subtitle">Voir les differents elements</div> 
-              <div class="card_element">
-                  <a href="#">Niveau eau</a></br>
-                  <a href="#">Ventilateur</a></br>
-                  <a href="#">Detecteur Incendie</a></br>
-                   <a href="#">Prise connectee</a></br>
-              </div>
-          </div>
-          <div class="card_footer">
-              <span class="icon icon--nombre"></span>4 elements
-          </div>
-      </article>
-
-
-       <article class="card">
-          <div class="card_thumb">
-            <img src="img/salon.jpg">
-          </div>
-          <div class="card_body">
-              <div class="card_cagtegory">Salon</div>
-              <h2 class="card_title">Gerer les elements de mon salon</h2>
-              <div class="card_subtitle">Voir les differents elements</div> 
-              <div class="card_element">
-                  <a href="#">Eclairage intelligent</a></br>
-                  <a href="#">Capteur de Luminosite</a></br>
-                  <a href="#">Volet roulant</a></br>
-                  <a href="#">Alarme</a></br>
-                  <a href="#">Meteo Interieur</a>
-              </div>
-          </div>
-          <div class="card_footer">
-              <span class="icon icon--nombre"></span>4 elements
-          </div>
-      </article>
-
-      <article class="card">
-          <div class="card_thumb">
-            <img src="img/exetieur.jpg">
-          </div>
-          <div class="card_body">
-              <div class="card_cagtegory">Exterieur</div>
-              <h2 class="card_title">Gerer les elements extereur</h2>
-              <div class="card_subtitle">Voir les differents elements</div> 
-              <div class="card_element">
-                  <a href="#">Eclairage nocturne</a></br>
-                  <a href="#">Meteo Exterieur</a></br>
-                  <a href="#">Detecteur de chute</a></br>
-              </div>
-          </div>
-          <div class="card_footer">
-              <span class="icon icon--nombre"></span>3 elements
-          </div>
-      </article> 
+     <?php
+          $cuisine = 0;
+          foreach ($result as $value){
+              if ($value['nom_groupe'] == 'CUISINE'){
+                  $cuisine++;
+              }
+          }
+          if($cuisine >= 1){?>
+              <article class="card">
+                  <div class="card_thumb">
+                    <img src="img/cuisine.jpg">
+                  </div>
+                  <div class="card_body">
+                      <div class="card_cagtegory">Cuisine</div>
+                      <h2 class="card_title">Gerer les elements de ma cuisine</h2>
+                      <div class="card_subtitle">Voir les diferents elements</div> 
+                      <div class="card_element">
+                        <?php foreach ($result as $value){
+                            if ($value['nom_groupe'] == 'CUISINE'){
+                                echo '<a href="ficheobjet.php?id_objet="'.$value['id_objet'].'>CLIQUER ICI  '.$value['id_objet'].'</a>';
+                                echo "<br />"; 
+                            }?> 
+                        <?php }?>
+                      </div>
+                  </div>
+                  <div class="card_footer">
+                       <?php
+                           $i = 0;
+                           foreach ($result as $value){
+                               if ($value['nom_groupe'] == 'CUISINE'){
+                                   $i++;
+                               }
+                           }
+                           
+                           echo '<span class="icon icon--nombre"></span>'.$i.' elements';
+                       ?>
+                  </div>
+              </article>
+            <?php }?>
+         <?php
+              $salon = 0;
+              foreach ($result as $value){
+                  if ($value['nom_groupe'] == 'SALON'){
+                      $salon++;
+                  }
+              }
+              if($salon >= 1){?>
+                   <article class="card">
+                      <div class="card_thumb">
+                        <img src="img/salon.jpg">
+                      </div>
+                      <div class="card_body">
+                          <div class="card_cagtegory">Salon</div>
+                          <h2 class="card_title">Gerer les elements de mon salon</h2>
+                          <div class="card_subtitle">Voir les diferents elements</div> 
+                          <div class="card_element">
+                          	<?php foreach ($result as $value){
+                                if ($value['nom_groupe'] == 'SALON'){
+                                    echo '<a href="ficheobjet.php?id_objet="'.$value['id_objet'].'>CLIQUER ICI  '.$value['id_objet'].'</a>';
+                                    echo "<br />"; 
+                                }?> 
+                            <?php }?>
+                          </div>
+                      </div>
+                      <div class="card_footer">
+                           <?php
+                               $i = 0;
+                               foreach ($result as $value){
+                                   if ($value['nom_groupe'] == 'SALON'){
+                                       $i++;
+                                   }
+                               }
+                               
+                               echo '<span class="icon icon--nombre"></span>'.$i.' elements';
+                           ?>
+                      </div>
+                  </article>
+               <?php }?>
+                <?php
+                  $exterieur = 0;
+                  foreach ($result as $value){
+                      if ($value['nom_groupe'] == 'EXTERIEUR'){
+                          $exterieur++;
+                      }
+                  }
+                  if($exterieur >= 1){?>
+                      <article class="card">
+                          <div class="card_thumb">
+                            <img src="img/exetieur.jpg">
+                          </div>
+                          <div class="card_body">
+                              <div class="card_cagtegory">Exterieur</div>
+                              <h2 class="card_title">Gerer les elements exterieur</h2>
+                              <div class="card_subtitle">Voir les diferent elements</div> 
+                              <div class="card_element">
+                				<?php foreach ($result as $value){
+                                    if ($value['nom_groupe'] == 'EXTERIEUR'){
+                                        echo '<a href="ficheobjet.php?id_objet="'.$value['id_objet'].'>CLIQUER ICI  '.$value['id_objet'].'</a>';
+                                        echo "<br />"; 
+                                    }?> 
+                                <?php }?>
+                              </div>
+                          </div>
+                          <div class="card_footer">
+                               <?php
+                                   $i = 0;
+                                   foreach ($result as $value){
+                                       if ($value['nom_groupe'] == 'SALON'){
+                                           $i++;
+                                       }
+                                   }
+                                   
+                                   echo '<span class="icon icon--nombre"></span>'.$i.' elements';
+                               ?>
+                          </div>
+                      </article> 
+              <?php }?>
 
          
   </div>
