@@ -25,8 +25,7 @@
     	}
     }
 ?>
-<link rel="stylesheet" href="css/admin.css"/>
-<body>
+
 
 	<div class="container">
 		<div class="contact-form">

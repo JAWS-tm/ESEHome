@@ -6,7 +6,7 @@
 
 	<div class="footer_element" id="about">
 		<h2>A propos de ESEHome</h2>
-		<p>ESEHome est une société qui vous offre la possibilité de garder le contrôle sur votre domicile. Tout seul ou en famille, pilotez les différents paramètres Ã  votre convenance pour faire de votre foyez un vrai nid douillet.<br></p>
+		<p>ESEHome est une societe qui vous offre la possibilite de garder le controle sur votre domicile. Tout seul ou en famille, pilotez les differents parametres a votre convenance pour faire de votre foyez un vrai nid douillet.<br></p>
 		<p class="grey">#domotique #IoT #FrenchTech</p>
 	</div>
 
@@ -30,7 +30,7 @@
 
 	<div class="footer_element" id="join">
 		<h2>Rejoignez-nous</h2>
-		<p>Envie de faire partie de la communautÃ© Domoteek? Rejoignez-nous sur les diffÃ©rentes plateformes! Nous sommes dÃ©jÃ  3500 Ã  faire partie du mouvement.<br></p>
+		<p>Envie de faire partie de la communaute ESEHome? Rejoignez-nous sur les differentes plateformes! Nous sommes deja  3500 a faire partie du mouvement.<br></p>
 		<ul>
 			<li><a href="http://mon-lien.com"><i class="bi bi2 bi-instagram grey"></i></a></li>
 			<li><a href="http://mon-lien.com"><i class="bi bi2 bi-facebook grey"></i></i></a></li>
