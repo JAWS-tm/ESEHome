@@ -14,7 +14,7 @@
 	<link rel="stylesheet" type="text/css" href="css/styles.css">
 	<link rel="stylesheet" type="text/css" href="css/header.css">
 	<link rel="stylesheet" type="text/css" href="css/ban.css">
-
+	<link rel="stylesheet" href="css/respadmin.css"/>
 	<link rel="stylesheet" href="css/inscription.css"/>
 	<link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>

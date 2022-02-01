@@ -2,12 +2,11 @@
 <body>
 	<div class="site-container">
 		<header class="header">
-			<a href="#" class="header_icon" id="header_icon"></a>
-			<a class="header_logo" href="index.php"><img src="img/Logo_ESEHome.PNG"></a>
 			<?php 
-			if (isset($_SESSION['auth']) && $_SESSION['loggedin'] == true)  {
-			if($_SESSION['auth']->Admin == 1) {?>
-			<link rel="stylesheet" href="css/respadmin.css"/>
+			if (isset($_SESSION['auth']) && $_SESSION['loggedin'] == true)  {?>
+    		    <a href="#" class="header_icon" id="header_icon"></a>
+    		    <a class="header_logo" href="mesobjets.php"><img src="img/Logo_ESEHome.PNG"></a>
+			<?php if($_SESSION['auth']->Admin == 1) {?>
 				<nav class="menu">
 					<a class="header_active" href="equipement.php">Les équipements</a>
 					<a class="header_active" href="admin.php">Le coin de l'admin</a>
@@ -23,6 +22,8 @@
 			<?php
 			    }
 			} else { ?>
+    			<a href="#" class="header_icon" id="header_icon"></a>
+    			<a class="header_logo" href="index.php"><img src="img/Logo_ESEHome.PNG"></a>
 				<nav class="menu">
 					<a class="header_active" href="inscription.php">Inscription</a>
 					<a class="header_active" href="connexion.php">Connexion</a>
