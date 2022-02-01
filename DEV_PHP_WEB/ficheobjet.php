@@ -1,7 +1,6 @@
 <?php
 	
 	session_start();
-   /* require 'inc/header.php';*/
 
 	include("inc/db.php");
 
@@ -14,7 +13,7 @@
      INNER JOIN valeur as VA ON VA.objet_id = OB.id AND VA.parametre_id =PA.id
      WHERE OB.id =1";
     
-	//faut recup l'id de l'objet a la place du 1
+	//faut recup l'id de l'objet � la place du 1
 	
 	$reqinfo = $pdo->prepare($sqlinfo);
     $reqinfo->execute();
@@ -28,7 +27,6 @@
     echo " / " .$result->state;
     echo " / " .$result->valeur;
     echo " / " .$result->modifiable;
-    
     
     /* 
      	Via une plateforme hébergée par le serveur à laquelle il se connecte par login+mdp, l’utilisateur doté
@@ -47,17 +45,11 @@
         
         - Accès à la boîte aux lettres des messages pour chaque objet
         
-        Selon les contextes, les données pourront être affichées sous forme de listes à plusieurs colonnes, dont on peut faire varier l’ordre de tri et dont on peut filtrer le contenu.
-     
+        Selon les contextes, les données pourront être affichées sous forme de listes à plusieurs colonnes, dont on peut faire varier l’ordre de tri et dont on peut filtrer le contenu.   
      */
-    
-    
+      
     $d =1;
     $a =4;
-    
-    
-
-
 
     if(isset($_POST['formmessage'])) {
         if (!empty($_POST['message'])) {
@@ -77,16 +69,12 @@
                     
                     header("Location ficheobjet.php");
                 }
-
             } 
             catch (PDOException $e) {
                 echo $e->getMessage();
-            }
-                    
-        }
-        
+            }                   
+        }     
     }
-
 ?>
 
 <div>
