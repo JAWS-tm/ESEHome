@@ -1,4 +1,5 @@
 import queue
+from config.app_config import logger
 from threading import Thread
 from db.dbRequest import db_process_main_thread
 from data_communication.FrameParser import FrameParser
@@ -21,3 +22,4 @@ class DbController :
             
     def put_message_in_bdd_sending_queue(self, msg : FrameParser):
         next_msg = self.output_queue.put(msg)
+        logger.debug("Message has been put into database sending queue")

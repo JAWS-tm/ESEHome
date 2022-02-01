@@ -1,4 +1,5 @@
 import serial
+import time
 from queue import Queue
 from config.app_config import logger
 
@@ -88,6 +89,7 @@ class UartSerial :
 def uart_process_main_thread(port : str, baudrate : int, timeout : int, incoming_message_queue : Queue, outgoing_message_queue : Queue, end_of_frame_character : str):
     uart = UartSerial(port, baudrate, timeout, True, incoming_message_queue, outgoing_message_queue)
     while True :
+        time.sleep(0.5)
         uart.read_uart_frame(end_of_frame_character) #Automatically updates queue when a complete message is received
         next_msg = uart.get_next_message() #Checks if there is a message to send
         if(next_msg): 

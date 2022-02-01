@@ -1,6 +1,7 @@
 import sys
 import datetime
 import traceback
+import time
 from multiprocessing import dummy
 from data_communication.FrameParser import FrameParser
 from config.app_config import logger
@@ -15,6 +16,7 @@ if __name__ == "__main__":
     db_controller = DbController(DB_CONFIG)
     uart_controller = UartController(UART_CONFIG)
     while True :
+        time.sleep(0.5)
         try :
             uart_incoming_msg = uart_controller.get_last_message()
             if(uart_incoming_msg!=0):
@@ -28,9 +30,9 @@ if __name__ == "__main__":
             if(bdd_incoming_msg!=0):
                 logger.debug("INCOMING MSG FROM BDD : "+str(bdd_incoming_msg))
                 #Concat dégueu ==> should be FrameEncoder
-                ret=str(bdd_incoming_msg[0])+str(bdd_incoming_msg[1])+str(bdd_incoming_msg[2])+str(bdd_incoming_msg[3])+str(bdd_incoming_msg[4])+str(bdd_incoming_msg[5])
+                #ret=str(bdd_incoming_msg[0])+str(bdd_incoming_msg[1])+str(bdd_incoming_msg[2])+str(bdd_incoming_msg[3])+str(bdd_incoming_msg[4])+str(bdd_incoming_msg[5])
                 #Send message to UART (needs str msg type)
-                uart_controller.put_message_in_uart_sending_queue(ret)
+                #uart_controller.put_message_in_uart_sending_queue(ret)
         except Exception as e :
             logger.error("ERROR : There was an error processing the incoming data. The message has been ignored")
             logger.error(str(e))

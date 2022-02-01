@@ -72,6 +72,7 @@ def db_process_main_thread(user, password, host, port, DB_name, input_queue : Qu
     #Set a timer to periodically check new messages
     schedule.every(0.25).minutes.do(db.checkForNewMessage)
     while True :
+        time.sleep(0.5)
         try :
             schedule.run_pending() #ie check for new messages from DB
             msg_to_send = db.get_next_message()#Checks if there is a message to send
