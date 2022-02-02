@@ -134,3 +134,19 @@ int32_t PARAMETERS_get(param_id_e param_id)
 		params[param_id].value = params[param_id].callback_if_get_from_RF();
 	return params[param_id].value;
 }
+
+/*
+ * @brief cette fonction permet à un objet d'envoyer un paramètre à la station de base.
+ */
+void PARAMETERS_send_param32_to_basestation(param_id_e param_id)
+{
+	uint8_t datas[5];
+	uint32_t value;
+	value = PARAMETERS_get(param_id);
+	datas[0] = param_id;
+	datas[1] = (value>>24)&0xFF;
+	datas[2] = (value>>16)&0xFF;
+	datas[3] = (value>>8)&0xFF;
+	datas[4] = (value>>0)&0xFF;
+	RF_DIALOG_send_msg_id_to_basestation(PARAMETER_IS,5,datas);
+}
