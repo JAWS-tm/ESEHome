@@ -1,126 +1,239 @@
 /*
  * object_alarm.c
  *
- *  Created on: 18 févr. 2021
- *      Author: briyd
+ *  Created on: 25 janv. 2022
+ *      Author: franchan
  */
 
 #include "../config.h"
+#include "../common/buttons.h"
+#include "../common/systick.h"
 
 #if OBJECT_ID == OBJECT_ALARM
-#include "object_alarm.h"
-#include "buttons.h"
-#include <ctime>
-#include <iostream>
+	#include "object_alarm.h"
+	#define DATA_SIZE 8
 
-static bool_e state_changement = FALSE;
-static volatile uint32_t my_status = 0;
+static STATE state = INIT_ALARM;
+static command_YX last_command;
 
-void object_alarm_main(void){
+/*
+ * Machine à états de notre alarme :
+ * -> initialisation
+ * -> mode manuel
+ * -> recherche d'un message de la station de base
+ * -> traitement du message reçu
+ * -> réponse à la station de base
+ * -> mode veille
+ */
+void ALARM_state_machine(void){
 
-	if incendie{
-		while(incendie = true) {
-			alarm(200, 2000, 20);
-		}
-		nosound();
-	}
-
-}
-
-void alarm(int depart, int arrive,int pas){
-	int a;
-	for (a = depart; a <= arrive; a = a + pas)
-	{
-	     sound(a);
-	     delay(25);
-	}
-
-}
-
-void alarm_stop(){
-	BUTTONS_set_long_press_callback(BUTTON_NETWORK, &etat_ampli);
-
-}
-
-
-void message_lu(){
-	// reception d'un message du serveur
-
-	switch(){
-	case //incendie// :
-
-		break;
-	case //reveil//:
-		break;
-	case //infraction// :
-		break;
-
-	}
-}
-
-void etat_ampli(){
-	state_changement = TRUE;
-}
-
-
-
-//------------------------------------------------------------------------------------------------
-
-void OBJECT_ALARM_hurleur(){
-	  if(my_status ==1)
-	  {
-	    time_t t1=time(0);
-	    mciSendString("play mp3 from 0 to 30000 wait", NULL, 0, NULL);
-	    time_t t2=time(0);
-	  }
-	  else
-
-	  mciSendString("close mp3", NULL, 0, NULL);
-
-	  return 0;
-	}
-}
-
-void OBJECT_ALARM_color_updated_callback(int32_t new_color)
-{
-	debug_printf("nouveau status envoyée depuis la station de base : %lx\n", new_status);
-	my_status = new_status;
-}
-
-
-void OBJECT_ALARM_state_machine(void){
-	typedef enum{
-			INIT,
-			RUN,
-			SLEEP
-		}state_e;
-
-	static state_e state = INIT;
-	static uint32_t previous_status = -1;
 	switch(state)
 	{
-		case INIT:
-			PARAMETERS_enable(PARAM_ALARM_WAY, 0xCAFEDECA, TRUE, &OBJECT_ALARM_updated_callback, NULL);
-			WS2812_init(PIN_UART_RX, 30);
-			state = RUN;
+		case INIT_ALARM:
+
+			init();
+			state = MESSAGE_PROCESS;
+
 		break;
 
-		case RUN:{
-			if(my_status != previous_status)
-			{
-				WS2812_display_full(my_status);
-				WS2812_refresh();
-				previous_status = my_status;
-			}
-			break;
-		}
+		case MANUAL:
+			/*Cas où l'appui se fait par le button network
+			 * -> un appui : pause/play
+			 * -> deux appuis : musique suivante
+			 * -> trois appuis : son précédent
+			 * -> rien : on regarde si un message a été reçu
+			 */
+			//manual_mode(how_many_press());
 
-		case SLEEP:{
+			state = LOOK_FOR_MESSAGE;
 			break;
-		}
+		case LOOK_FOR_MESSAGE:
+			/*Liaison avec la station de base
+			 if(message_reçu)
+			 	 on le traite
+			 	 state = MESSAGE_PROCESS;
+			sinon
+				on n'a rien reçu --> on met en veille
+				state = SLEEP;
+			 */
+			state = MESSAGE_PROCESS;
+			break;
 
+		case MESSAGE_PROCESS:
+			//Traitement du message reçu
+			//fonction qui va traiter et déduire de la commande à envoyer
+			send_message(PLAY);
+			state = SLEEP;
+			break;
+
+		case RESPONSE:
+			//Envoi de message à la station de base
+			//https://reseaueseo-my.sharepoint.com/:x:/r/personal/samuel_poiraud_eseo_fr/_layouts/15/Doc.aspx?sourcedoc=%7B288C6EBE-360B-46DB-8AB1-4490476E35E8%7D&file=Protocole%20d%27%C3%A9change%20des%20messages.xlsx&action=default&mobileredirect=true
+			break;
+		case SLEEP:
+			//Veille de l'appareil
+			send_message(SLEEP_MODE);
+			//sleep(10);
+			//send_message(WAKE_UP);
+			state = LOOK_FOR_MESSAGE;
+			break;
 		default:
+			//ON N'EST PAS CENSÉ ARRIVER LÀ
+			state = SLEEP;
 			break;
+	}
+}
+
+/* Initialisation des composants que l'on va utiliser
+ * ici on ne prend que l'UART en plus des initialisations du main
+ *
+ */
+
+void init(void){
+	SERIAL_DIALOG_init();
+	send_message(PLAY);
+}
+
+/* Va permettre de créer notre trame et de l'envoyer sur la liaison UART afin de pilote l'YX5300
+ *@command : type de commande qu'on demandera de faire à notre pilote (PLAY, PAUSE etc.)
+ */
+
+void send_message(command_YX command){
+	uint8_t data[DATA_SIZE];
+	data[0] = 0x7E; 					//starting byte
+	data[1] = 0xFF; 					//version
+	data[2] = 0x06; 					//the number of bytes of the command without starting byte and ending byte
+	data[3] = command; 					//
+	data[4] = 0x00;						//0x00 = no feedback, 0x01 = feedback
+	data[5] = 0x00;						//datah 0x00 for what I want to use as command
+	data[6] = 0x00; 					//datal 0x00 for what I want to use as command
+	data[7] = 0xEF; 					//ending byte
+
+	debug_printf("%d",data);
+
+	last_command = command;
+
+	SERIAL_DIALOG_send_data(&data, DATA_SIZE);
+
+}
+
+static volatile bool_e flag_button_press = FALSE;
+static volatile bool_e flag_button_release = FALSE;
+
+void button_press_cb(void)
+{
+	flag_button_press = TRUE;
+}
+
+void button_release_cb(void)
+{
+	flag_button_release = TRUE;
+}
+
+static volatile uint32_t t = 0;
+
+void process_ms(void)
+{
+	if(t)
+		t--;
+}
+
+/*
+ * Fonction permettant de compter le nombre d'appuis bouton de suite
+ */
+
+running_e how_many_press(uint8_t * nb_press){
+
+	typedef enum{
+		INIT,
+		WAIT,
+		WAIT_RELEASE,
+		END
+	}state_e;
+	static state_e state = INIT;
+	static state_e previous_state = INIT;
+	bool_e entrance = (state != previous_state)?TRUE:FALSE;
+	previous_state = state;
+
+	button_event_e event;
+	button_id_e button;
+
+	uint8_t finish = FALSE;
+	running_e ret = IN_PROGRESS;
+	static uint8_t press = 0;
+
+	switch(state){
+					case INIT:
+						BUTTONS_set_short_press_callback(BUTTON_NETWORK, &button_press_cb);
+						BUTTONS_set_short_release_callback(BUTTON_NETWORK, &button_release_cb);
+						Systick_add_callback_function(&process_ms);
+						state = WAIT;
+						break;
+
+					case WAIT:
+						if(flag_button_press)
+						{
+							state = WAIT_RELEASE;
+						}
+						break;
+					case WAIT_RELEASE:
+						if(entrance)
+						{
+							press++;
+							t = 1000;
+						}
+						if(!t)
+						{
+							*nb_press = press;
+							if(press == 1)
+								button_network_process_short_press();	//pour respecter le cahier des charges.
+							press = 0;
+							state = WAIT;
+
+							ret = END_OK;
+						}
+						else if(flag_button_release)
+						{
+							state = WAIT;
+						}
+						break;
+
+
+					default:
+						//On n'est pas censé arriver ici
+						break;
+				}
+
+	flag_button_release = FALSE;
+	flag_button_press = FALSE;
+	return ret;
+}
+
+
+/*
+ * Switch permettant de faire une action en fonction du nombre d'appuis de boutons de l'utilisateur
+ */
+void manual_mode(uint8_t appui){
+	switch(appui){
+	case 0:
+		//il n'y a eu aucuns appuis de la part de l'utilisateur
+		break;
+	case 1:
+		if(last_command != PAUSE){
+			send_message(PAUSE);
+		}else{
+			send_message(PLAY);
+		}
+		break;
+	case 2:
+		send_message(NEXT_SONG);
+		break;
+	case 3:
+		send_message(PREV_SONG);
+		break;
+	default:
+		//On n'est pas censé arriver là
+		break;
 	}
 }
 #endif

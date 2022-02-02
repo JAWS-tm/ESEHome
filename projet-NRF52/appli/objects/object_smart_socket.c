@@ -121,6 +121,7 @@ void OBJECT_SMART_SOCKET_Main(void){
 			PARAMETERS_update(PARAM_ACTUATOR_STATE, statut);
 			PARAMETERS_send_param32_to_basestation(PARAM_SENSOR_VALUE);
 			PARAMETERS_send_param32_to_basestation(PARAM_ACTUATOR_STATE);
+			stateSS = IDLE;
 			break;
 	}
 }
