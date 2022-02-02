@@ -6,7 +6,7 @@
  */
 #include "../appli/config.h"
 
-#if USE_DHT11
+#if 1// USE_DHT11
 
 #include "dht11.h"
 #include "nmos_gnd.h"
@@ -132,16 +132,25 @@ static void DHT11_callback_exti(nrfx_gpiote_pin_t pin, nrf_gpiote_polarity_t act
 	static uint32_t rising_time_us = 0;
 	if(pin!=DHT11_pin)
 		return;
+	uint32_t current_time = SYSTICK_get_time_us();
+	bool_e pin_state = GPIO_read(DHT11_pin);
+
 	if(index < NB_BITS)
 	{
-		if(GPIO_read(DHT11_pin))
+		if(pin_state)
 		{
-			rising_time_us = SYSTICK_get_time_us();	//on enregistre la date du front montant (en microsecondes)
+			rising_time_us = current_time;	//on enregistre la date du front montant (en microsecondes)
 		}
-		else
-		{
+		else if(rising_time_us) 	//afin d'éviter le premier front descendant qui suit le lâcher du bus par le microcontrôleur.
+		{							//on ne considère le front descendant que si on a vu le front montant qui le précède.
 			uint32_t falling_time_us;
-			falling_time_us = SYSTICK_get_time_us(); //on conserve la différence entre le front montant et le front descendant
+			falling_time_us = current_time; //on conserve la différence entre le front montant et le front descendant
+
+			if(falling_time_us < rising_time_us)
+			{
+				falling_time_us+=1000;
+			}
+
 			if(falling_time_us - rising_time_us > 50)
 				trame |= (uint64_t)(1) << (NB_BITS - 1 - index);
 			index++;
@@ -151,6 +160,7 @@ static void DHT11_callback_exti(nrfx_gpiote_pin_t pin, nrf_gpiote_polarity_t act
 	if(index == NB_BITS)
 	{
 		flag_end_of_reception = TRUE;
+		nrf_drv_gpiote_in_event_disable(DHT11_pin);
 	}
 }
 //Attention, fonction blocante pendant 4ms !
@@ -194,6 +204,7 @@ running_e DHT11_state_machine_get_datas(uint8_t * humidity_int, uint8_t * humidi
 				t = 20;
 				index = 0;
 				trame = 0;
+				rising_time_us = 0;
 				flag_end_of_reception = FALSE;
 				DHT11_set_pin_direction(TRUE);	//configurer pin en sortie
 				GPIO_write(DHT11_pin, 0);
@@ -214,7 +225,10 @@ running_e DHT11_state_machine_get_datas(uint8_t * humidity_int, uint8_t * humidi
 			if(flag_end_of_reception)
 				state = END_OF_RECEPTION;
 			if(!t)
+			{
+				nrf_drv_gpiote_in_event_disable(DHT11_pin);
 				state = TIMEOUT;
+			}
 			break;
 		case TIMEOUT:
 			ret = END_TIMEOUT;
