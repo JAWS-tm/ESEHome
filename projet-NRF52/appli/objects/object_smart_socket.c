@@ -4,9 +4,9 @@
  *  Created on: 20 janv. 2022
  *      Author: Leopold
  */
+#include "../config.h"
 
 #if OBJECT_ID == OBJECT_SMART_SOCKET
-#include "../config.h"
 #include "object_smart_socket.h"
 #include "appli/common/gpio.h"
 #include "appli/common/buttons.h"
@@ -82,13 +82,13 @@ void backgroudTaskFunction(void){
 			}else{
 				courant = 0;
 			}
-
+			PARAMETERS_update(PARAM_SENSOR_VALUE, (int)(courant*1000));
+			stateSS = SENDBS;
 		} else {
 			courant = 0;
+			stateSS = DRIVEGPIO;
 		}
 		debug_printf("Courant : %d mA\n", (int)(courant*1000));
-		PARAMETERS_update(PARAM_SENSOR_VALUE, courant);
-		stateSS = SENDBS;
 	} else {
 		stateSS = DRIVEGPIO;
 	}
