@@ -151,9 +151,12 @@
 	#endif
 
 	#if OBJECT_ID == OBJECT_FALL_SENSOR
-		#define USE_MPU6050 1
+		#define USE_MPU6050 28
 		#define MPU6050_VCC_PIN 27
 		#define PIN_BUTTON_ALERT 16
+		#define PIN_LED_ALERT 9
+		#define PIN_BUZZER 10
+		#define	I2C_SCL_PIN_NB	13
 	#endif
 
 	#if OBJECT_ID == OBJECT_TRACKER_GPS
