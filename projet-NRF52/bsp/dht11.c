@@ -37,7 +37,7 @@ static void DHT11_callback_exti(nrfx_gpiote_pin_t pin, nrf_gpiote_polarity_t act
 static uint16_t DHT11_pin;
 static bool_e initialized = FALSE;
 
-#define NB_BITS	42	//les deux bits de poids fort n'appartiennent pas aux données utiles. (il s'agit de la réponse du capteur avant la trame utile).
+#define NB_BITS	41	//le bit de poids fort n'appartiennent pas aux données utiles. (il s'agit de la réponse du capteur avant la trame utile).
 static volatile bool_e flag_end_of_reception = FALSE;
 static volatile uint64_t trame;
 static volatile uint8_t index = 0;
