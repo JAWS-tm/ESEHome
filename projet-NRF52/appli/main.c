@@ -173,7 +173,7 @@ int main(void)
     		#endif
 
     		#if OBJECT_ID == OBJECT_FALL_SENSOR
-    			OBJECT_FALL_SENSOR_state_machine();
+			OBJECT_FALL_SENSOR_state_machineTest();
 
     		#endif
 
