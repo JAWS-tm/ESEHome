@@ -124,9 +124,6 @@
 
 	#if OBJECT_ID == OBJECT_ALARM
 		#define MOSFET_PIN		7
-		#define PIN_UART_TX		8
-		#define PIN_UART_RX		6
-
 	#endif
 
 	#if OBJECT_ID == OBJECT_FIRE_DETECTOR
