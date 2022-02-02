@@ -5,11 +5,11 @@
 typedef enum{
 			INITSS,
 			IDLE,
-			DRIVEGPIO
+			DRIVEGPIO,
+			SENDBS
 		}stateSS_e;
 		static stateSS_e stateSS = INITSS;
 
 void OBJECT_SMART_SOCKET_Main(void);
-void configPin(void);
 
 #endif /* OBJECT_SMART_SOCKETH */
