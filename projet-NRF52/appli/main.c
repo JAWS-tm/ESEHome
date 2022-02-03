@@ -111,7 +111,7 @@ int main(void)
 
     	//Orientation du main vers chaque code de chaque objets
     		#if OBJECT_ID == OBJECT_BASE_STATION
-
+    			SECRETARY_process_main();
     		#endif
 
 
