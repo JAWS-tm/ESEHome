@@ -4,15 +4,16 @@
  *  Created on: 20 janv. 2022
  *      Author: Leopold
  */
+#include "../config.h"
 
 #if OBJECT_ID == OBJECT_SMART_SOCKET
-#include "../config.h"
 #include "object_smart_socket.h"
 #include "appli/common/gpio.h"
 #include "appli/common/buttons.h"
 #include "appli/common/leds.h"
 #include "appli/common/adc.h"
 #include "appli/common/systick.h"
+#include "appli/common/parameters.h"
 
 static bool_e prevStatut = FALSE;
 static bool_e statut = FALSE;
@@ -44,6 +45,14 @@ void configPin(void){
 	ADC_init();
 }
 
+void configParam(void){
+	PARAMETERS_init();
+	PARAMETERS_enable(PARAM_MY_BASE_STATION_ID, 0, false, NULL, NULL);
+	PARAMETERS_enable(PARAM_ACTUATOR_STATE, statut, false, NULL, NULL);
+	PARAMETERS_enable(PARAM_SENSOR_VALUE, 0, false, NULL, NULL);
+
+}
+
 void toggleSockect(void){
 	if (statut) {
 		LED_set(LED_ID_USER0, LED_MODE_ON);
@@ -73,11 +82,15 @@ void backgroudTaskFunction(void){
 			}else{
 				courant = 0;
 			}
-
+			PARAMETERS_update(PARAM_SENSOR_VALUE, (int)(courant*1000));
+			stateSS = SENDBS;
 		} else {
 			courant = 0;
+			stateSS = DRIVEGPIO;
 		}
 		debug_printf("Courant : %d mA\n", (int)(courant*1000));
+	} else {
+		stateSS = DRIVEGPIO;
 	}
 }
 
@@ -85,20 +98,29 @@ void OBJECT_SMART_SOCKET_Main(void){
 	switch(stateSS){
 		case INITSS:
 			configPin();
+			// Éteinds, par défaut, la prise à l'allumage
 			toggleSockect();
+			// Timer en arrière plan
 			tperiod = 10000;
 			Systick_add_callback_function(process_ms);
+			// Initiamisation des différents paramètres
+			configParam();
 			stateSS = IDLE;
 			break;
 		case IDLE:
 			backgroudTaskFunction();
-			stateSS = DRIVEGPIO;
 			break;
 		case DRIVEGPIO:
 			if (statut != prevStatut){
 				toggleSockect();
 				prevStatut = statut;
 			}
+			stateSS = IDLE;
+			break;
+		case SENDBS:
+			PARAMETERS_update(PARAM_ACTUATOR_STATE, statut);
+			PARAMETERS_send_param32_to_basestation(PARAM_SENSOR_VALUE);
+			PARAMETERS_send_param32_to_basestation(PARAM_ACTUATOR_STATE);
 			stateSS = IDLE;
 			break;
 	}

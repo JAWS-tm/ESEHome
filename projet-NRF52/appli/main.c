@@ -111,7 +111,7 @@ int main(void)
 
     	//Orientation du main vers chaque code de chaque objets
     		#if OBJECT_ID == OBJECT_BASE_STATION
-
+    			SECRETARY_process_main();
     		#endif
 
 
@@ -125,7 +125,7 @@ int main(void)
     		#endif
 
 			#if OBJECT_ID == OBJECT_SMART_SOCKET
-    			OBJECT_SMART_SOCKET_state_machine();
+    			OBJECT_SMART_SOCKET_Main();
 
     		#endif
 
