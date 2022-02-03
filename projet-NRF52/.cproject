@@ -48,6 +48,12 @@
 								<inputType id="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.assembler.input.1428643285" superClass="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.assembler.input"/>
 							</tool>
 							<tool id="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.compiler.2140834622" name="MCU GCC Compiler" superClass="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.compiler">
+								<option IS_BUILTIN_EMPTY="false" IS_VALUE_EMPTY="false" id="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.compiler.option.includepaths.1520148934" superClass="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.compiler.option.includepaths" valueType="includePath">
+									<listOptionValue builtIn="false" value="&quot;C:\ST\GNU Tools ARM Embedded\8 2019-q3-update\arm-none-eabi\include&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;C:\ST\nRF5_SDK_17.0.2_d674dde\components\libraries&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;C:\ST\nRF5_SDK_17.0.2_d674dde\modules\nrfx&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;C:\ST\nRF5_SDK_17.0.2_d674dde\modules\nrfx\hal&quot;"/>
+								</option>
 								<inputType id="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.compiler.input.c.1989511398" superClass="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.compiler.input.c"/>
 							</tool>
 							<tool id="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.cpp.compiler.449187763" name="MCU G++ Compiler" superClass="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.cpp.compiler">
@@ -75,8 +81,21 @@
 			<storageModule moduleId="org.eclipse.cdt.core.externalSettings"/>
 		</cconfiguration>
 	</storageModule>
+	<storageModule moduleId="cdtBuildSystem" version="4.0.0">
+		<project id="Domoteek.null.262514096" name="Domoteek"/>
+	</storageModule>
+	<storageModule moduleId="org.eclipse.cdt.core.LanguageSettingsProviders"/>
+	<storageModule moduleId="refreshScope" versionNumber="2">
+		<configuration configurationName="Default">
+			<resource resourceType="PROJECT" workspacePath="/Domoteek"/>
+		</configuration>
+	</storageModule>
+	<storageModule moduleId="org.eclipse.cdt.make.core.buildtargets"/>
 	<storageModule moduleId="scannerConfiguration">
 		<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId=""/>
+		<scannerConfigBuildInfo instanceId="com.st.stm32cube.ide.mcu.gnu.managedbuild.toolchain.base.1419225530;com.st.stm32cube.ide.mcu.gnu.managedbuild.toolchain.base.1419225530.878008750;com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.compiler.2140834622;com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.compiler.input.c.1989511398">
+			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId=""/>
+		</scannerConfigBuildInfo>
 		<scannerConfigBuildInfo instanceId="fr.ac6.managedbuild.toolchain.gnu.cross.base.6329973;fr.ac6.managedbuild.toolchain.gnu.cross.base.6329973.862365358;fr.ac6.managedbuild.tool.gnu.cross.c.compiler.1972244177;fr.ac6.managedbuild.tool.gnu.cross.c.compiler.input.c.1831603961">
 			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId=""/>
 		</scannerConfigBuildInfo>
@@ -98,18 +117,11 @@
 		<scannerConfigBuildInfo instanceId="fr.ac6.managedbuild.toolchain.gnu.cross.base.1560445868;fr.ac6.managedbuild.toolchain.gnu.cross.base.1560445868.280298680;fr.ac6.managedbuild.tool.gnu.cross.cpp.compiler.1754050708;fr.ac6.managedbuild.tool.gnu.cross.cpp.compiler.input.cpp.501275643">
 			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId=""/>
 		</scannerConfigBuildInfo>
+		<scannerConfigBuildInfo instanceId="com.st.stm32cube.ide.mcu.gnu.managedbuild.toolchain.base.1419225530;com.st.stm32cube.ide.mcu.gnu.managedbuild.toolchain.base.1419225530.878008750;com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.cpp.compiler.449187763;com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.cpp.compiler.input.cpp.358346354">
+			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId=""/>
+		</scannerConfigBuildInfo>
 		<scannerConfigBuildInfo instanceId="ilg.gnuarmeclipse.managedbuild.cross.toolchain.base.2094714930;ilg.gnuarmeclipse.managedbuild.cross.toolchain.base.2094714930.1921550004;ilg.gnuarmeclipse.managedbuild.cross.tool.c.compiler.1502216210;ilg.gnuarmeclipse.managedbuild.cross.tool.c.compiler.input.986595252">
 			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId=""/>
 		</scannerConfigBuildInfo>
 	</storageModule>
-	<storageModule moduleId="cdtBuildSystem" version="4.0.0">
-		<project id="Domoteek.null.262514096" name="Domoteek"/>
-	</storageModule>
-	<storageModule moduleId="org.eclipse.cdt.core.LanguageSettingsProviders"/>
-	<storageModule moduleId="refreshScope" versionNumber="2">
-		<configuration configurationName="Default">
-			<resource resourceType="PROJECT" workspacePath="/Domoteek"/>
-		</configuration>
-	</storageModule>
-	<storageModule moduleId="org.eclipse.cdt.make.core.buildtargets"/>
 </cproject>

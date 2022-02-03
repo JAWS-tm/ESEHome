@@ -32,7 +32,7 @@
 #include "objects/object_voice_control.h"
 #include "objects/object_wine_degustation.h"
 #include "objects/object_ventilator.h"
-#include "objects/objet_volet_roulant.h"
+#include "objects/object_roller_shutter.h"
 
 void button_network_process_short_press(void);
 void button_network_process_long_press(void);
@@ -89,6 +89,7 @@ int main(void)
     volatile char id;
     id = OBJECT_ID;
     debug_printf("My id is %d. I am \"%s\"\n", id, object_id_to_string(id));
+    //debug_printf("BA10DDDDDD02EEEEEE0001420508CAFEDECADA\n");
 
     PARAMETERS_init();
 
@@ -139,8 +140,8 @@ int main(void)
     		#endif
 
     		#if OBJECT_ID == OBJECT_ROLLER_SHUTTER
-				VOLET_ROULANT_MAIN(void);
-
+				ROLLER_SHUTTER_state_machine();
+				motor_arrived();
     		#endif
 
     		#if OBJECT_ID == OBJECT_ALARM
