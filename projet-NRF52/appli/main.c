@@ -22,7 +22,7 @@
 #include "common/gpio.h"
 #include "common/parameters.h"
 
-//Tout les includes des header des objets.
+//Tous les includes des header des objets.
 #include "objects/object_tracker_gps.h"
 #include "objects/object_fall_sensor.h"
 #include "objects/object_station_meteo_int.h"
@@ -33,6 +33,8 @@
 #include "objects/object_wine_degustation.h"
 #include "objects/object_ventilator.h"
 #include "objects/object_roller_shutter.h"
+#include "objects/objet_volet_roulant.h"
+#include "objects/object_smart_socket.h"
 
 void button_network_process_short_press(void);
 void button_network_process_long_press(void);
@@ -111,7 +113,7 @@ int main(void)
 
     	//Orientation du main vers chaque code de chaque objets
     		#if OBJECT_ID == OBJECT_BASE_STATION
-
+    			SECRETARY_process_main();
     		#endif
 
 
@@ -121,6 +123,11 @@ int main(void)
 
     		#if OBJECT_ID == OBJECT_NIGHT_LIGHT
     			OBJECT_NIGHT_LIGHT_state_machine();
+
+    		#endif
+
+			#if OBJECT_ID == OBJECT_SMART_SOCKET
+    			OBJECT_SMART_SOCKET_Main();
 
     		#endif
 
@@ -174,7 +181,7 @@ int main(void)
     		#endif
 
     		#if OBJECT_ID == OBJECT_FALL_SENSOR
-    			OBJECT_FALL_SENSOR_state_machine();
+			OBJECT_FALL_SENSOR_state_machine();
 
     		#endif
 
@@ -232,6 +239,7 @@ char * object_id_to_string(uint8_t id)
 		case OBJECT_BASE_STATION:		ret = "Base Station";		break;
 		case OBJECT_SMART_LIGHT:		ret = "Smart Light";		break;
 		case OBJECT_NIGHT_LIGHT:		ret = "Night Light";		break;
+		case OBJECT_SMART_SOCKET:		ret = "Smart Socket";		break;
 		case OBJECT_BRIGHTNESS_SENSOR:	ret = "Brightness Sensor";	break;
 		case OBJECT_STATION_METEO_INT:	ret = "Station Meteo Int";	break;
 		case OBJECT_OUT_WEATHER_STATION:ret = "Station Meteo Ext";	break;

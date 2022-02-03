@@ -2,7 +2,7 @@
 #define OBJECT_SMART_LIGHTH
 #include "../config.h"
 
-
+#if OBJECT_ID == OBJECT_SMART_SOCKET
 typedef enum{
 			DEBUT,
 			ALLUMAGE,
@@ -22,6 +22,6 @@ bool_e DetectAppui(void);
 void OBJECT_SMART_LIGHT_UPDATED_MODE_callback(mode_e new_mode);
 
 
-
+#endif
 
 #endif /* OBJECT_SMART_LIGHTH */
