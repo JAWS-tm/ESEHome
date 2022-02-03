@@ -152,7 +152,7 @@ int main(void)
     		#endif
 
     		#if OBJECT_ID == OBJECT_ALARM
-
+				ALARM_state_machine();
 
     		#endif
 
