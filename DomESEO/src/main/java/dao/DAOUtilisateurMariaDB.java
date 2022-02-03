@@ -8,6 +8,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+import beans.Mot_de_passe;
 import beans.Utilisateur;
 
 
@@ -39,7 +40,12 @@ public class DAOUtilisateurMariaDB implements DAOUtilisateur {
 					PreparedStatement prepST = connexion.prepareStatement(
 							"INSERT INTO utilisateur(Pseudo, MotDePasse, Admin) VALUES(?,?,?);");
 					prepST.setString(1, pseudo);
-					prepST.setString(2, mdp);
+					try {
+						prepST.setString(2, new Mot_de_passe(mdp).hashMdp());
+					} catch (Exception e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
 					prepST.setInt(3, permission);//On met à 0 de base, l'admin a déjà été créé
 					
 					prepST.executeUpdate();
@@ -77,7 +83,12 @@ public class DAOUtilisateurMariaDB implements DAOUtilisateur {
 				"UPDATE utilisateur SET Pseudo=?, MotDePasse=?, Admin=? WHERE id=?;");
 			
 			prepST.setString(1, pseudo);
-			prepST.setString(2, mdp);
+			try {
+				prepST.setString(2, new Mot_de_passe(mdp).hashMdp());
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			prepST.setInt(3, permission);
 			prepST.setInt(4, id);
 			
@@ -138,7 +149,12 @@ public class DAOUtilisateurMariaDB implements DAOUtilisateur {
 			PreparedStatement prepST = connexion.prepareStatement( 
 				"UPDATE utilisateur SET MotDePasse=? WHERE id=?;");
 			
-			prepST.setString(1, mdp);
+			try {
+				prepST.setString(2, new Mot_de_passe(mdp).hashMdp());
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			prepST.setInt(2, id);
 			
 			prepST.executeUpdate();
@@ -313,7 +329,12 @@ public class DAOUtilisateurMariaDB implements DAOUtilisateur {
 				"SELECT * FROM utilisateur WHERE Pseudo=? AND MotDePasse=? ;");
 			
 			prepST.setString(1, login);
-			prepST.setString(2, mdp);
+			try {
+				prepST.setString(2, new Mot_de_passe(mdp).hashMdp());
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			
 			try (ResultSet result = prepST.executeQuery()){
 				if(result.next()) {
