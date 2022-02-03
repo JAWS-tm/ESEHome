@@ -123,7 +123,8 @@ void ROLLER_SHUTTER_state_machine(void)
 		 MOTOR_OFF,
 		 UP,
 		 DOWN,
-		 IDLE
+		 IDLE,
+		 COMMUNICATION
 	}state_e;
 
 	static state_e state = INIT;
@@ -131,11 +132,13 @@ void ROLLER_SHUTTER_state_machine(void)
 	bool_e entrance = (state != previous_state);
 	previous_state = state;
 
+
 	switch(state) {
 
 ///NEW CODE 28/01////
 		case INIT :
 			Systick_add_callback_function(&process_ms);
+			PARAMETERS_init();
 			PARAMETERS_enable(PARAM_ACTUATOR_STATE, 0, FALSE, &OBJECT_ROLLER_SHUTTER_ask_for_movement_callback, NULL);
 			ADC_init();
 			GPIO_configure(PIN_RIN, NRF_GPIO_PIN_NOPULL, true);
@@ -144,8 +147,11 @@ void ROLLER_SHUTTER_state_machine(void)
 			BUTTONS_add(BUTTON_USER1, PIN_BP_DOWN, TRUE,&short_press_down, NULL,&long_press_down, NULL);
 			state = IDLE;
 			break;
+
+		////Montee du volet
 		case UP :
 			if (entrance){
+				debug_printf("Montee du volet\n");
 				t = 1000;
 				GPIO_write(PIN_RIN, true);
 				GPIO_write(PIN_FIN, false);
@@ -155,17 +161,25 @@ void ROLLER_SHUTTER_state_machine(void)
 				state = IDLE;
 			if(flag_ask_for_movement == ASK_DOWN)
 				state = DOWN;
-			else if (!timeout || flag_short_press_down || flag_short_press_up || arrived == TRUE|| (t && flag_short_release_up) || flag_ask_for_movement == ASK_STOP){
+			else if (!timeout || flag_short_press_down || flag_short_press_up || (t && flag_short_release_up) || flag_ask_for_movement == ASK_STOP){
+				state = COMMUNICATION;
+			}
+			else if (!timeout || arrived == TRUE){
+				debug_printf("volet ouvert\n");
+				PARAMETERS_update(PARAM_ACTUATOR_STATE, 1);
 				arrived = FALSE;
-				state = IDLE;
+				state = COMMUNICATION;
 			}
 			if (state != UP){        // OUT OF STATE
 				GPIO_write(PIN_RIN, false);
 				GPIO_write(PIN_FIN, false);
 			}
 			break;
+
+			////Descente du volet
 		case DOWN :
 			if (entrance){
+				debug_printf("Descente du volet\n");
 				t = 1000;
 				GPIO_write(PIN_RIN, false);
 				GPIO_write(PIN_FIN, true);
@@ -176,15 +190,23 @@ void ROLLER_SHUTTER_state_machine(void)
 				state = UP;
 			if(flag_ask_for_movement == ASK_DOWN)
 				state = DOWN;
-			else if (!timeout || flag_short_press_up || flag_short_press_down || arrived == TRUE || (t && flag_short_release_down) || flag_ask_for_movement == ASK_STOP){
+			else if (!timeout || flag_short_press_up || flag_short_press_down || (t && flag_short_release_down) || flag_ask_for_movement == ASK_STOP){
 				arrived = FALSE;
-				state = IDLE;
+				state = COMMUNICATION;
+			}
+			else if (!timeout || arrived == TRUE){
+				debug_printf("volet fermé\n");
+				PARAMETERS_update(PARAM_ACTUATOR_STATE, 0);
+				arrived = FALSE;
+				state = COMMUNICATION;
 			}
 			if (state != DOWN ){        // OUT OF STATE
 				GPIO_write(PIN_RIN, false);
 				GPIO_write(PIN_FIN, false);
 			}
 			break;
+
+			/////cas eteint
 		case IDLE :
 			t = 2000;
 			if(flag_short_press_down || flag_ask_for_movement == ASK_DOWN)
@@ -194,6 +216,12 @@ void ROLLER_SHUTTER_state_machine(void)
 			break;
 		default:
 			break;
+
+			/////On envoie l'etat actuel du volet
+		case COMMUNICATION :
+			PARAMETERS_send_param32_to_basestation(PARAM_ACTUATOR_STATE);
+			state = IDLE;
+		break;
 	}
 
 	flag_ask_for_movement = ASK_NONE;

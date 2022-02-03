@@ -33,7 +33,6 @@
 #include "objects/object_wine_degustation.h"
 #include "objects/object_ventilator.h"
 #include "objects/object_roller_shutter.h"
-#include "objects/objet_volet_roulant.h"
 #include "objects/object_smart_socket.h"
 
 void button_network_process_short_press(void);
