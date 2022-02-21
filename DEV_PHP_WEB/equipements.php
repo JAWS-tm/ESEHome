@@ -66,8 +66,8 @@
               <img src="img/detecteur_cuve.jpg">
             <?php  } else if ($value['id_objet'] == 15){ ?>
               <img src="img/capteur_air.jpg">
-            <?php  } else ($value['id_objet'] == 16){ ?>
-              <img src="img/slider_lcd.jpg">
+            <?php  } else { ?>
+              <img src="img/capteur_air.jpg">
             <?php }
           ?>
           </div>
