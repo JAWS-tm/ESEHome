@@ -76,7 +76,7 @@ void SECRETARY_init(void)
 
 void SECRETARY_process_main(void)
 {
-
+	SECRETARY_esb_event_handler(MSG_SOURCE_RF);
 }
 
 
