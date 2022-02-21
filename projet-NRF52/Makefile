@@ -56,6 +56,7 @@ SRC_FILES += \
   $(PROJ_DIR)/bsp/epaper/epdpaint.c \
   $(PROJ_DIR)/bsp/epaper/imagedata.c \
   $(PROJ_DIR)/bsp/epaper/epdif.c \
+  $(PROJ_DIR)/bsp/morse.c \
   $(SDK_ROOT)/modules/nrfx/mdk/gcc_startup_nrf52.S \
   $(SDK_ROOT)/components/libraries/log/src/nrf_log_backend_rtt.c \
   $(SDK_ROOT)/components/libraries/log/src/nrf_log_backend_serial.c \

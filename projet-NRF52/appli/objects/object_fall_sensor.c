@@ -6,6 +6,7 @@
  *  Modified on: 24 janv. 2022
  *  	By: JosMl
  */
+
 #include "../config.h"
 #include "object_fall_sensor.h"
 #include "bsp/mpu6050.h"
@@ -14,6 +15,7 @@
 #include "appli/common/buttons.h"
 #include "appli/common/leds.h"
 #include "appli/common/parameters.h"
+#include "../bsp/morse.h"
 
 #if OBJECT_ID == OBJECT_FALL_SENSOR
 
@@ -21,6 +23,7 @@ static MPU6050_t mpu_datas;
 static led_id_e led_alert_id = LED_ID_USER0;
 static bool flag_bt_alert_SP = FALSE;
 static bool flag_bt_alert_LP = FALSE;
+static bool flag_reset_morse = FALSE;
 static int32_t threshold_frome_bs;
 
 typedef enum{
@@ -35,7 +38,7 @@ typedef enum{
 static volatile uint32_t t = 0;
 static volatile uint32_t t_sos = 0;
 
-void process_ms(void)
+void FALL_SENSOR_process_ms(void)
 {
 	if(t_sos){
 		t_sos --;
@@ -43,9 +46,8 @@ void process_ms(void)
 	if(t)
 		t--;
 }
-
 /*
- * @author	Montreuil Joshua
+ * @author	JosMl
  * @date 24 jan 2022
  *
  * @brief	Machine à état de l'objet fall sensor.
@@ -63,7 +65,7 @@ void OBJECT_FALL_SENSOR_state_machine(void){
 	switch(state)
 	{
 	case INIT:
-		Systick_add_callback_function(&process_ms);
+		Systick_add_callback_function(&FALL_SENSOR_process_ms);
 
 		BUTTONS_add(BUTTON_ALERT,PIN_BUTTON_ALERT,TRUE,&cb_bt_alert_short_press_event,NULL,&cb_bt_alert_long_press_event,NULL); //Initialisation du bouton alerte
 		LED_add(led_alert_id,PIN_LED_ALERT);
@@ -76,6 +78,9 @@ void OBJECT_FALL_SENSOR_state_machine(void){
 		state = GET_DATA;
 		break;
 	case GET_DATA:{
+		if(entrance){
+			PARAMETERS_send_param32_to_basestation(PARAM_SENSOR_VALUE); // envoie de la valeur du capteur à 0
+		}
 		flag_bt_alert_SP = FALSE;
 		//getMPU6050_Datas(); //aide au debug pour afficher les valeurs du MPU6050
 		threshold_frome_bs = PARAMETERS_get(PARAM_ALARM_TRESHOLD);
@@ -101,16 +106,19 @@ void OBJECT_FALL_SENSOR_state_machine(void){
 	case ALERT :
 		if(entrance){
 			flag_bt_alert_LP = FALSE;
-			//LED_set(led_alert_id,LED_MODE_ON);
-			//GPIO_write(PIN_BUZZER,TRUE);
-			t=3300;
+			flag_reset_morse = TRUE;
+			t = 8900;
 			t_sos = 10000;
 		}
 
 		if(t){
-			make_sos_morse_code();
+			MORSE_state_machine_process_ms("SOS",flag_reset_morse);
+			if(flag_reset_morse){
+				flag_reset_morse = FALSE;
+				debug_printf("here");
+			}
 		} else {
-			t = 3300;
+			t = 13500;
 		}
 
 		if(!t_sos){
@@ -130,7 +138,7 @@ void OBJECT_FALL_SENSOR_state_machine(void){
 		break;
 	case SEND_ALERT :
 		PARAMETERS_update(PARAM_SENSOR_VALUE, 1);
-		PARAMETERS_send_param32_to_basestation(PARAM_SENSOR_VALUE);
+		PARAMETERS_send_param32_to_basestation(PARAM_SENSOR_VALUE); // envoie de la valeur du capteur à 1
 		state = ALERT;
 		break;
 	default:
@@ -192,80 +200,11 @@ void getMPU6050_Datas(void){
  * @brief	Fonction permettant la génération du code S.O.S. en Morse.
  *
  */
-void make_sos_morse_code(void){
-	if(t>3149 && t < 3300){
-		LED_set(led_alert_id,LED_MODE_OFF);
-		GPIO_write(PIN_BUZZER,FALSE);
-	}
-	if(t>2999 && t<3151){
+void buzz(bool_e state){
+	if(state){
 		LED_set(led_alert_id,LED_MODE_ON);
 		GPIO_write(PIN_BUZZER,TRUE);
-	}
-	if(t>2849 && t<3000){
-		LED_set(led_alert_id,LED_MODE_OFF);
-		GPIO_write(PIN_BUZZER,FALSE);
-	}
-	if(t>2699 && t<2850){
-		LED_set(led_alert_id,LED_MODE_ON);
-		GPIO_write(PIN_BUZZER,TRUE);
-	}
-	if(t>2549 && t<2700){
-		LED_set(led_alert_id,LED_MODE_OFF);
-		GPIO_write(PIN_BUZZER,FALSE);
-	}
-	if(t>2399 && t<2550){
-		LED_set(led_alert_id,LED_MODE_ON);
-		GPIO_write(PIN_BUZZER,TRUE);
-	}
-	if(t>2249 && t<2400){
-		LED_set(led_alert_id,LED_MODE_OFF);
-		GPIO_write(PIN_BUZZER,FALSE);
-	}
-	if(t>1949 && t<2250){
-		LED_set(led_alert_id,LED_MODE_ON);
-		GPIO_write(PIN_BUZZER,TRUE);
-	}
-	if(t>1799 && t<1950){
-		LED_set(led_alert_id,LED_MODE_OFF);
-		GPIO_write(PIN_BUZZER,FALSE);
-	}
-	if(t>1499 && t<1800){
-		LED_set(led_alert_id,LED_MODE_ON);
-		GPIO_write(PIN_BUZZER,TRUE);
-	}
-	if(t>1349 && t<1500){
-		LED_set(led_alert_id,LED_MODE_OFF);
-		GPIO_write(PIN_BUZZER,FALSE);
-	}
-	if(t>1049 && t<1350){
-		LED_set(led_alert_id,LED_MODE_ON);
-		GPIO_write(PIN_BUZZER,TRUE);
-	}
-	if(t>899 && t<1050){
-		LED_set(led_alert_id,LED_MODE_OFF);
-		GPIO_write(PIN_BUZZER,FALSE);
-	}
-	if(t>749 && t<900){
-		LED_set(led_alert_id,LED_MODE_ON);
-		GPIO_write(PIN_BUZZER,TRUE);
-	}
-	if(t>599 && t<750){
-		LED_set(led_alert_id,LED_MODE_OFF);
-		GPIO_write(PIN_BUZZER,FALSE);
-	}
-	if(t>449 && t<600){
-		LED_set(led_alert_id,LED_MODE_ON);
-		GPIO_write(PIN_BUZZER,TRUE);
-	}
-	if(t>299 && t<450){
-		LED_set(led_alert_id,LED_MODE_OFF);
-		GPIO_write(PIN_BUZZER,FALSE);
-	}
-	if(t>149 && t<300){
-		LED_set(led_alert_id,LED_MODE_ON);
-		GPIO_write(PIN_BUZZER,TRUE);
-	}
-	if(t>0 && t<150){
+	}else{
 		LED_set(led_alert_id,LED_MODE_OFF);
 		GPIO_write(PIN_BUZZER,FALSE);
 	}
@@ -276,6 +215,11 @@ void cb_bt_alert_short_press_event(void){
 }
 void cb_bt_alert_long_press_event(void){
 	flag_bt_alert_LP = TRUE;
+}
+
+void init_for_demo(void){
+	BUTTONS_add(BUTTON_ALERT,PIN_BUTTON_ALERT,TRUE,&cb_bt_alert_short_press_event,NULL,&cb_bt_alert_long_press_event,NULL); //Initialisation du bouton alerte
+	LED_add(led_alert_id,PIN_LED_ALERT);
 }
 
 #endif
