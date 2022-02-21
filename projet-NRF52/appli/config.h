@@ -116,9 +116,15 @@
 	#endif
 
 
-	#if OBJECT_ID == OBJECT_VOLET_ROULANT
-		#define BP_UP_PIN           2
-		#define BP_DOWN_PIN         3
+	#if OBJECT_ID == OBJECT_ROLLER_SHUTTER
+		#define PIN_BP_UP           17
+		#define PIN_BP_DOWN         16
+		#define PIN_RIN				9
+		#define PIN_FIN				10
+		#define PIN_ADC				4
+
+
+
 	#endif
 
 
@@ -289,7 +295,7 @@ uint32_t debug_printf(char * format, ...);
 #define USE_ADC						1
 #define USE_ADC_CHANNEL_AIN0		(OBJECT_ID == OBJECT_SMART_SOCKET)	//P0.02
 #define USE_ADC_CHANNEL_AIN1		(OBJECT_ID == OBJECT_VENTILATOR)	//P0.03
-#define USE_ADC_CHANNEL_AIN2		0	//P0.04
+#define USE_ADC_CHANNEL_AIN2		(OBJECT_ID == OBJECT_ROLLER_SHUTTER)	//P0.04
 #define USE_ADC_CHANNEL_AIN3		0	//P0.05
 #define USE_ADC_CHANNEL_AIN4		0	//P0.06
 #define USE_ADC_CHANNEL_AIN7		I_HAVE_MEASURE_VBAT	//P0.31
