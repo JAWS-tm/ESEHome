@@ -33,6 +33,7 @@
 #include "objects/object_wine_degustation.h"
 #include "objects/object_ventilator.h"
 #include "objects/objet_volet_roulant.h"
+#include "objects/object_fire_detector.h"
 
 void button_network_process_short_press(void);
 void button_network_process_long_press(void);
@@ -95,12 +96,12 @@ int main(void)
     LED_add(LED_ID_NETWORK, PIN_LED_NETWORK);
 	LED_add(LED_ID_BATTERY, PIN_LED_BATTERY);
 	LED_set(LED_ID_BATTERY, LED_MODE_ON);
+	LED_add(LED_ID_USER0, PIN_LED_USER);
 
 
 	SECRETARY_init();
 
 	BUTTONS_add(BUTTON_NETWORK, PIN_BUTTON_NETWORK, TRUE, &button_network_process_short_press, NULL, &button_network_process_long_press, &button_network_process_5press);
-
     while (1)
     {
     	//Code commun à tout les objets
@@ -149,8 +150,7 @@ int main(void)
     		#endif
 
     		#if OBJECT_ID == OBJECT_FIRE_DETECTOR
-
-
+				FIRE_DETECTOR_MAIN();
     		#endif
 
 			#if OBJECT_ID == OBJECT_WINE_DEGUSTATION

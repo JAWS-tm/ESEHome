@@ -122,8 +122,13 @@
 	#endif
 
 	#if OBJECT_ID == OBJECT_FIRE_DETECTOR
-
-
+		#define PIN_BUTTON_USER	17 //Button utilisateur = coupé alarme
+		#define PIN_LED_USER 	9 //LED verte
+		#define AN_SIGNAL		2 //Signal analogique du capteur de fummée
+		#define NUM_SIGNAL		29//Signal numérique du capteur de fummée
+		#define PIN_FIRE_DETECTOR	27//Pin du détecteur de fummée
+		#define MEASURE_VBAT	30
+		#define MEASUR_BAT		31
 	#endif
 
 	#if OBJECT_ID == OBJECT_WINE_DEGUSTATION
@@ -279,7 +284,7 @@ uint32_t debug_printf(char * format, ...);
 
 
 #define USE_ADC						1
-#define USE_ADC_CHANNEL_AIN0		0	//P0.02
+#define USE_ADC_CHANNEL_AIN0		1	//P0.02
 #define USE_ADC_CHANNEL_AIN1		(OBJECT_ID == OBJECT_VENTILATOR)	//P0.03
 #define USE_ADC_CHANNEL_AIN2		0	//P0.04
 #define USE_ADC_CHANNEL_AIN3		0	//P0.05
