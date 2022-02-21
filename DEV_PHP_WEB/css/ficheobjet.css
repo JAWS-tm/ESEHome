@@ -1,0 +1,39 @@
+
+
+
+.message{
+	margin : 50px;
+}
+
+.fiche{
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+}
+
+.voir{
+	padding: 15px;
+	border: 1px solid #fff;
+	border-radius: 5px;
+	transition : 0.3s;
+}
+
+.voir:hover{
+	background-color: #334E70;
+	cursor: pointer;
+	color : #fff;
+}
+
+.envoyé{
+	padding : 25px;
+	border: thick double #000;
+	background-color: #fff;
+	margin-bottom : 25px;
+}
+
+.reçu{
+	padding : 25px;
+	border: thick double #000;
+	background-color: #fff;
+	margin-bottom : 25px;
+}
