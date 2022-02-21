@@ -33,7 +33,7 @@
     background-color: #fff;
     box-shadow: 0px 0px 20px rgba(0,0,0, 0.1);
     transition: 0.3s;
-    margin: 3em;
+    margin: 0.5em;
 }
 
 .card a{
@@ -43,10 +43,12 @@
 
 .card:hover{
     box-shadow: 0px 0px 50px rgba(0,0,0, 0.3);
+    cursor: pointer;
 }
 
 .card_thumb{
     height: 200px;
+    width: 350px;
     overflow: hidden;
     background-color: #000;
     transition: height 0.3s;

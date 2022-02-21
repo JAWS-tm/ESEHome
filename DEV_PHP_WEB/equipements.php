@@ -28,7 +28,7 @@
 
   <div class="mesobjets">
   <div class="user_ban">
-  <h1>Tous les équipements</h1>
+  <h1>Tous les equipements</h1>
   </div>
   <div class="artic">
       
@@ -51,9 +51,9 @@
             <?php  } else if ($value['id_objet'] == 7){ ?>
               <img src="img/meteo2.jpg">
             <?php  } else if ($value['id_objet'] == 8){ ?>
-              <img src="img/volet_roulant.jpg">
+              <img src="img/volet_roulant1.jpg">
             <?php  } else if ($value['id_objet'] == 9){ ?>
-              <img src="img/volet_roulant.jpg">
+              <img src="img/volet_roulant2.jpg">
             <?php  } else if ($value['id_objet'] == 10){ ?>
               <img src="img/alarme.jpg">
             <?php  } else if ($value['id_objet'] == 11){ ?>
@@ -63,7 +63,7 @@
             <?php  } else if ($value['id_objet'] == 13){ ?>
               <img src="img/detecteur_chute.jpg"> 
             <?php  } else if ($value['id_objet'] == 14){ ?>
-              <img src="img/detecteur_cuve.jpg">
+              <img src="img/niveau_cuve.jpg">
             <?php  } else if ($value['id_objet'] == 15){ ?>
               <img src="img/capteur_air.jpg">
             <?php  } else { ?>

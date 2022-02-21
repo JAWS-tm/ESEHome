@@ -1,32 +1,32 @@
 <?php session_start();
-    
-    require 'inc/header.php';
-    include("inc/db.php");
-    
-        
-    $sqladm = "SELECT id_objet,nom_groupe, nom_type
-        FROM utilisateur as US
-        INNER JOIN groupe_utilisateur as GU ON GU.id_utilisateur = US.id
-        INNER JOIN groupe as GR ON GR.id = GU.id_groupe
-        INNER JOIN objet_groupe as OG ON OG.id_groupe = GR.id
-        INNER JOIN objet as OB ON OB.id = OG.id_objet
-        INNER JOIN type as TY ON TY.id = OB.type_id
-        
-        WHERE US.id =".$_SESSION['auth']->id;
 
-    $sqladm = "SELECT id_objet, nom_groupe, nom_type FROM objet as OB
-                    INNER JOIN type as TY ON TY.id = OB.type_id
-                    INNER JOIN objet_groupe as OG ON OG.id_objet = OB.id
-                    INNER JOIN groupe as GR ON GR.id = OG.id_groupe";
+require 'inc/header.php';
+include("inc/db.php");
 
-    $reqadm = $pdo->prepare($sqladm);
-    $reqadm->execute();
-    $result = $reqadm->fetchAll(PDO::FETCH_ASSOC);
+    
+$sqladm = "SELECT id_objet,nom_groupe, nom_type
+    FROM utilisateur as US
+    INNER JOIN groupe_utilisateur as GU ON GU.id_utilisateur = US.id
+    INNER JOIN groupe as GR ON GR.id = GU.id_groupe
+    INNER JOIN objet_groupe as OG ON OG.id_groupe = GR.id
+    INNER JOIN objet as OB ON OB.id = OG.id_objet
+    INNER JOIN type as TY ON TY.id = OB.type_id
+    
+    WHERE US.id =".$_SESSION['auth']->id;
+
+$sqladm = "SELECT id_objet, nom_groupe, nom_type FROM objet as OB
+                INNER JOIN type as TY ON TY.id = OB.type_id
+                INNER JOIN objet_groupe as OG ON OG.id_objet = OB.id
+                INNER JOIN groupe as GR ON GR.id = OG.id_groupe";
+
+$reqadm = $pdo->prepare($sqladm);
+$reqadm->execute();
+$result = $reqadm->fetchAll(PDO::FETCH_ASSOC);
 ?>
 
 <div class="mesobjets">
 <div class="user_ban">
-    <h1>Mes Objets</h1>
+    <h1>Gardez la main sur votre maison</h1>
   </div>
   <div class="artic">
     <?php  /*     foreach($result as $value) {
