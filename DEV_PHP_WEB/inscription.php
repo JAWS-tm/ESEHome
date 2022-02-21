@@ -2,6 +2,8 @@
 
 require 'inc/header.php';
 
+$page = "inscription.php";
+
 if(!empty($_POST)){
     $errors = array();
     require_once 'inc/db.php';
@@ -33,15 +35,11 @@ if(!empty($_POST)){
 
 
     }
-
-
-
-
 }
-$page = "inscription.php";
+
 ?>
 
-<!-- PARTI HTML -->
+<!-- PARTIE HTML -->
 <link rel="stylesheet" href="css/inscription.css"/>
 </head>
 <body>

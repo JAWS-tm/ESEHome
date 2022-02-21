@@ -22,6 +22,7 @@
 	 	$reqGrpInsert = $pdo->prepare($sqlGrpInsert);
 	 	$reqGrpInsert->execute(array($data, $cgo, false)) or exit(print_r($reqGrpInsert->errorInfo()));
 
+	 	
 
 		header("Location: gestionutilisateur.php");
 	}
