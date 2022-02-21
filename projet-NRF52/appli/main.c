@@ -22,7 +22,7 @@
 #include "common/gpio.h"
 #include "common/parameters.h"
 
-//Tout les includes des header des objets.
+//Tous les includes des header des objets.
 #include "objects/object_tracker_gps.h"
 #include "objects/object_fall_sensor.h"
 #include "objects/object_station_meteo_int.h"
@@ -32,7 +32,8 @@
 #include "objects/object_voice_control.h"
 #include "objects/object_wine_degustation.h"
 #include "objects/object_ventilator.h"
-#include "objects/objet_volet_roulant.h"
+#include "objects/object_fire_detector.h"
+#include "objects/object_roller_shutter.h"
 #include "objects/object_smart_socket.h"
 
 void button_network_process_short_press(void);
@@ -90,18 +91,19 @@ int main(void)
     volatile char id;
     id = OBJECT_ID;
     debug_printf("My id is %d. I am \"%s\"\n", id, object_id_to_string(id));
+    //debug_printf("BA10DDDDDD02EEEEEE0001420508CAFEDECADA\n");
 
     PARAMETERS_init();
 
     LED_add(LED_ID_NETWORK, PIN_LED_NETWORK);
 	LED_add(LED_ID_BATTERY, PIN_LED_BATTERY);
 	LED_set(LED_ID_BATTERY, LED_MODE_ON);
+	LED_add(LED_ID_USER0, PIN_LED_USER);
 
 
 	SECRETARY_init();
 
 	BUTTONS_add(BUTTON_NETWORK, PIN_BUTTON_NETWORK, TRUE, &button_network_process_short_press, NULL, &button_network_process_long_press, &button_network_process_5press);
-
     while (1)
     {
     	//Code commun à tout les objets
@@ -111,7 +113,7 @@ int main(void)
 
     	//Orientation du main vers chaque code de chaque objets
     		#if OBJECT_ID == OBJECT_BASE_STATION
-
+    			SECRETARY_process_main();
     		#endif
 
 
@@ -145,8 +147,8 @@ int main(void)
     		#endif
 
     		#if OBJECT_ID == OBJECT_ROLLER_SHUTTER
-				VOLET_ROULANT_MAIN(void);
-
+				ROLLER_SHUTTER_state_machine();
+				motor_arrived();
     		#endif
 
     		#if OBJECT_ID == OBJECT_ALARM
@@ -155,8 +157,7 @@ int main(void)
     		#endif
 
     		#if OBJECT_ID == OBJECT_FIRE_DETECTOR
-
-
+				FIRE_DETECTOR_MAIN();
     		#endif
 
 			#if OBJECT_ID == OBJECT_WINE_DEGUSTATION
@@ -179,7 +180,8 @@ int main(void)
     		#endif
 
     		#if OBJECT_ID == OBJECT_FALL_SENSOR
-			OBJECT_FALL_SENSOR_state_machineTest();
+				OBJECT_FALL_SENSOR_state_machine();
+				//MORSE_demo();
 
     		#endif
 

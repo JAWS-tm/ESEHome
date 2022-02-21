@@ -116,9 +116,15 @@
 	#endif
 
 
-	#if OBJECT_ID == OBJECT_VOLET_ROULANT
-		#define BP_UP_PIN           2
-		#define BP_DOWN_PIN         3
+	#if OBJECT_ID == OBJECT_ROLLER_SHUTTER
+		#define PIN_BP_UP           17
+		#define PIN_BP_DOWN         16
+		#define PIN_RIN				9
+		#define PIN_FIN				10
+		#define PIN_ADC				4
+
+
+
 	#endif
 
 
@@ -127,8 +133,13 @@
 	#endif
 
 	#if OBJECT_ID == OBJECT_FIRE_DETECTOR
-
-
+		#define PIN_BUTTON_USER	17 //Button utilisateur = coupé alarme
+		#define PIN_LED_USER 	9 //LED verte
+		#define AN_SIGNAL		2 //Signal analogique du capteur de fummée
+		#define NUM_SIGNAL		29//Signal numérique du capteur de fummée
+		#define PIN_FIRE_DETECTOR	27//Pin du détecteur de fummée
+		#define MEASURE_VBAT	30
+		#define MEASUR_BAT		31
 	#endif
 
 	#if OBJECT_ID == OBJECT_WINE_DEGUSTATION
@@ -287,9 +298,10 @@ uint32_t debug_printf(char * format, ...);
 
 
 #define USE_ADC						1
-#define USE_ADC_CHANNEL_AIN0		(OBJECT_ID == OBJECT_SMART_SOCKET)	//P0.02
+//#define USE_ADC_CHANNEL_AIN0		1	//P0.02
+#define USE_ADC_CHANNEL_AIN0		(OBJECT_ID == OBJECT_SMART_SOCKET || OBJECT_FIRE_DETECTOR)	//P0.02
 #define USE_ADC_CHANNEL_AIN1		(OBJECT_ID == OBJECT_VENTILATOR)	//P0.03
-#define USE_ADC_CHANNEL_AIN2		0	//P0.04
+#define USE_ADC_CHANNEL_AIN2		(OBJECT_ID == OBJECT_ROLLER_SHUTTER)	//P0.04
 #define USE_ADC_CHANNEL_AIN3		0	//P0.05
 #define USE_ADC_CHANNEL_AIN4		0	//P0.06
 #define USE_ADC_CHANNEL_AIN7		I_HAVE_MEASURE_VBAT	//P0.31

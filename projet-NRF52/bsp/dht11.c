@@ -6,7 +6,7 @@
  */
 #include "../appli/config.h"
 
-#if 1// USE_DHT11
+#if USE_DHT11
 
 #include "dht11.h"
 #include "nmos_gnd.h"
