@@ -195,6 +195,20 @@ void SERIAL_DIALOG_puts(char * s)
 	}
 }
 
+void SERIAL_DIALOG_send_data(uint8_t * data, uint16_t len)
+{
+	static bool_e reentrance_detection = FALSE;
+	if(!reentrance_detection)
+	{
+		reentrance_detection = TRUE;
+		if(!initialized)
+			SERIAL_DIALOG_init();
+		//nrfx_uart_tx(&uart_instance, (uint8_t *)(s), strlen(s));
+		for(uint16_t i = 0; i<len; i++)
+			while(app_uart_put((char)(data[i]))!=NRF_SUCCESS);
+		reentrance_detection = FALSE;
+	}
+}
 
 
 void SERIAL_DIALOG_process_main()

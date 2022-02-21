@@ -20,6 +20,7 @@
 #define OBJECT_BASE_STATION			0
 #define OBJECT_SMART_LIGHT			1
 #define OBJECT_NIGHT_LIGHT			2
+#define OBJECT_SMART_SOCKET			3
 #define OBJECT_BRIGHTNESS_SENSOR    4
 #define OBJECT_STATION_METEO_INT    5
 #define OBJECT_OUT_WEATHER_STATION  6
@@ -70,6 +71,13 @@
 
 	#endif
 
+	#if OBJECT_ID == OBJECT_SMART_SOCKET
+		#define MOSFET_RELAIS 	9
+		#define MESURE_COURANT 	2
+		#define BUTTON_USER 	17
+		#define LED_STATUT 		20
+	#endif
+
 	#if OBJECT_ID == OBJECT_NIGHT_LIGHT
 		#define WS2812_PIN	9
 
@@ -109,22 +117,30 @@
 	#endif
 
 
-	#if OBJECT_ID == OBJECT_VOLET_ROULANT
-		#define BP_UP_PIN           2
-		#define BP_DOWN_PIN         3
+	#if OBJECT_ID == OBJECT_ROLLER_SHUTTER
+		#define PIN_BP_UP           17
+		#define PIN_BP_DOWN         16
+		#define PIN_RIN				9
+		#define PIN_FIN				10
+		#define PIN_ADC				4
+
+
+
 	#endif
 
 
 	#if OBJECT_ID == OBJECT_ALARM
 		#define MOSFET_PIN		7
-		#define PIN_UART_TX		8
-		#define PIN_UART_RX		6
-
 	#endif
 
 	#if OBJECT_ID == OBJECT_FIRE_DETECTOR
-
-
+		#define PIN_BUTTON_USER	17 //Button utilisateur = coupé alarme
+		#define PIN_LED_USER 	9 //LED verte
+		#define AN_SIGNAL		2 //Signal analogique du capteur de fummée
+		#define NUM_SIGNAL		29//Signal numérique du capteur de fummée
+		#define PIN_FIRE_DETECTOR	27//Pin du détecteur de fummée
+		#define MEASURE_VBAT	30
+		#define MEASUR_BAT		31
 	#endif
 
 	#if OBJECT_ID == OBJECT_WINE_DEGUSTATION
@@ -147,9 +163,12 @@
 	#endif
 
 	#if OBJECT_ID == OBJECT_FALL_SENSOR
-		#define USE_MPU6050 1
+		#define USE_MPU6050 28
 		#define MPU6050_VCC_PIN 27
 		#define PIN_BUTTON_ALERT 16
+		#define PIN_LED_ALERT 9
+		#define PIN_BUZZER 10
+		#define	I2C_SCL_PIN_NB	13
 	#endif
 
 	#if OBJECT_ID == OBJECT_AIR_SENSOR
@@ -286,9 +305,10 @@ uint32_t debug_printf(char * format, ...);
 
 
 #define USE_ADC						1
-#define USE_ADC_CHANNEL_AIN0		0	//P0.02
+//#define USE_ADC_CHANNEL_AIN0		1	//P0.02
+#define USE_ADC_CHANNEL_AIN0		(OBJECT_ID == OBJECT_SMART_SOCKET || OBJECT_FIRE_DETECTOR)	//P0.02
 #define USE_ADC_CHANNEL_AIN1		(OBJECT_ID == OBJECT_VENTILATOR)	//P0.03
-#define USE_ADC_CHANNEL_AIN2		0	//P0.04
+#define USE_ADC_CHANNEL_AIN2		(OBJECT_ID == OBJECT_ROLLER_SHUTTER)	//P0.04
 #define USE_ADC_CHANNEL_AIN3		0	//P0.05
 #define USE_ADC_CHANNEL_AIN4		0	//P0.06
 #define USE_ADC_CHANNEL_AIN7		I_HAVE_MEASURE_VBAT	//P0.31
