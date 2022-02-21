@@ -86,5 +86,25 @@
     </form>
 
 </div>
+
+<link rel="stylesheet" href="css/objet.css">
+ <div class="user_ban">
+    <h1>Objet</h1>
+  </div>
+  <div class="artic">
+      <article class="card">
+          <div class="card_thumb">
+            <img src="img/chambre.jpg">
+          </div>
+          <div class="card_body">
+              <div class="card_cagtegory">objet</div>
+              <h2 class="card_title">Gérer "objet"</h2>
+              <div class="card_element">
+                  <button class="action">Action</button>
+                  <button class="demande">Demande modif</button>
+              </div>
+          </div>
+      </article>  
+  </div>
     
 <?php /*require 'inc/footer.php';*/?>
