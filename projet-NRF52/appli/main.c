@@ -177,6 +177,11 @@ int main(void)
 
     		#endif
 
+			#if OBJECT_ID == OBJECT_AIR_SENSOR
+				OBJECT_AIR_SENSOR_state_machine();
+
+			#endif
+
     		#if OBJECT_ID == OBJECT_TRACKER_GPS
 
 
@@ -241,6 +246,7 @@ char * object_id_to_string(uint8_t id)
 		case OBJECT_VENTILATOR:			ret = "Ventilator";			break;
 		case OBJECT_GSM:				ret = "GSM";				break;
 		case OBJECT_FALL_SENSOR:		ret = "Fall Sensor";		break;
+		case OBJECT_AIR_SENSOR:			ret = "Air Sensor";			break;
 		case OBJECT_TRACKER_GPS:		ret = "Tracker GPS";		break;
 		case OBJECT_VOICE_CONTROL:		ret = "Voice Control";		break;
 		case OBJECT_TOUCH_SCREEN:		ret = "Touch Screen";		break;
