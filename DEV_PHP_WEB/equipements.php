@@ -1,27 +1,25 @@
+<link rel="stylesheet" href="css/equipements.css"/>
+
 <?php session_start();
     
     require 'inc/header.php';
     include("inc/db.php");
     
-    if ($_SESSION['auth']->Admin == 0) {
         
-        $sqladm = "SELECT id_objet,nom_groupe, nom_type
-            FROM utilisateur as US
-            INNER JOIN groupe_utilisateur as GU ON GU.id_utilisateur = US.id
-            INNER JOIN groupe as GR ON GR.id = GU.id_groupe
-            INNER JOIN objet_groupe as OG ON OG.id_groupe = GR.id
-            INNER JOIN objet as OB ON OB.id = OG.id_objet
-            INNER JOIN type as TY ON TY.id = OB.type_id
-            
-            WHERE US.id =".$_SESSION['auth']->id;
+    $sqladm = "SELECT id_objet,nom_groupe, nom_type
+        FROM utilisateur as US
+        INNER JOIN groupe_utilisateur as GU ON GU.id_utilisateur = US.id
+        INNER JOIN groupe as GR ON GR.id = GU.id_groupe
+        INNER JOIN objet_groupe as OG ON OG.id_groupe = GR.id
+        INNER JOIN objet as OB ON OB.id = OG.id_objet
+        INNER JOIN type as TY ON TY.id = OB.type_id
         
-    }
-    else{
-        $sqladm = "SELECT id_objet, nom_groupe, nom_type FROM objet as OB
-                        INNER JOIN type as TY ON TY.id = OB.type_id
-                        INNER JOIN objet_groupe as OG ON OG.id_objet = OB.id
-                        INNER JOIN groupe as GR ON GR.id = OG.id_groupe";
-    }
+        WHERE US.id =".$_SESSION['auth']->id;
+    
+    $sqladm = "SELECT id_objet, nom_groupe, nom_type FROM objet as OB
+                    INNER JOIN type as TY ON TY.id = OB.type_id
+                    INNER JOIN objet_groupe as OG ON OG.id_objet = OB.id
+                    INNER JOIN groupe as GR ON GR.id = OG.id_groupe";
     
     $reqadm = $pdo->prepare($sqladm);
     $reqadm->execute();
@@ -33,259 +31,58 @@
   <h1>Tous les équipements</h1>
   </div>
   <div class="artic">
-  <?php       foreach($result as $value) {
-      echo "Identifiant de l'objet : ".$value['id_objet'];
-      echo "( ".$value['nom_groupe']." : ".$value['nom_type']." )";
       
-      echo '<a href="ficheobjet.php?id_objet="'.$value['id_objet'].'>CLIQUER ICI</a>';
-      echo "<br />";
-      
-  } ?>
+      <?php foreach($result as $key => $value) { ?>
       <article class="card">
           <div class="card_thumb">
-            <img src="img/chambre.jpg">
+          <?php
+            if ($value['id_objet'] == 1){ ?>
+              <img src="img/light1.jpg">
+            <?php  } else if ($value['id_objet'] == 2){ ?>
+              <img src="img/light2.jpg">
+            <?php  } else if ($value['id_objet'] == 3){ ?>
+              <img src="img/prise_connectee.jpg">
+            <?php  } else if ($value['id_objet'] == 4){ ?>
+              <img src="img/light3.jpg">
+            <?php  } else if ($value['id_objet'] == 5){ ?>
+              <img src="img/meteo1.jpg">
+            <?php  } else if ($value['id_objet'] == 6){ ?>
+              <img src="img/meteo2.jpg">
+            <?php  } else if ($value['id_objet'] == 7){ ?>
+              <img src="img/meteo2.jpg">
+            <?php  } else if ($value['id_objet'] == 8){ ?>
+              <img src="img/volet_roulant.jpg">
+            <?php  } else if ($value['id_objet'] == 9){ ?>
+              <img src="img/volet_roulant.jpg">
+            <?php  } else if ($value['id_objet'] == 10){ ?>
+              <img src="img/alarme.jpg">
+            <?php  } else if ($value['id_objet'] == 11){ ?>
+              <img src="img/detecteur_incendie.jpg">
+            <?php   } else if ($value['id_objet'] == 12){ ?>
+              <img src="img/ventilateur.jpg">
+            <?php  } else if ($value['id_objet'] == 13){ ?>
+              <img src="img/detecteur_chute.jpg"> 
+            <?php  } else if ($value['id_objet'] == 14){ ?>
+              <img src="img/detecteur_cuve.jpg">
+            <?php  } else if ($value['id_objet'] == 15){ ?>
+              <img src="img/capteur_air.jpg">
+            <?php  } else ($value['id_objet'] == 16){ ?>
+              <img src="img/slider_lcd.jpg">
+            <?php }
+          ?>
           </div>
           <div class="card_body">
-              <div class="card_cagtegory">Chambre</div>
-              <h2 class="card_title">Lumiere intelligente</h2>
+              <div class="card_cagtegory"><a><?php echo $value['nom_groupe'] ?></a></div>
+              <h2 class="card_title"><?php echo $value['nom_type'];?></h2>
               <div class="card_subtitle">En savoir +</div> 
               <div class="card_element">
-                  <a href="#">Lumieres tamisees et froides</a></br>
-                  <a href="#">S'accorde avec un timer</a></br>
-                  <a href="#">Reveillez-vous en douceur</a></br>
+                  <a href="#"><?php echo "Idententifiant de l'objet : ".$value['id_objet'];?></a></br>
+                  <a href="#"><?php echo '<a href="ficheobjet.php?id_objet="'.$value['id_objet'].'>CLIQUER ICI</a>';?></a></br>
               </div>
           </div>
       </article>
-      
-      <article class="card">
-          <div class="card_thumb">
-            <img src="img/cuisine.jpg">
-          </div>
-          <div class="card_body">
-              <div class="card_cagtegory">Chambre</div>
-              <h2 class="card_title">Eclairage nocturne</h2>
-              <div class="card_subtitle">En savoir +</div> 
-              <div class="card_element">
-                  <a href="#">Capte le taux de luminosité</a></br>
-                  <a href="#">Le transmet a votre systeme de lumiere intelligente</a></br>
-              </div>
-          </div>
-      </article>
-      
-      <article class="card">
-          <div class="card_thumb">
-            <img src="img/cuisine.jpg">
-          </div>
-          <div class="card_body">
-              <div class="card_cagtegory">Chambre</div>
-              <h2 class="card_title">Prise connectée</h2>
-              <div class="card_subtitle">En savoir +</div> 
-              <div class="card_element">
-                  <a href="#">Capte le taux de luminosité</a></br>
-                  <a href="#">Le transmet a votre systeme de lumiere intelligente</a></br>
-              </div>
-          </div>
-      </article>
+      <?php } ?>
 
-      <article class="card">
-          <div class="card_thumb">
-            <img src="img/cuisine.jpg">
-          </div>
-          <div class="card_body">
-              <div class="card_cagtegory">Chambre</div>
-              <h2 class="card_title">Capteur de luminosite</h2>
-              <div class="card_subtitle">En savoir +</div> 
-              <div class="card_element">
-                  <a href="#">Capte le taux de luminosité</a></br>
-                  <a href="#">Le transmet a votre systeme de lumiere intelligente</a></br>
-              </div>
-          </div>
-      </article>
-      
-      <article class="card">
-          <div class="card_thumb">
-            <img src="img/cuisine.jpg">
-          </div>
-          <div class="card_body">
-              <div class="card_cagtegory">Chambre</div>
-              <h2 class="card_title">Météo Intérieur</h2>
-              <div class="card_subtitle">En savoir +</div> 
-              <div class="card_element">
-                  <a href="#">Capte le taux de luminosité</a></br>
-                  <a href="#">Le transmet a votre systeme de lumiere intelligente</a></br>
-              </div>
-          </div>
-      </article>
-      
-      <article class="card">
-          <div class="card_thumb">
-            <img src="img/cuisine.jpg">
-          </div>
-          <div class="card_body">
-              <div class="card_cagtegory">Chambre</div>
-              <h2 class="card_title">Météo Extérieur</h2>
-              <div class="card_subtitle">En savoir +</div> 
-              <div class="card_element">
-                  <a href="#">Capte le taux de luminosité</a></br>
-                  <a href="#">Le transmet a votre systeme de lumiere intelligente</a></br>
-              </div>
-          </div>
-      </article>
-      
-      <article class="card">
-          <div class="card_thumb">
-            <img src="img/cuisine.jpg">
-          </div>
-          <div class="card_body">
-              <div class="card_cagtegory">Chambre</div>
-              <h2 class="card_title">Volet roulant</h2>
-              <div class="card_subtitle">En savoir +</div> 
-              <div class="card_element">
-                  <a href="#">Capte le taux de luminosité</a></br>
-                  <a href="#">Le transmet a votre systeme de lumiere intelligente</a></br>
-              </div>
-          </div>
-      </article>
-      
-      <article class="card">
-          <div class="card_thumb">
-            <img src="img/cuisine.jpg">
-          </div>
-          <div class="card_body">
-              <div class="card_cagtegory">Chambre</div>
-              <h2 class="card_title">Alarme</h2>
-              <div class="card_subtitle">En savoir +</div> 
-              <div class="card_element">
-                  <a href="#">Capte le taux de luminosité</a></br>
-                  <a href="#">Le transmet a votre systeme de lumiere intelligente</a></br>
-              </div>
-          </div>
-      </article>
-      
-      <article class="card">
-          <div class="card_thumb">
-            <img src="img/cuisine.jpg">
-          </div>
-          <div class="card_body">
-              <div class="card_cagtegory">Chambre</div>
-              <h2 class="card_title">Détecteur incendie</h2>
-              <div class="card_subtitle">En savoir +</div> 
-              <div class="card_element">
-                  <a href="#">Capte le taux de luminosité</a></br>
-                  <a href="#">Le transmet a votre systeme de lumiere intelligente</a></br>
-              </div>
-          </div>
-      </article>
-      
-      <article class="card">
-          <div class="card_thumb">
-            <img src="img/cuisine.jpg">
-          </div>
-          <div class="card_body">
-              <div class="card_cagtegory">Chambre</div>
-              <h2 class="card_title">Ventilateur</h2>
-              <div class="card_subtitle">En savoir +</div> 
-              <div class="card_element">
-                  <a href="#">Capte le taux de luminosité</a></br>
-                  <a href="#">Le transmet a votre systeme de lumiere intelligente</a></br>
-              </div>
-          </div>
-      </article>
-      
-      <article class="card">
-          <div class="card_thumb">
-            <img src="img/cuisine.jpg">
-          </div>
-          <div class="card_body">
-              <div class="card_cagtegory">Chambre</div>
-              <h2 class="card_title">Détecteur de chute</h2>
-              <div class="card_subtitle">En savoir +</div> 
-              <div class="card_element">
-                  <a href="#">Capte le taux de luminosité</a></br>
-                  <a href="#">Le transmet a votre systeme de lumiere intelligente</a></br>
-              </div>
-          </div>
-      </article>
-      
-      <article class="card">
-          <div class="card_thumb">
-            <img src="img/cuisine.jpg">
-          </div>
-          <div class="card_body">
-              <div class="card_cagtegory">Chambre</div>
-              <h2 class="card_title">Détecteur niveau cuve</h2>
-              <div class="card_subtitle">En savoir +</div> 
-              <div class="card_element">
-                  <a href="#">Capte le taux de luminosité</a></br>
-                  <a href="#">Le transmet a votre systeme de lumiere intelligente</a></br>
-              </div>
-          </div>
-      </article>
-      
-      <article class="card">
-          <div class="card_thumb">
-            <img src="img/cuisine.jpg">
-          </div>
-          <div class="card_body">
-              <div class="card_cagtegory">Chambre</div>
-              <h2 class="card_title">Qualite de l'air</h2>
-              <div class="card_subtitle">En savoir +</div> 
-              <div class="card_element">
-                  <a href="#">Capte le taux de luminosité</a></br>
-                  <a href="#">Le transmet a votre systeme de lumiere intelligente</a></br>
-              </div>
-          </div>
-      </article>
-      
-      <article class="card">
-          <div class="card_thumb">
-            <img src="img/cuisine.jpg">
-          </div>
-          <div class="card_body">
-              <div class="card_cagtegory">Chambre</div>
-              <h2 class="card_title">Slider LCD</h2>
-              <div class="card_subtitle">En savoir +</div> 
-              <div class="card_element">
-                  <a href="#">Capte le taux de luminosité</a></br>
-                  <a href="#">Le transmet a votre systeme de lumiere intelligente</a></br>
-              </div>
-          </div>
-      </article>
-
-      <article class="card">
-          <div class="card_thumb">
-            <img src="img/salon.jpg">
-          </div>
-          <div class="card_body">
-              <div class="card_cagtegory">Chambre</div>
-              <h2 class="card_title">Ecran tactile</h2>
-              <div class="card_subtitle">En savoir +</div> 
-              <div class="card_element">
-                  <a href="#">Capte le taux de luminosité</a></br>
-                  <a href="#">Le transmet a votre systeme de lumiere intelligente</a></br>
-              </div>
-          </div>
-      </article>
-
-      <article class="card">
-          <div class="card_thumb">
-            <img src="img/exetieur.jpg">
-          </div>
-          <div class="card_body">
-              <div class="card_cagtegory">Exterieur</div>
-              <h2 class="card_title">Horloge connectée</h2>
-              <div class="card_subtitle">Voir les differents elements</div> 
-              <div class="card_element">
-                  <a href="#">Eclairage nocturne</a></br>
-                  <a href="#">Meteo Exterieur</a></br>
-                  <a href="#">Detecteur de chute</a></br>
-              </div>
-          </div>
-          <div class="card_footer">
-              <span class="icon icon--nombre"></span>3 elements
-          </div>
-      </article> 
-         
   </div>
 </div>
 
