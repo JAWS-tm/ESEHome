@@ -1,122 +1,148 @@
-<?php session_start();
 
-require 'inc/header.php';
-include("inc/db.php");
+<?php 
+  session_start();
 
+  if(isset($_SESSION['auth']->id)){ 
+
+    require 'inc/header.php';
+    require 'inc/db.php';
+
+    if ($_SESSION['auth']->Admin == 1) {
+      $admin = true;
+      $resultats = (object) [
+          'id_groupe' => 0
+      ];
+    }
+    else{
+
+      $admin = false;
+      $sqlgrpuser ="SELECT id_groupe FROM utilisateur AS UT
+        INNER JOIN groupe_utilisateur AS GU ON GU.id_utilisateur = UT.id
+        WHERE UT.id =".$_SESSION['auth']->id;
+      $req = $pdo->prepare($sqlgrpuser);
+      $req->execute();
+
+      $resultats = $req->fetch();
+    }
+
+
+
+    $sqladm = "SELECT id_objet, nom_groupe, nom_type FROM objet as OB
+        INNER JOIN type as TY ON TY.id = OB.type_id
+        INNER JOIN objet_groupe as OG ON OG.id_objet = OB.id
+        INNER JOIN groupe as GR ON GR.id = OG.id_groupe";      
+
+
+
+ 
+
+    $reqadm = $pdo->prepare($sqladm);
+    $reqadm->execute();
+
+    $result = $reqadm->fetchAll(PDO::FETCH_ASSOC);
     
-$sqladm = "SELECT id_objet,nom_groupe, nom_type
-    FROM utilisateur as US
-    INNER JOIN groupe_utilisateur as GU ON GU.id_utilisateur = US.id
-    INNER JOIN groupe as GR ON GR.id = GU.id_groupe
-    INNER JOIN objet_groupe as OG ON OG.id_groupe = GR.id
-    INNER JOIN objet as OB ON OB.id = OG.id_objet
-    INNER JOIN type as TY ON TY.id = OB.type_id
-    
-    WHERE US.id =".$_SESSION['auth']->id;
+  }
+  else{
+    header("Location: index.php");
+  }
 
-$sqladm = "SELECT id_objet, nom_groupe, nom_type FROM objet as OB
-                INNER JOIN type as TY ON TY.id = OB.type_id
-                INNER JOIN objet_groupe as OG ON OG.id_objet = OB.id
-                INNER JOIN groupe as GR ON GR.id = OG.id_groupe";
-
-$reqadm = $pdo->prepare($sqladm);
-$reqadm->execute();
-$result = $reqadm->fetchAll(PDO::FETCH_ASSOC);
+ 
 ?>
 
+
+<!--<link rel="stylesheet" type="text/css" href="css/mesobjets.css">-->
 <div class="mesobjets">
-<div class="user_ban">
-    <h1>Gardez la main sur votre maison</h1>
+  <div class="user_ban">
+    <h1>Mes Objets</h1>
   </div>
+ 
+ 
+
   <div class="artic">
-    <?php  /*     foreach($result as $value) {
-          echo "Identifiant de l'objet : ".$value['id_objet'];
-          echo "( ".$value['nom_groupe']." : ".$value['nom_type']." )";
-        
-        echo '<a href="ficheobjet.php?id_objet="'.$value['id_objet'].'>CLIQUER ICI</a>';
-          echo "<br />";
-      
-      } */?>
+
+    <?php if($resultats->id_groupe == 1 || $admin == true):?>
       <article class="card">
-          <div class="card_thumb">
-            <img src="img/chambre.jpg">
+        <div class="card_thumb"><img src="img/chambre.jpg"></div>
+        <div class="card_body">
+          <div class="card_cagtegory">Chambre</div>
+          <h2 class="card_title">Gerer les elements de ma chambre</h2>
+          <div class="card_subtitle">Voir les differents elements</div> 
+          <div class="card_element">
+            <?php 
+            foreach($result as $value){
+              if($value['nom_groupe'] == 'CHAMBRE'):?>
+                <a href="ficheobjet.php?param=<?php echo $value['id_objet'];?>"><?php echo $value['nom_type']."<br>"?></a>
+              <?php endif;
+            }?>    
           </div>
-
-          <div class="card_body">
-              <div class="card_cagtegory">Chambre</div>
-              <h2 class="card_title">Gerer les elements de ma chambre</h2>
-              <div class="card_subtitle">Voir les differents elements</div> 
-              <div class="card_element">
-                  <a href="#">Lumiere</a></br>
-                  <a href="#">Alarme</a></br>
-                  <a href="#">Horloge connectee</a></br>
-              </div>
-          </div>
-          <div class="card_footer">
-              <span class="icon icon--nombre"></span>3 elements
-          </div>
+          <div class="card_footer"></div>
+        </div>
       </article>
+    <?php endif ?>
 
+    <?php if ($resultats->id_groupe == 2 || $admin == true): ?>
       <article class="card">
-          <div class="card_thumb">
-            <img src="img/cuisine.jpg">
+        <div class="card_thumb"><img src="img/cuisine.jpg"></div>
+        <div class="card_body">
+          <div class="card_cagtegory">Cuisine</div>
+          <h2 class="card_title">Gerer les elements de la cuisine</h2>
+          <div class="card_subtitle">Voir les differents elements</div> 
+          <div class="card_element">
+            <?php 
+            foreach($result as $value){
+              if($value['nom_groupe'] == 'CUISINE'):?>
+                <a href="ficheobjet.php?param=<?php echo $value['id_objet'];?>"><?php echo $value['nom_type']."<br>"?></a>
+              <?php endif;
+            }?>    
           </div>
-          <div class="card_body">
-              <div class="card_cagtegory">Cuisine</div>
-              <h2 class="card_title">Gerer les elements de ma cuisine</h2>
-              <div class="card_subtitle">Voir les differents elements</div> 
-              <div class="card_element">
-                  <a href="#">Niveau eau</a></br>
-                  <a href="#">Ventilateur</a></br>
-                  <a href="#">Detecteur Incendie</a></br>
-                  <a href="#">Prise connectee</a></br>
-              </div>
-          </div>
-          <div class="card_footer">
-              <span class="icon icon--nombre"></span>4 elements
-          </div>
+          <div class="card_footer"></div>
+        </div>
       </article>
-
-       <article class="card">
-          <div class="card_thumb">
-            <img src="img/salon.jpg">
-          </div>
-          <div class="card_body">
-              <div class="card_cagtegory">Salon</div>
-              <h2 class="card_title">Gerer les elements de mon salon</h2>
-              <div class="card_subtitle">Voir les differents elements</div> 
-              <div class="card_element">
-                  <a href="#">Eclairage intelligent</a></br>
-                  <a href="#">Capteur de Luminosite</a></br>
-                  <a href="#">Volet roulant</a></br>
-                  <a href="#">Alarme</a></br>
-                  <a href="#">Meteo Interieur</a>
-              </div>
-          </div>
-          <div class="card_footer">
-              <span class="icon icon--nombre"></span>4 elements
-          </div>
-      </article>
-
+    <?php endif ?>
+  
+    <?php if($resultats->id_groupe == 3 || $admin == true):?>
+    
       <article class="card">
-          <div class="card_thumb">
-            <img src="img/exetieur.jpg">
+        <div class="card_thumb"><img src="img/salon.jpg"></div>
+        <div class="card_body">
+          <div class="card_cagtegory">Salon</div>
+          <h2 class="card_title">Gerer les elements du salon</h2>
+          <div class="card_subtitle">Voir les differents elements</div> 
+          <div class="card_element">
+            <?php 
+            foreach($result as $value){
+              if($value['nom_groupe'] == 'SALON'):?>
+                <a href="ficheobjet.php?param=<?php echo $value['id_objet'];?>"><?php echo $value['nom_type']."<br>"?></a>
+              <?php endif;
+            }?>    
           </div>
-          <div class="card_body">
-              <div class="card_cagtegory">Exterieur</div>
-              <h2 class="card_title">Gerer les elements extereur</h2>
-              <div class="card_subtitle">Voir les differents elements</div> 
-              <div class="card_element">
-                  <a href="#">Eclairage nocturne</a></br>
-                  <a href="#">Meteo Exterieur</a></br>
-                  <a href="#">Detecteur de chute</a></br>
-              </div>
+          <div class="card_footer"></div>
+        </div>
+      </article>
+    <?php endif ?>
+
+    <?php if ($resultats->id_groupe == 4 || $admin == true): ?>
+      <article class="card">
+        <div class="card_thumb"><img src="img/exetieur.jpg"></div>
+        <div class="card_body">
+          <div class="card_cagtegory">Exterieur</div>
+          <h2 class="card_title">Gerer les elements de l'exterieur</h2>
+          <div class="card_subtitle">Voir les differents elements</div> 
+          <div class="card_element">
+            <?php 
+            foreach($result as $value){
+              if($value['nom_groupe'] == 'EXTERIEUR'):?>
+                <a href="ficheobjet.php?param=<?php echo $value['id_objet'];?>"><?php echo $value['nom_type']."<br>"?></a>
+              <?php endif;
+            }?>    
           </div>
-          <div class="card_footer">
-              <span class="icon icon--nombre"></span>3 elements
-          </div>
-      </article> 
-         
+          <div class="card_footer"></div>
+        </div>
+      </article>
+    <?php endif ?>
+
+ 
+    
   </div>
 </div>
 

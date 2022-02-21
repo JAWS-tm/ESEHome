@@ -11,8 +11,9 @@ require 'inc/header.php';?>
     				
                     <div id="user">
                         <a class="link" href="ajouterutilisateur.php">Ajouter un utilisateur</a><br>
-                        <a class="link" href="supprimerutilisateur">Supprimer un utilisateur</a><br>
-                        <a class="link" href="promouvoirutilisateur">Promouvoir un utilisateur</a><br>
+                        <a class="link" href="supprimerutilisateur.php">Supprimer un utilisateur</a><br>
+                        <a class="link" href="promouvoirutilisateur.php">Promouvoir un utilisateur</a><br>
+                        <a class="link" href="gestionutilisateur.php">Gestion d'un utilisateur</a><br>
                     </div>
                 	
     
