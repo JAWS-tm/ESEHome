@@ -33,14 +33,13 @@
 		<p>Envie de faire partie de la communaute ESEHome? Rejoignez-nous sur les differentes plateformes! Nous sommes deja 3500 a faire partie du mouvement.<br></p>
 		<ul>
 			<li><a href=""><i class="bi bi2 bi-instagram grey" ></i></a></li>
-			<li><a href=""><i class="bi bi2 bi-facebook grey" ></i></i></a></li>
-			<li><a href=""><i class="bi bi2 bi-twitter grey" ></i></i></a></li>
-			<li><a href=""><i class="bi bi2 bi-github grey" ></i></i></a></li>
-			<li><a href=""><i class="bi bi2 bi-linkedin grey" ></i></i></a></li>
+			<li><a href=""><i class="bi bi2 bi-facebook grey" ></i></a></li>
+			<li><a href=""><i class="bi bi2 bi-twitter grey" ></i></a></li>
+			<li><a href=""><i class="bi bi2 bi-github grey" ></i></a></li>
+			<li><a href=""><i class="bi bi2 bi-linkedin grey" ></i></a></li>
 		</ul>
 	</div>
 </footer>
-</div>
 </body>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script type="text/javascript" src="js/header.js"></script>
