@@ -1,7 +1,7 @@
 <?php 
 
     require 'inc/header.php';
-	include("inc/db.php");
+	require 'inc/db.php';
 
 	// Affichage de tous les utilisateurs
 	$sqlQueryAffiche = 'SELECT id, Pseudo FROM utilisateur WHERE Admin = 0 ORDER BY Pseudo';
@@ -34,9 +34,9 @@
 </head>
 <body>
 
-	
-	<div class="container">
-		<div class="contact-form">
+	<h1>ADMIN</h1>
+	<div class="container contadm">
+		<div class="formadm">
 			
 			<div class="main">
 					

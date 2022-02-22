@@ -1,7 +1,7 @@
 <?php session_start();
 
     require 'inc/header.php';
-	include("inc/db.php");
+	require 'inc/db.php';
 	
 	$sqlnomgrp = "SELECT nom_groupe FROM groupe as GR
 				  INNER JOIN groupe_utilisateur as GU ON GU.id_groupe = GR.id 
@@ -11,24 +11,27 @@
     $reqmoncompte->execute() or exit(print_r($reqmoncompte->errorInfo()));
     $count = $reqmoncompte->rowCount();
 
-    if ($count != 0) {
+    if ($_SESSION['auth']->Admin == 1) {
+    	$result = (object) [
+    		'nom_groupe' => 1
+		];
+    }
+    else if ($_SESSION['auth']->Admin == 0) {
+    	if ($count != 0) {
     	 $result = $reqmoncompte->fetch();
-    }else{
-    	if ($_SESSION['auth']->Admin == 1) {
-    		$result = (object) [
-    			'nom_groupe' => 1
-			];
-    	}else{
-    		$result = (object) [
+   		}
+   		else{
+   			$result = (object) [
     			'nom_groupe' => 0
 			];
-    	}
+   		}
     }
+
 ?>
 
 
-	<div class="container">
-		<div class="contact-form">
+	<div class="container contadm">
+		<div class="formadm">
 			<div class="main">
 				<h2>Espace mon compte de <?php echo $_SESSION['auth']->Pseudo;?></h2>
 				<p>Numero d'identifiant : <?php echo $_SESSION['auth']->id;?></p>
@@ -41,8 +44,6 @@
 				<?php } else{ ?>
 					<p> Appartient au groupe : <?php echo $result->nom_groupe;?></p>
                 <?php } ?>
-
-				<a href="deconnexion.php">Deconnexion</a>
 			</div>    
 		</div>
 	</div>

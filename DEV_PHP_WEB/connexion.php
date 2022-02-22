@@ -1,29 +1,29 @@
 <?php 
 
-require 'inc/header.php';
+    require 'inc/header.php';
+    $page = "connexion.php";
+    if(!empty($_POST)){
+        $errors = array();
+        require_once 'inc/db.php';
+        $req = $pdo->prepare('SELECT * FROM utilisateur WHERE Pseudo = :username');
+        $req->execute(['username' => $_POST['username']]);
+        $user = $req->fetch();
 
-if(!empty($_POST)){
-    $errors = array();
-    require_once 'inc/db.php';
-    $req = $pdo->prepare('SELECT * FROM utilisateur WHERE Pseudo = :username');
-    $req->execute(['username' => $_POST['username']]);
-    $user = $req->fetch();
-
-    if(password_verify($_POST['password'], $user->MotDePasse)){
-        $_SESSION['auth'] = $user;
-        $_SESSION['loggedin'] = true;
-        header('Location: mesobjets.php');
-        exit();
-    }else{
-        $_SESSION['flash']['danger'] = 'Identifiant ou mot de passe incorrecte';
-        $errors['username'] = 'Identifiant ou mot de passe incorrecte';
+        if(password_verify($_POST['password'], $user->MotDePasse)){
+            $_SESSION['auth'] = $user;
+            $_SESSION['loggedin'] = true;
+            header('Location: mesobjets.php');
+            exit();
+        }else{
+            $_SESSION['flash']['danger'] = 'Identifiant ou mot de passe incorrecte';
+            $errors['username'] = 'Identifiant ou mot de passe incorrecte';
+        }
     }
-}
 
-$page = "connexion.php";
+
 ?>
 
-
+<link rel="stylesheet" href="css/inscription.css"/>
 </head>
 <body>
     <?php if(!empty($errors)): ?>

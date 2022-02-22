@@ -2,8 +2,7 @@
 
 
     require 'inc/header.php';
-
-	include("inc/db.php");
+	require 'inc/db.php';
 
 	$sqlQueryAffiche = 'SELECT id, Pseudo, Admin FROM utilisateur WHERE Admin = 0 ORDER BY Pseudo';
 	$recipesStatementAffiche = $pdo->prepare($sqlQueryAffiche);
@@ -17,8 +16,6 @@
 		$recipesStatementEfface = $pdo->prepare($sqlQueryEfface);
 		$recipesStatementEfface->execute() or exit(print_r($recipesStatementEfface->errorInfo()));
 		
-	
-
 		header("Location: supprimerutilisateur.php");
 
 	}
@@ -28,9 +25,9 @@
 </head>
 <body>
 
-	
-	<div class="container">
-		<div class="contact-form">
+	<h1>ADMIN</h1>
+	<div class="container contadm">
+		<div class="formadm">
 			
 			<div class="main">
 					
