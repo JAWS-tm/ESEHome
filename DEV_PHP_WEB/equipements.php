@@ -5,7 +5,7 @@
     require 'inc/header.php';
     include("inc/db.php");
     
-        
+    
     $sqladm = "SELECT id_objet,nom_groupe, nom_type
         FROM utilisateur as US
         INNER JOIN groupe_utilisateur as GU ON GU.id_utilisateur = US.id
@@ -32,7 +32,9 @@
   </div>
   <div class="artic">
       
-      <?php foreach($result as $key => $value) { ?>
+      <?php foreach($result as $key => $value) { 
+      ?>
+      
       <article class="card">
           <div class="card_thumb">
           <?php

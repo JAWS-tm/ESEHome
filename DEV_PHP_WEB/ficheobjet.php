@@ -1,17 +1,15 @@
 <?php
+    require 'inc/header.php';
     include("inc/db.php");
-	session_start();
-
+    
 	date_default_timezone_set('UTC');
 	$id = $_GET['param'];
 	$Date = date("Y-m-d H:i:s") ; 
 	
 	if($id >= 10){
 	    $dest = "DDDDDD$id";
-	    echo $dest;
 	}else{
 	    $dest = "DDDDDD0$id";
-	    echo $dest;
 	}
 	
 	// On férifie si l'objet est bien connecté 
@@ -21,26 +19,44 @@
 	$result = $req->fetchAll(PDO::FETCH_ASSOC);
 	if($result){
 	    $connect = 1;
-	    echo $connect;
 	}else{
 	    $connect = 0;
-	    echo $connect;
 	}
-	
-	
 	
 	
 	
 	switch ($id){
 	    
 	    case 1:
-            //TODO changer le parametre en fonvtion de l'objet tipe de message ext.... 	
-            // Pour l'instant envoie d'un ping 
+	        $req = $pdo->prepare('SELECT * FROM message WHERE emetteur = ? AND type_message_id = 42 ');
+	        $req->execute([$dest]);
+	        $result = $req->fetchAll(PDO::FETCH_ASSOC);
+	        if($result){
+	            foreach ($result as $value){
+	                if ($value === end($result)){
+	                    $donnée = $value['message'];
+	                    $state = " $donnée";
+	                }
+	            }
+	        }else{
+	            $state = "Pas de donnees";
+	        }
 	       break;
 	    
 	    case 2:
-	        //TODO changer le parametre en fonvtion de l'objet tipe de message ext.... 	
-	        // Pour l'instant envoie d'un ping 
+	        $req = $pdo->prepare('SELECT * FROM message WHERE emetteur = ? AND type_message_id = 42 ');
+	        $req->execute([$dest]);
+	        $result = $req->fetchAll(PDO::FETCH_ASSOC);
+	        if($result){
+	            foreach ($result as $value){
+	                if ($value === end($result)){
+	                    $donnée = $value['message'];
+	                    $state = " $donnée";
+	                }
+	            }
+	        }else{
+	            $state = "Pas de donnees";
+	        }
 	       break;
 	    
 	    case 3:
@@ -54,6 +70,8 @@
 	                    $state = "La consomation est actuellement de $donnée";
 	                }   
 	            }
+	        }else{
+	            $state = "Pas de donnees";
 	        }
 	        
 	        break;
@@ -69,6 +87,8 @@
 	                    $state = "La luminositée est actuellement de $donnée";
 	                }
 	            }
+	        }else{
+	            $state = "Pas de donnees";
 	        }
 	        break;
 	        
@@ -83,6 +103,8 @@
 	                    $state = "La température est actuellement de $donnée";
 	                }
 	            }
+	        }else{
+	            $state = "Pas de donnees";
 	        }
 	        
 	        break;
@@ -98,6 +120,8 @@
 	                    $state = "La température est actuellement de $donnée";
 	                }
 	            }
+	        }else{
+	            $state = "Pas de donnees";
 	        }
 	        
 	        break;
@@ -113,6 +137,8 @@
 	                    $state = "Le volet est actuellement de $donnée";
 	                }
 	            }
+	        }else{
+	            $state = "Pas de donnees";
 	        }
 	        
 	        break;
@@ -128,6 +154,8 @@
 	                    $state = "L'alarme est actuellement de $donnée";
 	                }
 	            }
+	        }else{
+	            $state = "Pas de donnees";
 	        }
 	        
 	        break;
@@ -143,6 +171,8 @@
 	                    $state = "Le detecteur d'incendie est actuellement $donnée";
 	                }
 	            }
+	        }else{
+	            $state = "Pas de donnees";
 	        }
 	        
 	        break;
@@ -158,6 +188,8 @@
 	                    $state = "La ventilateur est actuellement $donnée";
 	                }
 	            }
+	        }else{
+	            $state = "Pas de donnees";
 	        }
 	        break;
 	        
@@ -165,13 +197,16 @@
 	        $req = $pdo->prepare('SELECT * FROM message WHERE emetteur = ? AND type_message_id = 42 ');
 	        $req->execute([$dest]);
 	        $result = $req->fetchAll(PDO::FETCH_ASSOC);
+	        $state = "La papi est actuellement 0";
 	        if($result){
 	            foreach ($result as $value){
 	                if ($value === end($result)){
 	                    $donnée = $value['message'];
-	                    $state = "La papi est actuellement $donnée";
+	                    $state = "Le papi est actuellement $donnée";
 	                }
 	            }
+	        }else{
+	            $state = "Pas de donnees";
 	        }
 	        break;
 	        
@@ -186,6 +221,8 @@
 	                    $state = "Le niveau de la cuve est de $donnée";
 	                }
 	            }
+	        }else{
+	            $state = "Pas de donnees";
 	        }
 	        
 	        break;
@@ -201,6 +238,8 @@
 	                    $state = "La qualité de l'aire est de $donnée";
 	                }
 	            }
+	        }else{
+	            $state = "Pas de donnees";
 	        }
 	        
 	        break;
@@ -216,6 +255,8 @@
 	                    $state = "La slider LCD est $donnée";
 	                }
 	            }
+	        }else{
+	            $state = "Pas de donnees";
 	        }
 	        
 	        break;
@@ -231,6 +272,8 @@
 	                    $state = "L'écrant tactile est $donnée";
 	                }
 	            }
+	        }else{
+	            $state = "Pas de donnees";
 	        }
 	        
 	        break;
@@ -246,6 +289,8 @@
 	                    $state = "Il est $donnée";
 	                }
 	            }
+	        }else{
+	            $state = "Pas de donnees";
 	        }
 	        
 	        break;  
@@ -269,63 +314,6 @@
 
     $result = $reqinfo->fetch();
 
-    echo $result->nom_groupe;
-    echo " / " .$result->nom;
-    echo " / " .$result->date_creation;
-    echo " / " .$result->nom_type;
-    echo " / " .$result->state;
-    echo " / " .$result->valeur;
-    echo " / " .$result->modifiable;
-    
-    
-    
-    /* 
-     	Via une plateforme hÃ©bergÃ©e par le serveur Ã  laquelle il se connecte par login+mdp, lâ€™utilisateur dotÃ©
-        de droits â€˜adminâ€™ peut accÃ©der Ã  un ensemble de fonctionnalitÃ©s.
-    - Liste des objets associÃ©s Ã  la station + visualisation de lâ€™Ã©tat de ces objets (connectÃ© / date et heure du dernier message reÃ§u / niveau de batterie, autres paramÃ¨tres spÃ©cifiquesâ€¦)
-
-        -Chaque objet est prÃ©sentÃ© avec son nom choisi par lâ€™utilisateur (nom dont lâ€™objet nâ€™a dâ€™ailleurs pas connaissance).
-        - AccÃ¨s aux paramÃ¨tres de chaque objet, et Ã  leurs Ã©tats (modification en attente, Ã©tat validÃ©, date de la derniÃ¨re modification, â€¦)
-        - AccÃ¨s aux Ã©vÃ©nements reÃ§us
-        - AccÃ¨s aux actions disponibles
-        - AccÃ¨s Ã  la liste de rÃ¨gles (lecture, modification, ajoutâ€¦)
-  
-        - Attention, une rÃ¨gle peut concerner plusieurs objets
-            â–ª   Exemple : le capteur de luminositÃ© xx active la lumiÃ¨re nocturne yy.
-        
-        
-        - AccÃ¨s Ã  la boÃ®te aux lettres des messages pour chaque objet
-        
-        Selon les contextes, les donnÃ©es pourront Ãªtre affichÃ©es sous forme de listes Ã  plusieurs colonnes, dont on peut faire varier lâ€™ordre de tri et dont on peut filtrer le contenu.   
-     */
-      
-    $d =1;
-    $a =4;
-
-    if(isset($_POST['formmessage'])) {
-        if (!empty($_POST['message'])) {
-           
-           $msg = "Utilisateur Numero " .$d . " / "; // $_SESSION['auth']->id
-           $msg .= "Objet Numero ".$a." / "; // RECUP DANS UNE SESSION PAS ENCORE FAIT
-           $msg .= $_POST['message'];
-           
-           $sqlmsg ="INSERT INTO message (message, permanent, type_message_id, date) VALUES (:msg, false, 1, NOW() );";
-            
-            try {
-                $reqmsg = $pdo->prepare($sqlmsg);
-                $reqmsg->bindParam(':msg', $msg, PDO::PARAM_STR);
-                $reqmsg->execute();
-
-                if ($reqmsg !== false) {
-                    
-                    header("Location ficheobjet.php");
-                }
-            } 
-            catch (PDOException $e) {
-                echo $e->getMessage();
-            }                   
-        }     
-    }
     
 if(!empty($_POST)){
     $errors = array();
@@ -376,16 +364,6 @@ if(!empty($_POST)){
 }
 ?>
 
-<div>
-    <p>Envoyer un message pour modifier certains paramÃ¨tres dâ€™un objet ou de plusieurs objets</p>
-    <form action="" method="POST">
-                            
-        <input type="text" name="message" placeholder="" class="champ" require/>
-        <button type="submit" name="formmessage" class="btn">Envoyer</button>
-    </form>
-
-</div>
-
 <link rel="stylesheet" href="css/objet.css">
 <link rel="stylesheet" href="css/ficheobjet.css">
  <div class="user_ban">
@@ -401,12 +379,12 @@ if(!empty($_POST)){
               <div class="card_cagtegory"><?php echo $result->nom_type;?></div>
               <h2 class="card_title">Gérer <?php echo $result->nom_type;?></h2>
               <div class="card_element">
-                <?php if($connect == 1){
-                            echo 'Objet connecté';
-                }else{
-                    echo 'Objet non connecté';
-                }
-                ?>
+                <?php if($connect == 1){ ?>
+              			<p class="connect">Objet connecte</p>
+               <?php }else{ ?>
+                   <p class="disconnect">Objet deconnecte</p>
+                <?php }?>
+                 <p class="etat"><?php echo $state; ?></p>
               	<form action="" method="POST">
               		<input type="hidden"  name="Emetteur" value="EEEEEE00" require/>
                     <input type="hidden"  name="Destinataire" value="<?php echo $dest; ?>" require/>
@@ -425,7 +403,7 @@ if(!empty($_POST)){
                     <input type="hidden"  name="Message" value="02" require/>
                     <input type="hidden"  name="Permanent" value="1" require/>
                     <input type="hidden"  name="Date" value="<?php echo $Date; ?>" require/>
-              		<button class="demande">Demande modif</button>
+              		<button type="submit" class="demande">Demande modif</button>
               	</form>
                  
               </div>
@@ -461,7 +439,8 @@ if(!empty($_POST)){
                                                       echo 'Pas de message envoyé';
                                                   }?></p>
           </div>
-          <button class="voir" id="btn">Voire tous les messages</button>
+          <button class="voir" id="btn"  style="display: block;">Voire tous les messages</button>
+          <button class="voir" id="Fermer"  style="display: none;">Reduir</button>
           <ul class="envoyé" id="envoyetout" style="display: none;">
           <?php 
           $req = $pdo->prepare('SELECT * FROM message WHERE emetteur = ?');
@@ -494,4 +473,4 @@ if(!empty($_POST)){
       </div>
   </div>
     <script type="text/javascript" src="js/message.js"></script>
-<?php /*require 'inc/footer.php';*/?>
+<?php require 'inc/footer.php';?>
