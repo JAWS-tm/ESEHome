@@ -442,7 +442,7 @@ if(!empty($_POST)){
                                                   }?></p>
           </div>
           <button class="voir" id="btn"  style="display: block;">Voir tous les messages</button>
-          <button class="voir" id="Fermer"  style="display: none;">Reduir</button>
+          <button class="voir" id="Fermer"  style="display: none;">Reduire</button>
           <ul class="envoyé" id="envoyetout" style="display: none;">
           <?php 
           $req = $pdo->prepare('SELECT * FROM message WHERE emetteur = ?');
