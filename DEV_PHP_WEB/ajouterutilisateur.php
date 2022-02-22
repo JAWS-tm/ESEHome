@@ -51,9 +51,9 @@
 </head>
 <body>
 
-
-	<div class="container">
-		<div class="contact-form">
+	<h1>ADMIN</h1>
+	<div class="container contadm">
+		<div class="formadm">
 			
 			<div class="main">
 					
@@ -77,12 +77,13 @@
 	</div>
 	<br>
 	<div class="lien">
-		
+
+		<p><a href="supprimerutilisateur.php">Supprimer un utilisateur</a></p>
 		<p><a href="promouvoirutilisateur.php">Promouvoir un utilisateur</a></p>
 		<p><a href="gestionutilisateur.php">Gestion des groupes utilisateur</a></p>
-		<p><a href="supprimerutilisateur.php">Supprimer un utilisateur</a></p>
 
 	</div>
+
 
 
 <?php require 'inc/footer.php';?>

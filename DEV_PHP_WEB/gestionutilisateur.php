@@ -34,9 +34,9 @@
 </head>
 <body>
 
-	
-	<div class="container">
-		<div class="contact-form">
+	<h1>ADMIN</h1>
+	<div class="container contadm">
+		<div class="formadm">
 			
 			<div class="main">
 					

@@ -27,8 +27,8 @@
 ?>
 
 
-	<div class="container">
-		<div class="contact-form">
+	<div class="container contadm">
+		<div class="formadm">
 			<div class="main">
 				<h2>Espace mon compte de <?php echo $_SESSION['auth']->Pseudo;?></h2>
 				<p>Numero d'identifiant : <?php echo $_SESSION['auth']->id;?></p>
