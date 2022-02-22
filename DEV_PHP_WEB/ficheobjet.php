@@ -414,7 +414,7 @@ if(!empty($_POST)){
 	</div>
       <div class = "message">  
           <div class = "reçu" id="recu" style="display: block;">
-          		<p> Dernier message reçu : <?php
+          		<p> Dernier message recu : <?php
                   	                                  $req = $pdo->prepare('SELECT * FROM message WHERE destinataire = ?');
                                                       $req->execute([$dest]);
                                                       $result = $req->fetchAll(PDO::FETCH_ASSOC);
@@ -449,7 +449,7 @@ if(!empty($_POST)){
           $req->execute([$dest]);
           $result = $req->fetchAll(PDO::FETCH_ASSOC);
           if($result){
-              echo '<li>Messages envoyé</li>';
+              echo '<li>Messages envoyes</li>';
               foreach ($result as $value){
                 echo '<li>Message ('.$value['id'].') Destinataire : '.$value['destinataire'].'/ Date : '.$value['date'].'/ type de message : '.$value['type_message_id'].'/ Permanent : '.$value['permanent'].'</li>'; 
               }
