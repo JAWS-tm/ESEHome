@@ -86,7 +86,7 @@
 	            foreach ($result as $value){
 	                if ($value === end($result)){
 	                    $donnée = $value['message'];
-	                    $state = "La luminositée est actuellement de $donnée";
+	                    $state = "La luminosite est actuellement de $donnée";
 	                }
 	            }
 	        }else{
@@ -102,7 +102,7 @@
 	            foreach ($result as $value){
 	                if ($value === end($result)){
 	                    $donnée = $value['message'];
-	                    $state = "La température est actuellement de $donnée";
+	                    $state = "La temperature est actuellement de $donnée";
 	                }
 	            }
 	        }else{
@@ -119,7 +119,7 @@
 	            foreach ($result as $value){
 	                if ($value === end($result)){
 	                    $donnée = $value['message'];
-	                    $state = "La température est actuellement de $donnée";
+	                    $state = "La temperature est actuellement de $donnée";
 	                }
 	            }
 	        }else{
@@ -187,7 +187,7 @@
 	            foreach ($result as $value){
 	                if ($value === end($result)){
 	                    $donnée = $value['message'];
-	                    $state = "La ventilateur est actuellement $donnée";
+	                    $state = "Le ventilateur est actuellement $donnée";
 	                }
 	            }
 	        }else{
@@ -237,7 +237,7 @@
 	            foreach ($result as $value){
 	                if ($value === end($result)){
 	                    $donnée = $value['message'];
-	                    $state = "La qualité de l'aire est de $donnée";
+	                    $state = "La qualite de l'air est de $donnée";
 	                }
 	            }
 	        }else{
@@ -254,7 +254,7 @@
 	            foreach ($result as $value){
 	                if ($value === end($result)){
 	                    $donnée = $value['message'];
-	                    $state = "La slider LCD est $donnée";
+	                    $state = "Le slider LCD est $donnée";
 	                }
 	            }
 	        }else{
@@ -271,7 +271,7 @@
 	            foreach ($result as $value){
 	                if ($value === end($result)){
 	                    $donnée = $value['message'];
-	                    $state = "L'écrant tactile est $donnée";
+	                    $state = "L'écran tactile est $donnée";
 	                }
 	            }
 	        }else{
@@ -360,7 +360,7 @@ if(!empty($_POST)){
        $Permanent =  htmlspecialchars($_POST['Permanent']);
        $req->execute([$destinataire, $emetteur, $Paramettre_id,$Message,$Date,$Permanent,$Type_message_id]);
             
-       echo " Message envoyé ";
+       echo " Message envoye ";
    }
         
 }
@@ -438,10 +438,10 @@ if(!empty($_POST)){
                                                               echo '<li>Message ('.$value['id'].') Destinataire : '.$value['destinataire'].'/ Date : '.$value['date'].'/ type de message : '.$value['type_message_id'].'/ Permanent : '.$value['permanent'].'</li>'; 
                                                       }
                                                   }else{
-                                                      echo 'Pas de message envoyé';
+                                                      echo 'Pas de message envoye';
                                                   }?></p>
           </div>
-          <button class="voir" id="btn"  style="display: block;">Voire tous les messages</button>
+          <button class="voir" id="btn"  style="display: block;">Voir tous les messages</button>
           <button class="voir" id="Fermer"  style="display: none;">Reduir</button>
           <ul class="envoyé" id="envoyetout" style="display: none;">
           <?php 
@@ -454,7 +454,7 @@ if(!empty($_POST)){
                 echo '<li>Message ('.$value['id'].') Destinataire : '.$value['destinataire'].'/ Date : '.$value['date'].'/ type de message : '.$value['type_message_id'].'/ Permanent : '.$value['permanent'].'</li>'; 
               }
           }else{
-              echo '<li>Pas de message envoyé</li>';
+              echo '<li>Pas de message envoye</li>';
           }?>    
           </ul>
           
