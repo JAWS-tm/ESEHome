@@ -37,3 +37,42 @@
 	background-color: #fff;
 	margin-bottom : 25px;
 }
+
+
+
+.action{
+	padding: 15px;
+	border: 1px solid #fff;
+	border-radius: 5px;
+	transition : 0.3s;
+}
+
+.action:hover{
+	background-color: #334E70;
+	cursor: pointer;
+	color : #fff;
+}
+
+
+
+.demande{
+	padding: 15px;
+	border: 1px solid #fff;
+	border-radius: 5px;
+	transition : 0.3s;
+}
+
+.demande:hover{
+	background-color: #334E70;
+	cursor: pointer;
+	color : #fff;
+}
+
+
+.connect{
+	color : green;
+}
+
+.disconnect{
+	color : red;
+}
