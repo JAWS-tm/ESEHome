@@ -424,7 +424,7 @@ if(!empty($_POST)){
                                                                   echo '<li>Message ('.$value['id'].') Destinataire : '.$value['destinataire'].'/ Date : '.$value['date'].'/ type de message : '.$value['type_message_id'].'/ Permanent : '.$value['permanent'].'</li>'; 
                                                           }
                                                       }else{
-                                                          echo 'Pas de message reçu';
+                                                          echo 'Pas de message recu';
                                                       }?></p>
           </div>
           <div class = "envoyé" id="envoye" style="display: block;">
@@ -464,12 +464,12 @@ if(!empty($_POST)){
           $req->execute([$dest]);
           $result = $req->fetchAll(PDO::FETCH_ASSOC);
           if($result){
-              echo '<li>Messages reçu</li>';
+              echo '<li>Messages recu</li>';
               foreach ($result as $value){
                 echo '<li>Message ('.$value['id'].') Destinataire : '.$value['destinataire'].'/ Date : '.$value['date'].'/ type de message : '.$value['type_message_id'].'/ Permanent : '.$value['permanent'].'</li>'; 
               }
           }else{
-              echo '<li>Pas de message reçu</li>';
+              echo '<li>Pas de message recu</li>';
           }?>    
           </ul>
       </div>
