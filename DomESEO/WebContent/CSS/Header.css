@@ -2,26 +2,26 @@
 	position: relative;
 	margin: 0;
     padding: 0;
-	height: 10vh;
+	height: 100px;
 	width: 100%;
-	background-color: #B8DFD8;
+	background-color: #204051;
 	display: flex;
 	flex-direction: row;
 	justify-content: space-between;
 	box-sizing: border-box;
-	border-bottom: solid 10px #FFE194;
+	border-bottom: solid 10px #F5F2E7;
 }
 
 #logo_header{
-	margin: 1vh;
+	margin: 10px;
 	position: relative;
-	height: calc(100% - 2vh);
+	height: calc(100% - 20px);
 }
 
 #domeseo_logo_header{
 	position: relative;
 	height: 100%;
-	
+	filter: invert(97%) sepia(2%) saturate(3728%) hue-rotate(29deg) brightness(113%) contrast(90%);
 }
 
 #div_droite_header{
@@ -29,19 +29,205 @@
 	display: flex;
 	justify-content: space-evenly;
 	gap: 35px;
-	margin: 25px 50px;
+	margin: 25px 25px;
 }
 
-.header_bouton{
+#connexion_bouton{
 	padding: 0 20px;
-	background-color: #FFE194;
-	border: solid 1px #FFB319;
+	background-color: #F5F2E7;
+	border: none;
 	border-radius: 50px;
 	font-size: 25px;
-	color:#C36839;
+	color: #204051;
+}
+
+#profil_bouton{
+	background-color: #F5F2E7;
+	border: solid 3px #42BE63;
+	border-radius: 50px;
+	font-size: 25px;
+	color:#204051;
+	height: 40px;
+	width: 40px;
 }
 
 #connexion_popin{
+	width: 100%;
+	height: 100%;
 	position: absolute;
+	justify-content: center;
+	align-items: center;
+	top: 0;
+}
 
+#profil_menu_popin{
+	position: absolute;
+	width: 100px;
+	display: none;
+	border: solid 0 #F5F2E7;
+	border-bottom: solid 10px #F5F2E7;
+	border-left: solid 10px #F5F2E7;
+	border-radius: 0 0 0 20px;
+	right: 0;
+	top: 90px;
+	background-color: #204051;
+	box-sizing: border-box;
+	overflow: hidden;
+}
+
+#profil_menu_popin.open{
+	animation-name:animOpenProfilMenu;
+	animation-duration: 1s;
+	animation-fill-mode: forwards;
+}
+
+@keyframes animOpenProfilMenu {
+	0% {
+		height: 0;
+	}
+	100% {
+		height: var(--height_button_slider_menu); /*nombre icone + 10px*/
+	}
+}
+
+#profil_menu_popin.close{
+	animation-name:animCloseProfilMenu;
+	animation-duration: 1s;
+	animation-fill-mode: forwards;
+}
+
+@keyframes animCloseProfilMenu {
+	0% { 
+		height: var(--height_button_slider_menu); /*nombre icone + 10px*/
+	}
+	100% {
+		height: 0;
+	}
+}
+
+.profil_menu_bouton{
+	height: 50px;
+	width: 50px;
+	padding: 5px;
+	border-radius: 10px;
+	background-color: #F5F2E7;
+	margin: 0 20px 25px 20px;
+	display: flex;
+	justify-content: center;
+	border: none;
+}
+
+.profil_menu_bouton_icon{
+	height: 100%;
+}
+
+#div_formulaire_connexion{
+	padding: 20px 40px 20px 40px;
+	border: none;
+	background-color: #F5F2E7;
+	border-radius:40px;
+	box-shadow: 3px 3px 5px black;
+}
+
+#title{
+	height: 80px;
+	display: flex;
+	gap: 30px;
+	padding-bottom: 20px;
+	border-bottom : solid 2px #2666CF;
+}
+
+#title p{
+	font-size: 80px;
+	color: black;
+	margin: -15px 0 0 0;
+}
+
+#connexion_logo{
+	height: 80px;
+	width: 80px;
+	filter: invert(0%) sepia(4%) saturate(8%) hue-rotate(327deg) brightness(95%) contrast(100%);
+}
+
+#formulaire{
+	display: flex;
+	flex-direction: column;
+}
+
+#formulaire fieldset{
+	margin-top: 20px;
+	border-radius: 10px;
+	background-color: #F5F2E7;
+	height: 50px;
+	border-color: black;
+}
+
+#formulaire legend{
+	font-size: 20px;
+}
+
+#formulaire input{
+	border: none;
+	width: 100%;
+	font-size: 20px;
+	background-color: #F5F2E7;
+	color: black;
+}
+
+
+#formulaire input:focus{
+    outline: none;
+}
+
+#formulaire input:-webkit-autofill,
+#formulaire input:-webkit-autofill:hover, 
+#formulaire input:-webkit-autofill:focus, 
+#formulaire input:-webkit-autofill:active{
+    -webkit-box-shadow: 0 0 0 30px #F5F2E7 inset !important;
+}
+
+#boutton_formulaire_connexion {
+	display: flex;
+	flex-direction: row;
+	width: 100%;
+	justify-content: space-between;
+}
+
+#boutton_connexion{
+	height: 30px;
+	border : none;
+	background-color: #F5F2E7;
+	display: flex;
+}
+
+#boutton_connexion p{
+	padding: 0 0 0 10px;
+	margin: -5px 0 0 0;
+	font-size: 30px;
+	color : #42BE63;
+	font-weight:semi-bold;
+}
+
+#check_connexion{
+	width: 30px;
+	height: 30px;
+}
+
+#fermeture_connexion_bouton{
+	height: 30px;
+	border : none;
+	background-color: #F5F2E7;
+	display: flex;
+}
+
+#fermeture_connexion_bouton p{
+	padding: 0 10px 0 0;
+	margin: -5px 0 0 0;
+	font-size: 30px;
+	color : #C0392B;
+}
+
+#close_connexion{
+	width: 30px;
+	height: 30px;
 }

@@ -3,4 +3,37 @@
 body{
 	padding : 0;
 	margin : 0;
+	font-family: SegoeUI;
+}
+
+@font-face{
+    font-family: 'SegoeUI';
+    src: url('font/Segoe UI.ttf')
+}
+
+@font-face{
+    font-family: 'SegoeUIBold';
+    src: url('font/Segoe UI Bold.ttf')
+}
+
+@font-face{
+    font-family: 'SegoeUIBoldItalic';
+    src: url('font/Segoe UI Bold Italic.ttf')
+}
+
+@font-face{
+    font-family: 'SegoeUIItalic';
+    src: url('font/Segoe UI Italic.ttf')
+}
+
+.red_svg{
+	filter: invert(33%) sepia(12%) saturate(3334%) hue-rotate(319deg) brightness(105%) contrast(113%);
+}
+
+.green_svg{
+	filter: invert(61%) sepia(22%) saturate(1116%) hue-rotate(83deg) brightness(98%) contrast(93%);
+}
+
+:root {
+  --height_button_slider_menu: 50px;
 }
