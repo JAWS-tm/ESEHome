@@ -13,6 +13,7 @@
                     <a class="link" href="supprimerutilisateur.php">Supprimer un utilisateur</a><br>
                     <a class="link" href="promouvoirutilisateur.php">Promouvoir un utilisateur</a><br>
                     <a class="link" href="gestionutilisateur.php">Gestion d'un utilisateur</a><br>
+                    <a class="link" href="messages.php">Boite aux lettres</a><br>
                 
                 	
     
