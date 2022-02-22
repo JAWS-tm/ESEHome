@@ -30,7 +30,6 @@ public class Controleur extends HttpServlet {
     private DAOUtilisateur daoUtilisateur;
     private DAOObjet daoObjet;
     private DAOGroupe_Objet daoGroupe_Objet;
-    
 
     public Controleur() {
         super();
