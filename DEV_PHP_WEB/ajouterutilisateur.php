@@ -1,7 +1,7 @@
 <?php
 
  	require 'inc/header.php';
-	include("inc/db.php");
+	require 'inc/db.php';
 
 	if(isset($_POST['formajoutuser'])) {
 	    $pseudoajout = htmlspecialchars($_POST['usernameajout']);

@@ -1,7 +1,7 @@
 <?php session_start();
 
     require 'inc/header.php';
-	include("inc/db.php");
+	require 'inc/db.php';
 	
 	$sqlnomgrp = "SELECT nom_groupe FROM groupe as GR
 				  INNER JOIN groupe_utilisateur as GU ON GU.id_groupe = GR.id 
@@ -41,8 +41,6 @@
 				<?php } else{ ?>
 					<p> Appartient au groupe : <?php echo $result->nom_groupe;?></p>
                 <?php } ?>
-
-				<a href="deconnexion.php">Deconnexion</a>
 			</div>    
 		</div>
 	</div>

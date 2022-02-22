@@ -1,7 +1,7 @@
 <?php 
 
     require 'inc/header.php';
-	include("inc/db.php");
+	require 'inc/db.php';
 
 	// Affichage de tous les utilisateurs
 	$sqlQueryAffiche = 'SELECT id, Pseudo FROM utilisateur WHERE Admin = 0 ORDER BY Pseudo';

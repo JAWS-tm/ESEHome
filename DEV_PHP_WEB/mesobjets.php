@@ -10,7 +10,7 @@
     if ($_SESSION['auth']->Admin == 1) {
       $admin = true;
       $resultats = (object) [
-          'id_groupe' => 0
+          'id_groupe' => 5
       ];
     }
     else{
@@ -21,8 +21,17 @@
         WHERE UT.id =".$_SESSION['auth']->id;
       $req = $pdo->prepare($sqlgrpuser);
       $req->execute();
+      $count = $req->rowCount();
+      if ($count != 0) {
+        $resultats = $req->fetch();
+      }
+      else {
+      $resultats = (object) [
+          'id_groupe' => 0
+      ];
+      }
 
-      $resultats = $req->fetch();
+      
     }
 
 
@@ -32,9 +41,6 @@
         INNER JOIN objet_groupe as OG ON OG.id_objet = OB.id
         INNER JOIN groupe as GR ON GR.id = OG.id_groupe";      
 
-
-
- 
 
     $reqadm = $pdo->prepare($sqladm);
     $reqadm->execute();
@@ -56,9 +62,13 @@
     <h1>Mes Objets</h1>
   </div>
  
- 
+   <div class="artic">
 
-  <div class="artic">
+    <?php if($resultats->id_groupe == 0 && $admin == false):?>
+      
+        <p>Vous n'êtes associé à aucun groupe.</p>
+  
+    <?php endif ?>
 
     <?php if($resultats->id_groupe == 1 || $admin == true):?>
       <article class="card">

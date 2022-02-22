@@ -1,8 +1,6 @@
 <?php session_start();
-require 'inc/header.php';?>
-
-
-
+    require 'inc/header.php';
+?>
     <div class="container">
     		<div class="contact-form">
     			<div class="main">
@@ -20,4 +18,4 @@ require 'inc/header.php';?>
     			</div>    
     		</div>
     </div>  		
-    <?php require 'inc/footer.php';?>
+<?php require 'inc/footer.php';?>
