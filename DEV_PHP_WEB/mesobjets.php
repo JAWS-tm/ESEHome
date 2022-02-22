@@ -29,9 +29,7 @@
       $resultats = (object) [
           'id_groupe' => 0
       ];
-      }
-
-      
+      } 
     }
 
 
@@ -59,7 +57,7 @@
 <!--<link rel="stylesheet" type="text/css" href="css/mesobjets.css">-->
 <div class="mesobjets">
   <div class="user_ban">
-    <h1>Mes Objets</h1>
+    <h1>Mes Groupes</h1>
   </div>
  
    <div class="artic">

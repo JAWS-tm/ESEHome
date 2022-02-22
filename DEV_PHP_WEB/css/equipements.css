@@ -129,3 +129,18 @@
     font-size: 11px;
     color: #A3A9AB;
 }
+
+.button{
+	background-color: white;
+	border: 1px solid #F5D1C6;
+	border-radius: 1em;
+	padding: 10px;
+}
+
+.button:hover{
+	background-color: #F5D1C6;
+	border-color: white;
+	cursor: pointer;
+	color: white;
+	padding: 10px;
+}
