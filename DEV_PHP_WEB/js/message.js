@@ -30,3 +30,4 @@ document.querySelectorAll('#Fermer').forEach( item => {
              }
 	})
 })
+ 
