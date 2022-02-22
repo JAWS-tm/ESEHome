@@ -11,19 +11,22 @@
     $reqmoncompte->execute() or exit(print_r($reqmoncompte->errorInfo()));
     $count = $reqmoncompte->rowCount();
 
-    if ($count != 0) {
+    if ($_SESSION['auth']->Admin == 1) {
+    	$result = (object) [
+    		'nom_groupe' => 1
+		];
+    }
+    else if ($_SESSION['auth']->Admin == 0) {
+    	if ($count != 0) {
     	 $result = $reqmoncompte->fetch();
-    }else{
-    	if ($_SESSION['auth']->Admin == 1) {
-    		$result = (object) [
-    			'nom_groupe' => 1
-			];
-    	}else{
-    		$result = (object) [
+   		}
+   		else{
+   			$result = (object) [
     			'nom_groupe' => 0
 			];
-    	}
+   		}
     }
+
 ?>
 
 
