@@ -35,7 +35,9 @@
 #include "objects/object_ventilator.h"
 #include "objects/object_fire_detector.h"
 #include "objects/object_roller_shutter.h"
-#include "objects/object_smart_socket.h"
+#include "objects/object_LCD_slider.h"
+//#include "objects/object_smart_socket.h"
+
 
 
 void button_network_process_short_press(void);
@@ -239,6 +241,10 @@ int main(void)
 
 
     		#endif
+
+			#if OBJECT_ID == OBJECT_LCD_SLIDER
+    			//LCD_SLIDER_process_main();
+    		#endif
     }
 }
 
@@ -271,6 +277,7 @@ char * object_id_to_string(uint8_t id)
 		case OBJECT_TOUCH_SCREEN:		ret = "Touch Screen";		break;
 		case OBJECT_E_PAPER:			ret = "E Paper";			break;
 		case OBJECT_MATRIX_LEDS:		ret = "Matrix Leds";		break;
+		case OBJECT_LCD_SLIDER:			ret="LCD Slider";			break;
 		default:
 			break;
 	}

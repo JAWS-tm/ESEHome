@@ -35,6 +35,7 @@
 #define OBJECT_AIR_SENSOR			15
 #define OBJECT_TRACKER_GPS          16
 #define OBJECT_RFID                 17
+#define OBJECT_LCD_SLIDER			18
 #define OBJECT_VOICE_CONTROL        19
 #define OBJECT_TOUCH_SCREEN         20
 #define OBJECT_E_PAPER              21
@@ -255,6 +256,21 @@
 		#define PIN_MATRIX_LED 		9
 
 
+	#endif
+
+	#if OBJECT_ID == OBJECT_LCD_SLIDER
+		//Numeric encoder
+		#define LCD_DATA_1_PIN			31
+		#define LCD_DATA_2_PIN			9
+		#define LCD_DATA_3_PIN			29
+		#define LCD_DATA_4_PIN			28
+		#define LCD_RS_PIN				27
+		#define LCD_RW_PIN				26
+		#define LCD_E_PIN				25
+		#define BOOST_ENABLE_PIN		13
+		#define LCD_A_SLIDER_PIN		12
+		#define LCD_B_SLIDER_PIN		11
+		#define LCD_SWITCH_SLIDER_PIN	10
 	#endif
 
 	#if OBJECT_ID == OBJECTS_NB
