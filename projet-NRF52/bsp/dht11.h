@@ -19,7 +19,7 @@ extern uint8_t humidity_dec;
 extern uint8_t temperature_int;
 extern uint8_t temperature_dec;
 
-void DHT11_demo(void);
+uint16_t DHT11_humidity(void);
 
 void DHT11_main(void);
 

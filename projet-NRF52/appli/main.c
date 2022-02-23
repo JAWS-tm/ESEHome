@@ -144,8 +144,7 @@ int main(void)
     		#endif
 
     		#if OBJECT_ID == OBJECT_OUT_WEATHER_STATION
-
-
+				OUT_WEATHER_STATION_MAIN();
     		#endif
 
     		#if OBJECT_ID == OBJECT_ROLLER_SHUTTER

@@ -195,12 +195,14 @@ typedef struct {
  * @{
  */
 
-//Mettre le transistor à l'état ON
+//Mettre le transistor ï¿½ l'ï¿½tat ON
 void NMOS_On(void);
 
+uint16_t BMP180_temperature(void);
+uint16_t BMP180_pressure(void);
 
 
-//Fonction de démo...
+//Fonction de dï¿½mo...
 void BMP180_demo(void);
 
 
