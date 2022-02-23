@@ -1,0 +1,14 @@
+@charset "ISO-8859-1";
+
+#modif_fieldset {
+	border : solid 3px black;
+	border-bottom : none;
+	border-left: none;
+	border-right: none;
+	background-color: none;
+	width: 100%;
+}
+
+#modif_fieldset {
+	
+}
