@@ -40,6 +40,7 @@ SRC_FILES += \
   $(PROJ_DIR)/bsp/bh1750fvi.c \
   $(PROJ_DIR)/bsp/RC522.c \
   $(PROJ_DIR)/bsp/pwm.c \
+  $(PROJ_DIR)/bsp/morse.c \
   $(PROJ_DIR)/bsp/uart_soft.c \
   $(PROJ_DIR)/bsp/uart_soft_asm.s \
   $(PROJ_DIR)/bsp/nrf52_i2c.c \

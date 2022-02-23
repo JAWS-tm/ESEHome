@@ -181,17 +181,15 @@ int main(void)
 
     		#endif
 
-    		#if OBJECT_ID == OBJECT_FALL_SENSOR
+			#if OBJECT_ID == OBJECT_FALL_SENSOR
 				OBJECT_FALL_SENSOR_state_machine();
 				//MORSE_demo();
-
     		#endif
 
 
 			#if OBJECT_ID == OBJECT_WATER_LEVEL_DETECTOR
     			OBJECT_WATER_LEVEL_DETECTOR_MAIN();
 			#endif
-
 			#if OBJECT_ID == OBJECT_AIR_SENSOR
 				OBJECT_AIR_SENSOR_state_machine();
 

@@ -28,7 +28,6 @@ static int32_t threshold_frome_bs;
 
 typedef enum{
 	INIT,
-	GET_EVENT,
 	GET_DATA,
 	ALERT,
 	SEND_ALERT,
@@ -81,7 +80,7 @@ void OBJECT_FALL_SENSOR_state_machine(void){
 		if(entrance){
 			PARAMETERS_send_param32_to_basestation(PARAM_SENSOR_VALUE); // envoie de la valeur du capteur à 0
 		}
-		flag_bt_alert_SP = FALSE;
+		flag_bt_alert_LP = FALSE;
 		//getMPU6050_Datas(); //aide au debug pour afficher les valeurs du MPU6050
 		threshold_frome_bs = PARAMETERS_get(PARAM_ALARM_TRESHOLD);
 
@@ -105,7 +104,7 @@ void OBJECT_FALL_SENSOR_state_machine(void){
 		}break;
 	case ALERT :
 		if(entrance){
-			flag_bt_alert_LP = FALSE;
+			flag_bt_alert_SP = FALSE;
 			flag_reset_morse = TRUE;
 			t = 8900;
 			t_sos = 10000;
@@ -115,7 +114,6 @@ void OBJECT_FALL_SENSOR_state_machine(void){
 			MORSE_state_machine_process_ms("SOS",flag_reset_morse);
 			if(flag_reset_morse){
 				flag_reset_morse = FALSE;
-				debug_printf("here");
 			}
 		} else {
 			t = 13500;

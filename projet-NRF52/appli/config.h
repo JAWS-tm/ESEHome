@@ -187,7 +187,6 @@
 		#define UART_AT_BAUDRATE_9600
 
 	#endif
-
 	#if OBJECT_ID == OBJECT_RFID
 
 		#define SPI_INSTANCE		0
