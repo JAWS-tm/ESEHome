@@ -32,6 +32,7 @@ SRC_FILES += \
   $(PROJ_DIR)/appli/objects/object_fluid_level_detector.c \
   $(PROJ_DIR)/appli/objects/object_e_paper.c \
   $(PROJ_DIR)/appli/objects/object_wine_degustation.c \
+  $(PROJ_DIR)/appli/objects/object_roller_shuter.c \
   $(PROJ_DIR)/bsp/nmos_gnd.c \
   $(PROJ_DIR)/bsp/WS2812B_asm.s \
   $(PROJ_DIR)/bsp/WS2812.c \
@@ -39,6 +40,7 @@ SRC_FILES += \
   $(PROJ_DIR)/bsp/bh1750fvi.c \
   $(PROJ_DIR)/bsp/RC522.c \
   $(PROJ_DIR)/bsp/pwm.c \
+  $(PROJ_DIR)/bsp/morse.c \
   $(PROJ_DIR)/bsp/uart_soft.c \
   $(PROJ_DIR)/bsp/uart_soft_asm.s \
   $(PROJ_DIR)/bsp/nrf52_i2c.c \

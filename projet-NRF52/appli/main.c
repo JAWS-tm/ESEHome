@@ -181,16 +181,15 @@ int main(void)
 
     		#endif
 
-    		#if OBJECT_ID == OBJECT_FALL_SENSOR
+			#if OBJECT_ID == OBJECT_FALL_SENSOR
 				OBJECT_FALL_SENSOR_state_machine();
 				//MORSE_demo();
-
     		#endif
 
 
 			#if OBJECT_ID == OBJECT_WATER_LEVEL_DETECTOR
     			OBJECT_WATER_LEVEL_DETECTOR_MAIN();
-
+			#endif
 			#if OBJECT_ID == OBJECT_AIR_SENSOR
 				OBJECT_AIR_SENSOR_state_machine();
 
@@ -261,11 +260,8 @@ char * object_id_to_string(uint8_t id)
 		case OBJECT_VENTILATOR:			ret = "Ventilator";			break;
 		case OBJECT_GSM:				ret = "GSM";				break;
 		case OBJECT_FALL_SENSOR:		ret = "Fall Sensor";		break;
-<<<<<<< HEAD
 		case OBJECT_WATER_LEVEL_DETECTOR: ret = "Water Level Detector"; break;
-=======
 		case OBJECT_AIR_SENSOR:			ret = "Air Sensor";			break;
->>>>>>> branch 'dev' of https://172.24.0.69/b3/synthese/2021-2022/embarque.git
 		case OBJECT_TRACKER_GPS:		ret = "Tracker GPS";		break;
 		case OBJECT_VOICE_CONTROL:		ret = "Voice Control";		break;
 		case OBJECT_TOUCH_SCREEN:		ret = "Touch Screen";		break;

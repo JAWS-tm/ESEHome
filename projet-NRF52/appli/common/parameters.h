@@ -31,9 +31,6 @@ typedef enum
 	PARAM_MODE,
 	PARAM_START_TIME = 16,
 	PARAM_STOP_TIME = 17,
-	PARAM_32_BITS_NB,	//avant ce define, tout les paramètres tiennent sur 32 bits.
-	PARAM_START_TIME,
-	PARAM_STOP_TIME,
 	PARAM_CURRENT_TIME,
 	PARAM_TRESHOLD,
 	PARAM_DURATION,
