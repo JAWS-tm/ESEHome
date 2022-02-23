@@ -52,7 +52,7 @@ void ALARM_state_machine(void){
 		case INIT_ALARM:
 
 			init();
-			state = MANUAL;
+			state = LOOK_FOR_MESSAGE;
 
 		break;
 
@@ -67,7 +67,7 @@ void ALARM_state_machine(void){
 			if(how_many_press(&nb_press) == END_OK)
 				manual_mode(&nb_press, nb_press);
 
-			state = LOOK_FOR_MESSAGE;
+			state = SLEEP;
 			break;
 		case LOOK_FOR_MESSAGE:
 			/*Liaison avec la station de base
@@ -94,7 +94,7 @@ void ALARM_state_machine(void){
 			state = MANUAL;
 			break;
 		case SLEEP:
-			/*
+
 			//Veille de l'appareil
 			if(entrance){
 				t = 10000;
@@ -102,13 +102,13 @@ void ALARM_state_machine(void){
 			}
 			if(!t){
 				send_message(WAKE_UP);
-				state = MANUAL;
+				state = LOOK_FOR_MESSAGE;
 			}else if(how_many_press(&nb_press) == END_OK){	//Il y a eu un appui bouton -> on le traite directement
 				send_message(WAKE_UP);
 				t = 0;	//On réinitialise notre compteur
 				manual_mode(&nb_press, nb_press);
-				state = LOOK_FOR_MESSAGE;
-			}*/
+				state = MANUAL;
+			}
 			break;
 		default:
 			//ON N'EST PAS CENSÉ ARRIVER LÀ
@@ -123,6 +123,11 @@ void ALARM_state_machine(void){
  */
 
 void init(void){
+	//INITIALISATION DE LA STATION DE BASE
+	PARAMETERS_init();
+	PARAMETERS_enable(PARAM_ACTUATOR_STATE, 0, FALSE, NULL, NULL);
+
+	//INIT DES OBJETS
 	SERIAL_DIALOG_init();
 	send_message(PLAY);
 }
