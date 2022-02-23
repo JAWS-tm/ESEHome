@@ -12,8 +12,13 @@
 #include "modules/nrfx/mdk/nrf52.h"
 #include "WS2812.h"
 
+
+
+
 #ifndef MAX_NB_LEDS
-	#define MAX_NB_LEDS		32
+	#define MAX_NB_LEDS	128
+	#define LIGNE 8
+	#define COL 16
 #endif
 
 //Fonction définie en assembleur.
@@ -25,8 +30,10 @@ typedef struct {
 	uint32_t pin_id;
 	uint16_t leds_number;
 	uint32_t pixels[MAX_NB_LEDS];
+	uint8_t matrix[LIGNE][COL];
 } neopixel_strip_t;
 
+typedef uint8_t	matrix_t;
 
 static bool_e updated = FALSE;
 static neopixel_strip_t strip;
@@ -85,14 +92,13 @@ void WS2812_clear(void)
 	updated = TRUE;
 }
 
-
-
 void WS2812_display_only_one_pixel(uint32_t pixel, uint32_t background, uint8_t rank)
 {
 	uint32_t i;
 	for(i=0;i<strip.leds_number;i++)
-		strip.pixels[i]=(i==rank)?pixel:background;
+		strip.pixels[i]=(i!=rank)?pixel:background;
 }
+
 
 void WS2812_display_full(uint32_t pixel)
 {
@@ -108,5 +114,8 @@ void WS2812_display_matrix(uint32_t * pixels, uint32_t size)
 	for(uint32_t i = 0; i<nb_leds; i++)
 		strip.pixels[i]=pixels[i];
 }
+
+
+
 
 

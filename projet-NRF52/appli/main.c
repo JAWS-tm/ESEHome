@@ -30,11 +30,13 @@
 #include "objects/object_out_weather_station.h"
 #include "objects/object_smart_light.h"
 #include "objects/object_voice_control.h"
+#include "objects/object_fluid_level_detector.h"
 #include "objects/object_wine_degustation.h"
 #include "objects/object_ventilator.h"
 #include "objects/object_fire_detector.h"
 #include "objects/object_roller_shutter.h"
 #include "objects/object_smart_socket.h"
+
 
 void button_network_process_short_press(void);
 void button_network_process_long_press(void);
@@ -66,7 +68,7 @@ void button_network_process(void)
 }
 
 int main(void)
-{
+ {
 	//Démarrage de l'horloge.
     clocks_start();
 
@@ -96,11 +98,16 @@ int main(void)
     PARAMETERS_init();
 
     LED_add(LED_ID_NETWORK, PIN_LED_NETWORK);
+
+	//LED_add(LED_ID_BATTERY, PIN_LED_BATTERY);
+	//LED_set(LED_ID_BATTERY, LED_MODE_ON);
+
+
 	LED_add(LED_ID_BATTERY, PIN_LED_BATTERY);
 	LED_set(LED_ID_BATTERY, LED_MODE_ON);
+#ifdef PIN_LED_USER
 	LED_add(LED_ID_USER0, PIN_LED_USER);
-
-
+#endif
 	SECRETARY_init();
 
 	BUTTONS_add(BUTTON_NETWORK, PIN_BUTTON_NETWORK, TRUE, &button_network_process_short_press, NULL, &button_network_process_long_press, &button_network_process_5press);
@@ -179,11 +186,19 @@ int main(void)
 
     		#endif
 
-    		#if OBJECT_ID == OBJECT_FALL_SENSOR
+			#if OBJECT_ID == OBJECT_FALL_SENSOR
 				OBJECT_FALL_SENSOR_state_machine();
 				//MORSE_demo();
-
     		#endif
+
+
+			#if OBJECT_ID == OBJECT_WATER_LEVEL_DETECTOR
+    			OBJECT_WATER_LEVEL_DETECTOR_MAIN();
+			#endif
+			#if OBJECT_ID == OBJECT_AIR_SENSOR
+				OBJECT_AIR_SENSOR_state_machine();
+
+			#endif
 
     		#if OBJECT_ID == OBJECT_TRACKER_GPS
 
@@ -217,7 +232,7 @@ int main(void)
     		#endif
 
     		#if OBJECT_ID == OBJECT_MATRIX_LEDS
-
+    			MATRIX_afficheur();
 
     		#endif
 
@@ -250,6 +265,8 @@ char * object_id_to_string(uint8_t id)
 		case OBJECT_VENTILATOR:			ret = "Ventilator";			break;
 		case OBJECT_GSM:				ret = "GSM";				break;
 		case OBJECT_FALL_SENSOR:		ret = "Fall Sensor";		break;
+		case OBJECT_WATER_LEVEL_DETECTOR: ret = "Water Level Detector"; break;
+		case OBJECT_AIR_SENSOR:			ret = "Air Sensor";			break;
 		case OBJECT_TRACKER_GPS:		ret = "Tracker GPS";		break;
 		case OBJECT_VOICE_CONTROL:		ret = "Voice Control";		break;
 		case OBJECT_TOUCH_SCREEN:		ret = "Touch Screen";		break;
