@@ -71,17 +71,7 @@ void RF_DIALOG_process_rx_object(nrf_esb_payload_t * payload){
 				break;
 			}
 			case PARAMETER_ASK :{
-				param_id_e param;
-				uint8_t datas[5];
-				uint32_t value;
-				param = payload->data[BYTE_POS_DATAS];
-				value = PARAMETERS_get(param);
-				datas[0] = param;
-				datas[1] = (value>>24)&0xFF;
-				datas[2] = (value>>16)&0xFF;
-				datas[3] = (value>>8)&0xFF;
-				datas[4] = (value>>0)&0xFF;
-				RF_DIALOG_send_msg_id_to_basestation(PARAMETER_IS,5,datas);
+				PARAMETERS_send_param32_to_basestation((param_id_e)(payload->data[BYTE_POS_DATAS]));
 				break;
 			}
 			case PARAMETER_WRITE :{

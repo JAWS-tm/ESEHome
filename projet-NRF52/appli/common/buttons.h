@@ -18,6 +18,7 @@ typedef enum
 	BUTTON_USER1,
 	BUTTON_CHRONO,
 	BUTTON_ALERTE,
+	BUTTON_ALERT,
 	BUTTON_NB	//Nombre max de boutons
 }button_id_e;
 
