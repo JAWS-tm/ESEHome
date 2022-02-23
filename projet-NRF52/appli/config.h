@@ -215,6 +215,11 @@
 
 
 		#define USE_MATRIX		1
+		#define PIN_BUTTON_CHRONO 	17
+		#define PIN_BUTTON_NETWORK	18
+		#define PIN_LED_NETWORK		19
+		#define PIN_LED_CHRONO		20
+		#define PIN_MATRIX_LED 		9
 
 
 	#endif
@@ -236,6 +241,7 @@
 #ifndef PIN_UART_RX
 	#define PIN_UART_RX			8
 #endif
+
 
 #define PIN_BUTTON_NETWORK	18
 #define PIN_LED_NETWORK		19

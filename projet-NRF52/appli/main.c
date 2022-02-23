@@ -34,6 +34,7 @@
 #include "objects/object_ventilator.h"
 #include "objects/objet_volet_roulant.h"
 
+
 void button_network_process_short_press(void);
 void button_network_process_long_press(void);
 void button_network_process_5press(void);
@@ -64,7 +65,7 @@ void button_network_process(void)
 }
 
 int main(void)
-{
+ {
 	//Démarrage de l'horloge.
     clocks_start();
 
@@ -93,8 +94,8 @@ int main(void)
     PARAMETERS_init();
 
     LED_add(LED_ID_NETWORK, PIN_LED_NETWORK);
-	LED_add(LED_ID_BATTERY, PIN_LED_BATTERY);
-	LED_set(LED_ID_BATTERY, LED_MODE_ON);
+	//LED_add(LED_ID_BATTERY, PIN_LED_BATTERY);
+	//LED_set(LED_ID_BATTERY, LED_MODE_ON);
 
 
 	SECRETARY_init();
@@ -209,7 +210,7 @@ int main(void)
     		#endif
 
     		#if OBJECT_ID == OBJECT_MATRIX_LEDS
-
+    			MATRIX_afficheur();
 
     		#endif
 
