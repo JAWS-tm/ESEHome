@@ -31,7 +31,7 @@
     $req->execute();
     $count = $req->rowCount();
     if ($count != 0) {
-        $resultats = $req->fetchAll(PDO::FETCH_ASSOC);;
+        $resultats = $req->fetchAll(PDO::FETCH_ASSOC);
     }
     else {
         $resultats = (object) [

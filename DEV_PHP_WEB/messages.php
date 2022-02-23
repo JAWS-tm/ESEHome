@@ -2,7 +2,7 @@
     session_start();
     include("inc/db.php");
   
-    $msg = $pdo->query('SELECT * FROM message ORDER BY id DESC');
+    $msg = $pdo->query('SELECT * FROM messages ORDER BY id DESC');
     $messages = $msg->fetchAll(PDO::FETCH_ASSOC);
 		
 ?>
@@ -37,8 +37,7 @@
 			    	<table>
 				    	<?php 
 				    	foreach ($messages as $key => $value) //Affichage tableau ligne par ligne
-				    	{
-				    	?>
+				    	{?>
 				        <tbody>
 				        	<tr>
 					            <td><?php echo $value['id'];?></td>
@@ -52,10 +51,9 @@
 				        	</tr>
 				     	</tbody>
 				        <?php
+				        	
 					    }
-					        if(!$value || !$messages){	//Si aucune valeur trouvée
-					        echo "Aucun message";
-					    }
+
 					    ?>
 			    	</table>
 				</div>

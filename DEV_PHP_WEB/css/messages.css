@@ -60,7 +60,7 @@ table{
 
 .table_header{
   width: 100%;
-  height: 50px;
+  
   /*background: linear-gradient(90deg, rgb(204, 198, 255) 0%, rgb(230, 200, 180) 47%, rgb(200, 198, 251) 100%);*/
   /*background: linear-gradient(90deg, rgb(200, 190, 255) 0%, rgb(255, 200, 160) 47%, rgb(200, 198, 251) 100%);*/
   background: #F5D1C6;
@@ -81,12 +81,14 @@ table{
 
 tr{
   margin: 0;
-  padding: 0;
+  padding: 4px;
 }
 
 th{
   font-weight: 500;
-  font-size: 15px;
+  font-size: 13px;
+  vertical-align: middle;
+  text-align: center;
   color: #fff;
 }
 
