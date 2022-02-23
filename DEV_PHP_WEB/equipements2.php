@@ -79,7 +79,8 @@
               <div class="card_subtitle">En savoir +</div> 
               <div class="card_element">
                   <a href="#"><?php echo "Idententifiant de l'objet : ".$value['id_objet'];?></a></br>
-                  <a href="#"><?php echo '<a href="ficheobjet.php?id_objet="'.$value['id_objet'].'>CLIQUER ICI</a>';?></a></br>
+                  <a href="ficheobjet.php?param=<?php echo $value['id_objet'];?>">CLIQUEZ ICI</a>
+                  
               </div>
           </div>
       </article>
