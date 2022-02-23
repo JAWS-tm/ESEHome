@@ -6,9 +6,14 @@
 #include <stdint.h>
 #include <stdlib.h>
 
+typedef uint8_t	matrix_t;
 
+#define COLOR_LIGHTBLUE	0x000010
 #define COLOR_BLUE	0x0000FF
+
+#define COLOR_LIGHTRED	0x001000
 #define COLOR_RED	0x00FF00
+
 #define COLOR_GREEN	0xFF0000
 #define COLOR_BLACK	0x000000
 #define COLOR_WHITE	0xFFFFFF
@@ -43,4 +48,5 @@ void WS2812_display_full(uint32_t pixel);
 
 void WS2812_display_matrix(uint32_t * pixels, uint32_t size);
 
+void WS2812_display_french_flag(matrix_t matrix[8][8]);
 #endif

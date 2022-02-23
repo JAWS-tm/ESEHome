@@ -14,4 +14,8 @@ void MATRIX_afficheur(uint32_t colorDonnees, uint32_t colorType);
 
 void MATRIX_reset(matrix_t matrix[32][32]);
 
+void button_network_5press();
+void button_network_short_press();
+void write_charact(uint8_t byte);
+
 #endif /* APPLI_OBJECTS_OBJECT_MATRIX_LEDS_H_ */
