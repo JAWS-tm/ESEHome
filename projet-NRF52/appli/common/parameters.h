@@ -29,8 +29,16 @@ typedef enum
 	PARAM_PLUVIOMETRY,
 	PARAM_SCREEN_COLOR,
 	PARAM_MODE,
+	PARAM_START_TIME,
+	PARAM_STOP_TIME,
+	PARAM_CURRENT_TIME,
+	PARAM_TRESHOLD,
+	PARAM_DURATION,
+	PARAM_PM1_0, //Ajout de paramètres pour l'objet "Air Sensor" (ID = 15)
+	PARAM_PM2_5,
+	PARAM_PM10,
 
-	PARAM_32_BITS_NB,	//avant ce define, tout les paramètres tiennent sur 32 bits.
+	PARAM_32_BITS_NB = 63,	//avant ce define, tout les paramètres tiennent sur 32 bits.
 
 	//Paramètres dont la taille dépasse 32 bits... et dont le traitement est spécifiquement confié à l'objet par des fonctions de callback.
 	PARAM_TEXT_PART0,
@@ -71,7 +79,7 @@ void PARAMETERS_read_from_flash(param_id_e param_id);
 //permet de récupérer la valeur d'un paramètre
 int32_t PARAMETERS_get(param_id_e param_id);
 
-
+void PARAMETERS_send_param32_to_basestation(param_id_e param_id);
 
 
 #endif /* BSP_PARAMETERS_H_ */
