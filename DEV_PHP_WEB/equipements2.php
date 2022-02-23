@@ -51,7 +51,7 @@
             <?php  } else if ($value['id_objet'] == 6){ ?>
               <img src="img/meteo2.jpg">
             <?php  } else if ($value['id_objet'] == 7){ ?>
-              <img src="img/meteo2.jpg">
+              <img src="img/volet_roulant1.jpg">
             <?php  } else if ($value['id_objet'] == 8){ ?>
               <img src="img/volet_roulant1.jpg">
             <?php  } else if ($value['id_objet'] == 9){ ?>

@@ -52,52 +52,56 @@
           <?php
           foreach($resultats as $key2 => $groupe) {
               if($groupe['id_groupe'] != 1){
-                    if ($value['id_objet'] == 7){ ?>
-                        <img src="img/blurry.jpg">
-                    <?php } 
-                    if ($value['id_objet'] == 10){ ?>
-                        <img src="img/blurry.jpg">
-                    <?php }
-                    if ($value['id_objet'] == 11){ ?>
-                        <img src="img/blurry.jpg">
-              		<?php }
-              		if ($value['id_objet'] == 14){ ?>
-                        <img src="img/blurry.jpg">
-              		<?php }
-              		if ($value['id_objet'] == 16){ ?>
-                        <img src="img/blurry.jpg">
-              		<?php }
-              } else if($groupe['id_groupe'] == 1){
                   if ($value['id_objet'] == 7){ ?>
-                        <img  src="img/meteo2.jpg">
+                        <img  src="img/blurry.jpg">
                     <?php } 
                     if ($value['id_objet'] == 10){ ?>
-                        <img src="img/alarme.jpg">
+                        <img src="img/blurry.jpg">
                     <?php }
                     if ($value['id_objet'] == 11){ ?>
-                        <img src="img/detecteur_incendie.jpg">
+                        <img src="img/blurry.jpg">
               		<?php }
               		if ($value['id_objet'] == 14){ ?>
-                        <img src="img/niveau_cuve.jpg">
+                        <img src="img/blurry.jpg">
               		<?php }
               		if ($value['id_objet'] == 16){ ?>
+                        <img src="img/blurry.jpg">
+              		<?php }
+              }
+              if($groupe['id_groupe'] == 1){
+                  if ($value['id_objet'] == 7){ ?>
+                        <img  src="img/volet_roulant1.jpg">
+                    <?php } 
+                    if ($value['id_objet'] == 10){ ?>
+                        <img src="img/ventilateur.jpg">
+                    <?php }
+                    if ($value['id_objet'] == 11){ ?>
+                        <img src="img/detecteur_chute.jpg">
+              		<?php }
+              		if ($value['id_objet'] == 14){ ?>
                         <img src="img/slider_lcd.jpg">
               		<?php }
-              } else if($groupe['id_groupe'] != 2){
-              	    if ($value['id_objet'] == 8){ ?>
+              		if ($value['id_objet'] == 16){ ?>
+                        <img src="img/matrice_led.jpg">
+              		<?php }
+              }
+              if($groupe['id_groupe'] != 2){
+              	    if ($value['id_objet'] == 9){ ?>
                        <img src="img/blurry.jpg">
                     <?php } 
                     if ($value['id_objet'] == 15){ ?>
                         <img src="img/blurry.jpg">
                     <?php }
-              } else if($groupe['id_groupe'] == 2){
-                  if ($value['id_objet'] == 8){ ?>
-                        <img  src="img/volet_roulant.jpg">
+              } 
+              if($groupe['id_groupe'] == 2){
+                  if ($value['id_objet'] == 9){ ?>
+                        <img  src="img/detecteur_incendie.jpg">
                     <?php } 
                     if ($value['id_objet'] == 15){ ?>
-                        <img src="img/capteur_air.jpg">
+                        <img src="img/ecran_tactile.jpg">
                     <?php }
-              	} else if($groupe['id_groupe'] != 3){
+              	}
+              	if($groupe['id_groupe'] != 3){
               	    if ($value['id_objet'] == 1){ ?>
                         <img src="img/blurry.jpg">
                     <?php } 
@@ -106,14 +110,15 @@
                     <?php }
                     if ($value['id_objet'] == 4){ ?>
                         <img src="img/blurry.jpg">
-              		<?php }
-              		if ($value['id_objet'] == 6){ ?>
-                        <img src="img/blurry.jpg">
                     <?php } 
+                    if ($value['id_objet'] == 5){ ?>
+                        <img src="img/blurry.jpg">
+                    <?php }
                     if ($value['id_objet'] == 8){ ?>
                         <img src="img/blurry.jpg">
-                    <?php } 
-              	} else if($groupe['id_groupe'] == 3){
+                    <?php }
+              	} 
+              	if($groupe['id_groupe'] == 3){
               	    if ($value['id_objet'] == 1){ ?>
                         <img src="img/light1.jpg">
                     <?php } 
@@ -123,37 +128,39 @@
                     if ($value['id_objet'] == 4){ ?>
                         <img  src="img/light3.jpg">
               		<?php }
-              		if ($value['id_objet'] == 6){ ?>
-                        <img src="img/meteo1.jpg">
-                    <?php } 
+              		if ($value['id_objet'] == 5){ ?>
+                        <img  src="img/meteo1.jpg">
+              		<?php }
                     if ($value['id_objet'] == 8){ ?>
-                        <img  src="img/volet_roulant.jpg">
+                        <img  src="img/alarme.jpg">
                     <?php } 
-              	} else if($groupe['id_groupe'] != 4){
+              	} 
+              	if($groupe['id_groupe'] != 4){
               	    if ($value['id_objet'] == 2){ ?>
                         <img src="img/blurry.jpg">
                     <?php } 
-                    if ($value['id_objet'] == 7){ ?>
-                        <img src="img/blurry.jpg">
-                    <?php } 
-                    if ($value['id_objet'] == 13){ ?>
+                    if ($value['id_objet'] == 6){ ?>
                         <img src="img/blurry.jpg">
               		<?php }
               		if ($value['id_objet'] == 12){ ?>
                         <img src="img/blurry.jpg">
               		<?php }
-              	} else {
+              		if ($value['id_objet'] == 13){ ?>
+                        <img src="img/blurry.jpg">
+              		<?php }
+              	} 
+              	if($groupe['id_groupe'] == 4){
               	    if ($value['id_objet'] == 2){ ?>
                         <img  src="img/light2.jpg">
                     <?php } 
-                    if ($value['id_objet'] == 7){ ?>
-                        <img  src="img/meteo2.jpg">
-                    <?php } 
                     if ($value['id_objet'] == 13){ ?>
-                        <img  src="img/detecteur_chute.jpg">
+                        <img  src="img/capteur_air.jpg">
               		<?php }
               		if ($value['id_objet'] == 12){ ?>
-                        <img c src="img/ventilateur.jpg">
+                        <img src="img/niveau_cuve.jpg">
+              		<?php }
+              		if ($value['id_objet'] == 6){ ?>
+                        <img src="img/meteo2.jpg">
               		<?php }
               	}
             }
@@ -200,23 +207,23 @@
                   } 
                   if($groupe['id_groupe'] == 1){
                       if ($value['id_objet'] == 7){ ?>
-                        <a href="#" class="lien"><?php echo '<a href="ficheobjet.php?id_objet="'.$value['id_objet'].'>CLIQUER ICI</a>';?></a></br>
+                        <a href="ficheobjet.php?param=<?php echo $value['id_objet'];?>">CLIQUEZ ICI</a>
                     <?php } 
                     if ($value['id_objet'] == 10){ ?>
-                        <a href="#" class="lien"><?php echo '<a href="ficheobjet.php?id_objet="'.$value['id_objet'].'>CLIQUER ICI</a>';?></a></br>
+                        <a href="ficheobjet.php?param=<?php echo $value['id_objet'];?>">CLIQUEZ ICI</a>
                     <?php }
                     if ($value['id_objet'] == 11){ ?>
-                        <a href="#" class="lien"><?php echo '<a href="ficheobjet.php?id_objet="'.$value['id_objet'].'>CLIQUER ICI</a>';?></a></br>
+                        <a href="ficheobjet.php?param=<?php echo $value['id_objet'];?>">CLIQUEZ ICI</a>
               		<?php }
               		if ($value['id_objet'] == 14){ ?>
-                        <a href="#" class="lien"><?php echo '<a href="ficheobjet.php?id_objet="'.$value['id_objet'].'>CLIQUER ICI</a>';?></a></br>
+                        <a href="ficheobjet.php?param=<?php echo $value['id_objet'];?>">CLIQUEZ ICI</a>
               		<?php }
               		if ($value['id_objet'] == 16){ ?>
-                        <a href="#" class="lien"><?php echo '<a href="ficheobjet.php?id_objet="'.$value['id_objet'].'>CLIQUER ICI</a>';?></a></br>
+                        <a href="ficheobjet.php?param=<?php echo $value['id_objet'];?>">CLIQUEZ ICI</a>
               		<?php }
                   } 
                   if($groupe['id_groupe'] != 2){
-                      if (($value['id_objet'] == 8) && ($value['nom_groupe'] == "CUISINE")){ ?>
+                      if ($value['id_objet'] == 9){ ?>
                        <a href="#"><?php echo 'Vous n avez pas acces a cet objet!';?></a></br>
                        <form>
                           <input class="button" type="button" value="Je demande acces">
@@ -230,11 +237,11 @@
                     <?php }
                   }
                   if($groupe['id_groupe'] == 2){
-                      if ($value['id_objet'] == 8){ ?>
-                       <a href="#" class="lien"><?php echo '<a href="ficheobjet.php?id_objet="'.$value['id_objet'].'>CLIQUER ICI</a>';?></a></br>
+                      if ($value['id_objet'] == 9){ ?>
+                       <a href="ficheobjet.php?param=<?php echo $value['id_objet'];?>">CLIQUEZ ICI</a>
                     <?php } 
                     if ($value['id_objet'] == 15){ ?>
-                        <a href="#" class="lien"><?php echo '<a href="ficheobjet.php?id_objet="'.$value['id_objet'].'>CLIQUER ICI</a>';?></a></br>
+                       <a href="ficheobjet.php?param=<?php echo $value['id_objet'];?>">CLIQUEZ ICI</a>
                     <?php }
                   }
                   if($groupe['id_groupe'] != 3){
@@ -255,14 +262,14 @@
                         <form>
                           <input class="button" type="button" value="Je demande acces">
                         </form>
-              		<?php }
-              		if ($value['id_objet'] == 6){ ?>
+              		<?php } 
+                    if ($value['id_objet'] == 5){ ?>
                         <a href="#"><?php echo 'Vous n avez pas acces a cet objet!';?></a></br>
                         <form>
                           <input class="button" type="button" value="Je demande acces">
                         </form>
                     <?php } 
-                    if (($value['id_objet'] == 8) && ($value['nom_groupe'] == "CUISINE")){ ?>
+                    if ($value['id_objet'] == 8){ ?>
                         <a href="#"><?php echo 'Vous n avez pas acces a cet objet!';?></a></br>
                         <form>
                           <input class="button" type="button" value="Je demande acces">
@@ -271,19 +278,19 @@
                   }
                   if($groupe['id_groupe'] == 3){
                       if ($value['id_objet'] == 1){ ?>
-                        <a href="#" class="lien"><?php echo '<a href="ficheobjet.php?id_objet="'.$value['id_objet'].'>CLIQUER ICI</a>';?></a></br>
+                        <a href="ficheobjet.php?param=<?php echo $value['id_objet'];?>">CLIQUEZ ICI</a>
                     <?php } 
                     if ($value['id_objet'] == 3){ ?>
-                        <a href="#" class="lien"><?php echo '<a href="ficheobjet.php?id_objet="'.$value['id_objet'].'>CLIQUER ICI</a>';?></a></br>
+                        <a href="ficheobjet.php?param=<?php echo $value['id_objet'];?>">CLIQUEZ ICI</a>
                     <?php }
                     if ($value['id_objet'] == 4){ ?>
-                        <a href="#" class="lien"><?php echo '<a href="ficheobjet.php?id_objet="'.$value['id_objet'].'>CLIQUER ICI</a>';?></a></br>
+                        <a href="ficheobjet.php?param=<?php echo $value['id_objet'];?>">CLIQUEZ ICI</a>
               		<?php }
-              		if ($value['id_objet'] == 6){ ?>
-                        <a href="#" class="lien"><?php echo '<a href="ficheobjet.php?id_objet="'.$value['id_objet'].'>CLIQUER ICI</a>';?></a></br>
+                    if ($value['id_objet'] == 5){ ?>
+                        <a href="ficheobjet.php?param=<?php echo $value['id_objet'];?>">CLIQUEZ ICI</a>
                     <?php } 
                     if ($value['id_objet'] == 8){ ?>
-                        <a href="#" class="lien"><?php echo '<a href="ficheobjet.php?id_objet="'.$value['id_objet'].'>CLIQUER ICI</a>';?></a></br>
+                        <a href="ficheobjet.php?param=<?php echo $value['id_objet'];?>">CLIQUEZ ICI</a>
                     <?php } 
                   }
                   if($groupe['id_groupe'] != 4){
@@ -293,12 +300,6 @@
                           <input class="button" type="button" value="Je demande acces">
                         </form>
                     <?php } 
-                    if ($value['id_objet'] == 7){ ?>
-                        <a href="#"><?php echo 'Vous n avez pas acces a cet objet!';?></a></br>
-                        <form>
-                          <input class="button" type="button" value="Je demande acces">
-                        </form>
-                    <?php } 
                     if ($value['id_objet'] == 13){ ?>
                         <a href="#"><?php echo 'Vous n avez pas acces a cet objet!';?></a></br>
                         <form>
@@ -306,6 +307,12 @@
                         </form>
               		<?php }
               		if ($value['id_objet'] == 12){ ?>
+                        <a href="#"><?php echo 'Vous n avez pas acces a cet objet!';?></a></br>
+                        <form>
+                          <input class="button" type="button" value="Je demande acces">
+                        </form>
+              		<?php }
+              		if ($value['id_objet'] == 6){ ?>
                         <a href="#"><?php echo 'Vous n avez pas acces a cet objet!';?></a></br>
                         <form>
                           <input class="button" type="button" value="Je demande acces">
@@ -314,16 +321,16 @@
                   }
                   if($groupe['id_groupe'] == 4){
                       if ($value['id_objet'] == 2){ ?>
-                        <a href="#" class="lien"><?php echo '<a href="ficheobjet.php?id_objet="'.$value['id_objet'].'>CLIQUER ICI</a>';?></a></br>
-                    <?php } 
-                    if ($value['id_objet'] == 7){ ?>
-                        <a href="#" class="lien"><?php echo '<a href="ficheobjet.php?id_objet="'.$value['id_objet'].'>CLIQUER ICI</a>';?></a></br>
+                        <a href="ficheobjet.php?param=<?php echo $value['id_objet'];?>">CLIQUEZ ICI</a>
                     <?php } 
                     if ($value['id_objet'] == 13){ ?>
-                        <a href="#" class="lien"><?php echo '<a href="ficheobjet.php?id_objet="'.$value['id_objet'].'>CLIQUER ICI</a>';?></a></br>
+                        <a href="ficheobjet.php?param=<?php echo $value['id_objet'];?>">CLIQUEZ ICI</a>
               		<?php }
               		if ($value['id_objet'] == 12){ ?>
-                        <a href="#" class="lien"><?php echo '<a href="ficheobjet.php?id_objet="'.$value['id_objet'].'>CLIQUER ICI</a>';?></a></br>
+                        <a href="ficheobjet.php?param=<?php echo $value['id_objet'];?>">CLIQUEZ ICI</a>
+              		<?php }
+              		if ($value['id_objet'] == 6){ ?>
+                        <a href="ficheobjet.php?param=<?php echo $value['id_objet'];?>">CLIQUEZ ICI</a>
               		<?php }
                   }
                   ?>
