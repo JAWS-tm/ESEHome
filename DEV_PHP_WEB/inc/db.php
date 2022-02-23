@@ -1,3 +1,6 @@
+/*
+ *      Author: Raimbault PL
+ */
 <?php
     try
     {

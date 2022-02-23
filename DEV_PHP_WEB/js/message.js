@@ -1,3 +1,8 @@
+ /*
+ *      Author: Raimbault PL
+ */
+ 
+ 
  let envoye = document.querySelector("#envoye");
  let reçu = document.querySelector("#recu");
  let envoyetout = document.querySelector("#envoyetout");

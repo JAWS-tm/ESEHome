@@ -1,3 +1,7 @@
+/*
+ *      Author: Raimbault PL
+ */
+
 <?php 
 
     require 'inc/header.php';

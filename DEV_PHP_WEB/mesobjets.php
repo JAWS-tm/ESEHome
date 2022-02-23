@@ -1,35 +1,26 @@
-
+/*
+ *      Author: Raimbault PL
+ */ 
 <?php 
   session_start();
 
   if(isset($_SESSION['auth']->id)){ 
-
     require 'inc/header.php';
     require 'inc/db.php';
 
     if ($_SESSION['auth']->Admin == 1) {
       $admin = true;
-      $resultats = (object) [
-          'id_groupe' => 5
+      $count = (object) [
+          'id_groupe' => 0
       ];
     }
     else{
 
       $admin = false;
-      $sqlgrpuser ="SELECT id_groupe FROM utilisateur AS UT
-        INNER JOIN groupe_utilisateur AS GU ON GU.id_utilisateur = UT.id
-        WHERE UT.id =".$_SESSION['auth']->id;
+      $sqlgrpuser ="SELECT * FROM groupe_utilisateur WHERE id_utilisateur =".$_SESSION['auth']->id;
       $req = $pdo->prepare($sqlgrpuser);
       $req->execute();
-      $count = $req->rowCount();
-      if ($count != 0) {
-        $resultats = $req->fetch();
-      }
-      else {
-      $resultats = (object) [
-          'id_groupe' => 0
-      ];
-      } 
+      $count = $req->fetchAll(PDO::FETCH_ASSOC);
     }
 
 
@@ -50,6 +41,7 @@
     header("Location: index.php");
   }
 
+
  
 ?>
 
@@ -62,13 +54,14 @@
  
    <div class="artic">
 
-    <?php if($resultats->id_groupe == 0 && $admin == false):?>
+    <?php if(!$count && $admin == false):?>
       
         <p>Vous n'êtes associé à aucun groupe.</p>
   
     <?php endif ?>
-
-    <?php if($resultats->id_groupe == 1 || $admin == true):?>
+    <?php 
+    foreach ($count as $value) {
+        if($value['id_groupe'] == '1' || $admin == true){?>
       <article class="card">
         <div class="card_thumb"><img src="img/chambre.jpg"></div>
         <div class="card_body">
@@ -86,30 +79,34 @@
           <div class="card_footer"></div>
         </div>
       </article>
-    <?php endif ?>
+    <?php }
+    } ?>
 
-    <?php if ($resultats->id_groupe == 2 || $admin == true): ?>
-      <article class="card">
-        <div class="card_thumb"><img src="img/cuisine.jpg"></div>
-        <div class="card_body">
-          <div class="card_cagtegory">Cuisine</div>
-          <h2 class="card_title">Gerer les elements de la cuisine</h2>
-          <div class="card_subtitle">Voir les differents elements</div> 
-          <div class="card_element">
-            <?php 
-            foreach($result as $value){
-              if($value['nom_groupe'] == 'CUISINE'):?>
-                <a href="ficheobjet.php?param=<?php echo $value['id_objet'];?>"><?php echo $value['nom_type']."<br>"?></a>
-              <?php endif;
-            }?>    
-          </div>
-          <div class="card_footer"></div>
-        </div>
-      </article>
-    <?php endif ?>
+    <?php
+    foreach ($count as $value) {
+        if ($value['id_groupe'] == '2' || $admin == true){ ?>
+          <article class="card">
+            <div class="card_thumb"><img src="img/cuisine.jpg"></div>
+            <div class="card_body">
+              <div class="card_cagtegory">Cuisine</div>
+              <h2 class="card_title">Gerer les elements de la cuisine</h2>
+              <div class="card_subtitle">Voir les differents elements</div> 
+              <div class="card_element">
+                <?php 
+                foreach($result as $value){
+                  if($value['nom_groupe'] == 'CUISINE'):?>
+                    <a href="ficheobjet.php?param=<?php echo $value['id_objet'];?>"><?php echo $value['nom_type']."<br>"?></a>
+                  <?php endif;
+                }?>    
+              </div>
+              <div class="card_footer"></div>
+            </div>
+          </article>
+    <?php }} ?>
   
-    <?php if($resultats->id_groupe == 3 || $admin == true):?>
-    
+    <?php
+    foreach ($count as $value) {
+        if($value['id_groupe'] == '3' || $admin == true){?>
       <article class="card">
         <div class="card_thumb"><img src="img/salon.jpg"></div>
         <div class="card_body">
@@ -127,27 +124,29 @@
           <div class="card_footer"></div>
         </div>
       </article>
-    <?php endif ?>
+    <?php }} ?>
 
-    <?php if ($resultats->id_groupe == 4 || $admin == true): ?>
-      <article class="card">
-        <div class="card_thumb"><img src="img/exetieur.jpg"></div>
-        <div class="card_body">
-          <div class="card_cagtegory">Exterieur</div>
-          <h2 class="card_title">Gerer les elements de l'exterieur</h2>
-          <div class="card_subtitle">Voir les differents elements</div> 
-          <div class="card_element">
-            <?php 
-            foreach($result as $value){
-              if($value['nom_groupe'] == 'EXTERIEUR'):?>
-                <a href="ficheobjet.php?param=<?php echo $value['id_objet'];?>"><?php echo $value['nom_type']."<br>"?></a>
-              <?php endif;
-            }?>    
-          </div>
-          <div class="card_footer"></div>
-        </div>
-      </article>
-    <?php endif ?>
+    <?php 
+    foreach ($count as $value) {
+        if ($value['id_groupe'] == '4' || $admin == true){ ?>
+          <article class="card">
+            <div class="card_thumb"><img src="img/exetieur.jpg"></div>
+            <div class="card_body">
+              <div class="card_cagtegory">Exterieur</div>
+              <h2 class="card_title">Gerer les elements de l'exterieur</h2>
+              <div class="card_subtitle">Voir les differents elements</div> 
+              <div class="card_element">
+                <?php 
+                foreach($result as $value){
+                  if($value['nom_groupe'] == 'EXTERIEUR'):?>
+                    <a href="ficheobjet.php?param=<?php echo $value['id_objet'];?>"><?php echo $value['nom_type']."<br>"?></a>
+                  <?php endif;
+                }?>    
+              </div>
+              <div class="card_footer"></div>
+            </div>
+          </article>
+    <?php }} ?>
 
  
     
