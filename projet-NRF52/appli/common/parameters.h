@@ -32,6 +32,16 @@ typedef enum
 	PARAM_START_TIME = 16,
 	PARAM_STOP_TIME = 17,
 	PARAM_32_BITS_NB,	//avant ce define, tout les paramètres tiennent sur 32 bits.
+	PARAM_START_TIME,
+	PARAM_STOP_TIME,
+	PARAM_CURRENT_TIME,
+	PARAM_TRESHOLD,
+	PARAM_DURATION,
+	PARAM_PM1_0, //Ajout de paramètres pour l'objet "Air Sensor" (ID = 15)
+	PARAM_PM2_5,
+	PARAM_PM10,
+	PARAM_32_BITS_NB = 63,	//avant ce define, tout les paramètres tiennent sur 32 bits.
+
 
 	//Paramètres dont la taille dépasse 32 bits... et dont le traitement est spécifiquement confié à l'objet par des fonctions de callback.
 	PARAM_TEXT_PART0,

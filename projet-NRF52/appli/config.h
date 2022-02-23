@@ -31,6 +31,8 @@
 #define OBJECT_VENTILATOR           11
 #define OBJECT_GSM                  12
 #define OBJECT_FALL_SENSOR          13
+#define OBJECT_WATER_LEVEL_DETECTOR 14
+#define OBJECT_AIR_SENSOR			15
 #define OBJECT_TRACKER_GPS          16
 #define OBJECT_RFID                 17
 #define OBJECT_VOICE_CONTROL        19
@@ -133,8 +135,13 @@
 	#endif
 
 	#if OBJECT_ID == OBJECT_FIRE_DETECTOR
-
-
+		#define PIN_BUTTON_USER	17 //Button utilisateur = coupé alarme
+		#define PIN_LED_USER 	9 //LED verte
+		#define AN_SIGNAL		2 //Signal analogique du capteur de fummée
+		#define NUM_SIGNAL		29//Signal numérique du capteur de fummée
+		#define PIN_FIRE_DETECTOR	27//Pin du détecteur de fummée
+		#define MEASURE_VBAT	30
+		#define MEASUR_BAT		31
 	#endif
 
 	#if OBJECT_ID == OBJECT_WINE_DEGUSTATION
@@ -165,6 +172,21 @@
 		#define	I2C_SCL_PIN_NB	13
 	#endif
 
+<<<<<<< HEAD
+	#if OBJECT_ID == OBJECT_WATER_LEVEL_DETECTOR
+
+		#define PIN_CAPTEUR 2
+
+	#endif
+
+=======
+	#if OBJECT_ID == OBJECT_AIR_SENSOR
+		#define LED_STATUS_SENSOR		11
+		#define MOSFET_AIR_SENSOR		10
+		#define BOOST_ENABLE			15
+		#define UART_AT_BAUDRATE_9600
+	#endif
+>>>>>>> branch 'dev' of https://172.24.0.69/b3/synthese/2021-2022/embarque.git
 	#if OBJECT_ID == OBJECT_TRACKER_GPS
 		#define MOSFET_GND_GPS   17
 		#define UART_AT_BAUDRATE_9600
@@ -257,8 +279,8 @@
 #define PIN_RESET			21
 
 //TODO compléter la liste des objets dotés d'une led batterie !
-#define I_HAVE_LED_BATTERY	(OBJECT_ID == OBJECT_BASE_STATION || OBJECT_ID == 6 || OBJECT_ID == OBJECT_FALL_SENSOR || OBJECT_ID == OBJECT_WINE_DEGUSTATION || OBJECT_ID == 10 || OBJECT_ID == 13||OBJECT_ID == OBJECT_BRIGHTNESS_SENSOR)
-#define I_HAVE_MEASURE_VBAT	(OBJECT_ID == OBJECT_BASE_STATION || OBJECT_ID == 6 || OBJECT_ID == OBJECT_FALL_SENSOR || OBJECT_ID == OBJECT_WINE_DEGUSTATION || OBJECT_ID == 10 || OBJECT_ID == 13||OBJECT_ID == OBJECT_BRIGHTNESS_SENSOR)
+#define I_HAVE_LED_BATTERY	(OBJECT_ID == OBJECT_BASE_STATION || OBJECT_ID == 6 || OBJECT_ID == OBJECT_FALL_SENSOR || OBJECT_ID == OBJECT_WINE_DEGUSTATION || OBJECT_ID == 10 || OBJECT_ID == 13||OBJECT_ID == OBJECT_BRIGHTNESS_SENSOR || OBJECT_ID == OBJECT_AIR_SENSOR)
+#define I_HAVE_MEASURE_VBAT	(OBJECT_ID == OBJECT_BASE_STATION || OBJECT_ID == 6 || OBJECT_ID == OBJECT_FALL_SENSOR || OBJECT_ID == OBJECT_WINE_DEGUSTATION || OBJECT_ID == 10 || OBJECT_ID == 13||OBJECT_ID == OBJECT_BRIGHTNESS_SENSOR || OBJECT_ID == OBJECT_AIR_SENSOR)
 
 #define USE_SPI	(OBJECT_ID == OBJECT_TOUCH_SCREEN || OBJECT_ID == OBJECT_RFID)
 
@@ -293,7 +315,12 @@ uint32_t debug_printf(char * format, ...);
 
 
 #define USE_ADC						1
-#define USE_ADC_CHANNEL_AIN0		(OBJECT_ID == OBJECT_SMART_SOCKET)	//P0.02
+<<<<<<< HEAD
+#define USE_ADC_CHANNEL_AIN0		(OBJECT_ID == OBJECT_WATER_LEVEL_DETECTOR)	//P0.02
+=======
+//#define USE_ADC_CHANNEL_AIN0		1	//P0.02
+#define USE_ADC_CHANNEL_AIN0		(OBJECT_ID == OBJECT_SMART_SOCKET || OBJECT_FIRE_DETECTOR)	//P0.02
+>>>>>>> branch 'dev' of https://172.24.0.69/b3/synthese/2021-2022/embarque.git
 #define USE_ADC_CHANNEL_AIN1		(OBJECT_ID == OBJECT_VENTILATOR)	//P0.03
 #define USE_ADC_CHANNEL_AIN2		(OBJECT_ID == OBJECT_ROLLER_SHUTTER)	//P0.04
 #define USE_ADC_CHANNEL_AIN3		0	//P0.05
