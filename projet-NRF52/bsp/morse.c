@@ -92,6 +92,11 @@ running_e MORSE_state_machine_process_ms(char * message, bool_e reset)
 	bool_e entrance = (state!=previous_state)?TRUE:FALSE;
 	previous_state = state;
 
+	if(reset && state != INIT){
+		state = IDLE;
+		buzz(0);
+	}
+
 	switch(state)
 	{
 		case INIT:
@@ -99,10 +104,6 @@ running_e MORSE_state_machine_process_ms(char * message, bool_e reset)
 			state = IDLE;
 			break;
 		case IDLE:
-			if(reset){
-				state = INIT;
-				debug_printf("dans reset");
-			}
 			if(message != NULL)
 			{
 				index = 0;
@@ -114,10 +115,6 @@ running_e MORSE_state_machine_process_ms(char * message, bool_e reset)
 			if(message[index]!=0 && message[index]>='A' && message[index]<='Z')
 			{
 				current_letter = &letters[message[index]-'A'];	//lettre acceptable
-				if(reset){
-					state = INIT;
-					debug_printf("dans reset");
-				}
 				switch(current_letter->symbols[symbol_index])
 				{
 					case TI:
