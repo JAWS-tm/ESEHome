@@ -65,7 +65,7 @@ void button_network_process(void)
 }
 
 int main(void)
-{
+ {
 	//Démarrage de l'horloge.
     clocks_start();
 

@@ -29,7 +29,8 @@ typedef enum
 	PARAM_PLUVIOMETRY,
 	PARAM_SCREEN_COLOR,
 	PARAM_MODE,
-
+	PARAM_START_TIME = 16,
+	PARAM_STOP_TIME = 17,
 	PARAM_32_BITS_NB,	//avant ce define, tout les paramètres tiennent sur 32 bits.
 
 	//Paramètres dont la taille dépasse 32 bits... et dont le traitement est spécifiquement confié à l'objet par des fonctions de callback.

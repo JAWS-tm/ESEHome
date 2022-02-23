@@ -1,3 +1,9 @@
+/*
+ * object_roller_shutter.c
+ *
+ *  Created on: 25 janv. 2022
+ *      Author: tardychu
+ */
 #include "object_roller_shutter.h"
 #include "../config.h"
 #include "appli/common/adc.h"
@@ -22,18 +28,18 @@ static volatile bool_e flag_short_release_up;
 static volatile bool_e flag_long_release_up;
 static volatile bool_e flag_long_release_down;
 
-
 static volatile bool_e arrived = FALSE;
 static  int16_t value;
 static  int16_t current;
-static	int16_t seuil = 40;
-
-
-
+static	int16_t seuil = 30;
 
 static uint32_t t;
 static uint32_t adc_current = 1000;
 static int timeout = 0;
+
+static volatile uint32_t up_time = FALSE;
+static volatile uint32_t down_time = FALSE;
+static volatile bool_e auto_mode = FALSE;
 
 typedef enum
 {
@@ -81,6 +87,14 @@ void long_release_up(){
 void long_release_down(){
 	flag_long_release_down = TRUE;
 }
+static volatile uint8_t hours = 0;
+static volatile uint8_t minutes = 0;
+static volatile uint8_t seconds = 0;
+static volatile uint16_t ms = 0;
+static uint32_t seconds_since_midnight = 0;
+static volatile bool_e flag_auto_mode_ask_up = FALSE;
+static volatile bool_e flag_auto_mode_ask_down = FALSE;
+
 
 void process_ms(void){
 	 if(timeout)
@@ -89,30 +103,76 @@ void process_ms(void){
 		 t--;
 	 if(adc_current)
 		 adc_current --;
+
+	 ms++;
+	 if(ms == 1000)
+	 {
+		 ms = 0;
+		 seconds++;
+		 debug_printf("sec : %d et min : %d\n",seconds,minutes);
+		 if(seconds == 60)
+		 {
+			 seconds = 0;
+			 minutes++;
+			 if(minutes == 60)
+			 {
+				 minutes = 0;
+				 hours++;
+				 hours = hours %24;
+			 }
+
+		 }
+		 seconds_since_midnight = seconds+minutes*60+hours*3600;
+		 if(auto_mode == 1)
+		 {	//Si le mode auto est actif, on lève les flags aux heures demandées
+			 if(seconds_since_midnight == up_time)
+				 flag_auto_mode_ask_up = TRUE;
+			 else if(seconds_since_midnight == down_time)
+				 flag_auto_mode_ask_down = TRUE;
+		 }
+	 }
+
 }
+
+void OBJECT_ROLLER_set_up_time_callback(int32_t new_up_time)
+{
+	up_time = new_up_time;
+}
+
+void OBJECT_ROLLER_set_down_time_callback(int32_t new_down_time)
+{
+	down_time = new_down_time;
+}
+
+void OBJECT_ROLLER_set_mode_callback(int32_t new_mode)
+{
+	if(new_mode <= 1)
+		auto_mode = new_mode;
+}
+
 //Si le moteur arrive en fin de course il consomme plus de courant
 //On récupère le courant consommé et on fixe un seuil
 //Si le seuil est dépassé on passe arrive à TRUE
 //Sinon arrived reste à FALSE
 
-//TODO : lire l'ADC
-//Si l'état actuel moteur est UP ou DOWN --> on regarde la valeur du courant consommé.
-//il faudra peut être ignorer les premières 100aines de ms... car pic de courant normal au début.
-//si le courant consommé est "fort" ==> arrived passe à TRUE. sinon FALSE.
-
 void motor_arrived(void){
 	if (!adc_current){
 		adc_current = 1000;
 		ADC_read(PIN_ADC, &value);
-		//debug_printf("%d",value);
-		current = (((value)*619)/64);
-		debug_printf("%d",current);
+		//debug_printf("%d",value);*
+		if(value<0)
+			current = 0;
+		else
+			current = (((value)*619)/64);
+		//debug_printf("Courant consommé par le moteur : ");
+		debug_printf("#%d->%d\n",value,current);
 		if (current > seuil){
 			debug_printf("Fin de course\n");
 			arrived = TRUE;
 		}
 	}
 }
+
 
 void ROLLER_SHUTTER_state_machine(void)
 {
@@ -124,7 +184,9 @@ void ROLLER_SHUTTER_state_machine(void)
 		 UP,
 		 DOWN,
 		 IDLE,
-		 COMMUNICATION
+		 COMMUNICATION,
+		 AUTO
+
 	}state_e;
 
 	static state_e state = INIT;
@@ -132,23 +194,31 @@ void ROLLER_SHUTTER_state_machine(void)
 	bool_e entrance = (state != previous_state);
 	previous_state = state;
 
-
 	switch(state) {
-
-///NEW CODE 28/01////
+		////Initialisation
 		case INIT :
 			Systick_add_callback_function(&process_ms);
 			PARAMETERS_init();
 			PARAMETERS_enable(PARAM_ACTUATOR_STATE, 0, FALSE, &OBJECT_ROLLER_SHUTTER_ask_for_movement_callback, NULL);
+
+			up_time = 8*3600;
+			down_time = 22*3600;
+			PARAMETERS_enable(PARAM_START_TIME, up_time, FALSE, &OBJECT_ROLLER_set_up_time_callback, NULL);
+			PARAMETERS_enable(PARAM_STOP_TIME, down_time, FALSE, &OBJECT_ROLLER_set_down_time_callback, NULL);
+
+			auto_mode = FALSE;
+			PARAMETERS_enable(PARAM_MODE, auto_mode, FALSE, &OBJECT_ROLLER_set_mode_callback, NULL);
+
 			ADC_init();
 			GPIO_configure(PIN_RIN, NRF_GPIO_PIN_NOPULL, true);
 			GPIO_configure(PIN_FIN, NRF_GPIO_PIN_NOPULL, true);
 			BUTTONS_add(BUTTON_USER0, PIN_BP_UP, TRUE, &short_press_up, NULL, &long_press_up, NULL);
 			BUTTONS_add(BUTTON_USER1, PIN_BP_DOWN, TRUE,&short_press_down, NULL,&long_press_down, NULL);
 			state = IDLE;
+			//timer();
 			break;
 
-		////Montee du volet
+		////MONTEE DU VOLET
 		case UP :
 			if (entrance){
 				debug_printf("Montee du volet\n");
@@ -157,14 +227,18 @@ void ROLLER_SHUTTER_state_machine(void)
 				GPIO_write(PIN_FIN, false);
 				timeout = 10000;
 			}
-			if(flag_ask_for_movement == ASK_UP)
+/*			if(flag_ask_for_movement == ASK_UP)
 				state = IDLE;
 			if(flag_ask_for_movement == ASK_DOWN)
-				state = DOWN;
-			else if (!timeout || flag_short_press_down || flag_short_press_up || (t && flag_short_release_up) || flag_ask_for_movement == ASK_STOP){
-				state = COMMUNICATION;
+				state = DOWN;*/
+			else if (!timeout){
+				debug_printf("Temps écoulé \n");
+				state = IDLE;
 			}
-			else if (!timeout || arrived == TRUE){
+			else if (flag_short_press_down || flag_short_press_up /*|| (t && flag_short_release_up)*/ || flag_ask_for_movement == ASK_STOP){
+				state = IDLE;
+			}
+			else if (arrived == TRUE){
 				debug_printf("volet ouvert\n");
 				PARAMETERS_update(PARAM_ACTUATOR_STATE, 1);
 				arrived = FALSE;
@@ -176,7 +250,7 @@ void ROLLER_SHUTTER_state_machine(void)
 			}
 			break;
 
-			////Descente du volet
+			////DESCENTE DU VOLET
 		case DOWN :
 			if (entrance){
 				debug_printf("Descente du volet\n");
@@ -186,15 +260,19 @@ void ROLLER_SHUTTER_state_machine(void)
 				timeout = 10000;
 			}
 
-			if(flag_ask_for_movement == ASK_UP)
+/*			if(flag_ask_for_movement == ASK_UP)
 				state = UP;
 			if(flag_ask_for_movement == ASK_DOWN)
-				state = DOWN;
-			else if (!timeout || flag_short_press_up || flag_short_press_down || (t && flag_short_release_down) || flag_ask_for_movement == ASK_STOP){
-				arrived = FALSE;
-				state = COMMUNICATION;
+				state = DOWN;*/
+			else if (!timeout){
+				debug_printf("Temps écoulé \n");
+				state = IDLE;
 			}
-			else if (!timeout || arrived == TRUE){
+			else if (flag_short_press_up || flag_short_press_down /*|| (t && flag_short_release_down)*/ || flag_ask_for_movement == ASK_STOP){
+				arrived = FALSE;
+				state = IDLE;
+			}
+			else if (arrived == TRUE){
 				debug_printf("volet fermé\n");
 				PARAMETERS_update(PARAM_ACTUATOR_STATE, 0);
 				arrived = FALSE;
@@ -208,20 +286,30 @@ void ROLLER_SHUTTER_state_machine(void)
 
 			/////cas eteint
 		case IDLE :
-			t = 2000;
-			if(flag_short_press_down || flag_ask_for_movement == ASK_DOWN)
+			if(entrance)
+			{
+				flag_auto_mode_ask_up = FALSE;
+				flag_auto_mode_ask_down = FALSE;
+			}
+			if(flag_short_press_down || flag_ask_for_movement == ASK_DOWN || flag_auto_mode_ask_down)
 				state = DOWN;
-			else if(flag_short_press_up || flag_ask_for_movement == ASK_UP)
+			else if(flag_short_press_up || flag_ask_for_movement == ASK_UP || flag_auto_mode_ask_up)
 				state = UP;
+			flag_auto_mode_ask_up = FALSE;
+			flag_auto_mode_ask_down = FALSE;
+
 			break;
 		default:
 			break;
 
-			/////On envoie l'etat actuel du volet
+			/////On envoie l'etat actuel du volet à la station de base
 		case COMMUNICATION :
 			PARAMETERS_send_param32_to_basestation(PARAM_ACTUATOR_STATE);
+			PARAMETERS_send_param32_to_basestation(PARAM_MODE);
 			state = IDLE;
 		break;
+
+
 	}
 
 	flag_ask_for_movement = ASK_NONE;
@@ -235,20 +323,12 @@ void ROLLER_SHUTTER_state_machine(void)
 	flag_long_release_up = FALSE;
 }
 
-
-
-/// END NEW CODE ///
-
-
-
 void object_roller_shutter_changement_etat(void)
 {
 	state_changement = TRUE;
 }
 
 #endif
-
-
 
 /////TEST 2022////
 /*
