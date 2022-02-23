@@ -30,6 +30,7 @@
 #define OBJECT_VENTILATOR           11
 #define OBJECT_GSM                  12
 #define OBJECT_FALL_SENSOR          13
+#define OBJECT_WATER_LEVEL_DETECTOR 14
 #define OBJECT_TRACKER_GPS          16
 #define OBJECT_RFID                 17
 #define OBJECT_VOICE_CONTROL        19
@@ -149,6 +150,12 @@
 		#define USE_MPU6050 1
 		#define MPU6050_VCC_PIN 27
 		#define PIN_BUTTON_ALERT 16
+	#endif
+
+	#if OBJECT_ID == OBJECT_WATER_LEVEL_DETECTOR
+
+		#define PIN_CAPTEUR 2
+
 	#endif
 
 	#if OBJECT_ID == OBJECT_TRACKER_GPS
@@ -279,7 +286,7 @@ uint32_t debug_printf(char * format, ...);
 
 
 #define USE_ADC						1
-#define USE_ADC_CHANNEL_AIN0		0	//P0.02
+#define USE_ADC_CHANNEL_AIN0		(OBJECT_ID == OBJECT_WATER_LEVEL_DETECTOR)	//P0.02
 #define USE_ADC_CHANNEL_AIN1		(OBJECT_ID == OBJECT_VENTILATOR)	//P0.03
 #define USE_ADC_CHANNEL_AIN2		0	//P0.04
 #define USE_ADC_CHANNEL_AIN3		0	//P0.05
