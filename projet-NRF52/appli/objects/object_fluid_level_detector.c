@@ -42,7 +42,7 @@ static int water_level_percentage;  //The percentage of the water level's height
 static float WATER_VARIABILITY = RECIPIENT_HEIGHT * CALIBRATION_RATE; //Recipient's height translated to the sensor's calibration.
 static float MIN_RECIPIENT = CALIBRATION_MAX_VALUE - (RECIPIENT_HEIGHT * CALIBRATION_RATE); //The minimum possible detected value, indicates an empty recipient.
 static uint32_t alarm_threshold = 20;
-static uint32_t
+static uint32_t TOLERANCE = (5 * RECIPIENT_HEIGHT * CALIBRATION_RATE) / 100;
 
 static volatile uint32_t t = 0;
 
@@ -61,6 +61,10 @@ void detect_value() {
 
 	//Calculates the percentage of the recipient that is "occupied" by the current water level.
 	water_level_percentage = (water_level * 100) / WATER_VARIABILITY;
+
+	if(water_level_percentage >= 100) {
+		water_level_percentage = 100;
+	}
 
 	debug_printf("The water tank is filled %d percent of the way.\n", water_level_percentage);
 }
@@ -106,9 +110,7 @@ void OBJECT_WATER_LEVEL_DETECTOR_MAIN(){
 		if(entrance)
 			water_level_alarm(FALSE);
 
-		detected_value();
-
-		water_level();
+		detect_value();
 
 		if(water_level_percentage <= alarm_threshold  - TOLERANCE) {
 
@@ -119,15 +121,16 @@ void OBJECT_WATER_LEVEL_DETECTOR_MAIN(){
 		break;
 
 	case ALARM:
+
 		if(entrance)
 			water_level_alarm(TRUE);
 
-		detected_value();
+		detect_value();
 
 		if(water_level_percentage > alarm_threshold + TOLERANCE) {
 
-					state = DETECT_VALUE;
-				}
+			state = DETECT_VALUE;
+		}
 
 		break;
 
