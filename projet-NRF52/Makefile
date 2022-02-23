@@ -29,11 +29,9 @@ SRC_FILES += \
   $(PROJ_DIR)/appli/objects/object_night_light.c \
   $(PROJ_DIR)/appli/objects/object_out_weather_station.c \
   $(PROJ_DIR)/appli/objects/object_voice_control.c \
+  $(PROJ_DIR)/appli/objects/object_fluid_level_detector.c \
   $(PROJ_DIR)/appli/objects/object_e_paper.c \
   $(PROJ_DIR)/appli/objects/object_wine_degustation.c \
-  $(PROJ_DIR)/appli/objects/object_roller_shutter.c \
-  $(PROJ_DIR)/appli/objects/object_smart_socket.c \
-  $(PROJ_DIR)/appli/objects/object_alarm.c \
   $(PROJ_DIR)/bsp/nmos_gnd.c \
   $(PROJ_DIR)/bsp/WS2812B_asm.s \
   $(PROJ_DIR)/bsp/WS2812.c \
@@ -57,7 +55,6 @@ SRC_FILES += \
   $(PROJ_DIR)/bsp/epaper/epdpaint.c \
   $(PROJ_DIR)/bsp/epaper/imagedata.c \
   $(PROJ_DIR)/bsp/epaper/epdif.c \
-  $(PROJ_DIR)/bsp/morse.c \
   $(SDK_ROOT)/modules/nrfx/mdk/gcc_startup_nrf52.S \
   $(SDK_ROOT)/components/libraries/log/src/nrf_log_backend_rtt.c \
   $(SDK_ROOT)/components/libraries/log/src/nrf_log_backend_serial.c \
