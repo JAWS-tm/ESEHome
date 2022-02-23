@@ -40,7 +40,8 @@ public class Controleur extends HttpServlet {
     	DAOFactory daoFactory = DAOFactory.getInstance();
     	this.daoUtilisateur = daoFactory.getDAOUtilisateur("MariaDB");
     	this.daoObjet = daoFactory.getDAOObjet("MariaDB");
-    	this.daoGroupe_Objet = daoFactory.getDAOGroupe_Objet("MariaDB");
+    	this.daoGroupe_Objet = daoFactory.getDAOGroupe_Objet("MariaDB"); 
+    	
     	
     }
     
