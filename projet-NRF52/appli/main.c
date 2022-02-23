@@ -98,8 +98,9 @@ int main(void)
     LED_add(LED_ID_NETWORK, PIN_LED_NETWORK);
 	LED_add(LED_ID_BATTERY, PIN_LED_BATTERY);
 	LED_set(LED_ID_BATTERY, LED_MODE_ON);
+#ifdef PIN_LED_USER
 	LED_add(LED_ID_USER0, PIN_LED_USER);
-
+#endif
 
 	SECRETARY_init();
 

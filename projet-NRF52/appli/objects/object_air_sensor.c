@@ -272,10 +272,12 @@ void OBJECT_AIR_SENSOR_state_machine(void){
 			Systick_add_callback_function(&process_ms);
 
 			PARAMETERS_init();
-			PARAMETERS_enable(PARAM_MY_BASE_STATION_ID, 0, false, null, null);
-			PARAMETERS_enable(PARAM_SENSOR_VALUE, 0,false, null, null);
-			PARAMETERS_enable(PARAM_ACTUATOR_STATE, 0,false, null, null);
-			PARAMETERS_enable(PARAM_REFRESH_PERIOD,30000,false,null,null);
+			PARAMETERS_enable(PARAM_MY_BASE_STATION_ID, 0, false, NULL,NULL);
+			PARAMETERS_enable(PARAM_PM1_0, 0,false, NULL, NULL);
+			PARAMETERS_enable(PARAM_PM2_5, 0,false, NULL, NULL);
+			PARAMETERS_enable(PARAM_PM10, 0,false, NULL, NULL);
+			//PARAMETERS_enable(PARAM_ACTUATOR_STATE, 0,false, NULL, NULL);
+			PARAMETERS_enable(PARAM_REFRESH_PERIOD,30000,false,NULL,NULL);
 
 			mode_state = GET_DATA;
 			break;
@@ -290,15 +292,15 @@ void OBJECT_AIR_SENSOR_state_machine(void){
 			if(!t){
 				data_management(count_PM1_0, tab_PM1_0, average_PM1_0, sum_PM1_0);
 				debug_printf("Moyenne de PM1_0 : %d\n\n",average_PM1_0);
-				PARAMETERS_update(PARAM_SENSOR_VALUE, average_PM1_0);
+				PARAMETERS_update(PARAM_PM1_0, average_PM1_0);
 
 				data_management(count_PM2_5, tab_PM2_5, average_PM2_5, sum_PM2_5);
 				debug_printf("Moyenne de PM2_5 : %d\n\n",average_PM2_5);
-				//PARAMETERS_update(PARAM_SENSOR_VALUE, average_PM2_5);
+				PARAMETERS_update(PARAM_PM2_5, average_PM2_5);
 
 				data_management(count_PM10, tab_PM10, average_PM10, sum_PM10);
 				debug_printf("Moyenne de PM10 : %d\n\n",average_PM10);
-				//PARAMETERS_update(PARAM_SENSOR_VALUE, average_PM10);
+				PARAMETERS_update(PARAM_PM10, average_PM10);
 
 				average_PM1_0 = 0;
 				sum_PM1_0 = 0;
@@ -320,7 +322,9 @@ void OBJECT_AIR_SENSOR_state_machine(void){
 			break;
 
 		case SEND_DATA:
-			PARAMETERS_send_param32_to_basestation(PARAM_SENSOR_VALUE);
+			PARAMETERS_send_param32_to_basestation(PARAM_PM1_0);
+			PARAMETERS_send_param32_to_basestation(PARAM_PM2_5);
+			PARAMETERS_send_param32_to_basestation(PARAM_PM10);
 			PARAMETERS_send_param32_to_basestation(PARAM_REFRESH_PERIOD);
 			mode_state = WAIT;
 			break;
