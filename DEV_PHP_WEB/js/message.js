@@ -1,6 +1,4 @@
- /*
- *      Author: Raimbault PL
- */
+ /*      Author: Raimbault PL */
  
  
  let envoye = document.querySelector("#envoye");

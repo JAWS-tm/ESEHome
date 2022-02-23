@@ -1,6 +1,5 @@
-/*
- *      Author: Raimbault PL
- */ 
+<!-- Author: Raimbault PL  -->
+ 
 <?php 
   session_start();
 
