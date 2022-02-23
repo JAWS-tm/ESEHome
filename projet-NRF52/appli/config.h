@@ -43,7 +43,7 @@
 
 
 ///////////////////////////////////////////////////////////////////////////////////
-//Numéro de l'objet pour lequel on compile
+//Numro de l'objet pour lequel on compile
 #include "config_perso.h"
 ///////////////////////////////////////////////////////////////////////////////////
 
@@ -65,10 +65,6 @@
 		#define INPUT_SW_ENCODEUR_ROTATIF 			25
 
 		#define PIN_BUTTON_LOCAL					17
-
-	#endif
-
-	#if OBJECT_ID == OBJECT_SMART_LIGHT
 
 	#endif
 
@@ -98,8 +94,8 @@
 		#define MOSFET_GND  27
 		#define DHT11_PIN	2
 
-		#define PIN_UART_TX	8		//pour ne pas faire comme tout le monde (et résoudre un pb hardware !)
-		#define PIN_UART_RX	6		//pour ne pas faire comme tout le monde (et résoudre un pb hardware !)
+		#define PIN_UART_TX	8		//pour ne pas faire comme tout le monde (et rsoudre un pb hardware !)
+		#define PIN_UART_RX	6		//pour ne pas faire comme tout le monde (et rsoudre un pb hardware !)
 	#endif
 
 	#if OBJECT_ID == OBJECT_OUT_WEATHER_STATION
@@ -135,19 +131,19 @@
 	#endif
 
 	#if OBJECT_ID == OBJECT_FIRE_DETECTOR
-		#define PIN_BUTTON_USER	17 //Button utilisateur = coupé alarme
+		#define PIN_BUTTON_USER	17 //Button utilisateur = coup alarme
 		#define PIN_LED_USER 	9 //LED verte
-		#define AN_SIGNAL		2 //Signal analogique du capteur de fummée
-		#define NUM_SIGNAL		29//Signal numérique du capteur de fummée
-		#define PIN_FIRE_DETECTOR	27//Pin du détecteur de fummée
+		#define AN_SIGNAL		2 //Signal analogique du capteur de fumme
+		#define NUM_SIGNAL		29//Signal numrique du capteur de fumme
+		#define PIN_FIRE_DETECTOR	27//Pin du dtecteur de fumme
 		#define MEASURE_VBAT	30
 		#define MEASUR_BAT		31
 	#endif
 
 	#if OBJECT_ID == OBJECT_WINE_DEGUSTATION
 		#define USE_MCP9804 1
-		#define PIN_LED_VERTE (9) //led verte = bouteille chambrée
-		#define PIN_LED_JAUNE (10) //led jaune = bouteille non chambrée
+		#define PIN_LED_VERTE (9) //led verte = bouteille chambre
+		#define PIN_LED_JAUNE (10) //led jaune = bouteille non chambre
 		#define TWI_INSTANCE_ID     	0
 	#endif
 
@@ -265,7 +261,7 @@
 ///////////////////////////////////////////////////////////////////////////////////
 
 ///////////////////////////////////////////////////////////////////////////////////
-//Configs communes à tout les objets.
+//Configs communes  tout les objets.
 
 
 #ifndef PIN_UART_TX
@@ -281,7 +277,7 @@
 #define PIN_LED_BATTERY		20
 #define PIN_RESET			21
 
-//TODO compléter la liste des objets dotés d'une led batterie !
+//TODO complter la liste des objets dots d'une led batterie !
 #define I_HAVE_LED_BATTERY	(OBJECT_ID == OBJECT_BASE_STATION || OBJECT_ID == 6 || OBJECT_ID == OBJECT_FALL_SENSOR || OBJECT_ID == OBJECT_WINE_DEGUSTATION || OBJECT_ID == 10 || OBJECT_ID == 13||OBJECT_ID == OBJECT_BRIGHTNESS_SENSOR || OBJECT_ID == OBJECT_AIR_SENSOR)
 #define I_HAVE_MEASURE_VBAT	(OBJECT_ID == OBJECT_BASE_STATION || OBJECT_ID == 6 || OBJECT_ID == OBJECT_FALL_SENSOR || OBJECT_ID == OBJECT_WINE_DEGUSTATION || OBJECT_ID == 10 || OBJECT_ID == 13||OBJECT_ID == OBJECT_BRIGHTNESS_SENSOR || OBJECT_ID == OBJECT_AIR_SENSOR)
 
@@ -291,10 +287,10 @@
 
 
 
-#define ENABLE_POWERDOWN_FROM_MCU		1	//si 1 : permet de couper l'alim avec un appui long sur le bouton poussoir. Impose le maintient du bouton pendant 1 seconde au démarrage.
+#define ENABLE_POWERDOWN_FROM_MCU		1	//si 1 : permet de couper l'alim avec un appui long sur le bouton poussoir. Impose le maintient du bouton pendant 1 seconde au dmarrage.
 
 
-#ifndef USE_SERIAL_DIALOG		//si aucun objet n'a défini ceci é 0... alors on active la brique SERIAL_DIALOG
+#ifndef USE_SERIAL_DIALOG		//si aucun objet n'a dfini ceci  0... alors on active la brique SERIAL_DIALOG
 	#define USE_SERIAL_DIALOG	1
 #endif
 
@@ -304,7 +300,7 @@
 #define SP_DEBUG_RADIO_IRQ_RESET()		NRF_P0->OUTCLR = (1 << (12))
 
 
-#define OFF_BUTTON_LONG_PRESS_DURATION	2000	//durée de l'appui sur le bouton OFF qui déclenche l'extinction.
+#define OFF_BUTTON_LONG_PRESS_DURATION	2000	//dure de l'appui sur le bouton OFF qui dclenche l'extinction.
 #define AUTO_OFF_IF_NO_EVENT_DURATION	(30*60*1000)	//extinction automatique au bout de 30mn
 
 #define TIMESLOT_DURATION	1	//ms
