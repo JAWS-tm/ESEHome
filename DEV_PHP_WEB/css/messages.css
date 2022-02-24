@@ -60,9 +60,6 @@ table{
 
 .table_header{
   width: 100%;
-  
-  /*background: linear-gradient(90deg, rgb(204, 198, 255) 0%, rgb(230, 200, 180) 47%, rgb(200, 198, 251) 100%);*/
-  /*background: linear-gradient(90deg, rgb(200, 190, 255) 0%, rgb(255, 200, 160) 47%, rgb(200, 198, 251) 100%);*/
   background: #F5D1C6;
   color: white;
   border-collapse: collapse;
@@ -110,8 +107,6 @@ thead{
 
 .table_header2{
   width: 100%;
-  /*background: linear-gradient(90deg, rgb(204, 198, 255) 0%, rgb(230, 200, 180) 47%, rgb(200, 198, 251) 100%);*/
-  /*background: linear-gradient(90deg, rgb(200, 190, 255) 0%, rgb(255, 200, 160) 47%, rgb(200, 198, 251) 100%);*/
   background: rgba(150, 80, 109,1);
   color: white;
   border: 1px solid black;
