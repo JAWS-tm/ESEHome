@@ -36,6 +36,8 @@
 #include "objects/object_fire_detector.h"
 #include "objects/object_roller_shutter.h"
 #include "objects/object_LCD_slider.h"
+#include "objects/object_night_light.h"
+
 //#include "objects/object_smart_socket.h"
 
 
@@ -71,7 +73,7 @@ void button_network_process(void)
 
 int main(void)
  {
-	//Démarrage de l'horloge.
+	//Dmarrage de l'horloge.
     clocks_start();
 
     //Lancement du timer systick
@@ -87,11 +89,11 @@ int main(void)
 
     //Initialisation du SERIAL_DIALOG
 #if USE_SERIAL_DIALOG
-    SERIAL_DIALOG_init();	//initialise l'UART et permet les dialogues avec le PC de débogage.
+    SERIAL_DIALOG_init();	//initialise l'UART et permet les dialogues avec le PC de dbogage.
 #endif
 
     //Fin de l'initialisation
-    debug_printf("NRF52832 initialisé\n");
+    debug_printf("NRF52832 initialis\n");
     volatile char id;
     id = OBJECT_ID;
     debug_printf("My id is %d. I am \"%s\"\n", id, object_id_to_string(id));
@@ -289,7 +291,7 @@ char * object_id_to_string(uint8_t id)
 void button_network_process_short_press(void)
 {
 	LED_toggle(LED_ID_NETWORK);
-	//TODO envoi d'un ping... (avec éventuellement extinction de la led à la réception du Pong ?)
+	//TODO envoi d'un ping... (avec ventuellement extinction de la led  la rception du Pong ?)
 }
 
 void button_network_process_long_press(void)
