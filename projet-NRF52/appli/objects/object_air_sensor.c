@@ -14,7 +14,6 @@
 	#include "object_air_sensor.h"
 	#include "../common/parameters.h"
 
-#endif
 
 
 
@@ -338,3 +337,6 @@ void OBJECT_AIR_SENSOR_state_machine(void){
 
 	}
 }
+#endif
+
+

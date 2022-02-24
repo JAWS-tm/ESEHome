@@ -172,21 +172,19 @@
 		#define	I2C_SCL_PIN_NB	13
 	#endif
 
-<<<<<<< HEAD
+
 	#if OBJECT_ID == OBJECT_WATER_LEVEL_DETECTOR
 
 		#define PIN_CAPTEUR 2
 
 	#endif
 
-=======
 	#if OBJECT_ID == OBJECT_AIR_SENSOR
 		#define LED_STATUS_SENSOR		11
 		#define MOSFET_AIR_SENSOR		10
 		#define BOOST_ENABLE			15
 		#define UART_AT_BAUDRATE_9600
 	#endif
->>>>>>> branch 'dev' of https://172.24.0.69/b3/synthese/2021-2022/embarque.git
 	#if OBJECT_ID == OBJECT_TRACKER_GPS
 		#define MOSFET_GND_GPS   17
 		#define UART_AT_BAUDRATE_9600
@@ -315,12 +313,9 @@ uint32_t debug_printf(char * format, ...);
 
 
 #define USE_ADC						1
-<<<<<<< HEAD
 #define USE_ADC_CHANNEL_AIN0		(OBJECT_ID == OBJECT_WATER_LEVEL_DETECTOR)	//P0.02
-=======
 //#define USE_ADC_CHANNEL_AIN0		1	//P0.02
 #define USE_ADC_CHANNEL_AIN0		(OBJECT_ID == OBJECT_SMART_SOCKET || OBJECT_FIRE_DETECTOR)	//P0.02
->>>>>>> branch 'dev' of https://172.24.0.69/b3/synthese/2021-2022/embarque.git
 #define USE_ADC_CHANNEL_AIN1		(OBJECT_ID == OBJECT_VENTILATOR)	//P0.03
 #define USE_ADC_CHANNEL_AIN2		(OBJECT_ID == OBJECT_ROLLER_SHUTTER)	//P0.04
 #define USE_ADC_CHANNEL_AIN3		0	//P0.05
