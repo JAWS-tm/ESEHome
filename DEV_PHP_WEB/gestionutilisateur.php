@@ -1,4 +1,9 @@
-<?php 
+<?php
+
+/*
+	Author: MORIN HUGO
+*/
+
 
     require 'inc/header.php';
 	require 'inc/db.php';
@@ -15,9 +20,9 @@
 		$data = $_POST['datagrp'];
 		$cgo = $_POST['choixgroupeobjet'];
 
+		// Insert du groupe dans la bdd 
 		$sqlGrpInsert = 'INSERT INTO groupe_utilisateur (id_utilisateur, id_groupe, edition) 
-							VALUES (?, ?, ?) 
-							ON DUPLICATE KEY UPDATE id_groupe='.$cgo;
+							VALUES (?, ?, ?)';
 
 	 	$reqGrpInsert = $pdo->prepare($sqlGrpInsert);
 	 	$reqGrpInsert->execute(array($data, $cgo, false)) or exit(print_r($reqGrpInsert->errorInfo()));

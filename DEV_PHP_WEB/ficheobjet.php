@@ -1,9 +1,10 @@
 <!-- Author: Raimbault PL  -->
  
-
 <?php
-    require 'inc/header.php';
-    include("inc/db.php");
+
+	
+  require 'inc/header.php';
+  require 'inc/db.php';
     
 	date_default_timezone_set('UTC');
 	$id = $_GET['param'];
@@ -15,7 +16,7 @@
 	    $dest = "DDDDDD0$id";
 	}
 	
-	// On férifie si l'objet est bien connecté 
+	// On vérifie si l'objet est bien connecté 
 	// solution bancale
 	$req = $pdo->prepare('SELECT * FROM messages WHERE emetteur = ?');
 	$req->execute([$dest]);
@@ -25,9 +26,6 @@
 	}else{
 	    $connect = 0;
 	}
-	
-	
-	
 	
 	
 	switch ($id){

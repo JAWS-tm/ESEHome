@@ -53,23 +53,23 @@
             <?php  } else if ($value['id_objet'] == 7){ ?>
               <img src="img/volet_roulant1.jpg">
             <?php  } else if ($value['id_objet'] == 8){ ?>
-              <img src="img/alarme.jpg">
+              <img src="img/volet_roulant1.jpg">
             <?php  } else if ($value['id_objet'] == 9){ ?>
-              <img src="img/detecteur_incendie.jpg">
+              <img src="img/volet_roulant2.jpg">
             <?php  } else if ($value['id_objet'] == 10){ ?>
-              <img src="img/ventilateur.jpg">
+              <img src="img/alarme.jpg">
             <?php  } else if ($value['id_objet'] == 11){ ?>
-              <img src="img/detecteur_chute.jpg">
+              <img src="img/detecteur_incendie.jpg">
             <?php   } else if ($value['id_objet'] == 12){ ?>
-              <img src="img/niveau_cuve.jpg">
+              <img src="img/ventilateur.jpg">
             <?php  } else if ($value['id_objet'] == 13){ ?>
-              <img src="img/capteur_air.jpg"> 
+              <img src="img/detecteur_chute.jpg"> 
             <?php  } else if ($value['id_objet'] == 14){ ?>
-              <img src="img/slider_lcd.jpg">
+              <img src="img/niveau_cuve.jpg">
             <?php  } else if ($value['id_objet'] == 15){ ?>
-              <img src="img/ecran_tactile.jpg">
+              <img src="img/capteur_air.jpg">
             <?php  } else { ?>
-              <img src="img/matrice_led.jpg">
+              <img src="img/capteur_air.jpg">
             <?php }
           ?>
           </div>

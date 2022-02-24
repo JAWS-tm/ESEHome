@@ -1,5 +1,6 @@
-<!-- Author: Raimbault PL  -->
- 
+<!-- Author: Raimbault PL - MORIN HUGO -->
+
+
 <?php 
   session_start();
 
@@ -9,9 +10,12 @@
 
     if ($_SESSION['auth']->Admin == 1) {
       $admin = true;
-      $count = (object) [
-          'id_groupe' => 0
-      ];
+      $sqlgrpuser ="SELECT * FROM groupe_utilisateur WHERE id_utilisateur =1";
+      $req = $pdo->prepare($sqlgrpuser);
+      $req->execute();
+      $resultat = $req->fetchAll(PDO::FETCH_ASSOC);
+
+
     }
     else{
 
@@ -19,10 +23,8 @@
       $sqlgrpuser ="SELECT * FROM groupe_utilisateur WHERE id_utilisateur =".$_SESSION['auth']->id;
       $req = $pdo->prepare($sqlgrpuser);
       $req->execute();
-      $count = $req->fetchAll(PDO::FETCH_ASSOC);
+      $resultat = $req->fetchAll(PDO::FETCH_ASSOC);
     }
-
-
 
     $sqladm = "SELECT id_objet, nom_groupe, nom_type FROM objet as OB
         INNER JOIN type as TY ON TY.id = OB.type_id
@@ -53,13 +55,13 @@
  
    <div class="artic">
 
-    <?php if(!$count && $admin == false):?>
+    <?php if(!$resultat && $admin == false):?>
       
         <p>Vous n'êtes associé à aucun groupe.</p>
   
     <?php endif ?>
     <?php 
-    foreach ($count as $value) {
+    foreach ($resultat as $value) {
         if($value['id_groupe'] == '1' || $admin == true){?>
       <article class="card">
         <div class="card_thumb"><img src="img/chambre.jpg"></div>
@@ -82,7 +84,7 @@
     } ?>
 
     <?php
-    foreach ($count as $value) {
+    foreach ($resultat as $value) {
         if ($value['id_groupe'] == '2' || $admin == true){ ?>
           <article class="card">
             <div class="card_thumb"><img src="img/cuisine.jpg"></div>
@@ -104,7 +106,7 @@
     <?php }} ?>
   
     <?php
-    foreach ($count as $value) {
+    foreach ($resultat as $value) {
         if($value['id_groupe'] == '3' || $admin == true){?>
       <article class="card">
         <div class="card_thumb"><img src="img/salon.jpg"></div>
@@ -126,7 +128,7 @@
     <?php }} ?>
 
     <?php 
-    foreach ($count as $value) {
+    foreach ($resultat as $value) {
         if ($value['id_groupe'] == '4' || $admin == true){ ?>
           <article class="card">
             <div class="card_thumb"><img src="img/exetieur.jpg"></div>

@@ -1,5 +1,10 @@
 <?php
 
+/*
+	Author: MORIN HUGO
+*/
+
+
  	require 'inc/header.php';
 	require 'inc/db.php';
 
@@ -11,15 +16,18 @@
 	    if(!empty($_POST['usernameajout']) AND !empty($_POST['passwordajout']) AND !empty($_POST['passwordajout_confirm'])) {
 	        $pseudoajoutlength = strlen($pseudoajout);
 	        if($pseudoajoutlength <= 255) {
+	        	// Récupération des informations de l'utilisateur
 	            $reqpseudoajout = $pdo->prepare("SELECT * FROM utilisateur WHERE Pseudo = ?");
 	            $reqpseudoajout->execute(array($pseudoajout));
 	            $pseudoajoutexist = $reqpseudoajout->rowCount();
 	            if ($pseudoajoutexist == 0) {
 	                if ($mdpajout == $mdpajout2) {
 	                    
+	                    // hash du mot de passe
 	                    $mdpajout=password_hash($_POST['passwordajout'], PASSWORD_DEFAULT);
 	                    $admin = 0;
 	                    
+	                    // Insert dans la bdd
 	                    $reqinsertajout = $pdo->prepare("INSERT INTO utilisateur SET Pseudo = ?, MotDePasse = ?, Admin = ?");
 	                    $reqinsertajout->execute(array($pseudoajout, $mdpajout, $admin));
 
