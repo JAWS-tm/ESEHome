@@ -450,7 +450,7 @@ if(!empty($_POST)){
           $req->execute([$dest]);
           $result = $req->fetchAll(PDO::FETCH_ASSOC);
           if($result){
-              echo '<li>messagess envoyes</li>';
+              echo '<li>messages envoyes</li>';
               foreach ($result as $value){
                 echo '<li>messages ('.$value['id'].') Destinataire : '.$value['destinataire'].'/ Date : '.$value['date'].'/ type de messages : '.$value['type_messages_id'].'/ Permanent : '.$value['permanent'].'</li>'; 
               }
