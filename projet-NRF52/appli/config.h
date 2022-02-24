@@ -77,7 +77,8 @@
 	#endif
 
 	#if OBJECT_ID == OBJECT_NIGHT_LIGHT
-		#define WS2812_PIN	9
+		#define BUTTON_USER_PIN	17
+		#define NIGHT_LED_PIN  25
 
 	#endif
 
