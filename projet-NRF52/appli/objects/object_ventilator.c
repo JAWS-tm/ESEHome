@@ -1,7 +1,7 @@
 /*
  * object_ventilator.c
  *
- *  Created on: 10 févr. 2022
+ *  Created on: 10 fvr. 2022
  *      Author: Pierre Nile
  */
 #include "../config.h"
@@ -38,6 +38,9 @@ void object_ventilator_temperature(void)
 {
 	ADC_read(TEMP_OUTPUT, &temperature);
 	debug_printf("Temperature est %d.\n", temperature);
+	
+	//VOUT=TCxTA + V0Â°C
+	//19.5mV/Â°C
 
 	temp_deg = (temperature)*10000 / 195000 ;
 
@@ -59,7 +62,7 @@ void object_ventilator_activation(void)
 {
 	object_ventilator_temperature();
 
-	if(flag_new_ask_from_rf)	//demande de la station de base de piloter le ventilo à la vitesse XXXX)
+	if(flag_new_ask_from_rf)	//demande de la station de base de piloter le ventilo  la vitesse XXXX)
 	{
 		flag_new_ask_from_rf = FALSE;
 		if(new_speed_asked_from_rf < 8)
@@ -78,7 +81,7 @@ void object_ventilator_activation(void)
 			GPIO_configure(MOSFET_PIN_3, NRF_GPIO_PIN_PULLUP, true);
 			LED_add(LED_ID_NETWORK, PIN_LED_NETWORK);
 			BUTTONS_add(BUTTON_NETWORK, PIN_BUTTON_NETWORK, TRUE, &BUTTON_action, NULL, &BUTTON_action_long_press, NULL);
-			state = VENTILATOR_ON;	//Changement d'état
+			state = VENTILATOR_ON;	//Changement d'tat
 			break;
 
 		case VENTILATOR_ON:
@@ -90,7 +93,7 @@ void object_ventilator_activation(void)
 
 			LED_set(LED_ID_NETWORK, (current_speed)?LED_MODE_ON:LED_MODE_OFF);
 
-			//TODO : disposer de deux modes, pilotables par la station... et activant le suivi en température
+			//TODO : disposer de deux modes, pilotables par la station... et activant le suivi en temprature
 			/*if(temp_deg >= 20) {
 				current_speed = 3;
 			}
@@ -106,7 +109,7 @@ void object_ventilator_activation(void)
 			break;
 
 		default:
-			state = VENTILATOR_INIT;	//N'est jamais sensé se produire.
+			state = VENTILATOR_INIT;	//N'est jamais sens se produire.
 			break;
 	}
 
