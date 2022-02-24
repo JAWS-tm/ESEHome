@@ -1,3 +1,5 @@
+<!-- Author: Laura TRACZYK -->
+
 <link rel="stylesheet" href="css/equipements.css"/>
 
 <?php session_start();
