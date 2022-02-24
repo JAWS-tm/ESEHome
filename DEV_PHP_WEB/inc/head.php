@@ -14,6 +14,7 @@
 	<link rel="stylesheet" type="text/css" href="css/styles.css">
 	<link rel="stylesheet" type="text/css" href="css/header.css">
 	<link rel="stylesheet" type="text/css" href="css/ban.css">
+	<link rel="stylesheet" type="text/css" href="css/compte.css">
 	<link rel="stylesheet" href="css/respadmin.css"/>
 	<link rel="stylesheet" href="css/inscription.css"/>
 	<link rel="stylesheet" href="css/admin.css"/>
