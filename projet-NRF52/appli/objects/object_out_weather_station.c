@@ -1,7 +1,7 @@
 /*
  * object_out_weather_station.c
  *
- *  Created on: 2 fÈvr. 2021
+ *  Created on: 2 fÔøΩvr. 2021
  *      Author: terri
  */
 
@@ -17,11 +17,13 @@
 #include "../common/gpio.h"
 
 void OUT_WEATHER_STATION_MAIN(void){
+	uint32_t time = SYSTICK_get_time_us();
+	uint32_t time2 = 0;
+
 	typedef enum{
 		INIT,
-		RAIN_WAITING,
-		RAIN_MEASUREMENT,
-		OTHERS_MEASUREMENT,
+		MEASUREMENT,
+		WAIT,
 		SEND_DATAS
 	}state_e;
 
@@ -30,35 +32,27 @@ void OUT_WEATHER_STATION_MAIN(void){
 	case INIT:
 		RJ12_WindInit();
 		RJ12_RainInit();
-//		BMP180_Init();
 		DHT11_init(DHT11_PIN);
-		state = RAIN_WAITING;
+		state = MEASUREMENT;
 		break;
-	case RAIN_WAITING:{
-		if(!GPIO_read(PIN_ANEMO_MOINS)){
-			state = RAIN_MEASUREMENT;
-		}
-		//TODO si on demande les autres donnÈes --> state = OTHERS_MEASUREMENT
-		state = OTHERS_MEASUREMENT;
-		break;}
-	case RAIN_MEASUREMENT:{
-		//TODO on mesure la quantitÈ de pluie
-		//TODO si on demande les autres donnÈes --> state = OTHERS_MEASUREMENT
-		state = OTHERS_MEASUREMENT;
-		break;}
-	case OTHERS_MEASUREMENT:{
+	case MEASUREMENT:
 		NMOS_On();
-		//BMP180_StartTemperature();
-		//BMP180_ReadTemperature();
-		DHT11_main();
+		debug_printf("Temperature : %d\n", BMP180_temperature());
+		debug_printf("Pression : %d\n", BMP180_pressure());
+		debug_printf("Humidite : %d\n", DHT11_humidity());
+		debug_printf("WindReturn : %d \n",RJ12_ReadWindTest());
+		debug_printf("Nombre de milim√®tre de pluie : %d (faire x0.1)\n",RJ12_ReadRainTest()*3);
 		NMOS_Off();
-		RJ12_ReadWindTest();
-		state = SEND_DATAS;
-		break;}
-	case SEND_DATAS:{
-		//Communication avec la station de base
-		state = INIT;
-		break;}
+		state = WAIT;
+		break;
+	case WAIT:
+		time = SYSTICK_get_time_us();
+		time2 = 0;
+		while(time2 < time + 5000000 ){
+			time2 = SYSTICK_get_time_us();
+		}
+		state = MEASUREMENT;
+		break;
 	default:
 		break;
 	}
@@ -78,7 +72,7 @@ float RJ12_ReadWindTest(void){
 	GPIO_write(PIN_ANEMO_PLUS, TRUE);
 	bool_e read = 0;
 	volatile uint8_t tour_in_10_seconds = 0;
-	while(time2 < time + 10000000 ){
+	while(time2 < time + 10000000){
 		read = GPIO_read(PIN_ANEMO_MOINS);
 		time2 = SYSTICK_get_time_us();
 		if(read == 1){
@@ -87,7 +81,8 @@ float RJ12_ReadWindTest(void){
 	}
 	volatile float vitesse_en_ms = 2*3.14*0.07*(tour_in_10_seconds)/10; // Vitesse en m/s
 	volatile float vitesse_en_kmh = 3.6*vitesse_en_ms; //Vitesse en km/h
-	return vitesse_en_kmh;
+
+	return (int)vitesse_en_kmh;
 }
 
 
@@ -107,7 +102,11 @@ uint8_t RJ12_ReadRainTest(void){
 	while(time2 < time + 10000000 ){
 		read = GPIO_read(PIN_PLUVIO_MOINS);
 		time2 = SYSTICK_get_time_us();
-		if(read == 1){
+		uint32_t time3 = 0;
+		if(read != 1){
+			while(time3 < time2 + 100000 ){
+				time3 = SYSTICK_get_time_us();
+			}
 			dose_pluie++;
 		}
 	}

@@ -29,16 +29,16 @@ typedef enum
 	PARAM_PLUVIOMETRY,
 	PARAM_SCREEN_COLOR,
 	PARAM_MODE,
-	PARAM_START_TIME,
-	PARAM_STOP_TIME,
+	PARAM_DURATION = 19,
+	PARAM_START_TIME = 16,
+	PARAM_STOP_TIME = 17,
 	PARAM_CURRENT_TIME,
 	PARAM_TRESHOLD,
-	PARAM_DURATION,
 	PARAM_PM1_0, //Ajout de paramètres pour l'objet "Air Sensor" (ID = 15)
 	PARAM_PM2_5,
 	PARAM_PM10,
-
 	PARAM_32_BITS_NB = 63,	//avant ce define, tout les paramètres tiennent sur 32 bits.
+
 
 	//Paramètres dont la taille dépasse 32 bits... et dont le traitement est spécifiquement confié à l'objet par des fonctions de callback.
 	PARAM_TEXT_PART0,

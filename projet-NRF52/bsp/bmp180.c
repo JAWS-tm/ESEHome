@@ -16,8 +16,8 @@
  * | along with this program.  If not, see <http://www.gnu.org/licenses/>.
  * |----------------------------------------------------------------------
  *
- * Ce code est inspiré de la librairie fournie par Tilen Majerle...pour STM32F4
- * Un portage est ici réalisé pour STM32F103.
+ * Ce code est inspirï¿½ de la librairie fournie par Tilen Majerle...pour STM32F4
+ * Un portage est ici rï¿½alisï¿½ pour STM32F103.
  */
 #include "bmp180.h"
 #include <stdio.h>
@@ -38,9 +38,62 @@
 #define BMP180_1_65536  ((float) 0.0000152587890625)
 #define BMP180_1_101325 ((float) 0.00000986923266726)
 
+uint16_t BMP180_temperature(void)
+{
 
+    char buffer[50];
+    BMP180_t BMP180_Data;
 
-//Fonction blocante, pour démo.
+    if (BMP180_Init(&BMP180_Data) == BMP180_Result_Ok) {
+
+        //debug_printf("BMP180 configured and ready to use\n\n");
+    } else {
+        //debug_printf("BMP180 error\n\n");
+        return;
+    }
+
+	BMP180_StartTemperature(&BMP180_Data);
+	SYSTICK_delay_ms(BMP180_Data.Delay/1000+1);
+
+	BMP180_ReadTemperature(&BMP180_Data);
+	BMP180_StartPressure(&BMP180_Data, BMP180_Oversampling_UltraHighResolution);
+	SYSTICK_delay_ms(BMP180_Data.Delay/1000+1);
+
+	BMP180_ReadPressure(&BMP180_Data);
+	//debug_printf("Temp: %2d degrees\nPressure: %6ld Pascals\n\n",(uint16_t)(BMP180_Data.Temperature),BMP180_Data.Pressure);
+	SYSTICK_delay_ms(1000);
+	//debug_printf((uint16_t)(BMP180_Data.Temperature));
+	return (uint16_t)(BMP180_Data.Temperature);
+}
+
+uint16_t BMP180_pressure(void)
+{
+
+    char buffer[50];
+    BMP180_t BMP180_Data;
+
+    if (BMP180_Init(&BMP180_Data) == BMP180_Result_Ok) {
+
+        //debug_printf("BMP180 configured and ready to use\n\n");
+    } else {
+        //debug_printf("BMP180 error\n\n");
+        return;
+    }
+
+	BMP180_StartTemperature(&BMP180_Data);
+	SYSTICK_delay_ms(BMP180_Data.Delay/1000+1);
+
+	BMP180_ReadTemperature(&BMP180_Data);
+	BMP180_StartPressure(&BMP180_Data, BMP180_Oversampling_UltraHighResolution);
+	SYSTICK_delay_ms(BMP180_Data.Delay/1000+1);
+
+	BMP180_ReadPressure(&BMP180_Data);
+	//debug_printf("Temp: %2d degrees\nPressure: %6ld Pascals\n\n",(uint16_t)(BMP180_Data.Temperature),BMP180_Data.Pressure);
+	SYSTICK_delay_ms(1000);
+	return (uint16_t)(BMP180_Data.Pressure);
+}
+
+//Fonction blocante, pour dï¿½mo.
 void BMP180_demo(void)
 {
 
