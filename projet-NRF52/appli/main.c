@@ -38,6 +38,10 @@
 #include "objects/object_roller_shutter.h"
 #include "objects/object_LCD_slider.h"
 #include "objects/object_night_light.h"
+#include "objects/object_fire_detector.h"
+#include "objects/object_roller_shutter.h"
+#include "objects/object_LCD_slider.h"
+#include "objects/object_night_light.h"
 
 //#include "objects/object_smart_socket.h"
 
