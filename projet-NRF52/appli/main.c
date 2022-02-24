@@ -143,7 +143,7 @@ int main(void)
     		#endif
 
     		#if OBJECT_ID == OBJECT_BRIGHTNESS_SENSOR
-    			OBJECT_BRIGHTNESS_SENSOR_state_machine();
+    			OBJECT_BRIGHTNESS_SENSOR_MAIN();
 
     		#endif
 

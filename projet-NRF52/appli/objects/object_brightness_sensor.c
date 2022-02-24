@@ -1,75 +1,176 @@
 /*
  * object_brightness_sensor.c
  *
- *  Created on: 4 févr. 2021
- *      Author: antho_9ak3x1e
+ *  Created on: 2 février 2022
+ *      Author: hugo morin
  */
 #include "../config.h"
-#include "object_brightness_sensor.h"
-#include "../common/leds.h"
-#include "../common/buttons.h"
-#include "../../bsp/bh1750fvi.h"
-#include "../common/gpio.h"
-
 
 #if OBJECT_ID == OBJECT_BRIGHTNESS_SENSOR
 
-void OBJECT_BRIGHTNESS_SENSOR_state_machine(void)
+#include "object_brightness_sensor.h"
+#include "../../bsp/bh1750fvi.h"
+#include "../common/leds.h"
+#include "../common/buttons.h"
+#include "../common/gpio.h"
+#include "../common/systick.h"
+#include "../common/parameters.h"
+
+#define FAIBLE 50
+#define FORT 500
+
+static uint16_t luminosity = 0;
+static uint16_t previous_luminosity = 0;
+static bool boolean_btn_switch_ = FALSE;
+static bool boolean_btn_sleep_ = FALSE;
+static uint16_t save_state;
+
+void OBJECT_BRIGHTNESS_SENSOR_MAIN(void)
 {
-	static state state = INIT;
-	static volatile uint16_t luminosite;
-	static volatile uint16_t luminosite_precedente;
-	switch(state)
-	{
-	case INIT :
+	typedef enum{
+		INIT,
+		CONTINUOUS_MEASURE,
+		SINGLE_MEASURE,
+		SLEEP
+	}state_e;
+
+	static state_e state = INIT;
+
+	switch(state){
+	case INIT:
+		//Initialisation
+		BH1750FVI_init();
+		PARAMETERS_init();
+		PARAMETERS_enable(PARAM_BRIGHTNESS,0,FALSE,NULL,NULL);
+		//PARAMETERS_send_param32_to_basestation(PARAM_BRIGHTNESS);
+
+		//Initialisation des LED
 		LED_add(LED_ID_BATTERY, PIN_LED_BATTERY);
 		LED_add(LED_ID_NETWORK, PIN_LED_NETWORK);
+
 		GPIO_configure(BH1750FVI_VCC_PIN, GPIO_PIN_CNF_PULL_Pullup, TRUE);
 		GPIO_write(BH1750FVI_VCC_PIN, TRUE);
-		state = GET_DATA;
-		BUTTONS_add(BUTTON_NETWORK, PIN_BUTTON_NETWORK, TRUE, &BUTTON_action_sleep, NULL, NULL, NULL);
-		BH1750FVI_init();
+
+		//Initialisation du bouton
+		BUTTONS_add(BUTTON_NETWORK, PIN_BUTTON_NETWORK, TRUE,&btn_switch_measure_mode, NULL,&btn_sleep, NULL);
+
+
+		state = CONTINUOUS_MEASURE;
+
 		break;
-	case GET_DATA :
-		LED_set(LED_ID_NETWORK, LED_MODE_ON);
-		LED_set(LED_ID_BATTERY, LED_MODE_OFF);
-		luminosite_precedente = luminosite;
+	case CONTINUOUS_MEASURE:
+
+		led_lighting_status(1);
+
 		BH1750FVI_powerOn();
-		BH1750FVI_measureMode(BH1750FVI_CON_H1);
-		luminosite = BH1750FVI_readLuminosity();
-		debug_printf("\nLuminosite = %d lx", luminosite);
-		BH1750FVI_powerDown();
-		if (luminosite>luminosite_precedente+10){
-			state = SEND_DATA;
-		}else if(luminosite<luminosite_precedente+10){
-			state = SEND_DATA;
+		BH1750FVI_measureMode(BH1750FVI_CON_H1); //BH1750FVI_CON_L
+
+		while(1){
+			previous_luminosity = luminosity;
+			luminosity = BH1750FVI_readLuminosity();
+			luminosity_observation(luminosity,previous_luminosity);
+			PARAMETERS_update(PARAM_BRIGHTNESS, luminosity);
+
+			SYSTICK_delay_ms(120);
+
+			if(boolean_btn_switch_){
+				state = SINGLE_MEASURE;
+			}
+			else if(boolean_btn_sleep_){
+				save_state = 1;
+				state = SLEEP;
+			}
+
+		}
+
+		break;
+	case SINGLE_MEASURE:
+
+		led_lighting_status(2);
+
+		BH1750FVI_powerOn();
+		BH1750FVI_measureMode(BH1750FVI_OT_H1); // BH1750FVI_OT_L
+
+		luminosity = BH1750FVI_readLuminosity();
+		debug_printf("\n La luminosite est de %d lx.", luminosity);
+		PARAMETERS_update(PARAM_BRIGHTNESS, luminosity);
+
+		if(boolean_btn_switch_){
+			state = CONTINUOUS_MEASURE;
+		}
+		else if(boolean_btn_sleep_){
+			save_state = 2;
+			state = SLEEP;
+		}
+		else{
+			state = SLEEP;
+		}
+
+		break;
+	case SLEEP:
+		led_lighting_status(0);
+
+		if(boolean_btn_sleep_){
+			if(save_state == 1){
+				state = CONTINUOUS_MEASURE;
+			}
+			else if(save_state == 2){
+				state = SINGLE_MEASURE;
+			}
 		}
 		break;
-	case SEND_DATA :
-
-		LED_set(LED_ID_NETWORK, LED_MODE_OFF);
-		state = GET_DATA;
+	default:
 		break;
-	case SLEEP :
-		LED_set(LED_ID_NETWORK, LED_MODE_OFF);
-		LED_set(LED_ID_BATTERY, LED_MODE_BLINK);
-		break;
-	case STOP :
+	}
 
-		break;
+}
 
+void luminosity_observation(uint16_t lux, uint16_t p_lux){
+	if (lux < FAIBLE){
+		debug_printf("\n LUMINOSITE FAIBLE");
+	}
+	else if( lux>FAIBLE && lux<FORT){
+		debug_printf("\n LUMINOSITE MOYENNE");
+	}
+	else if(lux > FORT){
+		debug_printf("\n LUMINOSITE FORTE");
+	}
+
+	if (lux > p_lux + 10){
+		debug_printf("\n La luminosite à AUGMENTER  (%d lx).", lux);
+
+	}
+	else if(lux < p_lux + 10){
+		debug_printf("\n La luminosite à DIMINUER (%d lx).", lux);
+	}
+	else{
+		debug_printf("\n La luminosite est CONSTANTE (%d lx).", lux);
 	}
 }
 
-void BUTTON_action_sleep(state state)
-{
-	if(state == SEND_DATA){
-		state = SLEEP;
-	}else if(state == GET_DATA){
-		state = SLEEP;
-	}else if (state == SLEEP){
-		state = GET_DATA;
+void led_lighting_status(uint16_t nb_led_set){
+	if(nb_led_set == 0){ // SLEEP
+		LED_set(LED_ID_NETWORK, LED_MODE_OFF);
+		LED_set(LED_ID_BATTERY, LED_MODE_BLINK);
 	}
+	else if(nb_led_set == 1){ // CONTINUOUS_MEASURE
+		LED_set(LED_ID_NETWORK, LED_MODE_ON);
+		LED_set(LED_ID_BATTERY, LED_MODE_OFF);
+	}
+	else if(nb_led_set == 2){ // SINGLE_MEASURE
+		LED_set(LED_ID_NETWORK, LED_MODE_BLINK);
+		LED_set(LED_ID_BATTERY, LED_MODE_OFF);
+	}
+	else{
+		debug_printf("\n Erreur LED !");
+	}
+}
+
+void btn_switch_measure_mode(void){
+	boolean_btn_switch_ = TRUE;
+}
+void btn_sleep(void){
+	boolean_btn_sleep_ = TRUE;
 }
 
 #endif
