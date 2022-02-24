@@ -1,7 +1,7 @@
 /*
  * object_ventilator.c
  *
- *  Created on: 10 fvr. 2022
+ *  Created on: 10 févr. 2022
  *      Author: Pierre Nile
  */
 #include "../config.h"
@@ -36,12 +36,14 @@ int temp_deg;
 
 void object_ventilator_temperature(void)
 {
+	//Lecture de la tension de sortie du capteur
 	ADC_read(TEMP_OUTPUT, &temperature);
 	debug_printf("Temperature est %d.\n", temperature);
-	
+
 	//VOUT=TCxTA + V0°C
 	//19.5mV/°C
 
+	//Transformation de la tension de sortie en température
 	temp_deg = (temperature)*10000 / 195000 ;
 
 	debug_printf("La temperature en degre est %d. \n",temp_deg);
@@ -50,6 +52,7 @@ void object_ventilator_temperature(void)
 static volatile bool_e flag_new_ask_from_rf = FALSE;
 static volatile int32_t new_speed_asked_from_rf = 0;
 
+//Vitesse
 void object_fan_set_speed_from_rf(int32_t speed)
 {
 	new_speed_asked_from_rf = speed;
@@ -62,7 +65,7 @@ void object_ventilator_activation(void)
 {
 	object_ventilator_temperature();
 
-	if(flag_new_ask_from_rf)	//demande de la station de base de piloter le ventilo  la vitesse XXXX)
+	if(flag_new_ask_from_rf)	//demande de la station de base de piloter le ventilo à la vitesse XXXX)
 	{
 		flag_new_ask_from_rf = FALSE;
 		if(new_speed_asked_from_rf < 8)
@@ -71,9 +74,11 @@ void object_ventilator_activation(void)
 
 	switch(state) {
 		case VENTILATOR_INIT:
+			//Initialisation des paramètres
 			PARAMETERS_init();
 			PARAMETERS_enable(PARAM_ACTUATOR_STATE, 0, FALSE, &object_fan_set_speed_from_rf, NULL);
 
+			//Initialisation des différents éléments de l'objet
 			GPIO_init();
 			ADC_init();
 			GPIO_configure(MOSFET_PIN_1, NRF_GPIO_PIN_PULLUP, true);
@@ -81,19 +86,20 @@ void object_ventilator_activation(void)
 			GPIO_configure(MOSFET_PIN_3, NRF_GPIO_PIN_PULLUP, true);
 			LED_add(LED_ID_NETWORK, PIN_LED_NETWORK);
 			BUTTONS_add(BUTTON_NETWORK, PIN_BUTTON_NETWORK, TRUE, &BUTTON_action, NULL, &BUTTON_action_long_press, NULL);
-			state = VENTILATOR_ON;	//Changement d'tat
+			state = VENTILATOR_ON;	//Changement d'état
 			break;
 
 		case VENTILATOR_ON:
 
+			//Gestion de la vitesse en fonction des différents Mosfet
 			GPIO_write(MOSFET_PIN_1, current_speed>>0 & 1);
 			GPIO_write(MOSFET_PIN_2, current_speed>>1 & 1);
 			GPIO_write(MOSFET_PIN_3, current_speed>>2 & 1);
 
-
+			//Allumage de la led
 			LED_set(LED_ID_NETWORK, (current_speed)?LED_MODE_ON:LED_MODE_OFF);
 
-			//TODO : disposer de deux modes, pilotables par la station... et activant le suivi en temprature
+			//TODO : disposer de deux modes, pilotables par la station... et activant le suivi en température
 			/*if(temp_deg >= 20) {
 				current_speed = 3;
 			}
@@ -109,19 +115,23 @@ void object_ventilator_activation(void)
 			break;
 
 		default:
-			state = VENTILATOR_INIT;	//N'est jamais sens se produire.
+			state = VENTILATOR_INIT;	//N'est jamais sensé se produire.
 			break;
 	}
 
 }
 
+//Appuie court
 void BUTTON_action(void)
 {
+	//Vitesse + 1 a chaque appuie de bouton
 	current_speed = (current_speed+1)%8;
 }
 
+//Appuie long
 void BUTTON_action_long_press(void)
 {
+	//Vitesse au maximum ou minimum à chaque appuie long
 	current_speed = (current_speed)?0:7;
 }
 
