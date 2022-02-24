@@ -1,3 +1,5 @@
+<!-- Author: Laura TRACZYK and Hugo MORIN-->
+
 <?php session_start();
     require 'inc/header.php';
 ?>
