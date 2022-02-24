@@ -1,3 +1,5 @@
+<!-- Author: Laura TRACZYK -->
+
 <?php 
     session_start();
     include("inc/db.php");
