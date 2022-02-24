@@ -1,3 +1,5 @@
+<!-- Author: Laura TRACZYK -->
+
 	</div>
 
 </div>
