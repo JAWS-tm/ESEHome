@@ -370,7 +370,7 @@ if(!empty($_POST)){
 <link rel="stylesheet" href="css/objet.css">
 <link rel="stylesheet" href="css/ficheobjet.css">
  <div class="user_ban">
-    <h1>Objet</h1>
+    <h1 id="h1">Objet</h1>
   </div>
 <div class="fiche">
   <div class="artic">
@@ -380,7 +380,7 @@ if(!empty($_POST)){
           </div>
           <div class="card_body">
               <div class="card_cagtegory"><?php echo $result->nom_type;?></div>
-              <h2 class="card_title">Gérer <?php echo $result->nom_type;?></h2>
+              <h2 class="card_title">Gerer <?php echo $result->nom_type;?></h2>
               <div class="card_element">
                 <?php if($connect == 1){ ?>
               			<p class="connect">Objet connecte</p>
@@ -429,7 +429,7 @@ if(!empty($_POST)){
                                                       }?></p>
           </div>
           <div class = "envoyé" id="envoye" style="display: block;">
-                <p> Dernier messages envoyé : <?php
+                <p> Dernier messages envoye : <?php
               	                                  $req = $pdo->prepare('SELECT * FROM messages WHERE emetteur = ?');
                                                   $req->execute([$dest]);
                                                   $result = $req->fetchAll(PDO::FETCH_ASSOC);
