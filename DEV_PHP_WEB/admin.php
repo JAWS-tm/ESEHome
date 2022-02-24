@@ -16,7 +16,7 @@
                     <a class="link" href="promouvoirutilisateur.php">Promouvoir un utilisateur</a><br>
                     <a class="link" href="gestionutilisateur.php">Gestion d'un utilisateur</a><br>
                     <a class="link" href="messages.php">Boite aux lettres</a><br>
-                    <a class="link" href="messages_admin.php">Messagerie</a><br>
+                    <a class="link" href="messages_user.php">Messagerie</a><br>
                 
                 	
     

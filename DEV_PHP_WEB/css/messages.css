@@ -61,6 +61,8 @@ table{
 .table_header{
   width: 100%;
   background: #F5D1C6;
+  padding-top: 20px;
+  padding-bottom: 20px;
   color: white;
   border-collapse: collapse;
  }
