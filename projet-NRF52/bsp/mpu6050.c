@@ -28,7 +28,7 @@
 #define M_PI 1
 
 //static const uint8_t expected_who_am_i_9250 = 0x71; // !< Expected value to get from WHO_AM_I register.
-static const uint8_t expected_who_am_i = 0x68U; // !< Expected value to get from WHO_AM_I register.
+static const uint8_t expected_who_am_i = 0x68; // !< Expected value to get from WHO_AM_I register.
 
 static bool_e initialized = FALSE;
 
@@ -42,14 +42,14 @@ void mpu6050_i2c_init(uint8_t device_address)
     // Do a reset on signal paths
     uint8_t reset_value = 0x04U | 0x02U | 0x01U; // Resets gyro, accelerometer and temperature sensor signal paths.
     sub = mpu6050_register_write(ADDRESS_SIGNAL_PATH_RESET, reset_value);
-
     // Read and verify product ID
-    if(sub == END_OK)
+    if(sub == END_OK){
     	initialized = mpu6050_verify_product_id();
-
-
+    	debug_printf("je suis ici");
+    }
     while(!initialized)
     {
+    	debug_printf("je suis ici2");
     	initialized = mpu6050_verify_product_id();
     	SYSTICK_delay_ms(100);
     }
@@ -140,6 +140,7 @@ bool mpu6050_verify_product_id(void)
 
     if (mpu6050_register_read(ADDRESS_WHO_AM_I, &who_am_i, 1) == END_OK)
     {
+    	debug_printf("here");
         if (who_am_i != expected_who_am_i)
         {
             return false;
