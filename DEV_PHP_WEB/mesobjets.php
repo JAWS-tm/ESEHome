@@ -1,10 +1,13 @@
+<?php
+
 /*
- *      Author: Raimbault PL
- */ 
-<?php 
+      Author: Raimbault PL - HUGO MORIN
+*/ 
+
   session_start();
 
   if(isset($_SESSION['auth']->id)){ 
+    
     require 'inc/header.php';
     require 'inc/db.php';
 
@@ -22,8 +25,6 @@
       $req->execute();
       $count = $req->fetchAll(PDO::FETCH_ASSOC);
     }
-
-
 
     $sqladm = "SELECT id_objet, nom_groupe, nom_type FROM objet as OB
         INNER JOIN type as TY ON TY.id = OB.type_id

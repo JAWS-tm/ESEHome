@@ -1,22 +1,28 @@
 <?php
 
+/*
+	Author: MORIN HUGO
+*/
 
 	require 'inc/header.php';
 	require 'inc/db.php';
 
+	// Recherche dans la bdd les utilisateurs non admin
 	$sqlQueryAffiche = 'SELECT id, Pseudo, Admin FROM utilisateur WHERE Admin = 0 ORDER BY Pseudo';
 	$recipesStatementAffiche = $pdo->prepare($sqlQueryAffiche);
 	$recipesStatementAffiche->execute();
 	$users = $recipesStatementAffiche->fetchAll();
 
-	// Promotion du compte
+	
 	if(isset($_POST['formpromouser']) AND isset($_POST['datapromo'])){
 		
 		$data = $_POST['datapromo'];
+		// L'utilisateur sélectionné sera up en admin
 		$sqlQueryPromot = 'UPDATE utilisateur SET Admin = 1 WHERE id="'.$data.'"';
 		$recipesStatementPromot = $pdo->prepare($sqlQueryPromot);
 		$recipesStatementPromot->execute() or exit(print_r($recipesStatementPromot->errorInfo()));
 		
+		// redirige vers la même page si l'admin veux promouvoir un autre utilisateur
 		header("Location: promouvoirutilisateur.php");
 		
 	}

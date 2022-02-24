@@ -1,9 +1,13 @@
 <?php 
 
+/*
+	Author: MORIN HUGO
+*/
 
     require 'inc/header.php';
 	require 'inc/db.php';
 
+	// Recherche dans la bdd les utilisateurs non admin
 	$sqlQueryAffiche = 'SELECT id, Pseudo, Admin FROM utilisateur WHERE Admin = 0 ORDER BY Pseudo';
 	$recipesStatementAffiche = $pdo->prepare($sqlQueryAffiche);
 	$recipesStatementAffiche->execute();
@@ -12,10 +16,12 @@
 	if(isset($_POST['formdeleteuser']) AND isset($_POST['datadelet'])){
 	
 		$data = $_POST['datadelet'];
+		// Supprime les utilisateurs dans la bdd
 		$sqlQueryEfface = 'DELETE FROM utilisateur WHERE id="'.$data.'"';
 		$recipesStatementEfface = $pdo->prepare($sqlQueryEfface);
 		$recipesStatementEfface->execute() or exit(print_r($recipesStatementEfface->errorInfo()));
 		
+		// redirige vers la même page si l'admin veux supprimer un autre utilisateur
 		header("Location: supprimerutilisateur.php");
 
 	}

@@ -1,8 +1,8 @@
-/*
- *      Author: Raimbault PL
- */
+<?php
 
-<?php 
+/*
+    Author: Raimbault PL
+*/
 
 require 'inc/header.php';
 
