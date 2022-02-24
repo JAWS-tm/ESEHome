@@ -1,8 +1,9 @@
-<?php 
+<?php
 
 /*
 	Author: MORIN HUGO
 */
+
 
     require 'inc/header.php';
 	require 'inc/db.php';

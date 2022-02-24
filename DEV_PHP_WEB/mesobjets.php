@@ -1,13 +1,9 @@
-<?php
+<!-- Author: Raimbault PL - MORIN HUGO -->
 
-/*
-      Author: Raimbault PL - HUGO MORIN
-*/ 
-
+<?php 
   session_start();
 
   if(isset($_SESSION['auth']->id)){ 
-    
     require 'inc/header.php';
     require 'inc/db.php';
 

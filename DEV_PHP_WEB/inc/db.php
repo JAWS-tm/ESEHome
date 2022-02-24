@@ -1,8 +1,7 @@
+<!-- Author: MORIN HUGO - Raimbault PL  -->
+
 <?php
 
-/*
-    Author: MORIN HUGO - Raimbault PL
-*/
     try
     {
         // On se connecte a MySQL

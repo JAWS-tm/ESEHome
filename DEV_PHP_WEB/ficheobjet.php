@@ -1,9 +1,7 @@
+<!-- Author: Raimbault PL  -->
+ 
 <?php
 
-
-/*
-	Author: Raimbault PL
-*/
 	
   require 'inc/header.php';
   require 'inc/db.php';
@@ -28,9 +26,6 @@
 	}else{
 	    $connect = 0;
 	}
-	
-	
-	
 	
 	
 	switch ($id){
