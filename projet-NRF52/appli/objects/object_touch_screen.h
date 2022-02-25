@@ -1,3 +1,6 @@
+#ifndef OBJECT_TOUCH_SCREENH
+#define OBJECT_TOUCH_SCREENH
+#include "../config.h"
 
 
 #define ILI9341_COLOR_WHITE			0xFFFF
@@ -13,3 +16,11 @@
 #define ILI9341_COLOR_MAGENTA		0xA254
 #define ILI9341_COLOR_GRAY			0x7BEF
 #define ILI9341_COLOR_BROWN			0xBBCA
+
+void object_touch_screen_process_main(void);
+
+
+
+#endif /* OBJECT_SMART_LIGHTH */
+
+

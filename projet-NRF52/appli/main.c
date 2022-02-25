@@ -42,6 +42,7 @@
 #include "objects/object_roller_shutter.h"
 #include "objects/object_LCD_slider.h"
 #include "objects/object_night_light.h"
+#include "objects/object_touch_screen.h"
 
 //#include "objects/object_smart_socket.h"
 
@@ -222,7 +223,7 @@ int main(void)
     		#endif
 
     		#if OBJECT_ID == OBJECT_TOUCH_SCREEN
-    			object_touch_screen_process_main();
+				object_touch_screen_process_main();
 
     		#endif
 
