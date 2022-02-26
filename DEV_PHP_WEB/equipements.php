@@ -1,5 +1,3 @@
-<!-- Author: Laura TRACZYK -->
-
 <link rel="stylesheet" href="css/equipements.css"/>
 
 <?php session_start();
@@ -7,6 +5,7 @@
     require 'inc/header.php';
     include("inc/db.php");
         
+    //récupérer les objets propres à chaque groupe et leurs paramètres
     $sqladm = "SELECT id_objet,nom_groupe, nom_type
         FROM utilisateur as US
         INNER JOIN groupe_utilisateur as GU ON GU.id_utilisateur = US.id
@@ -26,20 +25,19 @@
     $reqadm->execute();
     $result = $reqadm->fetchAll(PDO::FETCH_ASSOC);
     
+    //récupérer les groupes d'objets auxquels l'utilisateur a accès
     $sqlgrpuser ="SELECT id_groupe FROM utilisateur AS UT
         INNER JOIN groupe_utilisateur AS GU ON GU.id_utilisateur = UT.id
         WHERE UT.id =".$_SESSION['auth']->id;
     $req = $pdo->prepare($sqlgrpuser);
     $req->execute();
-    $count = $req->rowCount();
-    if ($count != 0) {
-        $resultats = $req->fetchAll(PDO::FETCH_ASSOC);
-    }
-    else {
-        $resultats = (object) [
-            'id_groupe' => 0
-        ];
-    }
+    $resultats = $req->fetchAll(PDO::FETCH_ASSOC);
+    //print_r($resultats); //retourne bien toutes les groupes associés à l'utilisateur
+    $groupe = array_column($resultats, 'id_groupe'); //met dans un tableau simple
+    //$groupe = [1]; test
+    //print_r($groupe); //[0]=>4, [1]=>1; // c'est bien ce qu'on veut
+    $j = 0;
+    $i = 0;
 ?>
 
   <div class="mesobjets">
@@ -48,12 +46,24 @@
   </div>
   <div class="artic">
       
-      <?php foreach($result as $key => $value) { ?>
+
+      <!-- Pour chaque objet on a une carte avec image, nom de groupe, nom objet, id et lien pour cliquer ou mention pas accès -->
+      <?php  
+      foreach($result as $key => $value) {
+      if(!$resultats){?>
+          <p>Vous n'Ãªtes associÃ© Ã  aucun groupe.</p>
+      <?php } ?>
       <article class="card">
           <div class="card_thumb">
           <?php
-          foreach($resultats as $key2 => $groupe) {
-              if($groupe['id_groupe'] != 1){
+          //pour chaque objet on retourne une carte
+          for($i = 0; $i <= count($groupe); $i++){ 
+              //print_r($groupe[0]);
+              //print_r($groupe[1]);
+              if(!$resultats){
+                  $groupe[$i] == 0;
+              }
+              if($groupe[$i] != 1){
                   if ($value['id_objet'] == 7){ ?>
                         <img  src="img/blurry.jpg">
                     <?php } 
@@ -70,7 +80,7 @@
                         <img src="img/blurry.jpg">
               		<?php }
               }
-              if($groupe['id_groupe'] == 1){
+              if($groupe[$i] == 1){
                   if ($value['id_objet'] == 7){ ?>
                         <img  src="img/volet_roulant1.jpg">
                     <?php } 
@@ -87,7 +97,7 @@
                         <img src="img/matrice_led.jpg">
               		<?php }
               }
-              if($groupe['id_groupe'] != 2){
+              if($groupe[$i] != 2){
               	    if ($value['id_objet'] == 9){ ?>
                        <img src="img/blurry.jpg">
                     <?php } 
@@ -95,7 +105,7 @@
                         <img src="img/blurry.jpg">
                     <?php }
               } 
-              if($groupe['id_groupe'] == 2){
+              if($groupe[$i] == 2){
                   if ($value['id_objet'] == 9){ ?>
                         <img  src="img/detecteur_incendie.jpg">
                     <?php } 
@@ -103,7 +113,7 @@
                         <img src="img/ecran_tactile.jpg">
                     <?php }
               	}
-              	if($groupe['id_groupe'] != 3){
+              	if($groupe[$i] != 3){
               	    if ($value['id_objet'] == 1){ ?>
                         <img src="img/blurry.jpg">
                     <?php } 
@@ -120,7 +130,7 @@
                         <img src="img/blurry.jpg">
                     <?php }
               	} 
-              	if($groupe['id_groupe'] == 3){
+              	if($groupe[$i] == 3){
               	    if ($value['id_objet'] == 1){ ?>
                         <img src="img/light1.jpg">
                     <?php } 
@@ -137,7 +147,7 @@
                         <img  src="img/alarme.jpg">
                     <?php } 
               	} 
-              	if($groupe['id_groupe'] != 4){
+              	if($groupe[$i] != 4){
               	    if ($value['id_objet'] == 2){ ?>
                         <img src="img/blurry.jpg">
                     <?php } 
@@ -151,7 +161,7 @@
                         <img src="img/blurry.jpg">
               		<?php }
               	} 
-              	if($groupe['id_groupe'] == 4){
+              	if($groupe[$i] == 4){
               	    if ($value['id_objet'] == 2){ ?>
                         <img  src="img/light2.jpg">
                     <?php } 
@@ -165,7 +175,7 @@
                         <img src="img/meteo2.jpg">
               		<?php }
               	}
-            }
+          }
            ?>
           </div>
           <div class="card_body">
@@ -175,7 +185,7 @@
               <div class="card_element">
                   <a href="#"><?php echo "Idententifiant de l'objet : ".$value['id_objet'];?></a></br>
                   <?php 
-                  if($groupe['id_groupe'] != 1){
+                  if($groupe[$j] != 1){
                       if ($value['id_objet'] == 7){ ?>
                         <a href="#"><?php echo 'Vous n avez pas acces a cet objet!';?></a></br>
                         <form>
@@ -207,7 +217,7 @@
                         </form>
               		<?php }
                   } 
-                  if($groupe['id_groupe'] == 1){
+                  if($groupe[$j] == 1){
                       if ($value['id_objet'] == 7){ ?>
                         <a href="ficheobjet.php?param=<?php echo $value['id_objet'];?>">CLIQUEZ ICI</a>
                     <?php } 
@@ -224,7 +234,7 @@
                         <a href="ficheobjet.php?param=<?php echo $value['id_objet'];?>">CLIQUEZ ICI</a>
               		<?php }
                   } 
-                  if($groupe['id_groupe'] != 2){
+                  if($groupe[$j] != 2){
                       if ($value['id_objet'] == 9){ ?>
                        <a href="#"><?php echo 'Vous n avez pas acces a cet objet!';?></a></br>
                        <form>
@@ -238,7 +248,7 @@
                         </form>
                     <?php }
                   }
-                  if($groupe['id_groupe'] == 2){
+                  if($groupe[$j] == 2){
                       if ($value['id_objet'] == 9){ ?>
                        <a href="ficheobjet.php?param=<?php echo $value['id_objet'];?>">CLIQUEZ ICI</a>
                     <?php } 
@@ -246,7 +256,7 @@
                        <a href="ficheobjet.php?param=<?php echo $value['id_objet'];?>">CLIQUEZ ICI</a>
                     <?php }
                   }
-                  if($groupe['id_groupe'] != 3){
+                  if($groupe[$j] != 3){
                       if ($value['id_objet'] == 1){ ?>
                         <a href="#"><?php echo 'Vous n avez pas acces a cet objet!';?></a></br>
                         <form>
@@ -278,7 +288,7 @@
                         </form>
                     <?php } 
                   }
-                  if($groupe['id_groupe'] == 3){
+                  if($groupe[$j] == 3){
                       if ($value['id_objet'] == 1){ ?>
                         <a href="ficheobjet.php?param=<?php echo $value['id_objet'];?>">CLIQUEZ ICI</a>
                     <?php } 
@@ -295,7 +305,7 @@
                         <a href="ficheobjet.php?param=<?php echo $value['id_objet'];?>">CLIQUEZ ICI</a>
                     <?php } 
                   }
-                  if($groupe['id_groupe'] != 4){
+                  if($groupe[$j] != 4){
                       if ($value['id_objet'] == 2){ ?>
                         <a href="#"><?php echo 'Vous n avez pas acces a cet objet!';?></a></br>
                         <form>
@@ -321,7 +331,7 @@
                         </form>
               		<?php }
                   }
-                  if($groupe['id_groupe'] == 4){
+                  if($groupe[$j] == 4){
                       if ($value['id_objet'] == 2){ ?>
                         <a href="ficheobjet.php?param=<?php echo $value['id_objet'];?>">CLIQUEZ ICI</a>
                     <?php } 
