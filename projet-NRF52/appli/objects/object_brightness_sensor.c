@@ -1,9 +1,10 @@
 /*
  * object_brightness_sensor.c
  *
- *  Created on: 2 février 2022
+ *  Created on: 26 fÃ©vrier 2022
  *      Author: hugo morin
  */
+ 
 #include "../config.h"
 
 #if OBJECT_ID == OBJECT_BRIGHTNESS_SENSOR
@@ -42,7 +43,6 @@ void OBJECT_BRIGHTNESS_SENSOR_MAIN(void)
 		BH1750FVI_init();
 		PARAMETERS_init();
 		PARAMETERS_enable(PARAM_BRIGHTNESS,0,FALSE,NULL,NULL);
-		//PARAMETERS_send_param32_to_basestation(PARAM_BRIGHTNESS);
 
 		//Initialisation des LED
 		LED_add(LED_ID_BATTERY, PIN_LED_BATTERY);
@@ -58,6 +58,7 @@ void OBJECT_BRIGHTNESS_SENSOR_MAIN(void)
 		state = CONTINUOUS_MEASURE;
 
 		break;
+		
 	case CONTINUOUS_MEASURE:
 
 		led_lighting_status(1);
@@ -74,9 +75,11 @@ void OBJECT_BRIGHTNESS_SENSOR_MAIN(void)
 			SYSTICK_delay_ms(120);
 
 			if(boolean_btn_switch_){
+				BH1750FVI_powerDown();
 				state = SINGLE_MEASURE;
 			}
 			else if(boolean_btn_sleep_){
+				BH1750FVI_powerDown();
 				save_state = 1;
 				state = SLEEP;
 			}
@@ -84,6 +87,7 @@ void OBJECT_BRIGHTNESS_SENSOR_MAIN(void)
 		}
 
 		break;
+		
 	case SINGLE_MEASURE:
 
 		led_lighting_status(2);
@@ -94,7 +98,7 @@ void OBJECT_BRIGHTNESS_SENSOR_MAIN(void)
 		luminosity = BH1750FVI_readLuminosity();
 		debug_printf("\n La luminosite est de %d lx.", luminosity);
 		PARAMETERS_update(PARAM_BRIGHTNESS, luminosity);
-
+		// En simple mesure le BH1750FVI se met automatiquement en powerDown aprÃ¨s une mesure
 		if(boolean_btn_switch_){
 			state = CONTINUOUS_MEASURE;
 		}
@@ -103,6 +107,7 @@ void OBJECT_BRIGHTNESS_SENSOR_MAIN(void)
 			state = SLEEP;
 		}
 		else{
+			save_state = 2;
 			state = SLEEP;
 		}
 
@@ -137,11 +142,11 @@ void luminosity_observation(uint16_t lux, uint16_t p_lux){
 	}
 
 	if (lux > p_lux + 10){
-		debug_printf("\n La luminosite à AUGMENTER  (%d lx).", lux);
+		debug_printf("\n La luminosite Ã  AUGMENTER  (%d lx).", lux);
 
 	}
 	else if(lux < p_lux + 10){
-		debug_printf("\n La luminosite à DIMINUER (%d lx).", lux);
+		debug_printf("\n La luminosite Ã  DIMINUER (%d lx).", lux);
 	}
 	else{
 		debug_printf("\n La luminosite est CONSTANTE (%d lx).", lux);
