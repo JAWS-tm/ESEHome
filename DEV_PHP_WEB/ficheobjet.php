@@ -31,7 +31,7 @@
 	switch ($id){
 	    
 	    case 1:
-	        $req = $pdo->prepare('SELECT * FROM messages WHERE emetteur = ? AND type_messages_id = 42 ');
+	        $req = $pdo->prepare('SELECT * FROM messages WHERE emetteur = ? AND type_messages = "PARAMETER_WRITE" ');
 	        $req->execute([$dest]);
 	        $result = $req->fetchAll(PDO::FETCH_ASSOC);
 	        if($result){
@@ -47,7 +47,7 @@
 	       break;
 	    
 	    case 2:
-	        $req = $pdo->prepare('SELECT * FROM messages WHERE emetteur = ? AND type_messages_id = 42 ');
+	        $req = $pdo->prepare('SELECT * FROM messages WHERE emetteur = ? AND type_messages = "PARAMETER_WRITE" ');
 	        $req->execute([$dest]);
 	        $result = $req->fetchAll(PDO::FETCH_ASSOC);
 	        if($result){
@@ -63,7 +63,7 @@
 	       break;
 	    
 	    case 3:
-	        $req = $pdo->prepare('SELECT * FROM messages WHERE emetteur = ? AND type_messages_id = 42 ');
+	        $req = $pdo->prepare('SELECT * FROM messages WHERE emetteur = ? AND type_messages = "PARAMETER_WRITE" ');
 	        $req->execute([$dest]);
 	        $result = $req->fetchAll(PDO::FETCH_ASSOC);
 	        if($result){
@@ -80,7 +80,7 @@
 	        break;
 	        
 	    case 4:
-	        $req = $pdo->prepare('SELECT * FROM messages WHERE emetteur = ? AND type_messages_id = 42 ');
+	        $req = $pdo->prepare('SELECT * FROM messages WHERE emetteur = ? AND type_messages = "PARAMETER_WRITE" ');
 	        $req->execute([$dest]);
 	        $result = $req->fetchAll(PDO::FETCH_ASSOC);
 	        if($result){
@@ -96,7 +96,7 @@
 	        break;
 	        
 	    case 5:
-	        $req = $pdo->prepare('SELECT * FROM messages WHERE emetteur = ? AND type_messages_id = 42 ');
+	        $req = $pdo->prepare('SELECT * FROM messages WHERE emetteur = ? AND type_messages = "PARAMETER_WRITE" ');
 	        $req->execute([$dest]);
 	        $result = $req->fetchAll(PDO::FETCH_ASSOC);
 	        if($result){
@@ -113,7 +113,7 @@
 	        break;
 	        
 	    case 6:
-	        $req = $pdo->prepare('SELECT * FROM messages WHERE emetteur = ? AND type_messages_id = 42 ');
+	        $req = $pdo->prepare('SELECT * FROM messages WHERE emetteur = ? AND type_messages = "PARAMETER_WRITE" ');
 	        $req->execute([$dest]);
 	        $result = $req->fetchAll(PDO::FETCH_ASSOC);
 	        if($result){
@@ -130,7 +130,7 @@
 	        break;
 	        
 	    case 7:
-	        $req = $pdo->prepare('SELECT * FROM messages WHERE emetteur = ? AND type_messages_id = 42 ');
+	        $req = $pdo->prepare('SELECT * FROM messages WHERE emetteur = ? AND type_messages = "PARAMETER_WRITE" ');
 	        $req->execute([$dest]);
 	        $result = $req->fetchAll(PDO::FETCH_ASSOC);
 	        if($result){
@@ -147,7 +147,7 @@
 	        break;
 	        
 	    case 8:
-	        $req = $pdo->prepare('SELECT * FROM messages WHERE emetteur = ? AND type_messages_id = 42 ');
+	        $req = $pdo->prepare('SELECT * FROM messages WHERE emetteur = ? AND type_messages = "PARAMETER_WRITE" ');
 	        $req->execute([$dest]);
 	        $result = $req->fetchAll(PDO::FETCH_ASSOC);
 	        if($result){
@@ -164,7 +164,7 @@
 	        break;
 	        
 	    case 9:
-	        $req = $pdo->prepare('SELECT * FROM messages WHERE emetteur = ? AND type_messages_id = 42 ');
+	        $req = $pdo->prepare('SELECT * FROM messages WHERE emetteur = ? AND type_messages = "PARAMETER_WRITE"');
 	        $req->execute([$dest]);
 	        $result = $req->fetchAll(PDO::FETCH_ASSOC);
 	        if($result){
@@ -181,7 +181,7 @@
 	        break;
 	        
 	    case 10:
-	        $req = $pdo->prepare('SELECT * FROM messages WHERE emetteur = ? AND type_messages_id = 42 ');
+	        $req = $pdo->prepare('SELECT * FROM messages WHERE emetteur = ? AND type_messages = "PARAMETER_WRITE"');
 	        $req->execute([$dest]);
 	        $result = $req->fetchAll(PDO::FETCH_ASSOC);
 	        if($result){
@@ -197,7 +197,7 @@
 	        break;
 	        
 	    case 11:
-	        $req = $pdo->prepare('SELECT * FROM messages WHERE emetteur = ? AND type_messages_id = 42 ');
+	        $req = $pdo->prepare('SELECT * FROM messages WHERE emetteur = ? AND type_messages = "PARAMETER_WRITE"');
 	        $req->execute([$dest]);
 	        $result = $req->fetchAll(PDO::FETCH_ASSOC);
 	        $state = "La papi est actuellement 0";
@@ -214,7 +214,7 @@
 	        break;
 	        
 	    case 12:
-	        $req = $pdo->prepare('SELECT * FROM messages WHERE emetteur = ? AND type_messages_id = 42 ');
+	        $req = $pdo->prepare('SELECT * FROM messages WHERE emetteur = ? AND type_messages = "PARAMETER_WRITE" ');
 	        $req->execute([$dest]);
 	        $result = $req->fetchAll(PDO::FETCH_ASSOC);
 	        if($result){
@@ -231,7 +231,7 @@
 	        break;
 	        
 	    case 13:
-	        $req = $pdo->prepare('SELECT * FROM messages WHERE emetteur = ? AND type_messages_id = 42 ');
+	        $req = $pdo->prepare('SELECT * FROM messages WHERE emetteur = ? AND type_messages = "PARAMETER_WRITE" ');
 	        $req->execute([$dest]);
 	        $result = $req->fetchAll(PDO::FETCH_ASSOC);
 	        if($result){
@@ -248,7 +248,7 @@
 	        break;
 	        
 	    case 14:
-	        $req = $pdo->prepare('SELECT * FROM messages WHERE emetteur = ? AND type_messages_id = 42 ');
+	        $req = $pdo->prepare('SELECT * FROM messages WHERE emetteur = ? AND type_messages = "PARAMETER_WRITE"');
 	        $req->execute([$dest]);
 	        $result = $req->fetchAll(PDO::FETCH_ASSOC);
 	        if($result){
@@ -265,7 +265,7 @@
 	        break;
 	        
 	    case 15:
-	        $req = $pdo->prepare('SELECT * FROM messages WHERE emetteur = ? AND type_messages_id = 42 ');
+	        $req = $pdo->prepare('SELECT * FROM messages WHERE emetteur = ? AND type_messages = "PARAMETER_WRITE" ');
 	        $req->execute([$dest]);
 	        $result = $req->fetchAll(PDO::FETCH_ASSOC);
 	        if($result){
@@ -282,7 +282,7 @@
 	        break;
 	        
 	    case 16:
-	        $req = $pdo->prepare('SELECT * FROM messages WHERE emetteur = ? AND type_messages_id = 42 ');
+	        $req = $pdo->prepare('SELECT * FROM messages WHERE emetteur = ? AND type_messages = "PARAMETER_WRITE" ');
 	        $req->execute([$dest]);
 	        $result = $req->fetchAll(PDO::FETCH_ASSOC);
 	        if($result){
@@ -301,13 +301,12 @@
 	
 
 
-	$sqlinfo ="SELECT nom_type, date_creation, state, valeur, nom, nom_groupe, modifiable
+	$sqlinfo ="SELECT nom_type, date_creation, state, nom, nom_groupe
      FROM objet as OB
      INNER JOIN objet_groupe as OG ON OG.id_objet = OB.id
      INNER JOIN groupe as GR ON GR.id = OG.id_groupe
      INNER JOIN type as TY ON TY.id = OB.type_id
-     INNER JOIN parametres as PA 
-     INNER JOIN valeur as VA ON VA.objet_id = OB.id AND VA.parametre_id =PA.id
+     INNER JOIN parametres as PA
      WHERE OB.id = '$id'";
     
 	//faut recup l'id de l'objet à la place du 1
@@ -330,8 +329,8 @@ if(!empty($_POST)){
         $errors['Destinataire'] = "Pas de detinataire pour cette demande";
     }
     
-    if(empty($_POST['Type_messages_id']) ){
-        $errors['Type_messages_id'] = "Pas de Type_messages_id pour cette demande";
+    if(empty($_POST['Type_messages']) ){
+        $errors['Type_messages'] = "Pas de Type_messages_id pour cette demande";
     }
     
     if(empty($_POST['Paramettre_id']) ){
@@ -351,17 +350,17 @@ if(!empty($_POST)){
     }
         
     if(empty($errors)){
-       $req = $pdo->prepare("INSERT INTO messages SET destinataire = ?, emetteur = ?, parametre_id = ?, message = ?, date = ?, permanent = ?, type_messages_id = ?");
+       $req = $pdo->prepare("INSERT INTO messages SET destinataire = ?, emetteur = ?, parametre_id = ?, message = ?, date = ?, permanent = ?, type_messages = ?");
        $destinataire = htmlspecialchars($_POST['Destinataire']);
        $emetteur = htmlspecialchars($_POST['Emetteur']);
        $Paramettre_id = htmlspecialchars($_POST['Paramettre_id']);
-       $Type_messages_id = htmlspecialchars($_POST['Type_messages_id']);
+       $Type_messages = htmlspecialchars($_POST['Type_messages']);
        $message = htmlspecialchars($_POST['messages']);
        $Date = htmlspecialchars($_POST['Date']);
        $Permanent =  htmlspecialchars($_POST['Permanent']);
-       $req->execute([$destinataire, $emetteur, $Paramettre_id,$message,$Date,$Permanent,$Type_messages_id]);
+       $req->execute([$destinataire, $emetteur, $Paramettre_id,$message,$Date,$Permanent,$Type_messages]);
             
-       echo " messages envoye ";
+      // echo " messages envoye ";
    }
         
 }
@@ -391,7 +390,7 @@ if(!empty($_POST)){
               	<form action="" method="POST">
               		<input type="hidden"  name="Emetteur" value="EEEEEE00" require/>
                     <input type="hidden"  name="Destinataire" value="<?php echo $dest; ?>" require/>
-                    <input type="hidden"  name="Type_messages_id" value="30" require/>
+                    <input type="hidden"  name="Type_messages" value="PARAMETER_WRITE" require/>
                     <input type="hidden"  name="Paramettre_id" value="01" require/>
                     <input type="hidden"  name="messages" value="02" require/>
                     <input type="hidden"  name="Permanent" value="1" require/>
@@ -401,7 +400,7 @@ if(!empty($_POST)){
                	<form action="" method="POST">
               		<input type="hidden"  name="Emetteur" value="EEEEEE00" require/>
                     <input type="hidden"  name="Destinataire" value="<?php echo $dest; ?>" require/>
-                    <input type="hidden"  name="Type_messages_id" value="30" require/>
+                    <input type="hidden"  name="Type_messages" value="PARAMETER_WRITE" require/>
                     <input type="hidden"  name="Paramettre_id" value="01" require/>
                     <input type="hidden"  name="messages" value="02" require/>
                     <input type="hidden"  name="Permanent" value="1" require/>
@@ -422,7 +421,7 @@ if(!empty($_POST)){
                                                       if($result){
                                                           foreach ($result as $value){
                                                               if ($value === end($result))
-                                                                  echo '<li>messages ('.$value['id'].') Destinataire : '.$value['destinataire'].'/ Date : '.$value['date'].'/ type de messages : '.$value['type_messages_id'].'/ Permanent : '.$value['permanent'].'</li>'; 
+                                                                  echo '<li>messages ('.$value['id'].') Destinataire : '.$value['destinataire'].'/ Date : '.$value['date'].'/ type de messages : '.$value['type_messages'].'/ Permanent : '.$value['permanent'].'</li>'; 
                                                           }
                                                       }else{
                                                           echo 'Pas de messages recu';
@@ -436,7 +435,7 @@ if(!empty($_POST)){
                                                   if($result){
                                                       foreach ($result as $value){
                                                           if ($value === end($result))
-                                                              echo '<li>messages ('.$value['id'].') Destinataire : '.$value['destinataire'].'/ Date : '.$value['date'].'/ type de messages : '.$value['type_messages_id'].'/ Permanent : '.$value['permanent'].'</li>'; 
+                                                              echo '<li>messages ('.$value['id'].') Destinataire : '.$value['destinataire'].'/ Date : '.$value['date'].'/ type de messages : '.$value['type_messages'].'/ Permanent : '.$value['permanent'].'</li>'; 
                                                       }
                                                   }else{
                                                       echo 'Pas de messages envoye';
@@ -452,7 +451,7 @@ if(!empty($_POST)){
           if($result){
               echo '<li>messages envoyes</li>';
               foreach ($result as $value){
-                echo '<li>messages ('.$value['id'].') Destinataire : '.$value['destinataire'].'/ Date : '.$value['date'].'/ type de messages : '.$value['type_messages_id'].'/ Permanent : '.$value['permanent'].'</li>'; 
+                echo '<li>messages ('.$value['id'].') Destinataire : '.$value['destinataire'].'/ Date : '.$value['date'].'/ type de messages : '.$value['type_messages'].'/ Permanent : '.$value['permanent'].'</li>'; 
               }
           }else{
               echo '<li>Pas de messages envoye</li>';
@@ -467,7 +466,7 @@ if(!empty($_POST)){
           if($result){
               echo '<li>messages recu</li>';
               foreach ($result as $value){
-                echo '<li>messages ('.$value['id'].') Destinataire : '.$value['destinataire'].'/ Date : '.$value['date'].'/ type de messages : '.$value['type_messages_id'].'/ Permanent : '.$value['permanent'].'</li>'; 
+                echo '<li>messages ('.$value['id'].') Destinataire : '.$value['destinataire'].'/ Date : '.$value['date'].'/ type de messages : '.$value['type_messages'].'/ Permanent : '.$value['permanent'].'</li>'; 
               }
           }else{
               echo '<li>Pas de messages recu</li>';
