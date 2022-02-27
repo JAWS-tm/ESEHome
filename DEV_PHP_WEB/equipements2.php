@@ -34,12 +34,12 @@
   </div>
   <div class="artic">
       
-      <?php foreach($result as $key => $value) { 
+      <?php foreach($result as $key => $value) { //on va associer les bonnes images et infos aux id
       ?>
       
       <article class="card">
           <div class="card_thumb">
-          <?php
+          <?php //on associe les bonnes images aux id des objets 
             if ($value['id_objet'] == 1){ ?>
               <img src="img/light1.jpg">
             <?php  } else if ($value['id_objet'] == 2){ ?>
