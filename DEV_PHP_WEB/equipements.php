@@ -1,3 +1,5 @@
+<!-- Author: Laura TRACZYK -->
+
 <link rel="stylesheet" href="css/equipements.css"/>
 
 <?php session_start();
@@ -5,7 +7,7 @@
     require 'inc/header.php';
     include("inc/db.php");
         
-    //recuperer les objets propres  chaque groupe et leurs parametres
+    //rcuprer les objets propres  chaque groupe et leurs paramtres
     $sqladm = "SELECT id_objet,nom_groupe, nom_type
         FROM utilisateur as US
         INNER JOIN groupe_utilisateur as GU ON GU.id_utilisateur = US.id
@@ -25,14 +27,14 @@
     $reqadm->execute();
     $result = $reqadm->fetchAll(PDO::FETCH_ASSOC);
     
-    //recuperer les groupes d'objets auxquels l'utilisateur a acces
+    //rcuprer les groupes d'objets auxquels l'utilisateur a accs
     $sqlgrpuser ="SELECT id_groupe FROM utilisateur AS UT
         INNER JOIN groupe_utilisateur AS GU ON GU.id_utilisateur = UT.id
         WHERE UT.id =".$_SESSION['auth']->id;
     $req = $pdo->prepare($sqlgrpuser);
     $req->execute();
     $resultats = $req->fetchAll(PDO::FETCH_ASSOC);
-    //print_r($resultats); //retourne bien toutes les groupes associes  l'utilisateur
+    //print_r($resultats); //retourne bien toutes les groupes associs  l'utilisateur
     $groupe = array_column($resultats, 'id_groupe'); //met dans un tableau simple
     //$groupe = [1]; test
     //print_r($groupe); //[0]=>4, [1]=>1; // c'est bien ce qu'on veut
@@ -49,22 +51,21 @@
 
       <!-- Pour chaque objet on a une carte avec image, nom de groupe, nom objet, id et lien pour cliquer ou mention pas accs -->
       <?php  
-      foreach($resultats as $key => $value) {
+      foreach($result as $key => $value) { 
       if(!$resultats){?>
           <p>Vous n'êtes associé à aucun groupe.</p>
       <?php } ?>
       <article class="card">
           <div class="card_thumb">
           <?php
-          //pour chaque objet on retourne une carte
-          //le systeme ne marche que pour un groupe pour l'instant (1e valeur du tableau), le for ne fait pas la boucle c'est bizarre, un foreach ne donnait rien non plus c'etait pire encore meme
-          for($i = 0; $i <= count($groupe); $i++){ 
+          //pour chaque objet on retourne une carte en fonction de la valeur de la case $i du tableau
+          for($i = 0; $i <= count($groupe); $i++){ //ne marche que pour la 1e valeur je comprends pas, un foreach ne retourne que la derniere valeur et c'etait pire meme donc for c'est mieux 
               //print_r($groupe[0]);
               //print_r($groupe[1]);
               if(!$resultats){
                   $groupe[$i] == 0;
               }
-              if($groupe[$i] != 1){ //on regarde la valeur du groupe trouvée et on affiche ou pas l'image
+              if($groupe[$i] != 1){
                   if ($value['id_objet'] == 7){ ?>
                         <img  src="img/blurry.jpg">
                     <?php } 
@@ -186,7 +187,7 @@
               <div class="card_element">
                   <a href="#"><?php echo "Idententifiant de l'objet : ".$value['id_objet'];?></a></br>
                   <?php 
-                  if($groupe[$j] != 1){ //on regarde la valeur du groupe trouvée et on affiche un lien ou un bouton de demande d'infos
+                  if($groupe[$j] != 1){
                       if ($value['id_objet'] == 7){ ?>
                         <a href="#"><?php echo 'Vous n avez pas acces a cet objet!';?></a></br>
                         <form>
