@@ -16,6 +16,7 @@ void Smart_light_Main(void);
 void AllumageFroid(void);
 void AllumageChaud(void);
 bool_e DetectAppui(void);
+int process_ms();
 
 
 
