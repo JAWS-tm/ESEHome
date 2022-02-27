@@ -2,6 +2,7 @@
 
 <?php session_start();
     require 'inc/header.php';
+    require 'inc/db.php';
     
     
     //rcuprer les objets propres  chaque groupe et leurs paramtres
