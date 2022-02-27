@@ -1,0 +1,35 @@
+@charset "ISO-8859-1";
+
+
+.button_validate{
+	margin-top : 50px;
+	width: 260px;
+}
+
+#go_back_dashboard{
+	margin-top : 100px; 
+	margin-left : 40px;
+	display : flex;
+	background-color: unset;
+	border: none;
+}
+
+#go_back_dashboard:hover{
+	display : flex;
+	background-color: unset;
+	border: none;
+}
+
+#go_back_dashboard img{
+	height: 50px;
+}
+
+#go_back_dashboard p{
+	height : 50px;
+	font-size : 40px;
+	margin : 0 20px;
+}
+
+#body {
+	overflow: scroll;
+}

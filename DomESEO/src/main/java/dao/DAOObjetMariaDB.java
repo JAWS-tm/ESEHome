@@ -11,9 +11,7 @@ import java.util.List;
 import beans.Objet;
 import beans.Objet_General;
 import beans.Type;
-import beans.Utilisateur;
 import beans.Valeur;
-import beans.Groupe;
 
 public class DAOObjetMariaDB implements DAOObjet{
 	
@@ -53,11 +51,12 @@ public class DAOObjetMariaDB implements DAOObjet{
 		
 		 try (Connection connexion = daoFactory.getConnection();
 				 Statement statement = connexion.createStatement();
-			     ResultSet result = statement.executeQuery("SELECT nom_type, valeur FROM type INNER JOIN objet ON type.id = objet.type_id INNER JOIN valeur ON objet.id = valeur.objet_id;")) {
+			     ResultSet result = statement.executeQuery("SELECT nom_type, valeur, objet_groupe.id_groupe AS id_groupe FROM type INNER JOIN objet ON type.id = objet.type_id INNER JOIN valeur ON objet.id = valeur.objet_id INNER JOIN objet_groupe ON objet.id = objet_groupe.id_objet ;")) {
 			     while (result.next()) {
 			    	String nom_type = result.getString("nom_type");
-			       	String value = result.getString("valeur");
-			       	Objet_General objet = new Objet_General(nom_type,value);
+			    	String value = result.getString("valeur");
+			    	int id_groupe = result.getInt("id_groupe");
+			       	Objet_General objet = new Objet_General(nom_type,value,id_groupe);
 			        	liste.add(objet);
 			     }
 		 } catch (SQLException e) {
@@ -129,7 +128,7 @@ public class DAOObjetMariaDB implements DAOObjet{
 		int identifiant = -1;
 		try (Connection connexion = daoFactory.getConnection()) {			
 			PreparedStatement prepST = connexion.prepareStatement(
-					"SELECT id FROM `JEE` WHERE nom_groupe=?;");			
+					"SELECT id FROM groupe WHERE nom_groupe=?;");			
 			prepST.setString(1, groupe);	
 			try (ResultSet result = prepST.executeQuery()) {		
 				if (result.next()) {
@@ -138,7 +137,7 @@ public class DAOObjetMariaDB implements DAOObjet{
 			}
 		} catch (SQLException e) {
 			
-			System.out.println("ERROR : getUtilisateurById()");
+			System.out.println("ERROR : getIdByName()");
 			e.printStackTrace();
 		}
 		

@@ -44,4 +44,10 @@ public class Objet {
 	public boolean getState() {
 		return this.state;
 	}
+	
+	public int[] getId_Groupe(){
+		int[] intArray = new int[]{ 1,2,3,4,5,6,7,8,9,10 }; 
+		
+		return intArray;
+	}
 }

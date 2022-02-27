@@ -3,4 +3,102 @@
 body{
 	padding : 0;
 	margin : 0;
+	font-family: SegoeUI;
+}
+
+@font-face{
+    font-family: 'SegoeUI';
+    src: url('font/Segoe UI.ttf')
+}
+
+@font-face{
+    font-family: 'SegoeUIBold';
+    src: url('font/Segoe UI Bold.ttf')
+}
+
+@font-face{
+    font-family: 'SegoeUIBoldItalic';
+    src: url('font/Segoe UI Bold Italic.ttf')
+}
+
+@font-face{
+    font-family: 'SegoeUIItalic';
+    src: url('font/Segoe UI Italic.ttf')
+}
+
+.red_svg{
+	filter: invert(33%) sepia(12%) saturate(3334%) hue-rotate(319deg) brightness(105%) contrast(113%);
+}
+
+.green_svg{
+	filter: invert(61%) sepia(22%) saturate(1116%) hue-rotate(83deg) brightness(98%) contrast(93%);
+}
+
+:root {
+  --height_button_slider_menu: 50px;
+}
+
+.index_50 {
+	z-index: 50;
+}
+
+.form_with_input {
+	display: flex;
+	flex-direction: column;
+	margin-left: 40px;
+}
+
+.label_input {
+	padding-left: 30px;
+	font-size : 30px;
+} 
+
+.input_form {
+	padding: 10px 30px 10px 30px;
+	border-radius: 20px;
+	height : 40px;
+	width: 50vw;
+	font-size : 20px;
+	border: solid 1px #707070;
+	background-color : white;
+}
+
+.input_form:-webkit-autofill,
+.input_form:-webkit-autofill:hover, 
+.input_form:-webkit-autofill:focus, 
+.input_form:-webkit-autofill:active{
+    -webkit-box-shadow: 0 0 0 30px #FFFFFF inset !important;
+}
+
+.button_validate {
+	height: 80px;
+	padding: 10px 20px;
+	display: flex;
+	gap : 20px;
+	justify-content: space-between;
+	border : solid 10px #42BE63;
+	border-radius : 20px;
+	align-flex: flex-start;
+	background-color: white;
+}
+
+.button_validate p {
+	margin-top : -5px;
+	font-size : 40px;
+	color : #42BE63; 
+}
+
+#title_fieldset {
+	border : solid 2px black;
+	border-bottom : none;
+	border-left: none;
+	border-right: none;
+	width: calc(100% - 100px);
+	box-sizing: border-box;
+	border-color: #204051;
+}
+
+#title_fieldset legend {
+	font-size : 35px;
+	margin-left: 25px;
 }

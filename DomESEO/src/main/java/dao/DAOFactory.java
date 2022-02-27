@@ -43,6 +43,7 @@ public class DAOFactory {
 		switch(type) {
 			case "MariaDB":
 				setParamMariaDB("jdbc:mysql://172.24.0.71/JEE", "python", "python");
+				//setParamMariaDB("jdbc:mysql://localhost:3306/domeseo", "root", "root");
 				return new DAOUtilisateurMariaDB(this);
 			default:
 				return null;	
@@ -53,6 +54,7 @@ public class DAOFactory {
 		switch(type) {
 		case "MariaDB":
 			setParamMariaDB("jdbc:mysql://172.24.0.71/JEE", "python", "python");
+			//setParamMariaDB("jdbc:mysql://localhost:3306/domeseo", "root", "root");
 			return new DAOObjetMariaDB(this);
 		default:
 			return null;	
@@ -63,6 +65,7 @@ public class DAOFactory {
 		switch(type) {
 		case "MariaDB":
 			setParamMariaDB("jdbc:mysql://172.24.0.71/JEE", "python", "python");
+			//setParamMariaDB("jdbc:mysql://localhost:3306/domeseo", "root", "root");
 			return new DAOGroupe_Objet_MariaDB(this);
 		default:
 			return null;	
