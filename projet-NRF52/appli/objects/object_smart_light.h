@@ -11,7 +11,7 @@ void Matin(void);
 void Soir(void);
 void Eteindre(void);
 void Ambiance(void);
-void AllumageTotale(void);
+void AllumageComplet(void);
 void Smart_light_Main(void);
 void AllumageFroid(void);
 void AllumageChaud(void);
