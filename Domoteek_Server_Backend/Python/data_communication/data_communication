@@ -1,0 +1,35 @@
+                    ----- Dossier data_communication -----
+
+    --- Document FrameEncoder.py ---
+    FrameEncoder.py : Fichier pour encoder les données entre l'émetteur et le récepteur
+(définition vague, à compléter ainsi que les définition de toute donnée initailitsée)
+
+    --- Document FrameParser.py ---
+    FrameParser.py : Classe qui crée un objet message interprétant les données d'un message reçu
+--------------------------------------------------------------------------------------------
+def __init__(self, message) : initialisation du message
+def msgParsed(self) : initialisation des attributs en fonction du protocole de com
+def getInfoMessageId(self) : récupération de l'ID et affichage de l'évènement en console en fonction
+
+self : tram de données
+message : message donné dans la tram
+tab_msg : tableau qui récupère toutes les données
+tab_parse : si pas d'erreur alors affichage des données de tab_parse
+
+    --- Document uart_test.py ---
+    uart_test.py : fichier de test de fonctionnalité de l'UART
+----------------------------------------------------------
+uart_sender : envoie de données
+uart_reader : lecture de données 
+
+    --- Document UartController.py ---
+    UartController.py : Cette classe permet l'utilisation de la classe UartSerial dans un thread. Le thread est contrôlé et initialisé par cette classe.
+----------------------------------------------------------------------------------------------------------------------------------------------------
+uart_config : il doit correspondre à l'architecture du fichier de configuration json
+
+def __init__(self, uart_config) : Thread qui gère la communication UART
+get_last_message(self) : permet de recevoir le message de l'UART
+def put_message_in_uart_sending_queue(self, msg : str) : permet d'envoyer un message via l'UART
+
+    --- Document UartSerial.py ---
+    
