@@ -18,6 +18,8 @@
 
                                                             -----Document de suivi-----
 -Si année précendente mettre "ancien" sinon mettre votre prénom
+-Mettre la.les semaine.s de travail sur la tache
+-Mettre une description détaillée
 
 Ce qui fonctionne: 
 
