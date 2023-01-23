@@ -1,4 +1,4 @@
------ DB -----
+                                ----- DB -----
 	----- Document DbController -----
 DbController.py : grâce au infos passée dans le constructeur il renvoie le dernier message dans la bdd ou stock un nouveau à la fin de cette dernière
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
