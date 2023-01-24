@@ -1,2 +1,2 @@
                     ---- logs directory ----
-                    
+Permet d'avoir un historique. On répetorie en fonction de ce qui est envoyer si c'est pour débug, warning, ...
