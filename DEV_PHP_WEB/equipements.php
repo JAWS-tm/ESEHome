@@ -7,18 +7,8 @@
     require 'inc/header.php';
     include("inc/db.php");
         
-    //rcuprer les objets propres  chaque groupe et leurs paramtres
-    $sqladm = "SELECT id_objet,nom_groupe, nom_type
-        FROM utilisateur as US
-        INNER JOIN groupe_utilisateur as GU ON GU.id_utilisateur = US.id
-        INNER JOIN groupe as GR ON GR.id = GU.id_groupe
-        INNER JOIN objet_groupe as OG ON OG.id_groupe = GR.id
-        INNER JOIN objet as OB ON OB.id = OG.id_objet
-        INNER JOIN type as TY ON TY.id = OB.type_id
-        
-        WHERE US.id =".$_SESSION['auth']->id;
-    
-    $sqladm = "SELECT id_objet, nom_groupe, nom_type FROM objet as OB
+    //recuprer les objets propres  chaque groupe et leurs paramtres    
+    $sqladm = "SELECT id_objet, nom_groupe, nom_type, id_groupe FROM objet as OB
                     INNER JOIN type as TY ON TY.id = OB.type_id
                     INNER JOIN objet_groupe as OG ON OG.id_objet = OB.id
                     INNER JOIN groupe as GR ON GR.id = OG.id_groupe";
@@ -26,10 +16,22 @@
     $reqadm = $pdo->prepare($sqladm);
     $reqadm->execute();
     $result = $reqadm->fetchAll(PDO::FETCH_ASSOC);
+
+
+
+    $sqladmin = "SELECT admin FROM utilisateur as US WHERE US.id =".$_SESSION['auth']->id;;
+
+    $reqadmin = $pdo->prepare($sqladmin);
+    $reqadmin->execute();
+    $adminresult = $reqadmin->fetchAll(PDO::FETCH_ASSOC);
+    $adminresult = array_column($adminresult, 'admin');
+    $isadmin = $adminresult[0];//si l'utilisateur est admin
+
     
     //rcuprer les groupes d'objets auxquels l'utilisateur a accs
-    $sqlgrpuser ="SELECT id_groupe FROM utilisateur AS UT
+    $sqlgrpuser ="SELECT id_groupe,pseudo,nom_groupe  FROM utilisateur AS UT
         INNER JOIN groupe_utilisateur AS GU ON GU.id_utilisateur = UT.id
+        INNER JOIN groupe AS GR ON GR.id = GU.id_groupe
         WHERE UT.id =".$_SESSION['auth']->id;
     $req = $pdo->prepare($sqlgrpuser);
     $req->execute();
@@ -38,8 +40,19 @@
     $groupe = array_column($resultats, 'id_groupe'); //met dans un tableau simple
     //$groupe = [1]; test
     //print_r($groupe); //[0]=>4, [1]=>1; // c'est bien ce qu'on veut
-    $j = 0;
-    $i = 0;
+    $equipements = [];
+    //mettre en premier les equipement disponibles
+    foreach($result as $key => $equipment){
+        if (array_search($equipment['id_groupe'], $groupe) != ""){
+            array_push($equipements,$equipment);
+        }
+    }
+    foreach($result as $key => $equipment){
+        if (array_search($equipment['id_groupe'], $groupe) == ""){
+            array_push($equipements,$equipment);
+        }
+    }
+     
 ?>
 
   <div class="mesobjets">
@@ -51,306 +64,73 @@
 
       <!-- Pour chaque objet on a une carte avec image, nom de groupe, nom objet, id et lien pour cliquer ou mention pas accs -->
       <?php  
-      foreach($result as $key => $value) { 
-      if(!$resultats){?>
-          <p>Vous n'êtes associé à aucun groupe.</p>
-      <?php } ?>
-      <article class="card">
-          <div class="card_thumb">
-          <?php
-          //pour chaque objet on retourne une carte en fonction de la valeur de la case $i du tableau
-          for($i = 0; $i <= count($groupe); $i++){ //ne marche que pour la 1e valeur je comprends pas, un foreach ne retourne que la derniere valeur et c'etait pire meme donc for c'est mieux 
-              //print_r($groupe[0]);
-              //print_r($groupe[1]);
-              if(!$resultats){
-                  $groupe[$i] == 0;
-              }
-              if($groupe[$i] != 1){
-                  if ($value['id_objet'] == 7){ ?>
-                        <img  src="img/blurry.jpg">
-                    <?php } 
-                    if ($value['id_objet'] == 10){ ?>
-                        <img src="img/blurry.jpg">
-                    <?php }
-                    if ($value['id_objet'] == 11){ ?>
-                        <img src="img/blurry.jpg">
-              		<?php }
-              		if ($value['id_objet'] == 14){ ?>
-                        <img src="img/blurry.jpg">
-              		<?php }
-              		if ($value['id_objet'] == 16){ ?>
-                        <img src="img/blurry.jpg">
-              		<?php }
-              }
-              if($groupe[$i] == 1){
-                  if ($value['id_objet'] == 7){ ?>
-                        <img  src="img/volet_roulant1.jpg">
-                    <?php } 
-                    if ($value['id_objet'] == 10){ ?>
-                        <img src="img/ventilateur.jpg">
-                    <?php }
-                    if ($value['id_objet'] == 11){ ?>
-                        <img src="img/detecteur_chute.jpg">
-              		<?php }
-              		if ($value['id_objet'] == 14){ ?>
-                        <img src="img/slider_lcd.jpg">
-              		<?php }
-              		if ($value['id_objet'] == 16){ ?>
-                        <img src="img/matrice_led.jpg">
-              		<?php }
-              }
-              if($groupe[$i] != 2){
-              	    if ($value['id_objet'] == 9){ ?>
-                       <img src="img/blurry.jpg">
-                    <?php } 
-                    if ($value['id_objet'] == 15){ ?>
-                        <img src="img/blurry.jpg">
-                    <?php }
-              } 
-              if($groupe[$i] == 2){
-                  if ($value['id_objet'] == 9){ ?>
-                        <img  src="img/detecteur_incendie.jpg">
-                    <?php } 
-                    if ($value['id_objet'] == 15){ ?>
-                        <img src="img/ecran_tactile.jpg">
-                    <?php }
-              	}
-              	if($groupe[$i] != 3){
-              	    if ($value['id_objet'] == 1){ ?>
-                        <img src="img/blurry.jpg">
-                    <?php } 
-                    if ($value['id_objet'] == 3){ ?>
-                        <img src="img/blurry.jpg">
-                    <?php }
-                    if ($value['id_objet'] == 4){ ?>
-                        <img src="img/blurry.jpg">
-                    <?php } 
-                    if ($value['id_objet'] == 5){ ?>
-                        <img src="img/blurry.jpg">
-                    <?php }
-                    if ($value['id_objet'] == 8){ ?>
-                        <img src="img/blurry.jpg">
-                    <?php }
-              	} 
-              	if($groupe[$i] == 3){
-              	    if ($value['id_objet'] == 1){ ?>
-                        <img src="img/light1.jpg">
-                    <?php } 
-                    if ($value['id_objet'] == 3){ ?>
-                        <img  src="img/prise_connectee.jpg">
-                    <?php }
-                    if ($value['id_objet'] == 4){ ?>
-                        <img  src="img/light3.jpg">
-              		<?php }
-              		if ($value['id_objet'] == 5){ ?>
-                        <img  src="img/meteo1.jpg">
-              		<?php }
-                    if ($value['id_objet'] == 8){ ?>
-                        <img  src="img/alarme.jpg">
-                    <?php } 
-              	} 
-              	if($groupe[$i] != 4){
-              	    if ($value['id_objet'] == 2){ ?>
-                        <img src="img/blurry.jpg">
-                    <?php } 
-                    if ($value['id_objet'] == 6){ ?>
-                        <img src="img/blurry.jpg">
-              		<?php }
-              		if ($value['id_objet'] == 12){ ?>
-                        <img src="img/blurry.jpg">
-              		<?php }
-              		if ($value['id_objet'] == 13){ ?>
-                        <img src="img/blurry.jpg">
-              		<?php }
-              	} 
-              	if($groupe[$i] == 4){
-              	    if ($value['id_objet'] == 2){ ?>
-                        <img  src="img/light2.jpg">
-                    <?php } 
-                    if ($value['id_objet'] == 13){ ?>
-                        <img  src="img/capteur_air.jpg">
-              		<?php }
-              		if ($value['id_objet'] == 12){ ?>
-                        <img src="img/niveau_cuve.jpg">
-              		<?php }
-              		if ($value['id_objet'] == 6){ ?>
-                        <img src="img/meteo2.jpg">
-              		<?php }
-              	}
-          }
-           ?>
-          </div>
-          <div class="card_body">
-              <div class="card_cagtegory"><a><?php echo $value['nom_groupe'] ?></a></div>
-              <h2 class="card_title"><?php echo $value['nom_type'];?></h2>
-              <div class="card_subtitle">En savoir +</div> 
-              <div class="card_element">
-                  <a href="#"><?php echo "Idententifiant de l'objet : ".$value['id_objet'];?></a></br>
-                  <?php 
-                  if($groupe[$j] != 1){
-                      if ($value['id_objet'] == 7){ ?>
-                        <a href="#"><?php echo 'Vous n avez pas acces a cet objet!';?></a></br>
-                        <form>
-                          <input class="button" type="button" value="Je demande acces">
-                        </form>
-                    <?php } 
-                    if ($value['id_objet'] == 10){ ?>
-                        <a href="#"><?php echo 'Vous n avez pas acces a cet objet!';?></a></br>
-                        <form>
-                          <input class="button" type="button" value="Je demande acces">
-                        </form>
-                    <?php }
-                    if ($value['id_objet'] == 11){ ?>
-                        <a href="#"><?php echo 'Vous n avez pas acces a cet objet!';?></a></br>
-                        <form>
-                          <input class="button" type="button" value="Je demande acces">
-                        </form>
-              		<?php }
-              		if ($value['id_objet'] == 14){ ?>
-                        <a href="#"><?php echo 'Vous n avez pas acces a cet objet!';?></a></br>
-                        <form>
-                          <input class="button" type="button" value="Je demande acces">
-                        </form>
-              		<?php }
-              		if ($value['id_objet'] == 16){ ?>
-                        <a href="#"><?php echo 'Vous n avez pas acces a cet objet!';?></a></br>
-                        <form>
-                          <input class="button" type="button" value="Je demande acces">
-                        </form>
-              		<?php }
-                  } 
-                  if($groupe[$j] == 1){
-                      if ($value['id_objet'] == 7){ ?>
-                        <a href="ficheobjet.php?param=<?php echo $value['id_objet'];?>">CLIQUEZ ICI</a>
-                    <?php } 
-                    if ($value['id_objet'] == 10){ ?>
-                        <a href="ficheobjet.php?param=<?php echo $value['id_objet'];?>">CLIQUEZ ICI</a>
-                    <?php }
-                    if ($value['id_objet'] == 11){ ?>
-                        <a href="ficheobjet.php?param=<?php echo $value['id_objet'];?>">CLIQUEZ ICI</a>
-              		<?php }
-              		if ($value['id_objet'] == 14){ ?>
-                        <a href="ficheobjet.php?param=<?php echo $value['id_objet'];?>">CLIQUEZ ICI</a>
-              		<?php }
-              		if ($value['id_objet'] == 16){ ?>
-                        <a href="ficheobjet.php?param=<?php echo $value['id_objet'];?>">CLIQUEZ ICI</a>
-              		<?php }
-                  } 
-                  if($groupe[$j] != 2){
-                      if ($value['id_objet'] == 9){ ?>
-                       <a href="#"><?php echo 'Vous n avez pas acces a cet objet!';?></a></br>
-                       <form>
-                          <input class="button" type="button" value="Je demande acces">
-                        </form>
-                    <?php } 
-                    if ($value['id_objet'] == 15){ ?>
-                        <a href="#"><?php echo 'Vous n avez pas acces a cet objet!';?></a></br>
-                        <form>
-                          <input class="button" type="button" value="Je demande acces">
-                        </form>
-                    <?php }
-                  }
-                  if($groupe[$j] == 2){
-                      if ($value['id_objet'] == 9){ ?>
-                       <a href="ficheobjet.php?param=<?php echo $value['id_objet'];?>">CLIQUEZ ICI</a>
-                    <?php } 
-                    if ($value['id_objet'] == 15){ ?>
-                       <a href="ficheobjet.php?param=<?php echo $value['id_objet'];?>">CLIQUEZ ICI</a>
-                    <?php }
-                  }
-                  if($groupe[$j] != 3){
-                      if ($value['id_objet'] == 1){ ?>
-                        <a href="#"><?php echo 'Vous n avez pas acces a cet objet!';?></a></br>
-                        <form>
-                          <input class="button" type="button" value="Je demande acces">
-                        </form>
-                    <?php } 
-                    if ($value['id_objet'] == 3){ ?>
-                        <a href="#"><?php echo 'Vous n avez pas acces a cet objet!';?></a></br>
-                        <form>
-                          <input class="button" type="button" value="Je demande acces">
-                        </form>
-                    <?php }
-                    if ($value['id_objet'] == 4){ ?>
-                        <a href="#"><?php echo 'Vous n avez pas acces a cet objet!';?></a></br>
-                        <form>
-                          <input class="button" type="button" value="Je demande acces">
-                        </form>
-              		<?php } 
-                    if ($value['id_objet'] == 5){ ?>
-                        <a href="#"><?php echo 'Vous n avez pas acces a cet objet!';?></a></br>
-                        <form>
-                          <input class="button" type="button" value="Je demande acces">
-                        </form>
-                    <?php } 
-                    if ($value['id_objet'] == 8){ ?>
-                        <a href="#"><?php echo 'Vous n avez pas acces a cet objet!';?></a></br>
-                        <form>
-                          <input class="button" type="button" value="Je demande acces">
-                        </form>
-                    <?php } 
-                  }
-                  if($groupe[$j] == 3){
-                      if ($value['id_objet'] == 1){ ?>
-                        <a href="ficheobjet.php?param=<?php echo $value['id_objet'];?>">CLIQUEZ ICI</a>
-                    <?php } 
-                    if ($value['id_objet'] == 3){ ?>
-                        <a href="ficheobjet.php?param=<?php echo $value['id_objet'];?>">CLIQUEZ ICI</a>
-                    <?php }
-                    if ($value['id_objet'] == 4){ ?>
-                        <a href="ficheobjet.php?param=<?php echo $value['id_objet'];?>">CLIQUEZ ICI</a>
-              		<?php }
-                    if ($value['id_objet'] == 5){ ?>
-                        <a href="ficheobjet.php?param=<?php echo $value['id_objet'];?>">CLIQUEZ ICI</a>
-                    <?php } 
-                    if ($value['id_objet'] == 8){ ?>
-                        <a href="ficheobjet.php?param=<?php echo $value['id_objet'];?>">CLIQUEZ ICI</a>
-                    <?php } 
-                  }
-                  if($groupe[$j] != 4){
-                      if ($value['id_objet'] == 2){ ?>
-                        <a href="#"><?php echo 'Vous n avez pas acces a cet objet!';?></a></br>
-                        <form>
-                          <input class="button" type="button" value="Je demande acces">
-                        </form>
-                    <?php } 
-                    if ($value['id_objet'] == 13){ ?>
-                        <a href="#"><?php echo 'Vous n avez pas acces a cet objet!';?></a></br>
-                        <form>
-                          <input class="button" type="button" value="Je demande acces">
-                        </form>
-              		<?php }
-              		if ($value['id_objet'] == 12){ ?>
-                        <a href="#"><?php echo 'Vous n avez pas acces a cet objet!';?></a></br>
-                        <form>
-                          <input class="button" type="button" value="Je demande acces">
-                        </form>
-              		<?php }
-              		if ($value['id_objet'] == 6){ ?>
-                        <a href="#"><?php echo 'Vous n avez pas acces a cet objet!';?></a></br>
-                        <form>
-                          <input class="button" type="button" value="Je demande acces">
-                        </form>
-              		<?php }
-                  }
-                  if($groupe[$j] == 4){
-                      if ($value['id_objet'] == 2){ ?>
-                        <a href="ficheobjet.php?param=<?php echo $value['id_objet'];?>">CLIQUEZ ICI</a>
-                    <?php } 
-                    if ($value['id_objet'] == 13){ ?>
-                        <a href="ficheobjet.php?param=<?php echo $value['id_objet'];?>">CLIQUEZ ICI</a>
-              		<?php }
-              		if ($value['id_objet'] == 12){ ?>
-                        <a href="ficheobjet.php?param=<?php echo $value['id_objet'];?>">CLIQUEZ ICI</a>
-              		<?php }
-              		if ($value['id_objet'] == 6){ ?>
-                        <a href="ficheobjet.php?param=<?php echo $value['id_objet'];?>">CLIQUEZ ICI</a>
-              		<?php }
-                  }
-                  ?>
-              </div>          
-          </div>
-      </article>
+      foreach($equipements as $key => $value) {
+
+        if(!$resultats){?>
+            <p>Vous n'ï¿½tes associï¿½ ï¿½ aucun groupe.</p>
+        <?php } ?>
+        
+        <article class="card">
+            <div class="card_thumb">
+            <?php
+            if ($isadmin == true){
+                ?>
+                <img src=<?= "img/" . $value['nom_type'] . ".jpg"?>>
+            <?php
+            }
+            else{
+
+                if (array_search($value['id_groupe'], $groupe) != ""){
+                    ?>
+                    <img src=<?= "img/" . $value['nom_type'] . ".jpg"?>>
+                    <?php
+                }
+                else{
+                    ?>
+                    <img  src="img/blurry.jpg">
+                    <?php
+                }
+                
+            }
+            //pour chaque objet on retourne une carte en fonction de la valeur de la case $i du tableau
+            
+            ?>
+            </div>
+            <div class="card_body">
+                <div class="card_cagtegory"><a><?php echo $value['nom_groupe'] ?></a></div>
+                <h2 class="card_title"><?php echo $value['nom_type'];?></h2>
+                <div class="card_subtitle">En savoir +</div> 
+                <div class="card_element">
+                    <?php
+                        if ($isadmin == 1){
+                            ?>
+                            <a href="#"><?php echo "Idententifiant de l'objet : ".$value['id_objet'];?></a></br>
+                            <a href="ficheobjet.php?param=<?php echo $value['id_objet'];?>">CLIQUEZ ICI</a> 
+                            <?php   
+                        }
+                        
+                        else{
+                            if (array_search($value['id_groupe'], $groupe) != ""){
+                                ?>
+                                <a href="#"><?php echo "Idententifiant de l'objet : ".$value['id_objet'];?></a></br>
+                                <a href="ficheobjet.php?param=<?php echo $value['id_objet'];?>">CLIQUEZ ICI</a> 
+                            <?php 
+                            }
+                            else{
+                                ?>
+                                <a href="#"><?php echo 'Vous n avez pas acces a cet objet!';?></a></br>
+                                <form>
+                                <input class="button" type="button" value="Je demande acces">
+                                </form>
+                                <?php 
+                            }
+                            
+                        }
+                    
+                        ?>
+                </div>          
+            </div>
+        </article>
       <?php } ?>
   </div>
 </div>
