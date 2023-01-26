@@ -70,7 +70,7 @@
             <p>Vous n'�tes associ� � aucun groupe.</p>
         <?php } ?>
         
-        <article class="card">
+         <article class="card"><!-- doit etre un bouton  -->
             <div class="card_thumb">
             <?php
             if ($isadmin == true){
@@ -96,7 +96,7 @@
             
             ?>
             </div>
-            <div class="card_body">
+            <div class="card_body" onclick="window.location.href='ficheobjet.php?param=<?php echo $value['id_objet'];?>'">
                 <div class="card_cagtegory"><a><?php echo $value['nom_groupe'] ?></a></div>
                 <h2 class="card_title"><?php echo $value['nom_type'];?></h2>
                 <div class="card_subtitle">En savoir +</div> 
@@ -105,7 +105,7 @@
                         if ($isadmin == 1){
                             ?>
                             <a href="#"><?php echo "Idententifiant de l'objet : ".$value['id_objet'];?></a></br>
-                            <a href="ficheobjet.php?param=<?php echo $value['id_objet'];?>">CLIQUEZ ICI</a> 
+                            <!-- <a href="ficheobjet.php?param=<?php echo $value['id_objet'];?>">CLIQUEZ ICI</a>  -->
                             <?php   
                         }
                         
