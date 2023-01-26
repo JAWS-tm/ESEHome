@@ -10,7 +10,7 @@
     include("inc/db.php");
 
     
-    $sqladmin = "SELECT admin FROM users as US WHERE US.id =".$_SESSION['auth']->id;;
+    $sqladmin = "SELECT admin FROM users as US WHERE US.id =".$_SESSION['auth']->id;
 
     $reqadmin = $pdo->prepare($sqladmin);
     $reqadmin->execute();
@@ -169,9 +169,9 @@
   <div class="artic">
       <!-- Pour chaque objet on a une carte avec image, nom de groupe, nom objet, id et lien pour cliquer ou mention pas accs -->
       <?php  
-      foreach($resultats_item as $key => $value) {
-        ?>
-        <article class="card">
+      foreach($resultats_item as $key => $value) { ?>
+        
+         <article class="card"><!-- doit etre un bouton  -->
             <div class="card_thumb">
                 <img src=<?= "img/" . $value['type_name'] . ".jpg"?>>
             </div>
@@ -180,7 +180,7 @@
                 <h2 class="card_title"><?php echo $value['object_name'];?></h2>
                 <div class="card_subtitle">En savoir +</div> 
                 <div class="card_element">
-                    <a href="#"><?php echo "Idententifiant de l'objet : ".$value['id_object'];?></a></br>
+                    <a href="#"><?php echo "Identifiant de l'objet : ".$value['id_object'];?></a></br>
                     <a href="ficheobjet.php?param=<?php echo $value['id_object'];?>">CLIQUEZ ICI</a> 
                 </div>          
             </div>
