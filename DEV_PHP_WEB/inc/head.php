@@ -2,6 +2,16 @@
   if(session_status() == PHP_SESSION_NONE){
     session_start();
   }
+  $url= $_SERVER['REQUEST_URI'];    
+      
+    echo $url;  
+  $authPath = ["/","/connexion.php","/index.php","/inscription.php"];
+if((!isset($_SESSION["loggedin"]) || !$_SESSION["loggedin"] ) && !in_array($_SERVER['REQUEST_URI'], $authPath)){
+
+    echo 'not logged in';
+    header("Location: index.php");
+    exit;
+}
 ?>
 
 <!DOCTYPE html>
