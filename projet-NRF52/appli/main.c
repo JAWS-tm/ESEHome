@@ -99,7 +99,7 @@ int main(void)
 #endif
 
     //Fin de l'initialisation
-    debug_printf("NRF52832 initialis\n");
+    debug_printf("NRF52832 initialisé\n");
     volatile char id;
     id = OBJECT_ID;
     debug_printf("My id is %d. I am \"%s\"\n", id, object_id_to_string(id));
@@ -121,7 +121,7 @@ int main(void)
 
     while (1)
     {
-    	//Code commun Ã  tout les objets
+    	//Code commun à tout les objets
     	SECRETARY_process_main();
 
     	BUTTONS_process_main();
