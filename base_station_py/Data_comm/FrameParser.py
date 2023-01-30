@@ -81,9 +81,38 @@ class FrameParser :
             print("I_HAVE_NO_SERVER_ID")
         elif self.id == "FE":  
             print("YOUR_SERVER_ID_IS")
+        elif self.id == "FG":
+            print("LONG_MESSAGE")
         else:
             print("Message id error")
     
+    def getSizeUpBit(self):
+        print(self.msg_size)
+
+        ini_string = self.msg_size
+        scale = 16
+        
+        # Printing initial string
+        print ("\n\nInitial string of msg_size : ", ini_string)
+        
+        # # Code to convert hex to binary
+        # res = bin(int(ini_string, scale)).zfill(8)
+        
+        # # Print the resultant string
+        # res2 = (res.split('b'))
+        # print ("Resultant string", res2[1])
+
+        # Convertir le message hexadécimal en un entier
+        message_int = int(ini_string, 16)
+
+        # Utiliser l'opérateur bit à bit AND pour vérifier le bit de poids fort
+        msb = message_int & 0x80
+
+        # Si le bit de poids fort est 1, l'afficher
+        if msb:
+            print("Le bit de poids fort est 1")
+        else:
+            print("Le bit de poids fort est 0")
 
     #Methods
     #Getters et setters
