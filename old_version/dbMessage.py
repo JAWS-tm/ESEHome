@@ -1,6 +1,6 @@
-from db import dbRequest
-from db.SQLRequest import addMessageSQLQuery, getMessageSQLQuery, removeMessageSQLQuery
-from config.app_config import logger
+import dbRequest
+from SQLRequest import addMessageSQLQuery, getMessageSQLQuery, removeMessageSQLQuery
+from app_config import logger
 
 class dbMessage:
     def __init__(self, db, reciever, emitter, typeID, paramID, msg, date, perm):

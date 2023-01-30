@@ -31,7 +31,7 @@ class AppliLogger():
             self.formatter = logging.Formatter('%(asctime)s:%(name)s:%(levelname)s:%(message)s')
         else :
             self.formatter = logging.Formatter(format)
-        self.file_handler = logging.FileHandler('logs/'+str(fileName))
+        self.file_handler = logging.FileHandler('old_version/'+str(fileName))
         self.file_handler.setFormatter(self.formatter)
         self.logger.addHandler(self.file_handler)
         self.logger.propagate = False #Don't affect the root logger (True -> logs will apear in the console via the root logger)

@@ -72,3 +72,6 @@
 2022-02-01 16:23:09,313:data_com_logs.txt:DEBUG:INCOMING MSG FROM BDD : (11, '00000002', 'EEEEEE00', '42', '08', 'CAFEDECA', datetime.datetime(2022, 1, 24, 9, 55, 20), 1)
 2022-02-01 16:23:24,407:data_com_logs.txt:DEBUG:INCOMING MSG FROM BDD : (11, '00000002', 'EEEEEE00', '42', '08', 'CAFEDECA', datetime.datetime(2022, 1, 24, 9, 55, 20), 1)
 2022-02-01 16:23:39,997:data_com_logs.txt:DEBUG:INCOMING MSG FROM BDD : (11, '00000002', 'EEEEEE00', '42', '08', 'CAFEDECA', datetime.datetime(2022, 1, 24, 9, 55, 20), 1)
+2023-01-30 13:19:02,838:data_com_logs.txt:INFO:-------------------Starting application-------------------
+2023-01-30 13:19:02,874:data_com_logs.txt:DEBUG:MariaDB.py : Connected to database
+2023-01-30 13:19:18,366:data_com_logs.txt:DEBUG:INCOMING MSG FROM BDD : (11, '00000002', 'EEEEEE00', '42', '08', 'CAFEDECA', datetime.datetime(2022, 1, 24, 9, 55, 20), 1)

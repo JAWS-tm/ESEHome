@@ -3,12 +3,12 @@ import datetime
 import traceback
 import time
 from multiprocessing import dummy
-from data_communication.FrameParser import FrameParser
-from config.app_config import logger
-from config.app_config import UART_CONFIG
-from config.app_config import DB_CONFIG
-from data_communication.UartController import UartController
-from db.DbController import DbController
+from FrameParser import FrameParser
+from app_config import logger
+from app_config import UART_CONFIG
+from app_config import DB_CONFIG
+from UartController import UartController
+from DbController import DbController
 
 
 if __name__ == "__main__":
@@ -38,8 +38,3 @@ if __name__ == "__main__":
             logger.error(str(e))
             #traceback.print_exc()
             #sys.exit(1)
-
-
-
-
-

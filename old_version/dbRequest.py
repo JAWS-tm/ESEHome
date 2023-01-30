@@ -1,13 +1,14 @@
 # Module Imports
+import datetime
 import sys
 import time
-import datetime
 from queue import Queue
-import schedule
 import mysql.connector
-from config.app_config import logger
-from db.SQLRequest import getMessageSQLQuery
-from dbProcess.dbMessage import dbMessage
+import schedule
+from app_config import logger
+from dbMessage import dbMessage
+from SQLRequest import getMessageSQLQuery
+
 # import mariaDB
 
 

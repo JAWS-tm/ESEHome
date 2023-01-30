@@ -1,8 +1,8 @@
 import queue
-from config.app_config import logger
+from app_config import logger
 from threading import Thread
-from db.dbRequest import db_process_main_thread
-from data_communication.FrameParser import FrameParser
+from dbRequest import db_process_main_thread
+from FrameParser import FrameParser
 
 class DbController :
     '''Constructor'''

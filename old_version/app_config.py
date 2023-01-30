@@ -1,8 +1,8 @@
 import json
-from logs.appli_logger import AppliLogger
+from appli_logger import AppliLogger
 
 CONFIG = {}
-with open('config/config.json', "r") as jsonFile:
+with open('old_version/config.json', "r") as jsonFile:
     CONFIG = json.load(jsonFile)
     jsonFile.close()
 

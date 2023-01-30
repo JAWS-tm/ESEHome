@@ -1,5 +1,5 @@
-from config.app_config import logger
-from data_communication.UartSerial import uart_process_main_thread
+from app_config import logger
+from UartSerial import uart_process_main_thread
 import queue
 from threading import Thread
 

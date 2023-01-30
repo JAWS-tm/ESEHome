@@ -1,7 +1,7 @@
 import serial
 import time
 from queue import Queue
-from config.app_config import logger
+from app_config import logger
 
 class UartSerial :
     '''
