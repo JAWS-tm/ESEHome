@@ -7,17 +7,24 @@
 #include "../config.h"
 #include "leds.h"
 #include "systick.h"
+<<<<<<< HEAD:projet-NRF52/appli/common/leds.c
 #include "gpio.h"
+=======
+
+>>>>>>> db287b6c518b612159e83485572f37ae94a5d1f8:old_version/projet-NRF52/appli/common/leds.c
 
 typedef struct
 {
 	bool_e initialized;
 	uint8_t pin;
 	led_mode_e mode;
+<<<<<<< HEAD:projet-NRF52/appli/common/leds.c
 	uint32_t period;
 	uint32_t current_time;
 	uint32_t on_time;
 	uint32_t nb_fash_remaining;
+=======
+>>>>>>> db287b6c518b612159e83485572f37ae94a5d1f8:old_version/projet-NRF52/appli/common/leds.c
 }leds_t;
 
 static leds_t leds[LED_ID_NB];
@@ -27,6 +34,7 @@ void LEDS_init(bool_e i_have_led_battery)
 	for(uint8_t i = 0; i<LED_ID_NB; i++)
 		leds[i].initialized = FALSE;			//nettoyage du tableau.
 
+<<<<<<< HEAD:projet-NRF52/appli/common/leds.c
 
 	Systick_add_callback_function(&LED_process_ms);
 	//déclare au systick la fonction LED_process_ms() qui sera désormais appelée à chaque ms.
@@ -40,10 +48,26 @@ void LED_add(led_id_e id, uint8_t pin)
 	GPIO_init();
 	GPIO_configure(pin, GPIO_PIN_CNF_PULL_Pullup, true);//configure la pin de la led concernée en sortie
 	leds[id].initialized = true;//enregistre la led comme "initialisée"
+=======
+	//TODO   //ajoute par défaut la led network + led battery si indiqué
+
+	Systick_add_callback_function(&LED_process_ms);
+	//TODO déclare au systick la fonction LED_process_ms() qui sera désormais appelée à chaque ms.
+}
+
+
+
+void LED_add(led_id_e id, uint8_t pin)
+{
+
+	//configure la pin de la led concernée en sortie
+	//enregistre la led comme "initialisée"
+>>>>>>> db287b6c518b612159e83485572f37ae94a5d1f8:old_version/projet-NRF52/appli/common/leds.c
 }
 
 void LED_set(led_id_e id, led_mode_e mode)
 {
+<<<<<<< HEAD:projet-NRF52/appli/common/leds.c
 	leds[id].mode = mode;
 	leds[id].current_time = 0;
 	leds[id].period = 0;
@@ -125,3 +149,15 @@ void LED_process_ms(void)
 	}
 }
 
+=======
+
+}
+
+void LED_process_ms()
+{
+	//TODO
+
+}
+
+
+>>>>>>> db287b6c518b612159e83485572f37ae94a5d1f8:old_version/projet-NRF52/appli/common/leds.c

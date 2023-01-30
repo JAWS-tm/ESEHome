@@ -13,6 +13,7 @@
 #include "modules/nrfx/mdk/nrf52.h"
 #include "modules/nrfx/mdk/nrf52_bitfields.h"
 #include "components/softdevice/s132/headers/nrf_error.h"
+<<<<<<< HEAD:projet-NRF52/appli/config.h
 //#include "../config/nrfx_config.h"
 //#include "modules/nrfx/hal/nrf_gpio.h"
 
@@ -45,11 +46,28 @@
 
 ///////////////////////////////////////////////////////////////////////////////////
 //Numro de l'objet pour lequel on compile
+=======
+#include "../config/nrfx_config.h"
+
+//liste des objets
+#define OBJECT_BASE_STATION		0
+#define OBJECT_SMART_LIGHT		1
+#define OBJECT_NIGHT_LIGHT		2
+
+//TODO énumérer les objets !
+#define OBJECT_MATRIX_LEDS		24
+#define OBJECTS_NB				25
+
+
+///////////////////////////////////////////////////////////////////////////////////
+//Numéro de l'objet pour lequel on compile.
+>>>>>>> db287b6c518b612159e83485572f37ae94a5d1f8:old_version/projet-NRF52/appli/config.h
 #include "config_perso.h"
 ///////////////////////////////////////////////////////////////////////////////////
 
 
 ///////////////////////////////////////////////////////////////////////////////////
+<<<<<<< HEAD:projet-NRF52/appli/config.h
 //Config propres a chaque objets.
 	#if OBJECT_ID == OBJECT_BASE_STATION
 
@@ -279,10 +297,32 @@
 
 
 	#endif
+=======
+//Config propres à chaque objets.
+	#if OBJECT_ID == OBJECT_BASE_STATION
+
+	#endif
+	#if OBJECT_ID == OBJECT_SMART_LIGHT
+
+	#endif
+	#if OBJECT_ID == OBJECT_NIGHT_LIGHT
+		
+
+	#endif
+
+	
+	//...
+	#if OBJECT_ID == OBJECT_MATRIX_LEDS
+
+
+	#endif
+
+>>>>>>> db287b6c518b612159e83485572f37ae94a5d1f8:old_version/projet-NRF52/appli/config.h
 
 ///////////////////////////////////////////////////////////////////////////////////
 
 ///////////////////////////////////////////////////////////////////////////////////
+<<<<<<< HEAD:projet-NRF52/appli/config.h
 //Configs communes  tout les objets.
 
 
@@ -294,11 +334,19 @@
 #endif
 
 
+=======
+//Configs communes à tout les objets.
+
+
+#define PIN_UART_TX			6
+#define PIN_UART_RX			8
+>>>>>>> db287b6c518b612159e83485572f37ae94a5d1f8:old_version/projet-NRF52/appli/config.h
 #define PIN_BUTTON_NETWORK	18
 #define PIN_LED_NETWORK		19
 #define PIN_LED_BATTERY		20
 #define PIN_RESET			21
 
+<<<<<<< HEAD:projet-NRF52/appli/config.h
 //TODO complter la liste des objets dots d'une led batterie !
 #define I_HAVE_LED_BATTERY	(OBJECT_ID == OBJECT_BASE_STATION || OBJECT_ID == 6 || OBJECT_ID == OBJECT_FALL_SENSOR || OBJECT_ID == OBJECT_WINE_DEGUSTATION || OBJECT_ID == 10 || OBJECT_ID == 13||OBJECT_ID == OBJECT_BRIGHTNESS_SENSOR || OBJECT_ID == OBJECT_AIR_SENSOR)
 #define I_HAVE_MEASURE_VBAT	(OBJECT_ID == OBJECT_BASE_STATION || OBJECT_ID == 6 || OBJECT_ID == OBJECT_FALL_SENSOR || OBJECT_ID == OBJECT_WINE_DEGUSTATION || OBJECT_ID == 10 || OBJECT_ID == 13||OBJECT_ID == OBJECT_BRIGHTNESS_SENSOR || OBJECT_ID == OBJECT_AIR_SENSOR)
@@ -313,6 +361,16 @@
 
 
 #ifndef USE_SERIAL_DIALOG		//si aucun objet n'a dfini ceci  0... alors on active la brique SERIAL_DIALOG
+=======
+//TODO compléter la liste des objets dotés d'une led batterie !
+#define I_HAVE_LED_BATTERY	(OBJECT_ID == OBJECT_BASE_STATION || OBJECT_ID == 4)
+
+
+#define ENABLE_POWERDOWN_FROM_MCU		1	//si 1 : permet de couper l'alim avec un appui long sur le bouton poussoir. Impose le maintient du bouton pendant 1 seconde au démarrage.
+
+
+#ifndef USE_SERIAL_DIALOG		//si aucun objet n'a défini ceci à 0... alors on active la brique SERIAL_DIALOG
+>>>>>>> db287b6c518b612159e83485572f37ae94a5d1f8:old_version/projet-NRF52/appli/config.h
 	#define USE_SERIAL_DIALOG	1
 #endif
 
@@ -322,7 +380,11 @@
 #define SP_DEBUG_RADIO_IRQ_RESET()		NRF_P0->OUTCLR = (1 << (12))
 
 
+<<<<<<< HEAD:projet-NRF52/appli/config.h
 #define OFF_BUTTON_LONG_PRESS_DURATION	2000	//dure de l'appui sur le bouton OFF qui dclenche l'extinction.
+=======
+#define OFF_BUTTON_LONG_PRESS_DURATION	2000	//durée de l'appui sur le bouton OFF qui déclenche l'extinction.
+>>>>>>> db287b6c518b612159e83485572f37ae94a5d1f8:old_version/projet-NRF52/appli/config.h
 #define AUTO_OFF_IF_NO_EVENT_DURATION	(30*60*1000)	//extinction automatique au bout de 30mn
 
 #define TIMESLOT_DURATION	1	//ms
@@ -332,6 +394,7 @@
 void uart_puts(char * s);
 uint32_t debug_printf(char * format, ...);
 
+<<<<<<< HEAD:projet-NRF52/appli/config.h
 
 
 
@@ -361,11 +424,28 @@ uint32_t debug_printf(char * format, ...);
 #ifndef USE_NMOS_GND
 	#define USE_NMOS_GND	0
 #endif
+=======
+//Constitution d'un message.
+//				Master Group RECIPIENTS(6) MSG_ID DATASIZE DATAS
+#define BYTE_POS_MASTER_ID	(0)
+#define BYTE_POS_GROUP_ID	(BYTE_POS_MASTER_ID+1)
+#define BYTE_POS_RECIPIENTS	(BYTE_POS_GROUP_ID+1)
+#define BYTE_QTY_RECIPIENTS	(6)
+#define BYTE_POS_MSG_ID		(BYTE_POS_RECIPIENTS+BYTE_QTY_RECIPIENTS)
+#define BYTE_POS_DATASIZE	(BYTE_POS_MSG_ID+1)
+#define BYTE_POS_DATAS		(BYTE_POS_DATASIZE+1)
+
+#define MAX_DATA_SIZE		(32-BYTE_POS_DATAS)
+
+
+#define USE_ADC						1
+>>>>>>> db287b6c518b612159e83485572f37ae94a5d1f8:old_version/projet-NRF52/appli/config.h
 
 #ifndef USE_MPU6050
 	#define USE_MPU6050		0
 #endif
 
+<<<<<<< HEAD:projet-NRF52/appli/config.h
 #ifndef USE_BH1750FVI
 	#define USE_BH1750FVI	0
 #endif
@@ -391,6 +471,10 @@ uint32_t debug_printf(char * format, ...);
 #endif
 
 #if USE_MPU6050 || USE_BMP180 ||USE_BH1750FVI//   || USE_... || USE...
+=======
+
+#if USE_MPU6050 //   || USE_... || USE...
+>>>>>>> db287b6c518b612159e83485572f37ae94a5d1f8:old_version/projet-NRF52/appli/config.h
 	#ifndef I2C_SDA_PIN_NB
 		#define	I2C_SDA_PIN_NB	25
 	#endif
@@ -398,6 +482,7 @@ uint32_t debug_printf(char * format, ...);
 		#define	I2C_SCL_PIN_NB	26
 	#endif
 #endif
+<<<<<<< HEAD:projet-NRF52/appli/config.h
 
 #if USE_MCP9804
 	#ifndef I2C_SDA_PIN_NB
@@ -408,6 +493,8 @@ uint32_t debug_printf(char * format, ...);
 	#endif
 #endif
 
+=======
+>>>>>>> db287b6c518b612159e83485572f37ae94a5d1f8:old_version/projet-NRF52/appli/config.h
 ///////////////////////////////////////////////////////////////////////////////////
 #ifndef NRF52832_XXAA
 	#define NRF52832_XXAA
@@ -416,4 +503,7 @@ uint32_t debug_printf(char * format, ...);
 
 
 #endif /* CONFIG_CONFIG_H_ */
+<<<<<<< HEAD:projet-NRF52/appli/config.h
 
+=======
+>>>>>>> db287b6c518b612159e83485572f37ae94a5d1f8:old_version/projet-NRF52/appli/config.h

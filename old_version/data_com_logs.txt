@@ -1,0 +1,77 @@
+2022-02-01 16:09:44,846:data_com_logs.txt:INFO:-------------------Starting application-------------------
+2022-02-01 16:09:46,293:data_com_logs.txt:DEBUG:MariaDB.py : Connected to database
+2022-02-01 16:10:01,947:data_com_logs.txt:DEBUG:INCOMING MSG FROM BDD : (11, '00000002', 'EEEEEE00', '42', '08', 'CAFEDECA', datetime.datetime(2022, 1, 24, 9, 55, 20), 1)
+2022-02-01 16:10:17,043:data_com_logs.txt:DEBUG:INCOMING MSG FROM BDD : (11, '00000002', 'EEEEEE00', '42', '08', 'CAFEDECA', datetime.datetime(2022, 1, 24, 9, 55, 20), 1)
+2022-02-01 16:10:32,628:data_com_logs.txt:DEBUG:INCOMING MSG FROM UART : BA10DDDDDD02EEEEEE0001420508CAFEDECADA
+2022-02-01 16:10:32,629:data_com_logs.txt:DEBUG:Parsed message : <data_communication.FrameParser.FrameParser object at 0x7fd7f9c452e0>
+2022-02-01 16:10:32,629:data_com_logs.txt:DEBUG:Message has been put into database sending queue
+2022-02-01 16:10:32,629:data_com_logs.txt:DEBUG:INCOMING MSG FROM BDD : (11, '00000002', 'EEEEEE00', '42', '08', 'CAFEDECA', datetime.datetime(2022, 1, 24, 9, 55, 20), 1)
+2022-02-01 16:10:34,543:data_com_logs.txt:DEBUG:Request successfully sent to DataBase
+2022-02-01 16:10:50,747:data_com_logs.txt:DEBUG:INCOMING MSG FROM BDD : (11, '00000002', 'EEEEEE00', '42', '08', 'CAFEDECA', datetime.datetime(2022, 1, 24, 9, 55, 20), 1)
+2022-02-01 16:11:07,335:data_com_logs.txt:DEBUG:INCOMING MSG FROM BDD : (11, '00000002', 'EEEEEE00', '42', '08', 'CAFEDECA', datetime.datetime(2022, 1, 24, 9, 55, 20), 1)
+2022-02-01 16:11:22,412:data_com_logs.txt:DEBUG:INCOMING MSG FROM BDD : (11, '00000002', 'EEEEEE00', '42', '08', 'CAFEDECA', datetime.datetime(2022, 1, 24, 9, 55, 20), 1)
+2022-02-01 16:11:37,555:data_com_logs.txt:DEBUG:INCOMING MSG FROM BDD : (11, '00000002', 'EEEEEE00', '42', '08', 'CAFEDECA', datetime.datetime(2022, 1, 24, 9, 55, 20), 1)
+2022-02-01 16:11:52,642:data_com_logs.txt:DEBUG:INCOMING MSG FROM BDD : (11, '00000002', 'EEEEEE00', '42', '08', 'CAFEDECA', datetime.datetime(2022, 1, 24, 9, 55, 20), 1)
+2022-02-01 16:12:07,733:data_com_logs.txt:DEBUG:INCOMING MSG FROM BDD : (11, '00000002', 'EEEEEE00', '42', '08', 'CAFEDECA', datetime.datetime(2022, 1, 24, 9, 55, 20), 1)
+2022-02-01 16:12:22,812:data_com_logs.txt:DEBUG:INCOMING MSG FROM UART : BA10DDDDDD02EEEEEE0001420508CAFEDECADA
+2022-02-01 16:12:22,813:data_com_logs.txt:DEBUG:Parsed message : <data_communication.FrameParser.FrameParser object at 0x7fd7f9c45370>
+2022-02-01 16:12:22,813:data_com_logs.txt:DEBUG:Message has been put into database sending queue
+2022-02-01 16:12:24,112:data_com_logs.txt:DEBUG:Request successfully sent to DataBase
+2022-02-01 16:12:24,322:data_com_logs.txt:DEBUG:INCOMING MSG FROM BDD : (11, '00000002', 'EEEEEE00', '42', '08', 'CAFEDECA', datetime.datetime(2022, 1, 24, 9, 55, 20), 1)
+2022-02-01 16:12:24,826:data_com_logs.txt:DEBUG:INCOMING MSG FROM UART : DDDD02EEEEEE0001420508CAFEDECADA
+2022-02-01 16:12:24,826:data_com_logs.txt:DEBUG:Parsed message : <data_communication.FrameParser.FrameParser object at 0x7fd7f9c451f0>
+2022-02-01 16:12:24,826:data_com_logs.txt:DEBUG:Message has been put into database sending queue
+2022-02-01 16:12:25,160:data_com_logs.txt:ERROR:DATABASE THREAD ERROR : 1452 (23000): Cannot add or update a child row: a foreign key constraint fails (`PS2022`.`message`, CONSTRAINT `message_ibfk_1` FOREIGN KEY (`type_message_id`) REFERENCES `type_message` (`id`) ON DELETE CASCADE ON UPDATE CASCADE)
+2022-02-01 16:12:29,356:data_com_logs.txt:DEBUG:INCOMING MSG FROM UART : EEEEEE0001420508CAFEDECADA
+2022-02-01 16:12:29,357:data_com_logs.txt:ERROR:ERROR : There was an error processing the incoming data. The message has been ignored
+2022-02-01 16:12:29,357:data_com_logs.txt:ERROR:list index out of range
+2022-02-01 16:12:41,912:data_com_logs.txt:DEBUG:INCOMING MSG FROM BDD : (11, '00000002', 'EEEEEE00', '42', '08', 'CAFEDECA', datetime.datetime(2022, 1, 24, 9, 55, 20), 1)
+2022-02-01 16:12:58,507:data_com_logs.txt:DEBUG:INCOMING MSG FROM BDD : (11, '00000002', 'EEEEEE00', '42', '08', 'CAFEDECA', datetime.datetime(2022, 1, 24, 9, 55, 20), 1)
+2022-02-01 16:13:14,582:data_com_logs.txt:DEBUG:INCOMING MSG FROM BDD : (11, '00000002', 'EEEEEE00', '42', '08', 'CAFEDECA', datetime.datetime(2022, 1, 24, 9, 55, 20), 1)
+2022-02-01 16:13:30,675:data_com_logs.txt:DEBUG:INCOMING MSG FROM BDD : (11, '00000002', 'EEEEEE00', '42', '08', 'CAFEDECA', datetime.datetime(2022, 1, 24, 9, 55, 20), 1)
+2022-02-01 16:13:45,753:data_com_logs.txt:DEBUG:INCOMING MSG FROM BDD : (11, '00000002', 'EEEEEE00', '42', '08', 'CAFEDECA', datetime.datetime(2022, 1, 24, 9, 55, 20), 1)
+2022-02-01 16:14:02,332:data_com_logs.txt:DEBUG:INCOMING MSG FROM BDD : (11, '00000002', 'EEEEEE00', '42', '08', 'CAFEDECA', datetime.datetime(2022, 1, 24, 9, 55, 20), 1)
+2022-02-01 16:14:17,408:data_com_logs.txt:DEBUG:INCOMING MSG FROM BDD : (11, '00000002', 'EEEEEE00', '42', '08', 'CAFEDECA', datetime.datetime(2022, 1, 24, 9, 55, 20), 1)
+2022-02-01 16:14:33,490:data_com_logs.txt:DEBUG:INCOMING MSG FROM BDD : (11, '00000002', 'EEEEEE00', '42', '08', 'CAFEDECA', datetime.datetime(2022, 1, 24, 9, 55, 20), 1)
+2022-02-01 16:14:48,577:data_com_logs.txt:DEBUG:INCOMING MSG FROM BDD : (11, '00000002', 'EEEEEE00', '42', '08', 'CAFEDECA', datetime.datetime(2022, 1, 24, 9, 55, 20), 1)
+2022-02-01 16:15:03,658:data_com_logs.txt:DEBUG:INCOMING MSG FROM BDD : (11, '00000002', 'EEEEEE00', '42', '08', 'CAFEDECA', datetime.datetime(2022, 1, 24, 9, 55, 20), 1)
+2022-02-01 16:15:19,243:data_com_logs.txt:DEBUG:INCOMING MSG FROM BDD : (11, '00000002', 'EEEEEE00', '42', '08', 'CAFEDECA', datetime.datetime(2022, 1, 24, 9, 55, 20), 1)
+2022-02-01 16:15:34,814:data_com_logs.txt:DEBUG:INCOMING MSG FROM BDD : (11, '00000002', 'EEEEEE00', '42', '08', 'CAFEDECA', datetime.datetime(2022, 1, 24, 9, 55, 20), 1)
+2022-02-01 16:15:51,405:data_com_logs.txt:DEBUG:INCOMING MSG FROM BDD : (11, '00000002', 'EEEEEE00', '42', '08', 'CAFEDECA', datetime.datetime(2022, 1, 24, 9, 55, 20), 1)
+2022-02-01 16:16:08,995:data_com_logs.txt:DEBUG:INCOMING MSG FROM BDD : (11, '00000002', 'EEEEEE00', '42', '08', 'CAFEDECA', datetime.datetime(2022, 1, 24, 9, 55, 20), 1)
+2022-02-01 16:16:24,087:data_com_logs.txt:DEBUG:INCOMING MSG FROM BDD : (11, '00000002', 'EEEEEE00', '42', '08', 'CAFEDECA', datetime.datetime(2022, 1, 24, 9, 55, 20), 1)
+2022-02-01 16:16:40,671:data_com_logs.txt:DEBUG:INCOMING MSG FROM BDD : (11, '00000002', 'EEEEEE00', '42', '08', 'CAFEDECA', datetime.datetime(2022, 1, 24, 9, 55, 20), 1)
+2022-02-01 16:16:55,738:data_com_logs.txt:DEBUG:INCOMING MSG FROM BDD : (11, '00000002', 'EEEEEE00', '42', '08', 'CAFEDECA', datetime.datetime(2022, 1, 24, 9, 55, 20), 1)
+2022-02-01 16:17:10,816:data_com_logs.txt:DEBUG:INCOMING MSG FROM BDD : (11, '00000002', 'EEEEEE00', '42', '08', 'CAFEDECA', datetime.datetime(2022, 1, 24, 9, 55, 20), 1)
+2022-02-01 16:17:27,900:data_com_logs.txt:DEBUG:INCOMING MSG FROM BDD : (11, '00000002', 'EEEEEE00', '42', '08', 'CAFEDECA', datetime.datetime(2022, 1, 24, 9, 55, 20), 1)
+2022-02-01 16:17:44,994:data_com_logs.txt:DEBUG:INCOMING MSG FROM BDD : (11, '00000002', 'EEEEEE00', '42', '08', 'CAFEDECA', datetime.datetime(2022, 1, 24, 9, 55, 20), 1)
+2022-02-01 16:18:01,089:data_com_logs.txt:DEBUG:INCOMING MSG FROM BDD : (11, '00000002', 'EEEEEE00', '42', '08', 'CAFEDECA', datetime.datetime(2022, 1, 24, 9, 55, 20), 1)
+2022-02-01 16:18:16,675:data_com_logs.txt:DEBUG:INCOMING MSG FROM BDD : (11, '00000002', 'EEEEEE00', '42', '08', 'CAFEDECA', datetime.datetime(2022, 1, 24, 9, 55, 20), 1)
+2022-02-01 16:18:31,765:data_com_logs.txt:DEBUG:INCOMING MSG FROM BDD : (11, '00000002', 'EEEEEE00', '42', '08', 'CAFEDECA', datetime.datetime(2022, 1, 24, 9, 55, 20), 1)
+2022-02-01 16:18:46,836:data_com_logs.txt:DEBUG:INCOMING MSG FROM BDD : (11, '00000002', 'EEEEEE00', '42', '08', 'CAFEDECA', datetime.datetime(2022, 1, 24, 9, 55, 20), 1)
+2022-02-01 16:19:01,920:data_com_logs.txt:DEBUG:INCOMING MSG FROM BDD : (11, '00000002', 'EEEEEE00', '42', '08', 'CAFEDECA', datetime.datetime(2022, 1, 24, 9, 55, 20), 1)
+2022-02-01 16:19:19,512:data_com_logs.txt:DEBUG:INCOMING MSG FROM BDD : (11, '00000002', 'EEEEEE00', '42', '08', 'CAFEDECA', datetime.datetime(2022, 1, 24, 9, 55, 20), 1)
+2022-02-01 16:19:37,113:data_com_logs.txt:DEBUG:INCOMING MSG FROM BDD : (11, '00000002', 'EEEEEE00', '42', '08', 'CAFEDECA', datetime.datetime(2022, 1, 24, 9, 55, 20), 1)
+2022-02-01 16:19:52,188:data_com_logs.txt:DEBUG:INCOMING MSG FROM BDD : (11, '00000002', 'EEEEEE00', '42', '08', 'CAFEDECA', datetime.datetime(2022, 1, 24, 9, 55, 20), 1)
+2022-02-01 16:20:07,286:data_com_logs.txt:DEBUG:INCOMING MSG FROM BDD : (11, '00000002', 'EEEEEE00', '42', '08', 'CAFEDECA', datetime.datetime(2022, 1, 24, 9, 55, 20), 1)
+2022-02-01 16:20:22,371:data_com_logs.txt:DEBUG:INCOMING MSG FROM BDD : (11, '00000002', 'EEEEEE00', '42', '08', 'CAFEDECA', datetime.datetime(2022, 1, 24, 9, 55, 20), 1)
+2022-02-01 16:20:37,469:data_com_logs.txt:DEBUG:INCOMING MSG FROM BDD : (11, '00000002', 'EEEEEE00', '42', '08', 'CAFEDECA', datetime.datetime(2022, 1, 24, 9, 55, 20), 1)
+2022-02-01 16:20:53,037:data_com_logs.txt:DEBUG:INCOMING MSG FROM BDD : (11, '00000002', 'EEEEEE00', '42', '08', 'CAFEDECA', datetime.datetime(2022, 1, 24, 9, 55, 20), 1)
+2022-02-01 16:21:08,112:data_com_logs.txt:DEBUG:INCOMING MSG FROM BDD : (11, '00000002', 'EEEEEE00', '42', '08', 'CAFEDECA', datetime.datetime(2022, 1, 24, 9, 55, 20), 1)
+2022-02-01 16:21:23,197:data_com_logs.txt:DEBUG:INCOMING MSG FROM BDD : (11, '00000002', 'EEEEEE00', '42', '08', 'CAFEDECA', datetime.datetime(2022, 1, 24, 9, 55, 20), 1)
+2022-02-01 16:21:38,788:data_com_logs.txt:DEBUG:INCOMING MSG FROM BDD : (11, '00000002', 'EEEEEE00', '42', '08', 'CAFEDECA', datetime.datetime(2022, 1, 24, 9, 55, 20), 1)
+2022-02-01 16:21:43,818:data_com_logs.txt:DEBUG:INCOMING MSG FROM UART : BA10DDDDDD02EEEEEE0001420508CAFEDECADA
+2022-02-01 16:21:43,819:data_com_logs.txt:DEBUG:Parsed message : <data_communication.FrameParser.FrameParser object at 0x7fd7f9c312e0>
+2022-02-01 16:21:43,819:data_com_logs.txt:DEBUG:Message has been put into database sending queue
+2022-02-01 16:21:43,877:data_com_logs.txt:DEBUG:Request successfully sent to DataBase
+2022-02-01 16:21:53,871:data_com_logs.txt:DEBUG:INCOMING MSG FROM BDD : (11, '00000002', 'EEEEEE00', '42', '08', 'CAFEDECA', datetime.datetime(2022, 1, 24, 9, 55, 20), 1)
+2022-02-01 16:22:08,962:data_com_logs.txt:DEBUG:INCOMING MSG FROM BDD : (11, '00000002', 'EEEEEE00', '42', '08', 'CAFEDECA', datetime.datetime(2022, 1, 24, 9, 55, 20), 1)
+2022-02-01 16:22:24,034:data_com_logs.txt:DEBUG:INCOMING MSG FROM BDD : (11, '00000002', 'EEEEEE00', '42', '08', 'CAFEDECA', datetime.datetime(2022, 1, 24, 9, 55, 20), 1)
+2022-02-01 16:22:39,124:data_com_logs.txt:DEBUG:INCOMING MSG FROM BDD : (11, '00000002', 'EEEEEE00', '42', '08', 'CAFEDECA', datetime.datetime(2022, 1, 24, 9, 55, 20), 1)
+2022-02-01 16:22:54,222:data_com_logs.txt:DEBUG:INCOMING MSG FROM BDD : (11, '00000002', 'EEEEEE00', '42', '08', 'CAFEDECA', datetime.datetime(2022, 1, 24, 9, 55, 20), 1)
+2022-02-01 16:23:09,313:data_com_logs.txt:DEBUG:INCOMING MSG FROM BDD : (11, '00000002', 'EEEEEE00', '42', '08', 'CAFEDECA', datetime.datetime(2022, 1, 24, 9, 55, 20), 1)
+2022-02-01 16:23:24,407:data_com_logs.txt:DEBUG:INCOMING MSG FROM BDD : (11, '00000002', 'EEEEEE00', '42', '08', 'CAFEDECA', datetime.datetime(2022, 1, 24, 9, 55, 20), 1)
+2022-02-01 16:23:39,997:data_com_logs.txt:DEBUG:INCOMING MSG FROM BDD : (11, '00000002', 'EEEEEE00', '42', '08', 'CAFEDECA', datetime.datetime(2022, 1, 24, 9, 55, 20), 1)
+2023-01-30 13:19:02,838:data_com_logs.txt:INFO:-------------------Starting application-------------------
+2023-01-30 13:19:02,874:data_com_logs.txt:DEBUG:MariaDB.py : Connected to database
+2023-01-30 13:19:18,366:data_com_logs.txt:DEBUG:INCOMING MSG FROM BDD : (11, '00000002', 'EEEEEE00', '42', '08', 'CAFEDECA', datetime.datetime(2022, 1, 24, 9, 55, 20), 1)

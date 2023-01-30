@@ -10,10 +10,13 @@
 
 typedef enum{
 	 LED_MODE_OFF,
+<<<<<<< HEAD:projet-NRF52/appli/common/leds.h
 	 LED_MODE_ON,
 	 LED_MODE_BLINK,
 	 LED_MODE_FLASH,
 	 LED_MODE_FLASH_LIMITED_NUMBER
+=======
+>>>>>>> db287b6c518b612159e83485572f37ae94a5d1f8:old_version/projet-NRF52/appli/common/leds.h
 	 //TODO
 }led_mode_e;
 
@@ -33,6 +36,7 @@ void LED_add(led_id_e id, uint8_t pin);
 
 void LED_set(led_id_e id, led_mode_e mode);
 
+<<<<<<< HEAD:projet-NRF52/appli/common/leds.h
 void LED_process_ms(void);
 
 void LED_toggle(led_id_e id);
@@ -42,3 +46,8 @@ led_mode_e LED_get(led_id_e id);
 
 #endif /* APPLI_COMMON_LEDS_H_ */
 
+=======
+void LED_process_ms();
+
+#endif /* APPLI_COMMON_LEDS_H_ */
+>>>>>>> db287b6c518b612159e83485572f37ae94a5d1f8:old_version/projet-NRF52/appli/common/leds.h
