@@ -8,6 +8,7 @@
 #include "appli/config.h"
 #include "parameters.h"
 #include "flash.h"
+#include "rf_dialog.h"
 
 typedef struct
 {
