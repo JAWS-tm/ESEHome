@@ -148,5 +148,5 @@ void PARAMETERS_send_param32_to_basestation(param_id_e param_id)
 	datas[2] = (value>>16)&0xFF;
 	datas[3] = (value>>8)&0xFF;
 	datas[4] = (value>>0)&0xFF;
-	RF_DIALOG_send_msg_id_to_basestation(param_id,5,datas);
+	RF_DIALOG_send_msg_id_to_basestation(PARAMETER_IS,5,datas);
 }
