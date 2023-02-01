@@ -70,10 +70,11 @@ class config (object):
 class mainClass (object):
     def __init__ (self):
         print("Main class ")
-        # On lancera ici le Data_base_main.py et le Data_comm.py en multiprocessing
+        # On lancera ici le Data_base_main.py et le Data_comm_main.py en multiprocessing
         
         launch = True
         while launch:
+            
             try:
                 print("launch true")
             except Exception as e:
