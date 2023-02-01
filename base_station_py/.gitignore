@@ -1,2 +1,2 @@
 ## Python cache
-env/
+__pycache__/
