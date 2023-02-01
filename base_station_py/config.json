@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 {
   "data_communication": {
     "UART": {
@@ -19,3 +20,26 @@
     "format": "default"
   }
 }
+=======
+{
+  "data_communication": {
+    "UART": {
+      "port": "COM4",
+      "baudrate": 115000,
+      "timeout": 3.0,
+      "end_of_frame_character": "\n"
+    }
+  },
+  "DB": {
+    "port": 3306,
+    "host": "localhost",
+    "user": "root",
+    "password": "root"
+  },
+  "logs": {
+    "fileName": "data_com_logs.txt",
+    "filter": "DEBUG",
+    "format": "default"
+  }
+}
+>>>>>>> 9c9f1f97cbf1019a68a5fc30533f120b399640be

@@ -1,1 +1,8 @@
+<<<<<<< HEAD
 /env
+=======
+## Python cache
+__pycache__/
+
+env/
+>>>>>>> 9c9f1f97cbf1019a68a5fc30533f120b399640be
