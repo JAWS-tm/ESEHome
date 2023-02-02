@@ -81,7 +81,7 @@ class FrameParser :
             print("I_HAVE_NO_SERVER_ID")
         elif self.id == "FE":  
             print("YOUR_SERVER_ID_IS")
-        elif self.id == "FG":
+        elif self.id == "FF":
             print("LONG_MESSAGE")
         else:
             print("Message id error")
@@ -94,13 +94,6 @@ class FrameParser :
         
         # Printing initial string
         print ("\n\nInitial string of msg_size : ", ini_string)
-        
-        # # Code to convert hex to binary
-        # res = bin(int(ini_string, scale)).zfill(8)
-        
-        # # Print the resultant string
-        # res2 = (res.split('b'))
-        # print ("Resultant string", res2[1])
 
         # Convertir le message hexadécimal en un entier
         message_int = int(ini_string, 16)

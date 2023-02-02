@@ -44,7 +44,6 @@ class MariaDBConnect:
 
 #Main of the files, we call all the function here
 if __name__ == "__main__":
-    print("main mariadb")
     db = MariaDBConnect()
     db.create_database()
     db.create_tables()
