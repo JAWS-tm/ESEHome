@@ -1,8 +1,8 @@
 {
   "data_communication": {
     "UART": {
-      "port": "COM4",
-      "baudrate": 115000,
+      "port": "",
+      "baudrate": 115200,
       "timeout": 3.0,
       "end_of_frame_character": "\n"
     }

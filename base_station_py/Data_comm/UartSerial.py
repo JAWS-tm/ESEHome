@@ -1,7 +1,6 @@
 import serial
 import time
 from queue import Queue
-from app_config import logger
 
 class UartSerial :
     '''
@@ -19,12 +18,10 @@ class UartSerial :
     def __init__(self, new_port : str, new_baudrate : int, new_timeout : int, launch_as_thread : bool, incoming_msg_queue : Queue, outgoing_msg_queue : Queue) : #launch_as_thread and msg_q should be additional args
         self.baudrate = new_baudrate
         self.timeout = new_timeout
-        print(self.timeout)
-        self.port = serial.Serial(new_port, baudrate=self.baudrate, timeout=self.timeout)
+        self.port = serial.Serial(port=new_port, baudrate=self.baudrate, timeout=self.timeout)
         self.previous_message = ""
         self.current_message = ""
         self.end_of_message = False
-        print("Init completed with port : "+new_port)
         self.print_port_info()
         if(launch_as_thread):
             self.incoming_message_queue = incoming_msg_queue
@@ -36,7 +33,11 @@ class UartSerial :
     def read_uart_frame(self, end_of_frame_character) :
         try :
             if not self.end_of_message :
-                rcv = self.port.read(15).decode("utf-8") 
+                # copie d’une ligne entiere jusqu’a \n dans rcv
+                rcv = self.port.readline().decode("utf-8") 
+                # copie de 15 caracteres lu dans rcv
+                # rcv = self.port.read(15).decode("utf-8") 
+                print("rcv :", rcv)
                 if(rcv.find("\n")!=-1):
                     #The message is ending
                     end_msg = rcv.split(end_of_frame_character)
@@ -80,9 +81,10 @@ class UartSerial :
             print("ERROR : You didn't launch the uart reader as a thread (ref to the constructor)")
 
     def print_port_info(self):
-        print("Port : "+str(self.port)+"\n"
-        +     "Baudrate : "+str(self.baudrate)+"\n"
-        +     "Timeout : "+str(self.timeout)+"\n")
+        print("\n----Uart read config : \n"
+        +     "--Port : "+str(self.port.name)+"\n"
+        +     "--Baudrate : "+str(self.baudrate)+"\n"
+        +     "--Timeout : "+str(self.timeout)+"\n")
 
 
 #THREADING MAIN FUNCTION
@@ -92,10 +94,13 @@ def uart_process_main_thread(port : str, baudrate : int, timeout : int, incoming
         time.sleep(0.5)
         uart.read_uart_frame(end_of_frame_character) #Automatically updates queue when a complete message is received
         next_msg = uart.get_next_message() #Checks if there is a message to send
+
         if(next_msg): 
             if(uart.send_uart_frame(next_msg)==1):
-                logger.debug("Message successfully sent to UART : "+next_msg)
+                # logger.debug("Message successfully sent to UART : "+next_msg)
+                print("Message successfully sent to UART : "+next_msg)
             else :
-                logger.debug("ERROR : Failed to send msg to UART --> "+next_msg)
+                # logger.debug("ERROR : Failed to send msg to UART --> "+next_msg)
+                print("ERROR : Failed to send msg to UART --> "+next_msg)
             
         
