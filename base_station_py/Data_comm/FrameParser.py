@@ -9,7 +9,11 @@ from email import message
 class FrameParser :
     #Attributes
     def __init__(self, message):
+        print("INIT", message)
         self.message = message
+        self.msgParsed() 
+        self.getInfoMessageId()
+        self.getSizeUpBit()
 
     #Message attributes (ex dest, emitter, data, etc.)
 
@@ -17,6 +21,7 @@ class FrameParser :
     #def __init__(self, ) :
     #init attributes (en fonction du protocole de com)
     def msgParsed(self):
+        print("self.message", self.message)
         CONST_BEGIN = "BA"
         CONST_END = "DA"
         self.tram_size = len(self.message)//2
@@ -59,7 +64,7 @@ class FrameParser :
             tab_parse.insert(9,self.end)
             print(tab_parse)
 
-
+    #Recupération du msg ID et affichage de sa signification
     def getInfoMessageId(self):
         if self.id == "02":
             print("RECENT_RESET")
@@ -86,21 +91,20 @@ class FrameParser :
         else:
             print("Message id error")
     
+    #Fonction qui regarde si la trame est chiffrée ou non via le bit de poids fort
     def getSizeUpBit(self):
+
         print(self.msg_size)
 
         ini_string = self.msg_size
         scale = 16
-        
+
         # Printing initial string
         print ("\n\nInitial string of msg_size : ", ini_string)
-
         # Convertir le message hexadécimal en un entier
         message_int = int(ini_string, 16)
-
         # Utiliser l'opérateur bit à bit AND pour vérifier le bit de poids fort
         msb = message_int & 0x80
-
         # Si le bit de poids fort est 1, l'afficher
         if msb:
             print("Le bit de poids fort est 1")
@@ -136,7 +140,7 @@ class FrameParser :
     def getMessageSize(self):
         str_messageSize = "".join(self.msg_size)
         return str_messageSize
-    
+
     def getParamID(self):
         str_paramId = "".join(self.param_id_e)
         return str_paramId
