@@ -1,1 +1,1 @@
-#all about write on database and receiver infos
+#all about write on database infos
