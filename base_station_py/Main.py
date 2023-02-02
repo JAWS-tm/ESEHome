@@ -2,6 +2,8 @@
 import json
 import logging
 from Data_base.MariadB_Connect import MariaDBConnect
+from Data_comm.UartController import UartController
+import time
 
 #main
 ##  Here, we call class and others                  DO AT THE END
@@ -69,17 +71,22 @@ class config (object):
 
 class mainClass (object):
     def __init__ (self):
-        print("Main class ")
-        # On lancera ici le Data_base_main.py et le Data_comm.py en multiprocessing
+        # On lancera ici le Data_base_main.py et le Data_comm_main.py en multiprocessing
+        
+        # Lancement thread de l'uart, qui va lire les infos en continue, tant qu'il est true(def uart_process_main_thread in UartSerial.py)
+        uart_controller = UartController(config.UART_CONFIG)
         
         launch = True
         while launch:
-            try:
-                print("launch true")
-            except Exception as e:
-                print("Error main :", str(e))
-            
-            launch = False
+            time.sleep(0.5)
+
+            # try:
+            #     print("uart_controller.get_last_message() ",uart_controller.get_last_message())
+            #     # uart_incoming_msg = uart_controller.get_last_message()
+            # except Exception as e :
+            #     config.logger.error("ERROR : There was an error processing the incoming data. The message has been ignored")
+            #     config.logger.error(str(e))
+
 
 
 

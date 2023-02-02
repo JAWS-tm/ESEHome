@@ -95,6 +95,7 @@ class FrameEncoder:
             elif msg_id_e == "FE" :
                 size = "00"
                 msg = ""
+            
         else :
             print ("Emmetteur ou receveur de mauvaise taille")
         frame = emmiter+receiver+msg_id_e+size+param_id_e+msg
