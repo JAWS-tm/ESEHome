@@ -38,6 +38,9 @@ class UartSerial :
                 # copie de 15 caracteres lu dans rcv
                 # rcv = self.port.read(15).decode("utf-8") 
                 print("rcv :", rcv)
+                self.current_message = rcv
+
+
                 if(rcv.find("\n")!=-1):
                     #The message is ending
                     end_msg = rcv.split(end_of_frame_character)
@@ -47,6 +50,8 @@ class UartSerial :
                 else :
                     #print("Completing message...")
                     self.current_message+=rcv
+
+                    
             else:
                 #print("New message received : ")
                 #print(self.current_message)
