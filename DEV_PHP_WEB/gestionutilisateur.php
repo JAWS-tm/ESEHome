@@ -21,15 +21,16 @@
 	
 		$data = $_POST['datagrp']; // ID de l'utilisateur
 		$cgo = $_POST['choixgroupeobjet']; // Groupe
-
-		$sqlverifdoublon = 'SELECT COUNT(*) FROM groupe_utilisateur WHERE id_utilisateur =:verifdata AND id_groupe = :verifcgo';
+		$sqlverifdoublon = "SELECT COUNT(*) FROM groupe_utilisateur WHERE id_utilisateur =".$data." AND id_groupe = ".$cgo;
 		$reqverifInsert = $pdo->prepare($sqlverifdoublon);
-	 	$reqverifInsert->execute(array(':verifdata'=>$data, ':verifcgo'=>$cgo)) or exit(print_r($reqverifInsert->errorInfo()));
-	 	if ($reqverifInsert == 0) {
+	 	$reqverifInsert->execute();
+		$verifresult = $reqverifInsert->fetchAll(PDO::FETCH_ASSOC);
+		$isverified = array_column($verifresult, 'COUNT(*)');
+	 	if ($isverified == [0]) {
 	 	 	// Insert du groupe dans la bdd 
-			$sqlGrpInsert = 'INSERT INTO groupe_utilisateur (id_utilisateur, id_groupe) VALUES (?, ?)';
+			$sqlGrpInsert = "INSERT INTO groupe_utilisateur (id_utilisateur, id_groupe) VALUES (".$data.",".$cgo.")";
 		 	$reqGrpInsert = $pdo->prepare($sqlGrpInsert);
-		 	$reqGrpInsert->execute(array($data, $cgo)) or exit(print_r($reqGrpInsert->errorInfo()));
+		 	$reqGrpInsert->execute();
 	 	 } 
 
 		header("Location: gestionutilisateur.php");
@@ -89,7 +90,7 @@
 
 
 				?>	
-					<form action="" method="post">
+					<form action="#" method="post">
 						<tr>
 							<td><?php echo $recipe->id;?></td>
 							<td><?php echo $recipe->Pseudo;?></td>
@@ -109,18 +110,20 @@
 			                        <option value="3">Salon</option>
 			                        <option value="4">Exterieur</option>
 
-			                    </select>
+			                    </select >
 							</td>
 
 
 							<td><input type="hidden" name="datagrp" value="<?php echo $recipe->id; ?>">
-								<button type="submit" name="formgrpuser">Valider le groupe</button>
+								<button type="submit" name="formgrpuser" value="selectedValue">Valider le groupe</button>
 							</td>
+						
 							<td><input type="hidden" name="datagrpsupp" value="<?php echo $recipe->id; ?>">
 								<button type="submit" name="formgrpusersupp">Supprimer du groupe</button>
 							</td>
 						</tr>
 					</form>
+			
 				<?php } ?>
 				</table>	
 			</div>

@@ -3,8 +3,7 @@
     session_start();
   }
   $url= $_SERVER['REQUEST_URI'];    
-      
-    echo $url;  
+ //on défini les url ou l'on a acces en tant que user non connecté    
   $authPath = ["/","/connexion.php","/index.php","/inscription.php"];
 if((!isset($_SESSION["loggedin"]) || !$_SESSION["loggedin"] ) && !in_array($_SERVER['REQUEST_URI'], $authPath)){
 
