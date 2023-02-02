@@ -1,10 +1,62 @@
-#Class DB
+#Class DB connection here not on MariadB_Connect.py, passerelle, structure of trame
 
-class dBclass (object):
+import mysql.connector
+
+class dBclass:
+    
+    #                       ------- INIT -------
+    def __init__(self,bdd_config):
+        self.nom = "----- DB class -----"
         
-    def __init__(self):
-        self.nom = "----- dB class -----"
+    #connection to db
+        print("--- Connection DB ---")
+        try:
+            self.cnx = mysql.connector.connect(
+                ## Caution: it is your personnal host user and password
+                host = bdd_config["host"],
+                port = bdd_config["port"],
+                user = bdd_config["user"],
+                passwd = bdd_config["password"]
+            )
+            self.cursor = self.cnx.cursor()
+        except Exception as e:
+            print("Error init database :", str(e))
 
+    #Creation of tables
+    def create_tables(self):
+        self.cursor.execute("CREATE TABLE IF NOT EXISTS historique (id INT AUTO_INCREMENT PRIMARY KEY, date DATETIME NOT NULL, action VARCHAR(255) NOT NULL)")
+        self.cnx.commit()
+        self.cursor.execute("CREATE TABLE IF NOT EXISTS chiffrage (id INT AUTO_INCREMENT PRIMARY KEY, cle VARCHAR(255) NOT NULL, valeur VARCHAR(255) NOT NULL)")
+        self.cnx.commit()
+        self.cursor.execute("CREATE TABLE IF NOT EXISTS local (id INT AUTO_INCREMENT PRIMARY KEY, nom VARCHAR(255) NOT NULL, adresse VARCHAR(255) NOT NULL)")
+        self.cnx.commit()
+    
+    #Creation of database
+    def create_database(self):
+        try:
+            self.cursor.execute("CREATE DATABASE IF NOT EXISTS loggg") # execute sql control
+            self.cnx.commit()
+            self.cursor.execute("USE loggg")
+            self.cnx.commit()
+        except Exception as e:
+            print("Error create database :", str(e))
+    
+    #Close the connection when it's finish
+    def close_connection(self):
+        self.cursor.close()
+        self.cnx.close()
+
+
+
+#                       ---------- MAIN DB ----------
+if __name__ == "__main__":
+    db = dBclass()
+    db.create_database() #if database is not yet create
+    db.create_tables()  #same for tables
+
+    #go to Receive_send send by Reponse
+
+    db.close_connection() #close db when all is finished
 
 """
 
