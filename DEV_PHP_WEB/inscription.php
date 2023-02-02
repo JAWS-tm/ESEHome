@@ -33,7 +33,18 @@ if(!empty($_POST)){
         $admin = htmlspecialchars($_POST['admin']);
         $req->execute([$username, $password, $admin]);
 
-        header("Location: connexion.php");
+        $errors = array();
+		require_once 'inc/db.php';
+		$req = $pdo->prepare('SELECT * FROM utilisateur WHERE Pseudo = :username');
+		$req->execute([':username' => $_POST['username']]);
+		$user = $req->fetch();
+
+        $_SESSION['auth'] = $user;
+        $_SESSION['loggedin'] = true;
+        header('Location: mesobjets.php');
+        exit();
+
+        // header("Location: connexion.php");
 
 
     }
