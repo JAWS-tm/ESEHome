@@ -1,5 +1,6 @@
 from Data_comm.UartSerial import uart_process_main_thread
-import queue
+# import Queue             # Python 2.x
+from queue import Queue # Python 3.x
 from threading import Thread
 from serial.tools.list_ports import comports
 
@@ -22,8 +23,8 @@ class UartController :
     def __init__(self, uart_config):
         try: 
             #Thread that handles UART communication
-            self.input_queue = queue.Queue()
-            self.output_queue = queue.Queue()
+            self.input_queue = Queue()
+            self.output_queue = Queue()
             self.uart_thread = Thread(target=uart_process_main_thread, args=(get_serial_ports_open(),uart_config["baudrate"],uart_config["timeout"], self.input_queue, self.output_queue, uart_config["end_of_frame_character"]), daemon=False).start()
         except Exception as e:        
             print("Error init UartController : ", e)
@@ -36,3 +37,4 @@ class UartController :
             return 0
     def put_message_in_uart_sending_queue(self, msg : str):#message to send from the uart
         next_msg = self.output_queue.put(msg)
+

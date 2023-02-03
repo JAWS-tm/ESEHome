@@ -51,19 +51,19 @@ class FrameParser :
             print("pas de message dans la tram")
         elif self.param_id_e > "24" or self.param_id_e == "16" :
             print("Param id error")
-        # else:
-        tab_parse = []
-        tab_parse.insert(0,self.begin)
-        tab_parse.insert(1,self.data_size)
-        tab_parse.insert(2,self.emitter)
-        tab_parse.insert(3,self.receiver)
-        tab_parse.insert(4,self.cnt)
-        tab_parse.insert(5,self.id)
-        tab_parse.insert(6,self.msg_size)
-        tab_parse.insert(7,self.param_id_e)
-        tab_parse.insert(8,self.data_concat)
-        tab_parse.insert(9,self.end)
-        print(tab_parse)
+        else:
+            tab_parse = []
+            tab_parse.insert(0,self.begin)
+            tab_parse.insert(1,self.data_size)
+            tab_parse.insert(2,self.emitter)
+            tab_parse.insert(3,self.receiver)
+            tab_parse.insert(4,self.cnt)
+            tab_parse.insert(5,self.id)
+            tab_parse.insert(6,self.msg_size)
+            tab_parse.insert(7,self.param_id_e)
+            tab_parse.insert(8,self.data_concat)
+            tab_parse.insert(9,self.end)
+            print(tab_parse)
 
     #Recupération du msg ID et affichage de sa signification
     def getInfoMessageId(self):

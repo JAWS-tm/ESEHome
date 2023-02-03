@@ -33,37 +33,35 @@ class UartSerial :
     
     def read_uart_frame(self, end_of_frame_character) :
         try :
-            if not self.end_of_message :
-
                 # copie d’une ligne entiere jusqu’a \n dans rcv
                 rcv = self.port.readline().decode("utf-8") 
-                # copie de 15 caracteres lu dans rcv
-                # rcv = self.port.read(15).decode("utf-8") 
-
                 self.current_message = rcv
+
+                self.put_message_in_queue(rcv)
 
                 return rcv
 
-                ## Pas besoin de la suite car "readline" permet de récupérer chaque tram 1 par 1 en entière
-                
-                # if(rcv.find("\n")!=-1):
-                #     #The message is ending
-                #     end_msg = rcv.split(end_of_frame_character)
-                #     #Get the other side of the message ?
-                #     self.current_message+= end_msg[0]
-                #     self.end_of_message = True
-                # else :
-                #     #print("Completing message...")
-                #     self.current_message+=rcv
+            ## Pas besoin de la suite car "readline" permet de récupérer chaque tram 1 par 1 en entière
 
-                    
-            else:
-                print("New message received : ")
-                print(self.current_message)
-                self.end_of_message = False
-                if(self.launched_as_thread) : self.put_message_in_queue(self.current_message)
-                self.previous_message = self.current_message
-                self.current_message = ""
+            # if not self.end_of_message : 
+            #     copie de 15 caracteres lu dans rcv
+            #     rcv = self.port.read(15).decode("utf-8") 
+            #     if(rcv.find("\n")!=-1):
+            #         #The message is ending
+            #         end_msg = rcv.split(end_of_frame_character)
+            #         #Get the other side of the message ?
+            #         self.current_message+= end_msg[0]
+            #         self.end_of_message = True
+            #     else :
+            #         #print("Completing message...")
+            #         self.current_message+=rcv
+            # else:
+            #     print("New message received : ")
+            #     print(self.current_message)
+            #     self.end_of_message = False
+            #     if(self.launched_as_thread) : self.put_message_in_queue(self.current_message)
+            #     self.previous_message = self.current_message
+            #     self.current_message = ""
         except Exception :
             self.port.close()
             print("Error reading port... Connection closed") 
@@ -106,11 +104,13 @@ def uart_process_main_thread(port : str, baudrate : int, timeout : int, incoming
             print("rien")
         else : 
             FrameParser(message)
-      
+            # UartSerial.put_message_in_queue(message)
+
+        # return message
 
 
         ## Commentaire car pas utilisé pour l'instant
-        
+
         # next_msg = uart.get_next_message() #Checks if there is a message to send
 
         # if(next_msg): 
