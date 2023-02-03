@@ -142,33 +142,33 @@ def sendData(self, request, data):
         self.conn.commit()
         print(self.cursor)
     
-    def receiveData(self, query):
-        self.cursor.execute(query)
-        return self.cursor.fetchall()
+def receiveData(self, query):
+    self.cursor.execute(query)
+    return self.cursor.fetchall()
 
-    def getCursor(self):
-        return self.cursor
+def getCursor(self):
+    return self.cursor
 
-    def checkForNewMessage(self):
-        potential_data = self.receiveData(getMessageSQLQuery)
-        if(potential_data):
-            for data in potential_data :
-                self.put_message_in_queue(data)
+def checkForNewMessage(self):
+    potential_data = self.receiveData(getMessageSQLQuery)
+    if(potential_data):
+        for data in potential_data :
+            self.put_message_in_queue(data)
 
-    def put_message_in_queue(self, message):
-        if(self.launched_as_thread):
-            self.incoming_message_queue.put(message)
+def put_message_in_queue(self, message):
+    if(self.launched_as_thread):
+        self.incoming_message_queue.put(message)
+    else :
+        print("ERROR : You didn't launch the uart reader as a thread (ref to the constructor)")
+
+def get_next_message(self):
+    if(self.launched_as_thread):
+        if(self.outgoing_message_queue.qsize()>0):
+            return self.outgoing_message_queue.get()
         else :
-            print("ERROR : You didn't launch the uart reader as a thread (ref to the constructor)")
-    
-    def get_next_message(self):
-        if(self.launched_as_thread):
-            if(self.outgoing_message_queue.qsize()>0):
-                return self.outgoing_message_queue.get()
-            else :
-                return None
-        else :
-            print("ERROR : You didn't launch the uart reader as a thread (ref to the constructor)")
+            return None
+    else :
+        print("ERROR : You didn't launch the uart reader as a thread (ref to the constructor)")
 
 #THREADING MAIN FUNCTION
 def db_process_main_thread(user, password, host, port, DB_name, input_queue : Queue, output_queue : Queue):
