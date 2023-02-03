@@ -128,14 +128,14 @@ class dBclass (object):
 
 """
 
-//source : DB controller 
+#source : DB controller 
 
 def put_message_in_bdd_sending_queue(self, msg : FrameParser):
-next_msg = self.output_queue.put(msg)
-logger.debug("Message has been put into database sending queue")
+    next_msg = self.output_queue.put(msg)
+    logger.debug("Message has been put into database sending queue")
 
 
-//source : DB request 
+#source : DB request 
 
 def sendData(self, request, data):
         self.cursor.execute(request, data)

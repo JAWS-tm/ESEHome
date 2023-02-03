@@ -9,7 +9,6 @@ from email import message
 class FrameParser :
     #Attributes
     def __init__(self, message):
-        print("INIT", message)
         self.message = message
         self.msgParsed() 
         self.getInfoMessageId()
@@ -21,7 +20,6 @@ class FrameParser :
     #def __init__(self, ) :
     #init attributes (en fonction du protocole de com)
     def msgParsed(self):
-        print("self.message", self.message)
         CONST_BEGIN = "BA"
         CONST_END = "DA"
         self.tram_size = len(self.message)//2
@@ -30,7 +28,8 @@ class FrameParser :
         for x in range(self.tram_size):
             chaine = self.message[x*2]+self.message[(x*2)+1]
             tab_msg.append(chaine)
-        print(tab_msg)
+        print("\n\n")
+        # print(tab_msg)
 
         self.begin = tab_msg[0]
         self.data_size = tab_msg[1]
@@ -48,21 +47,23 @@ class FrameParser :
             print("Frame error")
         elif self.end != CONST_END:
             print("Frame error")
+        elif self.param_id_e == CONST_END:
+            print("pas de message dans la tram")
         elif self.param_id_e > "24" or self.param_id_e == "16" :
             print("Param id error")
-        else:
-            tab_parse = []
-            tab_parse.insert(0,self.begin)
-            tab_parse.insert(1,self.data_size)
-            tab_parse.insert(2,self.emitter)
-            tab_parse.insert(3,self.receiver)
-            tab_parse.insert(4,self.cnt)
-            tab_parse.insert(5,self.id)
-            tab_parse.insert(6,self.msg_size)
-            tab_parse.insert(7,self.param_id_e)
-            tab_parse.insert(8,self.data_concat)
-            tab_parse.insert(9,self.end)
-            print(tab_parse)
+        # else:
+        tab_parse = []
+        tab_parse.insert(0,self.begin)
+        tab_parse.insert(1,self.data_size)
+        tab_parse.insert(2,self.emitter)
+        tab_parse.insert(3,self.receiver)
+        tab_parse.insert(4,self.cnt)
+        tab_parse.insert(5,self.id)
+        tab_parse.insert(6,self.msg_size)
+        tab_parse.insert(7,self.param_id_e)
+        tab_parse.insert(8,self.data_concat)
+        tab_parse.insert(9,self.end)
+        print(tab_parse)
 
     #Recupération du msg ID et affichage de sa signification
     def getInfoMessageId(self):
@@ -94,22 +95,22 @@ class FrameParser :
     #Fonction qui regarde si la trame est chiffrée ou non via le bit de poids fort
     def getSizeUpBit(self):
 
-        print(self.msg_size)
+        # print(self.msg_size)
 
         ini_string = self.msg_size
         scale = 16
 
-        # Printing initial string
-        print ("\n\nInitial string of msg_size : ", ini_string)
+
         # Convertir le message hexadécimal en un entier
         message_int = int(ini_string, 16)
         # Utiliser l'opérateur bit à bit AND pour vérifier le bit de poids fort
         msb = message_int & 0x80
         # Si le bit de poids fort est 1, l'afficher
         if msb:
-            print("Le bit de poids fort est 1")
+            # Printing initial string
+            print ("msg_size : ", ini_string, " bit de poid fort : 1")
         else:
-            print("Le bit de poids fort est 0")
+            print ("msg_size : ", ini_string, " bit de poid fort : 0")
 
     #Methods
     #Getters et setters
