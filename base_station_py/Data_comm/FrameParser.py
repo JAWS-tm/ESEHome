@@ -29,7 +29,7 @@ class FrameParser :
             chaine = self.message[x*2]+self.message[(x*2)+1]
             tab_msg.append(chaine)
         print("\n\n")
-        # print(tab_msg)
+        print("tab_msg :",tab_msg)
 
         self.begin = tab_msg[0]
         self.data_size = tab_msg[1]
