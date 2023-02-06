@@ -9,7 +9,7 @@
 	require 'inc/db.php';
 
 	// Recherche dans la bdd les utilisateurs non admin
-	$sqlQueryAffiche = 'SELECT id, Pseudo, Admin FROM utilisateur WHERE Admin = 0 ORDER BY Pseudo';
+	$sqlQueryAffiche = 'SELECT id, pseudo, admin FROM users WHERE admin = 0 ORDER BY pseudo';
 	$recipesStatementAffiche = $pdo->prepare($sqlQueryAffiche);
 	$recipesStatementAffiche->execute();
 	$users = $recipesStatementAffiche->fetchAll();
@@ -19,7 +19,7 @@
 		
 		$data = $_POST['datapromo'];
 		// L'utilisateur sélectionné sera up en admin
-		$sqlQueryPromot = 'UPDATE utilisateur SET Admin = 1 WHERE id="'.$data.'"';
+		$sqlQueryPromot = 'UPDATE users SET admin = 1 WHERE id="'.$data.'"';
 		$recipesStatementPromot = $pdo->prepare($sqlQueryPromot);
 		$recipesStatementPromot->execute() or exit(print_r($recipesStatementPromot->errorInfo()));
 		
@@ -52,8 +52,8 @@
 					<form action="" method="post">
 						<tr>
 							<td><?php echo $recipe->id;?></td>
-							<td><?php echo $recipe->Pseudo;?></td>
-							<td><?php echo $recipe->Admin;?></td>
+							<td><?php echo $recipe->pseudo;?></td>
+							<td><?php echo $recipe->admin;?></td>
 
 							<td><input type="hidden" name="datapromo" value="<?php echo $recipe->id; ?>">
 								<button type="submit" name="formpromouser">Promouvoir le compte</button>

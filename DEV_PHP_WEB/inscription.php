@@ -11,11 +11,11 @@ if(!empty($_POST)){
     require_once 'inc/db.php';
 
     if(empty($_POST['username']) || !preg_match('/^[a-zA-Z0-9_]+$/',$_POST['username'])){
-        $errors['username'] = "Votre pseudo n'est pas valide";
+        $errors['username'] = "Votre pseudo n'est pas valide (charactères autorisés : minuscules, majuscules, nombres et _)";
     }else{
-        $req = $pdo->prepare('SELECT id FROM utilisateur WHERE Pseudo = ?');
+        $req = $pdo->prepare('SELECT id FROM users WHERE pseudo = ?');
         $username = htmlspecialchars($_POST['username']);
-        $req->execute([$username]) or exit(print_r($recipesStatementEfface->errorInfo()));;
+        $req->execute([$username]) or exit(print_r($req->errorInfo()));;
         $user = $req->fetch();
         if($user){
             $errors['username'] = 'Ce pseudo est déjà pris !!';
@@ -30,16 +30,12 @@ if(!empty($_POST)){
         $errors['mail'] = "Vous devez entrer un mail valide";
     }
 
-    $req = $pdo->prepare('SELECT * FROM utilisateur WHERE Admin = 1');
-    $req->execute();
-    $admin = $req->fetchAll();
-    $admin = empty($admin) ? '1' : '0';
 
     if(empty($errors)){
-        $req = $pdo->prepare("INSERT INTO utilisateur SET Pseudo = ?, MotDePasse = ?, Admin = ?");
+        $req = $pdo->prepare("INSERT INTO users SET pseudo = ?, password = ?, admin = 0");
         $password = password_hash($_POST['password'], PASSWORD_BCRYPT);
         $username = htmlspecialchars($_POST['username']);
-        $req->execute([$username, $password, $admin]);
+        $req->execute([$username, $password]);
 
         header("Location: connexion.php");
 

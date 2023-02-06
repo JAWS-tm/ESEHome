@@ -16,9 +16,9 @@
 	    $dest = "DDDDDD0$id";
 	}
 	
-	// On vérifie si l'objet est bien connecté 
+	// On vï¿½rifie si l'objet est bien connectï¿½ 
 	// solution bancale
-	$req = $pdo->prepare('SELECT * FROM messages WHERE emetteur = ?');
+	$req = $pdo->prepare('SELECT * FROM message WHERE transmitter = ?');
 	$req->execute([$dest]);
 	$result = $req->fetchAll(PDO::FETCH_ASSOC);
 	if($result){
@@ -29,48 +29,48 @@
 	
 	
 	switch ($id){
-	    
+
 	    case 1:
-	        $req = $pdo->prepare('SELECT * FROM messages WHERE emetteur = ? AND type_messages = "PARAMETER_WRITE" ');
+	        $req = $pdo->prepare('SELECT * FROM message WHERE transmitter = ? AND type_message = "PARAMETER_WRITE" ');
 	        $req->execute([$dest]);
 	        $result = $req->fetchAll(PDO::FETCH_ASSOC);
 	        if($result){
 	            foreach ($result as $value){
 	                if ($value === end($result)){
-	                    $donnée = $value['messages'];
-	                    $state = " $donnée";
+	                    $donnï¿½e = $value['messages'];
+	                    $state = " $donnï¿½e";
 	                }
 	            }
 	        }else{
 	            $state = "Pas de donnees";
 	        }
 	       break;
-	    
+
 	    case 2:
-	        $req = $pdo->prepare('SELECT * FROM messages WHERE emetteur = ? AND type_messages = "PARAMETER_WRITE" ');
+	        $req = $pdo->prepare('SELECT * FROM message WHERE transmitter = ? AND type_message = "PARAMETER_WRITE" ');
 	        $req->execute([$dest]);
 	        $result = $req->fetchAll(PDO::FETCH_ASSOC);
 	        if($result){
 	            foreach ($result as $value){
 	                if ($value === end($result)){
-	                    $donnée = $value['messages'];
-	                    $state = " $donnée";
+	                    $donnï¿½e = $value['messages'];
+	                    $state = " $donnï¿½e";
 	                }
 	            }
 	        }else{
 	            $state = "Pas de donnees";
 	        }
 	       break;
-	    
+
 	    case 3:
-	        $req = $pdo->prepare('SELECT * FROM messages WHERE emetteur = ? AND type_messages = "PARAMETER_WRITE" ');
+	        $req = $pdo->prepare('SELECT * FROM message WHERE transmitter = ? AND type_message = "PARAMETER_WRITE" ');
 	        $req->execute([$dest]);
 	        $result = $req->fetchAll(PDO::FETCH_ASSOC);
 	        if($result){
 	            foreach ($result as $value){
 	                if ($value === end($result)){
-	                    $donnée = $value['messages'];
-	                    $state = "La consomation est actuellement de $donnée";
+	                    $donnï¿½e = $value['messages'];
+	                    $state = "La consomation est actuellement de $donnï¿½e";
 	                }   
 	            }
 	        }else{
@@ -80,14 +80,14 @@
 	        break;
 	        
 	    case 4:
-	        $req = $pdo->prepare('SELECT * FROM messages WHERE emetteur = ? AND type_messages = "PARAMETER_WRITE" ');
+	        $req = $pdo->prepare('SELECT * FROM message WHERE transmitter = ? AND type_message = "PARAMETER_WRITE" ');
 	        $req->execute([$dest]);
 	        $result = $req->fetchAll(PDO::FETCH_ASSOC);
 	        if($result){
 	            foreach ($result as $value){
 	                if ($value === end($result)){
-	                    $donnée = $value['messages'];
-	                    $state = "La luminosite est actuellement de $donnée";
+	                    $donnï¿½e = $value['messages'];
+	                    $state = "La luminosite est actuellement de $donnï¿½e";
 	                }
 	            }
 	        }else{
@@ -96,14 +96,14 @@
 	        break;
 	        
 	    case 5:
-	        $req = $pdo->prepare('SELECT * FROM messages WHERE emetteur = ? AND type_messages = "PARAMETER_WRITE" ');
+	        $req = $pdo->prepare('SELECT * FROM message WHERE transmitter = ? AND type_message = "PARAMETER_WRITE" ');
 	        $req->execute([$dest]);
 	        $result = $req->fetchAll(PDO::FETCH_ASSOC);
 	        if($result){
 	            foreach ($result as $value){
 	                if ($value === end($result)){
-	                    $donnée = $value['messages'];
-	                    $state = "La temperature est actuellement de $donnée";
+	                    $donnï¿½e = $value['messages'];
+	                    $state = "La temperature est actuellement de $donnï¿½e";
 	                }
 	            }
 	        }else{
@@ -113,14 +113,14 @@
 	        break;
 	        
 	    case 6:
-	        $req = $pdo->prepare('SELECT * FROM messages WHERE emetteur = ? AND type_messages = "PARAMETER_WRITE" ');
+	        $req = $pdo->prepare('SELECT * FROM message WHERE transmitter = ? AND type_message = "PARAMETER_WRITE" ');
 	        $req->execute([$dest]);
 	        $result = $req->fetchAll(PDO::FETCH_ASSOC);
 	        if($result){
 	            foreach ($result as $value){
 	                if ($value === end($result)){
-	                    $donnée = $value['messages'];
-	                    $state = "La temperature est actuellement de $donnée";
+	                    $donnï¿½e = $value['messages'];
+	                    $state = "La temperature est actuellement de $donnï¿½e";
 	                }
 	            }
 	        }else{
@@ -130,14 +130,14 @@
 	        break;
 	        
 	    case 7:
-	        $req = $pdo->prepare('SELECT * FROM messages WHERE emetteur = ? AND type_messages = "PARAMETER_WRITE" ');
+	        $req = $pdo->prepare('SELECT * FROM message WHERE transmitter = ? AND type_message = "PARAMETER_WRITE" ');
 	        $req->execute([$dest]);
 	        $result = $req->fetchAll(PDO::FETCH_ASSOC);
 	        if($result){
 	            foreach ($result as $value){
 	                if ($value === end($result)){
-	                    $donnée = $value['messages'];
-	                    $state = "Le volet est actuellement de $donnée";
+	                    $donnï¿½e = $value['messages'];
+	                    $state = "Le volet est actuellement de $donnï¿½e";
 	                }
 	            }
 	        }else{
@@ -147,14 +147,14 @@
 	        break;
 	        
 	    case 8:
-	        $req = $pdo->prepare('SELECT * FROM messages WHERE emetteur = ? AND type_messages = "PARAMETER_WRITE" ');
+	        $req = $pdo->prepare('SELECT * FROM message WHERE transmitter = ? AND type_message = "PARAMETER_WRITE" ');
 	        $req->execute([$dest]);
 	        $result = $req->fetchAll(PDO::FETCH_ASSOC);
 	        if($result){
 	            foreach ($result as $value){
 	                if ($value === end($result)){
-	                    $donnée = $value['messages'];
-	                    $state = "L'alarme est actuellement de $donnée";
+	                    $donnï¿½e = $value['messages'];
+	                    $state = "L'alarme est actuellement de $donnï¿½e";
 	                }
 	            }
 	        }else{
@@ -164,14 +164,14 @@
 	        break;
 	        
 	    case 9:
-	        $req = $pdo->prepare('SELECT * FROM messages WHERE emetteur = ? AND type_messages = "PARAMETER_WRITE"');
+	        $req = $pdo->prepare('SELECT * FROM message WHERE transmitter = ? AND type_message = "PARAMETER_WRITE"');
 	        $req->execute([$dest]);
 	        $result = $req->fetchAll(PDO::FETCH_ASSOC);
 	        if($result){
 	            foreach ($result as $value){
 	                if ($value === end($result)){
-	                    $donnée = $value['messages'];
-	                    $state = "Le detecteur d'incendie est actuellement $donnée";
+	                    $donnï¿½e = $value['messages'];
+	                    $state = "Le detecteur d'incendie est actuellement $donnï¿½e";
 	                }
 	            }
 	        }else{
@@ -181,14 +181,14 @@
 	        break;
 	        
 	    case 10:
-	        $req = $pdo->prepare('SELECT * FROM messages WHERE emetteur = ? AND type_messages = "PARAMETER_WRITE"');
+	        $req = $pdo->prepare('SELECT * FROM message WHERE transmitter = ? AND type_message = "PARAMETER_WRITE"');
 	        $req->execute([$dest]);
 	        $result = $req->fetchAll(PDO::FETCH_ASSOC);
 	        if($result){
 	            foreach ($result as $value){
 	                if ($value === end($result)){
-	                    $donnée = $value['messages'];
-	                    $state = "Le ventilateur est actuellement $donnée";
+	                    $donnï¿½e = $value['messages'];
+	                    $state = "Le ventilateur est actuellement $donnï¿½e";
 	                }
 	            }
 	        }else{
@@ -197,15 +197,15 @@
 	        break;
 	        
 	    case 11:
-	        $req = $pdo->prepare('SELECT * FROM messages WHERE emetteur = ? AND type_messages = "PARAMETER_WRITE"');
+	        $req = $pdo->prepare('SELECT * FROM message WHERE transmitter = ? AND type_message = "PARAMETER_WRITE"');
 	        $req->execute([$dest]);
 	        $result = $req->fetchAll(PDO::FETCH_ASSOC);
 	        $state = "La papi est actuellement 0";
 	        if($result){
 	            foreach ($result as $value){
 	                if ($value === end($result)){
-	                    $donnée = $value['messages'];
-	                    $state = "Le papi est actuellement $donnée";
+	                    $donnï¿½e = $value['messages'];
+	                    $state = "Le papi est actuellement $donnï¿½e";
 	                }
 	            }
 	        }else{
@@ -214,14 +214,14 @@
 	        break;
 	        
 	    case 12:
-	        $req = $pdo->prepare('SELECT * FROM messages WHERE emetteur = ? AND type_messages = "PARAMETER_WRITE" ');
+	        $req = $pdo->prepare('SELECT * FROM message WHERE transmitter = ? AND type_message = "PARAMETER_WRITE" ');
 	        $req->execute([$dest]);
 	        $result = $req->fetchAll(PDO::FETCH_ASSOC);
 	        if($result){
 	            foreach ($result as $value){
 	                if ($value === end($result)){
-	                    $donnée = $value['messages'];
-	                    $state = "Le niveau de la cuve est de $donnée";
+	                    $donnï¿½e = $value['messages'];
+	                    $state = "Le niveau de la cuve est de $donnï¿½e";
 	                }
 	            }
 	        }else{
@@ -231,14 +231,14 @@
 	        break;
 	        
 	    case 13:
-	        $req = $pdo->prepare('SELECT * FROM messages WHERE emetteur = ? AND type_messages = "PARAMETER_WRITE" ');
+	        $req = $pdo->prepare('SELECT * FROM message WHERE transmitter = ? AND type_message = "PARAMETER_WRITE" ');
 	        $req->execute([$dest]);
 	        $result = $req->fetchAll(PDO::FETCH_ASSOC);
 	        if($result){
 	            foreach ($result as $value){
 	                if ($value === end($result)){
-	                    $donnée = $value['messages'];
-	                    $state = "La qualite de l'air est de $donnée";
+	                    $donnï¿½e = $value['messages'];
+	                    $state = "La qualite de l'air est de $donnï¿½e";
 	                }
 	            }
 	        }else{
@@ -248,14 +248,14 @@
 	        break;
 	        
 	    case 14:
-	        $req = $pdo->prepare('SELECT * FROM messages WHERE emetteur = ? AND type_messages = "PARAMETER_WRITE"');
+	        $req = $pdo->prepare('SELECT * FROM message WHERE transmitter = ? AND type_message = "PARAMETER_WRITE"');
 	        $req->execute([$dest]);
 	        $result = $req->fetchAll(PDO::FETCH_ASSOC);
 	        if($result){
 	            foreach ($result as $value){
 	                if ($value === end($result)){
-	                    $donnée = $value['messages'];
-	                    $state = "Le slider LCD est $donnée";
+	                    $donnï¿½e = $value['messages'];
+	                    $state = "Le slider LCD est $donnï¿½e";
 	                }
 	            }
 	        }else{
@@ -265,14 +265,14 @@
 	        break;
 	        
 	    case 15:
-	        $req = $pdo->prepare('SELECT * FROM messages WHERE emetteur = ? AND type_messages = "PARAMETER_WRITE" ');
+	        $req = $pdo->prepare('SELECT * FROM message WHERE transmitter = ? AND type_message = "PARAMETER_WRITE" ');
 	        $req->execute([$dest]);
 	        $result = $req->fetchAll(PDO::FETCH_ASSOC);
 	        if($result){
 	            foreach ($result as $value){
 	                if ($value === end($result)){
-	                    $donnée = $value['messages'];
-	                    $state = "L'écran tactile est $donnée";
+	                    $donnï¿½e = $value['messages'];
+	                    $state = "L'ï¿½cran tactile est $donnï¿½e";
 	                }
 	            }
 	        }else{
@@ -282,14 +282,14 @@
 	        break;
 	        
 	    case 16:
-	        $req = $pdo->prepare('SELECT * FROM messages WHERE emetteur = ? AND type_messages = "PARAMETER_WRITE" ');
+	        $req = $pdo->prepare('SELECT * FROM message WHERE transmitter = ? AND type_message = "PARAMETER_WRITE" ');
 	        $req->execute([$dest]);
 	        $result = $req->fetchAll(PDO::FETCH_ASSOC);
 	        if($result){
 	            foreach ($result as $value){
 	                if ($value === end($result)){
-	                    $donnée = $value['messages'];
-	                    $state = "Il est $donnée";
+	                    $donnï¿½e = $value['messages'];
+	                    $state = "Il est $donnï¿½e";
 	                }
 	            }
 	        }else{
@@ -301,18 +301,17 @@
 	
 
 
-	$sqlinfo ="SELECT nom_type, date_creation, state, nom, nom_groupe
-     FROM objet as OB
-     INNER JOIN objet_groupe as OG ON OG.id_objet = OB.id
-     INNER JOIN groupe as GR ON GR.id = OG.id_groupe
-     INNER JOIN type as TY ON TY.id = OB.type_id
-     INNER JOIN parametres as PA
-     WHERE OB.id = '$id'";
+	$sqlinfo ="SELECT GR.name as group_name, creation_date, state, OB.name as object_name
+     FROM object as OB
+     INNER JOIN group_objects as OG ON OG.id_object = OB.id
+     INNER JOIN groups as GR ON GR.id = OG.id_group
+     INNER JOIN object_type as TY ON TY.id = OB.type_id
+     WHERE OB.id = ?";
     
-	//faut recup l'id de l'objet à la place du 1
+	//faut recup l'id de l'objet ï¿½ la place du 1
 	
 	$reqinfo = $pdo->prepare($sqlinfo);
-    $reqinfo->execute();
+    $reqinfo->execute([$id]);
 
     $result = $reqinfo->fetch();
 
@@ -346,11 +345,11 @@ if(!empty($_POST)){
     }
     
     if(empty($_POST['Permanent'])){
-        $errors['Permanent'] = "Un paramètre n'est pas valide";
+        $errors['Permanent'] = "Un paramï¿½tre n'est pas valide";
     }
         
     if(empty($errors)){
-       $req = $pdo->prepare("INSERT INTO messages SET destinataire = ?, emetteur = ?, parametre_id = ?, message = ?, date = ?, permanent = ?, type_messages = ?");
+       $req = $pdo->prepare("INSERT INTO messages SET recipient = ?, transmitter = ?, parameter_id = ?, message = ?, permanent = ?, type_message = ?");
        $destinataire = htmlspecialchars($_POST['Destinataire']);
        $emetteur = htmlspecialchars($_POST['Emetteur']);
        $Paramettre_id = htmlspecialchars($_POST['Paramettre_id']);
@@ -378,10 +377,10 @@ if(!empty($_POST)){
             <img src="img/chambre.jpg">
           </div>
           <div class="card_body">
-              <div class="card_cagtegory"><?php echo $result->nom_type;?></div>
-              <h2 class="card_title">Gerer <?php echo $result->nom_type;?></h2>
+              <div class="card_cagtegory"><?php echo $result->group_name;?></div>
+              <h2 class="card_title">Gerer <?php echo $result->object_name;?></h2>
               <div class="card_element">
-                <?php if($connect == 1){ ?>
+                <?php if($result->state){ ?>
               			<p class="connect">Objet connecte</p>
                <?php }else{ ?>
                    <p class="disconnect">Objet deconnecte</p>
@@ -413,29 +412,29 @@ if(!empty($_POST)){
       </article>
 	</div>
       <div class = "messages">  
-          <div class = "reçu" id="recu" style="display: block;">
+          <div class = "reï¿½u" id="recu" style="display: block;">
           		<p> Dernier messages recu : <?php
-                  	                                  $req = $pdo->prepare('SELECT * FROM messages WHERE destinataire = ?');
+                  	                                  $req = $pdo->prepare('SELECT * FROM message WHERE recipient = ?');
                                                       $req->execute([$dest]);
                                                       $result = $req->fetchAll(PDO::FETCH_ASSOC);
                                                       if($result){
                                                           foreach ($result as $value){
                                                               if ($value === end($result))
-                                                                  echo '<li>messages ('.$value['id'].') Destinataire : '.$value['destinataire'].'/ Date : '.$value['date'].'/ type de messages : '.$value['type_messages'].'/ Permanent : '.$value['permanent'].'</li>'; 
+                                                                  echo '<li>messages ('.$value['id'].') Destinataire : '.$value['recipient'].'/ Date : '.$value['date'].'/ type de messages : '.$value['type_message'].'/ Permanent : '.$value['permanent'].'</li>';
                                                           }
                                                       }else{
                                                           echo 'Pas de messages recu';
                                                       }?></p>
           </div>
-          <div class = "envoyé" id="envoye" style="display: block;">
+          <div class = "envoyï¿½" id="envoye" style="display: block;">
                 <p> Dernier messages envoye : <?php
-              	                                  $req = $pdo->prepare('SELECT * FROM messages WHERE emetteur = ?');
+              	                                  $req = $pdo->prepare('SELECT * FROM message WHERE transmitter = ?');
                                                   $req->execute([$dest]);
                                                   $result = $req->fetchAll(PDO::FETCH_ASSOC);
                                                   if($result){
                                                       foreach ($result as $value){
                                                           if ($value === end($result))
-                                                              echo '<li>messages ('.$value['id'].') Destinataire : '.$value['destinataire'].'/ Date : '.$value['date'].'/ type de messages : '.$value['type_messages'].'/ Permanent : '.$value['permanent'].'</li>'; 
+                                                              echo '<li>messages ('.$value['id'].') Destinataire : '.$value['recipient'].'/ Date : '.$value['date'].'/ type de messages : '.$value['type_message'].'/ Permanent : '.$value['permanent'].'</li>';
                                                       }
                                                   }else{
                                                       echo 'Pas de messages envoye';
@@ -443,30 +442,30 @@ if(!empty($_POST)){
           </div>
           <button class="voir" id="btn"  style="display: block;">Voir tous les messagess</button>
           <button class="voir" id="Fermer"  style="display: none;">Reduire</button>
-          <ul class="envoyé" id="envoyetout" style="display: none;">
+          <ul class="envoyï¿½" id="envoyetout" style="display: none;">
           <?php 
-          $req = $pdo->prepare('SELECT * FROM messages WHERE emetteur = ?');
+          $req = $pdo->prepare('SELECT * FROM message WHERE transmitter = ?');
           $req->execute([$dest]);
           $result = $req->fetchAll(PDO::FETCH_ASSOC);
           if($result){
               echo '<li>messages envoyes</li>';
               foreach ($result as $value){
-                echo '<li>messages ('.$value['id'].') Destinataire : '.$value['destinataire'].'/ Date : '.$value['date'].'/ type de messages : '.$value['type_messages'].'/ Permanent : '.$value['permanent'].'</li>'; 
+                echo '<li>messages ('.$value['id'].') Destinataire : '.$value['recipient'].'/ Date : '.$value['date'].'/ type de messages : '.$value['type_message'].'/ Permanent : '.$value['permanent'].'</li>';
               }
           }else{
               echo '<li>Pas de messages envoye</li>';
           }?>    
           </ul>
           
-          <ul class="reçu" id="recutout" style="display: none;">
+          <ul class="reï¿½u" id="recutout" style="display: none;">
           <?php 
-          $req = $pdo->prepare('SELECT * FROM messages WHERE destinataire = ?');
+          $req = $pdo->prepare('SELECT * FROM message WHERE recipient = ?');
           $req->execute([$dest]);
           $result = $req->fetchAll(PDO::FETCH_ASSOC);
           if($result){
               echo '<li>messages recu</li>';
               foreach ($result as $value){
-                echo '<li>messages ('.$value['id'].') Destinataire : '.$value['destinataire'].'/ Date : '.$value['date'].'/ type de messages : '.$value['type_messages'].'/ Permanent : '.$value['permanent'].'</li>'; 
+                echo '<li>messages ('.$value['id'].') Destinataire : '.$value['recipient'].'/ Date : '.$value['date'].'/ type de messages : '.$value['type_message'].'/ Permanent : '.$value['permanent'].'</li>';
               }
           }else{
               echo '<li>Pas de messages recu</li>';

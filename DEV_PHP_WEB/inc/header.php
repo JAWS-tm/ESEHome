@@ -8,7 +8,7 @@
     		    <a class="header_logo" href="mesobjets.php"><img src="img/Logo_ESEHome.PNG"></a>
 				<nav class="menu">
 					<a class="header_active" href="equipements.php">Les equipements</a>
-					<?php if($_SESSION['auth']->Admin == 1) {?>
+					<?php if($_SESSION['auth']->admin == 1) {?>
 						<a class="header_active" href="admin.php">Le coin de l'admin</a>
 					<?php }?>
 					<a class="header_active" href="moncompte.php">Mon compte</a>

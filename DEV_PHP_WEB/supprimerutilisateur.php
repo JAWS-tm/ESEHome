@@ -9,7 +9,7 @@
 	require 'inc/db.php';
 
 	// Recherche dans la bdd les utilisateurs non admin
-	$sqlQueryAffiche = 'SELECT id, Pseudo, Admin FROM utilisateur WHERE Admin = 0 ORDER BY Pseudo';
+	$sqlQueryAffiche = 'SELECT id, pseudo, admin FROM users WHERE admin = 0 ORDER BY pseudo';
 	$recipesStatementAffiche = $pdo->prepare($sqlQueryAffiche);
 	$recipesStatementAffiche->execute();
 	$users = $recipesStatementAffiche->fetchAll();
@@ -18,7 +18,7 @@
 	
 		$data = $_POST['datadelet'];
 		// Supprime les utilisateurs dans la bdd
-		$sqlQueryEfface = 'DELETE FROM utilisateur WHERE id="'.$data.'"';
+		$sqlQueryEfface = 'DELETE FROM users WHERE id="'.$data.'"';
 		$recipesStatementEfface = $pdo->prepare($sqlQueryEfface);
 		$recipesStatementEfface->execute() or exit(print_r($recipesStatementEfface->errorInfo()));
 		
@@ -52,8 +52,8 @@
 					<form action="" method="post">
 						<tr>
 							<td><?php echo $recipe->id;?></td>
-							<td><?php echo $recipe->Pseudo;?></td>
-							<td><?php echo $recipe->Admin;?></td>
+							<td><?php echo $recipe->pseudo;?></td>
+							<td><?php echo $recipe->admin;?></td>
 
 							<td><input type="hidden" name="datadelet" value="<?php echo $recipe->id; ?>">
 								<button type="submit" name="formdeleteuser">Supprimer le compte</button>

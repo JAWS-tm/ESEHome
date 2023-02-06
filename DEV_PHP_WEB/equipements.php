@@ -10,7 +10,7 @@
     include("inc/db.php");
 
     
-    $sqladmin = "SELECT admin FROM utilisateur as US WHERE US.id =".$_SESSION['auth']->id;;
+    $sqladmin = "SELECT admin FROM users as US WHERE US.id =".$_SESSION['auth']->id;;
 
     $reqadmin = $pdo->prepare($sqladmin);
     $reqadmin->execute();
@@ -20,37 +20,40 @@
       
     if ($isadmin == 0){
     //recuprer les objets propres  chaque groupe et leurs paramtres    
-        $sqlitemuser ="SELECT id_objet, nom_groupe, nom_type,GR.id  FROM utilisateur AS UT
-        INNER JOIN groupe_utilisateur AS GU ON GU.id_utilisateur = UT.id
-        INNER JOIN groupe AS GR ON GR.id = GU.id_groupe
-        INNER JOIN objet_groupe as OG ON OG.id_groupe = GR.id
-        INNER JOIN objet as OB ON OB.id = OG.id_objet
-        INNER JOIN type as TY ON TY.id = OB.type_id
-        WHERE UT.id =".$_SESSION['auth']->id;
+        $sqlitemuser = "SELECT id_object, GR.id as id_group, GR.name as group_name, TY.name as type_name
+        FROM users as US
+        INNER JOIN users_groups as GU ON GU.id_user = US.id
+        INNER JOIN groups as GR ON GR.id = GU.id_group
+        INNER JOIN group_objects as OG ON OG.id_group = GR.id
+        INNER JOIN object as OB ON OB.id = OG.id_object
+        INNER JOIN object_type as TY ON TY.id = OB.type_id
+        WHERE US.id =".$_SESSION['auth']->id;
+
         $requser = $pdo->prepare($sqlitemuser);
         $requser->execute();
         $resultats_item = $requser->fetchAll(PDO::FETCH_ASSOC);
     //rcuprer les groupes d'objets auxquels l'utilisateur a accs
-        $sqlgrpuser ="SELECT nom_groupe,GR.id  FROM utilisateur AS UT
-        INNER JOIN groupe_utilisateur AS GU ON GU.id_utilisateur = UT.id
-        INNER JOIN groupe AS GR ON GR.id = GU.id_groupe
+        $sqlgrpuser = "SELECT GR.id, GR.name FROM users AS UT
+        INNER JOIN users_groups AS GU ON GU.id_user = UT.id
+        INNER JOIN groups AS GR ON GR.id = GU.id_group
         WHERE UT.id =".$_SESSION['auth']->id;
+
         $req = $pdo->prepare($sqlgrpuser);
         $req->execute();
         $resultats_groupes = $req->fetchAll(PDO::FETCH_ASSOC);
     }
     else{
         //recuprer les objets propres  chaque groupe et leurs paramtres    
-        $sqlitemuser = "SELECT id_objet, nom_groupe, nom_type, id_groupe FROM objet as OB
-        INNER JOIN type as TY ON TY.id = OB.type_id
-        INNER JOIN objet_groupe as OG ON OG.id_objet = OB.id
-        INNER JOIN groupe as GR ON GR.id = OG.id_groupe";
+        $sqlitemuser = "SELECT id_object, GR.id as id_group, GR.name as group_name, TY.name as type_name, OB.name as object_name FROM object as OB
+        INNER JOIN object_type as TY ON TY.id = OB.type_id
+        INNER JOIN group_objects as OG ON OG.id_object = OB.id
+        INNER JOIN groups as GR ON GR.id = OG.id_group";
 
         $requser = $pdo->prepare($sqlitemuser);
         $requser->execute();
         $resultats_item = $requser->fetchAll(PDO::FETCH_ASSOC);
 
-        $sqlgrpuser ="SELECT nom_groupe,id FROM groupe";
+        $sqlgrpuser ="SELECT name,id FROM groups";
         $req = $pdo->prepare($sqlgrpuser);
         $req->execute();
         $resultats_groupes = $req->fetchAll(PDO::FETCH_ASSOC);
@@ -78,7 +81,7 @@
                     array_push($new_resultats_item, $value_resultats_item);
                 }
                 else{
-                    if ($value_resultats_item['id_groupe'] == $filter)
+                    if ($value_resultats_item['id_group'] == $filter)
                     array_push($new_resultats_item, $value_resultats_item);
                 }
             }
@@ -115,7 +118,7 @@
     <?php 
     if (isset($_GET["filter"])){
         if($_GET["filter"] != ""){
-            echo $resultats_groupes[array_search($_GET["filter"], array_column($resultats_groupes, 'id'))]['nom_groupe'];
+            echo $resultats_groupes[array_search($_GET["filter"], array_column($resultats_groupes, 'id'))]['name'];
         }
         else{
             echo "Tous les équipements";
@@ -136,7 +139,7 @@
                             <?php
                             foreach($resultats_groupes as $key => $value_groupes) {
                             ?>
-                            <option value=<?php echo $value_groupes['id']?>><?php echo $value_groupes['nom_groupe']?></option>
+                            <option value=<?php echo $value_groupes['id']?>><?php echo $value_groupes['name']?></option>
                         <?php } ?>
                     </select>
                     <div class="submit-search">
@@ -149,7 +152,7 @@
                     if($_GET["filter"] != ""){?>
                         <div class="filter-second-row">
                             <a href="equipements.php" class="stop-filter filter-second-row" >
-                            <i class="fa-solid fa-trash icon-filter"></i> <?php echo $resultats_groupes[array_search($_GET["filter"], array_column($resultats_groupes, 'id'))]['nom_groupe'];
+                            <i class="fa-solid fa-trash icon-filter"></i> <?php echo $resultats_groupes[array_search($_GET["filter"], array_column($resultats_groupes, 'id'))]['name'];
                             ?></a>
                         </div>
                         <?php
@@ -170,15 +173,15 @@
         ?>
         <article class="card">
             <div class="card_thumb">
-                <img src=<?= "img/" . $value['nom_type'] . ".jpg"?>>
+                <img src=<?= "img/" . $value['type_name'] . ".jpg"?>>
             </div>
             <div class="card_body">
-                <div class="card_cagtegory"><a><?php echo $value['nom_groupe'] ?></a></div>
-                <h2 class="card_title"><?php echo $value['nom_type'];?></h2>
+                <div class="card_cagtegory"><a><?php echo $value['group_name'] ?></a></div>
+                <h2 class="card_title"><?php echo $value['object_name'];?></h2>
                 <div class="card_subtitle">En savoir +</div> 
                 <div class="card_element">
-                    <a href="#"><?php echo "Idententifiant de l'objet : ".$value['id_objet'];?></a></br>
-                    <a href="ficheobjet.php?param=<?php echo $value['id_objet'];?>">CLIQUEZ ICI</a> 
+                    <a href="#"><?php echo "Idententifiant de l'objet : ".$value['id_object'];?></a></br>
+                    <a href="ficheobjet.php?param=<?php echo $value['id_object'];?>">CLIQUEZ ICI</a> 
                 </div>          
             </div>
         </article>

@@ -4,18 +4,18 @@
     require 'inc/header.php';
     require 'inc/db.php';
     
-    //récupère les infos des objets
-    $sqladm = "SELECT id_objet, nom_groupe, nom_type, date_creation, state FROM objet as OB
-		INNER JOIN type as TY ON TY.id = OB.type_id
-		INNER JOIN objet_groupe as OG ON OG.id_objet = OB.id
-		INNER JOIN groupe as GR ON GR.id = OG.id_groupe";
+    //rï¿½cupï¿½re les infos des objets
+    $sqladm = "SELECT id_object, TY.name as type_name, GR.name as group_name, creation_date, state FROM object as OB
+		INNER JOIN object_type as TY ON TY.id = OB.type_id
+		INNER JOIN group_objects as OG ON OG.id_object = OB.id
+		INNER JOIN groups as GR ON GR.id = OG.id_group";
     
     $reqadm = $pdo->prepare($sqladm);
     $reqadm->execute();
     $result = $reqadm->fetchAll(PDO::FETCH_ASSOC);
     
-    //récupère les infos des utilisateurs
-    $user = "SELECT * FROM utilisateur ORDER BY id ASC";
+    //rï¿½cupï¿½re les infos des utilisateurs
+    $user = "SELECT * FROM users ORDER BY id ASC";
     $utilisateur = $pdo->prepare($user);
     $utilisateur->execute();
     $users = $utilisateur->fetchAll(PDO::FETCH_ASSOC);
@@ -52,10 +52,10 @@
 				    	{?>
 				        <tbody>
 				        	<tr>
-				        		<td><?php echo $value['id_objet'];?></td>
-					            <td><?php echo $value['nom_groupe'];?></td>
-					            <td><?php echo $value['nom_type'];?></td>
-					            <td><?php echo $value['date_creation'];?></td>
+				        		<td><?php echo $value['id_object'];?></td>
+					            <td><?php echo $value['group_name'];?></td>
+					            <td><?php echo $value['type_name'];?></td>
+					            <td><?php echo $value['creation_date'];?></td>
 					            <td><?php echo $value['state'];?></td>    
 				        	</tr>
 				     	</tbody>
@@ -87,8 +87,8 @@
 				        <tbody>
 				        	<tr>
 				        		<td><?php echo $value2['id'];?></td>
-					            <td><?php echo $value2['Pseudo'];?></td>
-					            <td><?php echo $value2['Admin'];?></td>
+					            <td><?php echo $value2['pseudo'];?></td>
+					            <td><?php echo $value2['admin'];?></td>
 				        	</tr>
 				     	</tbody>
 					   <?php } ?>

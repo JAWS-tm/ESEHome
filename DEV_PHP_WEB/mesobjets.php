@@ -8,9 +8,10 @@
     require 'inc/header.php';
     require 'inc/db.php';
 
-    if ($_SESSION['auth']->Admin == 1) {
+    // TODO : refaire cette partie un peu chelou et inutile
+    if ($_SESSION['auth']->admin == 1) {
       $admin = true;
-      $sqlgrpuser ="SELECT * FROM groupe_utilisateur WHERE id_utilisateur =1";
+      $sqlgrpuser ="SELECT * FROM users_groups WHERE id_user =1";
       $req = $pdo->prepare($sqlgrpuser);
       $req->execute();
       $resultat = $req->fetchAll(PDO::FETCH_ASSOC);
@@ -20,16 +21,16 @@
     else{
 
       $admin = false;
-      $sqlgrpuser ="SELECT * FROM groupe_utilisateur WHERE id_utilisateur =".$_SESSION['auth']->id;
+      $sqlgrpuser ="SELECT * FROM users_groups WHERE id_user =".$_SESSION['auth']->id;
       $req = $pdo->prepare($sqlgrpuser);
       $req->execute();
       $resultat = $req->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    $sqladm = "SELECT id_objet, nom_groupe, nom_type FROM objet as OB
-        INNER JOIN type as TY ON TY.id = OB.type_id
-        INNER JOIN objet_groupe as OG ON OG.id_objet = OB.id
-        INNER JOIN groupe as GR ON GR.id = OG.id_groupe";      
+    $sqladm = "SELECT id_object, GR.name as group_name, TY.name as type_name FROM object as OB
+        INNER JOIN object_type as TY ON TY.id = OB.type_id
+        INNER JOIN group_objects as OG ON OG.id_object = OB.id
+        INNER JOIN groups as GR ON GR.id = OG.id_group";
 
 
     $reqadm = $pdo->prepare($sqladm);
@@ -62,7 +63,7 @@
     <?php endif ?>
     <?php 
     foreach ($resultat as $value) {
-        if($value['id_groupe'] == '1' || $admin == true){?>
+        if($value['id_group'] == '1' || $admin == true){?>
       <article class="card">
         <div class="card_thumb"><img src="img/chambre.jpg"></div>
         <div class="card_body">
@@ -72,8 +73,8 @@
           <div class="card_element">
             <?php 
             foreach($result as $value){
-              if($value['nom_groupe'] == 'CHAMBRE'):?>
-                <a href="ficheobjet.php?param=<?php echo $value['id_objet'];?>"><?php echo $value['nom_type']."<br>"?></a>
+              if($value['group_name'] == 'CHAMBRE'):?>
+                <a href="ficheobjet.php?param=<?php echo $value['id_object'];?>"><?php echo $value['type_name']."<br>"?></a>
               <?php endif;
             }?>    
           </div>
@@ -85,7 +86,7 @@
 
     <?php
     foreach ($resultat as $value) {
-        if ($value['id_groupe'] == '2' || $admin == true){ ?>
+        if ($value['id_group'] == '2' || $admin == true){ ?>
           <article class="card">
             <div class="card_thumb"><img src="img/cuisine.jpg"></div>
             <div class="card_body">
@@ -95,8 +96,8 @@
               <div class="card_element">
                 <?php 
                 foreach($result as $value){
-                  if($value['nom_groupe'] == 'CUISINE'):?>
-                    <a href="ficheobjet.php?param=<?php echo $value['id_objet'];?>"><?php echo $value['nom_type']."<br>"?></a>
+                  if($value['group_name'] == 'CUISINE'):?>
+                    <a href="ficheobjet.php?param=<?php echo $value['id_object'];?>"><?php echo $value['type_name']."<br>"?></a>
                   <?php endif;
                 }?>    
               </div>
@@ -107,7 +108,7 @@
   
     <?php
     foreach ($resultat as $value) {
-        if($value['id_groupe'] == '3' || $admin == true){?>
+        if($value['id_group'] == '3' || $admin == true){?>
       <article class="card">
         <div class="card_thumb"><img src="img/salon.jpg"></div>
         <div class="card_body">
@@ -117,8 +118,8 @@
           <div class="card_element">
             <?php 
             foreach($result as $value){
-              if($value['nom_groupe'] == 'SALON'):?>
-                <a href="ficheobjet.php?param=<?php echo $value['id_objet'];?>"><?php echo $value['nom_type']."<br>"?></a>
+              if($value['group_name'] == 'SALON'):?>
+                <a href="ficheobjet.php?param=<?php echo $value['id_object'];?>"><?php echo $value['type_name']."<br>"?></a>
               <?php endif;
             }?>    
           </div>
@@ -129,7 +130,7 @@
 
     <?php 
     foreach ($resultat as $value) {
-        if ($value['id_groupe'] == '4' || $admin == true){ ?>
+        if ($value['id_group'] == '4' || $admin == true){ ?>
           <article class="card">
             <div class="card_thumb"><img src="img/exetieur.jpg"></div>
             <div class="card_body">
@@ -139,8 +140,8 @@
               <div class="card_element">
                 <?php 
                 foreach($result as $value){
-                  if($value['nom_groupe'] == 'EXTERIEUR'):?>
-                    <a href="ficheobjet.php?param=<?php echo $value['id_objet'];?>"><?php echo $value['nom_type']."<br>"?></a>
+                  if($value['group_name'] == 'EXTERIEUR'):?>
+                    <a href="ficheobjet.php?param=<?php echo $value['id_object'];?>"><?php echo $value['type_name']."<br>"?></a>
                   <?php endif;
                 }?>    
               </div>

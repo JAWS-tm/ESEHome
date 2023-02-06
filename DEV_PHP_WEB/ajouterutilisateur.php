@@ -17,7 +17,7 @@
 	        $pseudoajoutlength = strlen($pseudoajout);
 	        if($pseudoajoutlength <= 255) {
 	        	// Récupération des informations de l'utilisateur
-	            $reqpseudoajout = $pdo->prepare("SELECT * FROM utilisateur WHERE Pseudo = ?");
+	            $reqpseudoajout = $pdo->prepare("SELECT * FROM users WHERE pseudo = ?");
 	            $reqpseudoajout->execute(array($pseudoajout));
 	            $pseudoajoutexist = $reqpseudoajout->rowCount();
 	            if ($pseudoajoutexist == 0) {
@@ -25,11 +25,10 @@
 	                    
 	                    // hash du mot de passe
 	                    $mdpajout=password_hash($_POST['passwordajout'], PASSWORD_DEFAULT);
-	                    $admin = 0;
 	                    
 	                    // Insert dans la bdd
-	                    $reqinsertajout = $pdo->prepare("INSERT INTO utilisateur SET Pseudo = ?, MotDePasse = ?, Admin = ?");
-	                    $reqinsertajout->execute(array($pseudoajout, $mdpajout, $admin));
+	                    $reqinsertajout = $pdo->prepare("INSERT INTO users SET pseudo = ?, password = ?, admin = 0");
+	                    $reqinsertajout->execute(array($pseudoajout, $mdpajout));
 
 	                    
                    		header("Location: ajouterutilisateur.php");

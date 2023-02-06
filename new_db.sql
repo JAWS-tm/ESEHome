@@ -10,7 +10,7 @@ CREATE TABLE IF NOT EXISTS `users` (
     `pseudo` varchar(255) NOT NULL,
     `password` varchar(255) NOT NULL,
     `creation_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    `admin` bit NOT NULL,
+    `admin` bit NOT NULL DEFAULT '0',
 
     PRIMARY KEY (id)
 );

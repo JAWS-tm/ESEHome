@@ -4,7 +4,13 @@
     session_start();
     include("inc/db.php");
   
-    $msg = $pdo->query('SELECT * FROM messages ORDER BY id DESC');
+    $msg = $pdo->query("SELECT MSG.id, MSG.data, MSG.date, MSG.permanent, OBr.name as recipient, OBt.name as transmitter, OBr.physical_id as recipient_id, OBt.physical_id as transmitter_id, PARAM.name as param_name, PARAM.id as param_id, MT.name as msg_type FROM message as MSG 
+    INNER JOIN object as OBr ON OBr.id = MSG.recipient 
+    INNER JOIN object as OBt ON OBt.id = MSG.transmitter
+    INNER JOIN parameters as PARAM ON PARAM.id = MSG.parameter_id    
+    INNER JOIN message_type as MT ON MT.id = MSG.type_message    
+    WHERE MSG.history = 0
+    ORDER BY id DESC");
     $messages = $msg->fetchAll(PDO::FETCH_ASSOC);
 		
 ?>
@@ -42,14 +48,14 @@
 				    	{?>
 				        <tbody>
 				        	<tr>
-					            <td><?php echo $value['id'];?></td>
-					            <td><?php echo $value['destinataire'];?></td>
-					            <td><?php echo $value['emetteur'];?></td>
-					            <td><?php echo $value['parametre_id'];?></td>
-					            <td><?php echo $value['message'];?></td>
-					            <td><?php echo $value['date'];?></td>
-					            <td><?php echo $value['permanent'];?></td>
-					            <td><?php echo $value['type_messages'];?></td>
+					            <td><?= $value['id'] ?></td>
+					            <td><?= $value['recipient']." (#".$value['recipient_id'].")" ?></td>
+					            <td><?= $value['transmitter']." (#".$value['transmitter_id'].")" ?></td>
+					            <td><?= $value['param_name']." (#".$value['param_id'].")" ?></td>
+					            <td><?= $value['data'] ?></td>
+					            <td><?= $value['date'] ?></td>
+					            <td><?= $value['permanent'] ?></td>
+					            <td><?= $value['msg_type'] ?></td>
 				        	</tr>
 				     	</tbody>
 				        <?php

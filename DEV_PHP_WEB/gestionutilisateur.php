@@ -9,7 +9,7 @@
 	require 'inc/db.php';
 
 	// Affichage de tous les utilisateurs
-	$sqlQueryAffiche = 'SELECT id, Pseudo FROM utilisateur WHERE Admin = 0 ORDER BY Pseudo';
+	$sqlQueryAffiche = 'SELECT id, pseudo FROM users WHERE admin = 0 ORDER BY pseudo';
 	$recipesStatementAffiche = $pdo->prepare($sqlQueryAffiche);
 	$recipesStatementAffiche->execute() or exit(print_r($recipesStatementAffiche->errorInfo()));
 	$users = $recipesStatementAffiche->fetchAll();
@@ -21,14 +21,15 @@
 	
 		$data = $_POST['datagrp']; // ID de l'utilisateur
 		$cgo = $_POST['choixgroupeobjet']; // Groupe
-		$sqlverifdoublon = "SELECT COUNT(*) FROM groupe_utilisateur WHERE id_utilisateur =".$data." AND id_groupe = ".$cgo;
+
+		$sqlverifdoublon = "SELECT COUNT(*) FROM users_groups WHERE id_user =:verifdata AND id_group = :verifcgo";
 		$reqverifInsert = $pdo->prepare($sqlverifdoublon);
 	 	$reqverifInsert->execute();
 		$verifresult = $reqverifInsert->fetchAll(PDO::FETCH_ASSOC);
 		$isverified = array_column($verifresult, 'COUNT(*)');
 	 	if ($isverified == [0]) {
 	 	 	// Insert du groupe dans la bdd 
-			$sqlGrpInsert = "INSERT INTO groupe_utilisateur (id_utilisateur, id_groupe) VALUES (".$data.",".$cgo.")";
+			$sqlGrpInsert = "INSERT INTO users_groups (id_user, id_group) VALUES (?, ?)";
 		 	$reqGrpInsert = $pdo->prepare($sqlGrpInsert);
 		 	$reqGrpInsert->execute();
 	 	 } 
@@ -44,7 +45,7 @@
 
 		// Supprimer de la bdd 
 
-		$sql = "DELETE FROM groupe_utilisateur WHERE id_utilisateur = :datasupp AND id_groupe = :cgo";
+		$sql = "DELETE FROM users_groups WHERE id_user = :datasupp AND id_group = :cgo";
 
 	 	$reqGrpSuppr = $pdo->prepare($sql);
 	 	$reqGrpSuppr->execute(array(':datasupp'=>$datasupp, ':cgo'=>$cgo)) or exit(print_r($reqGrpSuppr->errorInfo()));
@@ -78,9 +79,9 @@
 				
 					foreach ($users as $recipe) {
 
-							$sqlgrpUtilisateur = 'SELECT nom_groupe FROM groupe AS GR
-							INNER JOIN groupe_utilisateur AS GU ON GU.id_groupe = GR.id
-							INNER JOIN utilisateur AS UT ON UT.id = GU.id_utilisateur
+							$sqlgrpUtilisateur = 'SELECT name FROM groups AS GR
+							INNER JOIN users_groups AS GU ON GU.id_group = GR.id
+							INNER JOIN users AS UT ON UT.id = GU.id_user
 							WHERE UT.id ='.$recipe->id;
 
 							$recipesStatementgrpUtilisateur = $pdo->prepare($sqlgrpUtilisateur);
@@ -93,11 +94,11 @@
 					<form action="#" method="post">
 						<tr>
 							<td><?php echo $recipe->id;?></td>
-							<td><?php echo $recipe->Pseudo;?></td>
+							<td><?php echo $recipe->pseudo;?></td>
 							
 							<td><?php foreach ($groupes as $groupesutlisateur) {
 								
-								echo $groupesutlisateur->nom_groupe.' ';
+								echo $groupesutlisateur->name.' ';
 								 
 								
 							}?></td>
