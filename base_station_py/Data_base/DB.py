@@ -1,3 +1,8 @@
+<<<<<<< HEAD
+#Class DB connection here not on MariadB_Connect.py, passerelle, structure of trame
+
+=======
+>>>>>>> 09c521e7ea1bbfb031b3e9982d884a11b765ab27
 import mysql.connector
 
 class dBclass:
@@ -117,6 +122,9 @@ def db_process_main_thread(user, password, host, port, DB_name, input_queue : Qu
         except Exception as e:
             logger.error("DATABASE THREAD ERROR : "+str(e))
 
+<<<<<<< HEAD
+"""
+=======
 =======
 #Class DB
 
@@ -186,3 +194,4 @@ def db_process_main_thread(user, password, host, port, DB_name, input_queue : Qu
                 new_msg.objectTX2DB()
         except Exception as e:
             logger.error("DATABASE THREAD ERROR : "+str(e))
+>>>>>>> 09c521e7ea1bbfb031b3e9982d884a11b765ab27

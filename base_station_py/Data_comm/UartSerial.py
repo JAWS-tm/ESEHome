@@ -38,7 +38,6 @@ class UartSerial :
                 if(rcv == ''):
                     return 0
                 else:
-                    print("Tram recu :",rcv)
                     self.current_message = rcv
                     self.put_message_in_queue(rcv)
                     return rcv
@@ -103,7 +102,7 @@ def uart_process_main_thread(port : str, baudrate : int, timeout : int, incoming
     while True :
         message = uart.read_uart_frame(end_of_frame_character) #Automatically updates queue when a complete message is received
         if (message == 0):
-            print("Pas de tram reçu. En attente...")
+            print("\n\nPas de tram reçu. En attente...")
         else : 
             FrameParser(message)
             # UartSerial.put_message_in_queue(message)
