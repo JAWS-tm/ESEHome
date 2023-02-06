@@ -75,17 +75,19 @@ class mainClass (object):
         
         # Lancement thread de l'uart, qui va lire les infos en continue, tant qu'il est true(def uart_process_main_thread in UartSerial.py)
         uart_controller = UartController(config.UART_CONFIG)
-        
-        launch = True
-        while launch:
-            time.sleep(0.5)
 
-            # try:
-            #     print("uart_controller.get_last_message() ",uart_controller.get_last_message())
-            #     # uart_incoming_msg = uart_controller.get_last_message()
-            # except Exception as e :
-            #     config.logger.error("ERROR : There was an error processing the incoming data. The message has been ignored")
-            #     config.logger.error(str(e))
+        uart = True
+        while uart:
+            try:
+                ## On récupère le message recu par l'uart. Le chiffrement sera fait avant que le message soit dans la queue.
+                ## Donc quand un message arrivera ici, on pourra directement l'envoyer vers la BDD 
+                last_message = uart_controller.get_last_message()
+                if (last_message != 0): # 
+                    print("reception du message dans le main.py : ",last_message)       
+            except Exception as e :
+                config.logger.error("ERROR : There was an error processing the incoming data. The message has been ignored")
+                config.logger.error(str(e))
+                uart = False
 
 
 

@@ -1,6 +1,7 @@
 import serial
 import time
 from queue import Queue
+from Data_comm.FrameParser import FrameParser
 
 class UartSerial :
     '''
@@ -32,33 +33,35 @@ class UartSerial :
     
     def read_uart_frame(self, end_of_frame_character) :
         try :
-            if not self.end_of_message :
                 # copie d’une ligne entiere jusqu’a \n dans rcv
                 rcv = self.port.readline().decode("utf-8") 
-                # copie de 15 caracteres lu dans rcv
-                # rcv = self.port.read(15).decode("utf-8") 
-                print("rcv :", rcv)
                 self.current_message = rcv
 
+                self.put_message_in_queue(rcv)
 
-                if(rcv.find("\n")!=-1):
-                    #The message is ending
-                    end_msg = rcv.split(end_of_frame_character)
-                    #Get the other side of the message ?
-                    self.current_message+= end_msg[0]
-                    self.end_of_message = True
-                else :
-                    #print("Completing message...")
-                    self.current_message+=rcv
+                return rcv
 
-                    
-            else:
-                #print("New message received : ")
-                #print(self.current_message)
-                self.end_of_message = False
-                if(self.launched_as_thread) : self.put_message_in_queue(self.current_message)
-                self.previous_message = self.current_message
-                self.current_message = ""
+            ## Pas besoin de la suite car "readline" permet de récupérer chaque tram 1 par 1 en entière
+
+            # if not self.end_of_message : 
+            #     copie de 15 caracteres lu dans rcv
+            #     rcv = self.port.read(15).decode("utf-8") 
+            #     if(rcv.find("\n")!=-1):
+            #         #The message is ending
+            #         end_msg = rcv.split(end_of_frame_character)
+            #         #Get the other side of the message ?
+            #         self.current_message+= end_msg[0]
+            #         self.end_of_message = True
+            #     else :
+            #         #print("Completing message...")
+            #         self.current_message+=rcv
+            # else:
+            #     print("New message received : ")
+            #     print(self.current_message)
+            #     self.end_of_message = False
+            #     if(self.launched_as_thread) : self.put_message_in_queue(self.current_message)
+            #     self.previous_message = self.current_message
+            #     self.current_message = ""
         except Exception :
             self.port.close()
             print("Error reading port... Connection closed") 
@@ -96,16 +99,26 @@ class UartSerial :
 def uart_process_main_thread(port : str, baudrate : int, timeout : int, incoming_message_queue : Queue, outgoing_message_queue : Queue, end_of_frame_character : str):
     uart = UartSerial(port, baudrate, timeout, True, incoming_message_queue, outgoing_message_queue)
     while True :
-        time.sleep(0.5)
-        uart.read_uart_frame(end_of_frame_character) #Automatically updates queue when a complete message is received
-        next_msg = uart.get_next_message() #Checks if there is a message to send
+        message = uart.read_uart_frame(end_of_frame_character) #Automatically updates queue when a complete message is received
+        if (message == " "):
+            print("rien")
+        else : 
+            FrameParser(message)
+            # UartSerial.put_message_in_queue(message)
 
-        if(next_msg): 
-            if(uart.send_uart_frame(next_msg)==1):
-                # logger.debug("Message successfully sent to UART : "+next_msg)
-                print("Message successfully sent to UART : "+next_msg)
-            else :
-                # logger.debug("ERROR : Failed to send msg to UART --> "+next_msg)
-                print("ERROR : Failed to send msg to UART --> "+next_msg)
+        # return message
+
+
+        ## Commentaire car pas utilisé pour l'instant
+
+        # next_msg = uart.get_next_message() #Checks if there is a message to send
+
+        # if(next_msg): 
+        #     if(uart.send_uart_frame(next_msg)==1):
+        #         # logger.debug("Message successfully sent to UART : "+next_msg)
+        #         print("Message successfully sent to UART : "+next_msg)
+        #     else :
+        #         # logger.debug("ERROR : Failed to send msg to UART --> "+next_msg)
+        #         print("ERROR : Failed to send msg to UART --> "+next_msg)
             
         

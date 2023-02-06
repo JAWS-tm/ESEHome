@@ -10,6 +10,9 @@ class FrameParser :
     #Attributes
     def __init__(self, message):
         self.message = message
+        self.msgParsed() 
+        self.getInfoMessageId()
+        self.getSizeUpBit()
 
     #Message attributes (ex dest, emitter, data, etc.)
 
@@ -25,7 +28,8 @@ class FrameParser :
         for x in range(self.tram_size):
             chaine = self.message[x*2]+self.message[(x*2)+1]
             tab_msg.append(chaine)
-        print(tab_msg)
+        print("\n\n")
+        # print(tab_msg)
 
         self.begin = tab_msg[0]
         self.data_size = tab_msg[1]
@@ -43,6 +47,8 @@ class FrameParser :
             print("Frame error")
         elif self.end != CONST_END:
             print("Frame error")
+        elif self.param_id_e == CONST_END:
+            print("pas de message dans la tram")
         elif self.param_id_e > "24" or self.param_id_e == "16" :
             print("Param id error")
         else:
@@ -59,7 +65,7 @@ class FrameParser :
             tab_parse.insert(9,self.end)
             print(tab_parse)
 
-
+    #Recupération du msg ID et affichage de sa signification
     def getInfoMessageId(self):
         if self.id == "02":
             print("RECENT_RESET")
@@ -86,26 +92,25 @@ class FrameParser :
         else:
             print("Message id error")
     
+    #Fonction qui regarde si la trame est chiffrée ou non via le bit de poids fort
     def getSizeUpBit(self):
-        print(self.msg_size)
+
+        # print(self.msg_size)
 
         ini_string = self.msg_size
         scale = 16
-        
-        # Printing initial string
-        print ("\n\nInitial string of msg_size : ", ini_string)
+
 
         # Convertir le message hexadécimal en un entier
         message_int = int(ini_string, 16)
-
         # Utiliser l'opérateur bit à bit AND pour vérifier le bit de poids fort
         msb = message_int & 0x80
-
         # Si le bit de poids fort est 1, l'afficher
         if msb:
-            print("Le bit de poids fort est 1")
+            # Printing initial string
+            print ("msg_size : ", ini_string, " bit de poid fort : 1")
         else:
-            print("Le bit de poids fort est 0")
+            print ("msg_size : ", ini_string, " bit de poid fort : 0")
 
     #Methods
     #Getters et setters
@@ -136,7 +141,7 @@ class FrameParser :
     def getMessageSize(self):
         str_messageSize = "".join(self.msg_size)
         return str_messageSize
-    
+
     def getParamID(self):
         str_paramId = "".join(self.param_id_e)
         return str_paramId
