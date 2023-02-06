@@ -35,11 +35,13 @@ class UartSerial :
         try :
                 # copie d’une ligne entiere jusqu’a \n dans rcv
                 rcv = self.port.readline().decode("utf-8") 
-                self.current_message = rcv
-
-                self.put_message_in_queue(rcv)
-
-                return rcv
+                if(rcv == ''):
+                    return 0
+                else:
+                    print("Tram recu :",rcv)
+                    self.current_message = rcv
+                    self.put_message_in_queue(rcv)
+                    return rcv
 
             ## Pas besoin de la suite car "readline" permet de récupérer chaque tram 1 par 1 en entière
 
@@ -100,8 +102,8 @@ def uart_process_main_thread(port : str, baudrate : int, timeout : int, incoming
     uart = UartSerial(port, baudrate, timeout, True, incoming_message_queue, outgoing_message_queue)
     while True :
         message = uart.read_uart_frame(end_of_frame_character) #Automatically updates queue when a complete message is received
-        if (message == " "):
-            print("rien")
+        if (message == 0):
+            print("Pas de tram reçu. En attente...")
         else : 
             FrameParser(message)
             # UartSerial.put_message_in_queue(message)
