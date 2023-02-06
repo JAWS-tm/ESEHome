@@ -26,8 +26,9 @@
 	<div class="container contadm">
 		<div class="formadm">
 			<div class="main">
-				<h2>Espace mon compte de <?php echo $_SESSION['auth']->Pseudo;?></h2>
-				<p>Numero d'identifiant : <?php echo $_SESSION['auth']->id;?></p>
+				<h2>Espace mon compte</h2>
+				<p>Nom d'utilisateur / adresse e-mail : <?php echo $_SESSION['auth']->Pseudo;?></p>
+				<!-- <p>Numero d'identifiant : <?php echo $_SESSION['auth']->id;?></p> -->
 				
 				<?php 
 				if($_SESSION['auth']->Admin == 1) { ?>

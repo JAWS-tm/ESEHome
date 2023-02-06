@@ -49,7 +49,7 @@
 					            <td><?php echo $value['message'];?></td>
 					            <td><?php echo $value['date'];?></td>
 					            <td><?php echo $value['permanent'];?></td>
-					            <td><?php echo $value['type_messages_id'];?></td>
+					            <td><?php echo $value['type_messages'];?></td>
 				        	</tr>
 				     	</tbody>
 				        <?php

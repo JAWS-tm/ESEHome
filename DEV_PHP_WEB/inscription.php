@@ -26,11 +26,19 @@ if(!empty($_POST)){
         $errors['password'] = "Vous devez entrer un mot de passe valide";
     }
 
+    if(empty($_POST['email'])){
+        $errors['mail'] = "Vous devez entrer un mail valide";
+    }
+
+    $req = $pdo->prepare('SELECT * FROM utilisateur WHERE Admin = 1');
+    $req->execute();
+    $admin = $req->fetchAll();
+    $admin = empty($admin) ? '1' : '0';
+
     if(empty($errors)){
         $req = $pdo->prepare("INSERT INTO utilisateur SET Pseudo = ?, MotDePasse = ?, Admin = ?");
         $password = password_hash($_POST['password'], PASSWORD_BCRYPT);
         $username = htmlspecialchars($_POST['username']);
-        $admin = htmlspecialchars($_POST['admin']);
         $req->execute([$username, $password, $admin]);
 
         header("Location: connexion.php");
@@ -45,9 +53,7 @@ if(!empty($_POST)){
 <link rel="stylesheet" href="css/inscription.css"/>
 </head>
 <body>
-    <h1>S'inscrire</h1>
-    
-    <?php if(!empty($errors)): ?>
+<?php if(!empty($errors)): ?>
         <div class="alert">
             <p>Vous n'avez pas rempli le formulaire correctement</p>
             <ul>
@@ -57,6 +63,7 @@ if(!empty($_POST)){
             </ul>
         </div>
     <?php endif; ?>
+    <h1>S'inscrire</h1>
 
     <div class="container">
         <div class="contact-form">
@@ -64,19 +71,17 @@ if(!empty($_POST)){
 			<div class="right">
 				<h2>Inscription</h2>
                 <form action="" method="POST">
-                    <input type="text" name="username" placeholder="Nom d'utilisateur ou adresse e-mail" class="champ" require/>
-                    <input type="password" name="password" placeholder="Mot De Passe" class="champ" require/>
+                    <input type="text" name="username" placeholder="Nom d'utilisateur " class="champ" require/>
+                    <input type="email" name="email" placeholder="Adresse e-mail" class="champ" require/>
+                    <div class="password-eye">
+                        <input type="password" name="password" placeholder="Mot De Passe" class="champ password" require/>
+                        <div class="password-icon">
+                            <i class="fa-solid fa-eye eye"></i>
+                            <i class="fa-solid fa-eye-slash eye-slash"></i>
+                        </div>
+                    </div>
                     <input type="password" name="password_confirm" placeholder="Confirmez votre mot de passe" class="champ" require/>
-					<?php 
-					require_once 'inc/db.php';
-					$req = $pdo->prepare('SELECT * FROM utilisateur WHERE Admin = 1');
-					$req->execute();
-					$admin = $req->fetchAll();
-					if(empty($admin)):?>
-                        <input name="admin"  type="hidden" value="1" require/>
-                    <?php else: ?>
-                     	<input name="admin"  type="hidden" value="0" require/>
-					<?php endif; ?>
+					
                     <button type="submit" class="btn">M'inscrire</button>
                 </form>
             </div>    

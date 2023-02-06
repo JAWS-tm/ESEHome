@@ -33,4 +33,5 @@ if((!isset($_SESSION["loggedin"]) || !$_SESSION["loggedin"] ) && !in_array($_SER
     <link href="https://fonts.googleapis.com/css2?family=Exo:wght@300&display=swap" rel="stylesheet"> 
     <link href="https://fonts.googleapis.com/css2?family=Architects+Daughter&family=Exo:wght@300&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Architects+Daughter&family=Exo:wght@300&family=Reenie+Beanie&display=swap" rel="stylesheet">  
+	<script src="https://kit.fontawesome.com/d944b11724.js" crossorigin="anonymous"></script>
 </head>

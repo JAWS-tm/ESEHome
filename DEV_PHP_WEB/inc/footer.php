@@ -45,5 +45,7 @@
 </body>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script type="text/javascript" src="js/header.js"></script>
+<script type="text/javascript" src="js/equipements.js"></script>
+<script type="text/javascript" src="js/inscription.js"></script>
 <script type="text/javascript" src="js/message.js"></script>
 </html>

@@ -1,24 +1,15 @@
 <!-- Author: Laura TRACZYK -->
 
 <link rel="stylesheet" href="css/equipements.css"/>
+<link rel="stylesheet" href="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"/>
+
 
 <?php session_start();
     
     require 'inc/header.php';
     include("inc/db.php");
-        
-    //recuprer les objets propres  chaque groupe et leurs paramtres    
-    $sqladm = "SELECT id_objet, nom_groupe, nom_type, id_groupe FROM objet as OB
-                    INNER JOIN type as TY ON TY.id = OB.type_id
-                    INNER JOIN objet_groupe as OG ON OG.id_objet = OB.id
-                    INNER JOIN groupe as GR ON GR.id = OG.id_groupe";
+
     
-    $reqadm = $pdo->prepare($sqladm);
-    $reqadm->execute();
-    $result = $reqadm->fetchAll(PDO::FETCH_ASSOC);
-
-
-
     $sqladmin = "SELECT admin FROM utilisateur as US WHERE US.id =".$_SESSION['auth']->id;;
 
     $reqadmin = $pdo->prepare($sqladmin);
@@ -26,112 +17,174 @@
     $adminresult = $reqadmin->fetchAll(PDO::FETCH_ASSOC);
     $adminresult = array_column($adminresult, 'admin');
     $isadmin = $adminresult[0];//si l'utilisateur est admin
-
-    
+      
+    if ($isadmin == 0){
+    //recuprer les objets propres  chaque groupe et leurs paramtres    
+        $sqlitemuser ="SELECT id_objet, nom_groupe, nom_type,GR.id  FROM utilisateur AS UT
+        INNER JOIN groupe_utilisateur AS GU ON GU.id_utilisateur = UT.id
+        INNER JOIN groupe AS GR ON GR.id = GU.id_groupe
+        INNER JOIN objet_groupe as OG ON OG.id_groupe = GR.id
+        INNER JOIN objet as OB ON OB.id = OG.id_objet
+        INNER JOIN type as TY ON TY.id = OB.type_id
+        WHERE UT.id =".$_SESSION['auth']->id;
+        $requser = $pdo->prepare($sqlitemuser);
+        $requser->execute();
+        $resultats_item = $requser->fetchAll(PDO::FETCH_ASSOC);
     //rcuprer les groupes d'objets auxquels l'utilisateur a accs
-    $sqlgrpuser ="SELECT id_groupe,pseudo,nom_groupe  FROM utilisateur AS UT
+        $sqlgrpuser ="SELECT nom_groupe,GR.id  FROM utilisateur AS UT
         INNER JOIN groupe_utilisateur AS GU ON GU.id_utilisateur = UT.id
         INNER JOIN groupe AS GR ON GR.id = GU.id_groupe
         WHERE UT.id =".$_SESSION['auth']->id;
-    $req = $pdo->prepare($sqlgrpuser);
-    $req->execute();
-    $resultats = $req->fetchAll(PDO::FETCH_ASSOC);
-    //print_r($resultats); //retourne bien toutes les groupes associs  l'utilisateur
-    $groupe = array_column($resultats, 'id_groupe'); //met dans un tableau simple
-    //$groupe = [1]; test
-    //print_r($groupe); //[0]=>4, [1]=>1; // c'est bien ce qu'on veut
-    $equipements = [];
-    //mettre en premier les equipement disponibles
-    foreach($result as $key => $equipment){
-        if (array_search($equipment['id_groupe'], $groupe) != ""){
-            array_push($equipements,$equipment);
-        }
+        $req = $pdo->prepare($sqlgrpuser);
+        $req->execute();
+        $resultats_groupes = $req->fetchAll(PDO::FETCH_ASSOC);
     }
-    foreach($result as $key => $equipment){
-        if (array_search($equipment['id_groupe'], $groupe) == ""){
-            array_push($equipements,$equipment);
+    else{
+        //recuprer les objets propres  chaque groupe et leurs paramtres    
+        $sqlitemuser = "SELECT id_objet, nom_groupe, nom_type, id_groupe FROM objet as OB
+        INNER JOIN type as TY ON TY.id = OB.type_id
+        INNER JOIN objet_groupe as OG ON OG.id_objet = OB.id
+        INNER JOIN groupe as GR ON GR.id = OG.id_groupe";
+
+        $requser = $pdo->prepare($sqlitemuser);
+        $requser->execute();
+        $resultats_item = $requser->fetchAll(PDO::FETCH_ASSOC);
+
+        $sqlgrpuser ="SELECT nom_groupe,id FROM groupe";
+        $req = $pdo->prepare($sqlgrpuser);
+        $req->execute();
+        $resultats_groupes = $req->fetchAll(PDO::FETCH_ASSOC);
+    }
+    
+
+    //fonction recherche
+    if (isset($_GET["cancel"])){}
+    if (isset($_GET["filter"]))
+    {
+        //$url = parse_url($_SERVER['REQUEST_URI']);
+        //parse_str($url['query'], $q);
+
+        $_GET["filter"] = htmlspecialchars($_GET["filter"]); //pour sécuriser le formulaire contre les intrusions html
+        $filter = $_GET["filter"];
+        $filter = trim($filter); //pour supprimer les espaces dans la requête de l'internaute
+        $filter = strip_tags($filter); //pour supprimer les balises html dans la requête
+
+        if (isset($filter))
+        {
+            $new_resultats_item = [];
+            foreach($resultats_item as $key => $value_resultats_item) {
+                if ($isadmin == 0){
+                    if ($value_resultats_item['id'] == $filter)
+                    array_push($new_resultats_item, $value_resultats_item);
+                }
+                else{
+                    if ($value_resultats_item['id_groupe'] == $filter)
+                    array_push($new_resultats_item, $value_resultats_item);
+                }
+            }
+            if (!empty($new_resultats_item))
+                $resultats_item = $new_resultats_item;
         }
+        else
+        {
+            $message = "Vous devez entrer votre requete dans la barre de recherche";
+        }
+        
+        // remove search params
+        //unset($q["terme"]);
+        //unset($q["s"]);
+        //$new_url = $url['path'] . '?' . http_build_query($q);
+        // redirect to new url
+        //header("Location: ".$new_url);
     }
      
 ?>
-
+<script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
   <div class="mesobjets">
   <div class="user_ban">
-  <h1>Tous les equipements</h1>
-  </div>
-  <div class="artic">
-      
+  <?php 
+    if (empty($resultats_item)){?>
 
+        <h1 class="title">Vous êtes associé à aucun groupe</h1>
+        <h1 class="subtitle">Veuillez vous <a class="lien_mesobject" href="mesobjets.php" >inscrire</a> à un groupe pour visualiser vos equipements ici</h1>
+        <lottie-player src="https://assets6.lottiefiles.com/private_files/lf30_zncbuxbi.json" background="transparent"  speed="1" loop controls autoplay></lottie-player>
+        <?php
+    }
+    else{?>
+    <h1>
+    <?php 
+    if (isset($_GET["filter"])){
+        if($_GET["filter"] != ""){
+            echo $resultats_groupes[array_search($_GET["filter"], array_column($resultats_groupes, 'id'))]['nom_groupe'];
+        }
+        else{
+            echo "Tous les équipements";
+            }
+    }
+    else{
+        echo "Tous les équipements";
+    }
+
+    ?>
+    </h1>
+    <div class="box-filter">
+        <?php if (count($resultats_groupes) > 1){?>
+            <form action="" method = "get">
+                <div class="filter-first-row">
+                    <select name="filter" class="filter-select sources" placeholder="GROUPES" >
+                            <option value="" selected>TOUS</option>
+                            <?php
+                            foreach($resultats_groupes as $key => $value_groupes) {
+                            ?>
+                            <option value=<?php echo $value_groupes['id']?>><?php echo $value_groupes['nom_groupe']?></option>
+                        <?php } ?>
+                    </select>
+                    <div class="submit-search">
+                        <button type="submit" class="search">
+                        <i class="fas fa-search icon-search"></i>
+
+                    </div>
+                </div>
+                <?php if (isset($_GET["filter"])){
+                    if($_GET["filter"] != ""){?>
+                        <div class="filter-second-row">
+                            <a href="equipements.php" class="stop-filter filter-second-row" >
+                            <i class="fa-solid fa-trash icon-filter"></i> <?php echo $resultats_groupes[array_search($_GET["filter"], array_column($resultats_groupes, 'id'))]['nom_groupe'];
+                            ?></a>
+                        </div>
+                        <?php
+                    }
+                }?>
+            </form>
+        <?php
+        }?>
+        
+    </div>
+  </div>
+  <div>
+    
+  <div class="artic">
       <!-- Pour chaque objet on a une carte avec image, nom de groupe, nom objet, id et lien pour cliquer ou mention pas accs -->
       <?php  
-      foreach($equipements as $key => $value) {
-
-        if(!$resultats){?>
-            <p>Vous n'�tes associ� � aucun groupe.</p>
-        <?php } ?>
-        
+      foreach($resultats_item as $key => $value) {
+        ?>
         <article class="card">
             <div class="card_thumb">
-            <?php
-            if ($isadmin == true){
-                ?>
                 <img src=<?= "img/" . $value['nom_type'] . ".jpg"?>>
-            <?php
-            }
-            else{
-
-                if (array_search($value['id_groupe'], $groupe) != ""){
-                    ?>
-                    <img src=<?= "img/" . $value['nom_type'] . ".jpg"?>>
-                    <?php
-                }
-                else{
-                    ?>
-                    <img  src="img/blurry.jpg">
-                    <?php
-                }
-                
-            }
-            //pour chaque objet on retourne une carte en fonction de la valeur de la case $i du tableau
-            
-            ?>
             </div>
             <div class="card_body">
                 <div class="card_cagtegory"><a><?php echo $value['nom_groupe'] ?></a></div>
                 <h2 class="card_title"><?php echo $value['nom_type'];?></h2>
                 <div class="card_subtitle">En savoir +</div> 
                 <div class="card_element">
-                    <?php
-                        if ($isadmin == 1){
-                            ?>
-                            <a href="#"><?php echo "Idententifiant de l'objet : ".$value['id_objet'];?></a></br>
-                            <a href="ficheobjet.php?param=<?php echo $value['id_objet'];?>">CLIQUEZ ICI</a> 
-                            <?php   
-                        }
-                        
-                        else{
-                            if (array_search($value['id_groupe'], $groupe) != ""){
-                                ?>
-                                <a href="#"><?php echo "Idententifiant de l'objet : ".$value['id_objet'];?></a></br>
-                                <a href="ficheobjet.php?param=<?php echo $value['id_objet'];?>">CLIQUEZ ICI</a> 
-                            <?php 
-                            }
-                            else{
-                                ?>
-                                <a href="#"><?php echo 'Vous n avez pas acces a cet objet!';?></a></br>
-                                <form>
-                                <input class="button" type="button" value="Je demande acces">
-                                </form>
-                                <?php 
-                            }
-                            
-                        }
-                    
-                        ?>
+                    <a href="#"><?php echo "Idententifiant de l'objet : ".$value['id_objet'];?></a></br>
+                    <a href="ficheobjet.php?param=<?php echo $value['id_objet'];?>">CLIQUEZ ICI</a> 
                 </div>          
             </div>
         </article>
-      <?php } ?>
+      <?php } 
+    }?>
+  
   </div>
 </div>
 
