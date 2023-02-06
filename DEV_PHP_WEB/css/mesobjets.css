@@ -28,7 +28,7 @@
 
 .artic{
     display: flex;
-    justify-content: space-around;
+    justify-content: space-evenly;
     flex-wrap: wrap;
     margin-bottom: 50px;
     padding-top: 1em;
@@ -134,3 +134,4 @@
     font-size: 11px;
     color: #A3A9AB;
 }
+

@@ -13,16 +13,23 @@
 		$req = $pdo->prepare('SELECT * FROM utilisateur WHERE Pseudo = :username');
 		$req->execute(['username' => $_POST['username']]);
 		$user = $req->fetch();
-
-		if(password_verify($_POST['password'], $user->MotDePasse)){
-			$_SESSION['auth'] = $user;
-			$_SESSION['loggedin'] = true;
-			header('Location: mesobjets.php');
-			exit();
-		}else{
+		if ($_POST['password'] != ""){
+			if(password_verify($_POST['password'], $user->MotDePasse)){
+				$_SESSION['auth'] = $user;
+				$_SESSION['loggedin'] = true;
+				header('Location: mesobjets.php');
+				exit();
+			}else{
+				$_SESSION['flash']['danger'] = 'Identifiant ou mot de passe incorrecte';
+				$errors['username'] = 'Identifiant ou mot de passe incorrecte';
+			}
+		}
+		else{
 			$_SESSION['flash']['danger'] = 'Identifiant ou mot de passe incorrecte';
 			$errors['username'] = 'Identifiant ou mot de passe incorrecte';
 		}
+
+
 	}
 
 
@@ -53,6 +60,7 @@
 				<form action="" method="POST">
 					<input type="text" name="username" placeholder="Nom d'utilisateur ou adresse e-mail" class="champ" require/>
 					<input type="password" name="password" placeholder="Mot De Passe" class="champ" require/>
+					<span class="psw"><a href="forgot_password.php">Mot de passe oublié ?</a></span>
 					<button type="submit" class="btn">Login</button>
 				</form>
 			</div>    
