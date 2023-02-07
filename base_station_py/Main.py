@@ -2,12 +2,28 @@
 import json
 import logging
 from Data_base.MariadB_Connect import MariaDBConnect
-from Data_comm.UartController import UartController
+from Data_comm.mainURC import mainURC
 import time
+from serial.tools.list_ports import comports
 
 #main
 ##  Here, we call class and others                  DO AT THE END
 ##  
+port_serial = ""
+
+
+## Find serial port who's open
+def get_port_serial_open():
+    connected = []
+    try:
+        for element in comports():
+            connected.append(element.name)
+        global port_serial
+        port_serial = str(connected).split("'")[1]
+    except IndexError as e:
+        print("get_port_serial_open error : ", e)
+        exit()
+
 
 ## Créer les fichiers de log de l'application
 class AppliLogger():
@@ -53,17 +69,22 @@ class AppliLogger():
     
     def critical(self, message):
         self.logger.critical(message)
+
 # Va récupérer les infos de config dans le fichier config.json
 class config (object):
+    get_port_serial_open()
     try: 
         CONFIG = {}
         with open('config.json', "r") as jsonFile:
             CONFIG = json.load(jsonFile)
             jsonFile.close()
-
         DATA_COMMUNICATION_CONFIG = CONFIG["data_communication"]
         DB_CONFIG = CONFIG["DB"]
         UART_CONFIG = CONFIG["data_communication"]["UART"]
+        ## global = variable global
+        global port_serial
+        UART_CONFIG["port"] = port_serial
+        
         logger = AppliLogger(CONFIG["logs"]["fileName"],CONFIG["logs"]['filter'],CONFIG["logs"]['format'])
     except Exception as e:
         print("Error config :", str(e))
@@ -72,30 +93,13 @@ class config (object):
 class mainClass (object):
     def __init__ (self):
         # On lancera ici le Data_base_main.py et le Data_comm_main.py en multiprocessing
-        
-        # Lancement thread de l'uart, qui va lire les infos en continue, tant qu'il est true(def uart_process_main_thread in UartSerial.py)
-        uart_controller = UartController(config.UART_CONFIG)
-
-        uart = True
-        while uart:
-            try:
-                ## On récupère le message recu par l'uart. Le chiffrement sera fait avant que le message soit dans la queue.
-                ## Donc quand un message arrivera ici, on pourra directement l'envoyer vers la BDD 
-                last_message = uart_controller.get_last_message()
-                if (last_message != 0): # 
-                    print("reception du message dans le main.py : ",last_message)       
-            except Exception as e :
-                config.logger.error("ERROR : There was an error processing the incoming data. The message has been ignored")
-                config.logger.error(str(e))
-                uart = False
-
-
+        mainURC(config.UART_CONFIG)
 
 
 if __name__ == "__main__":
 
     config.logger.info("-------------------Starting application-------------------")
-    
+
     # Config : donnéees, mpd, port... pour DATA_COMMUNICATION, DB et UART
     config()
     config.logger.info("-----------------------Config : ok------------------------")
@@ -106,4 +110,3 @@ if __name__ == "__main__":
 
 
     mainClass()
-    

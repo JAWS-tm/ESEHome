@@ -105,15 +105,13 @@ def uart_process_main_thread(port : str, baudrate : int, timeout : int, incoming
             print("\n\nPas de tram reçu. En attente...")
         else : 
             FrameParser(message)
-            # UartSerial.put_message_in_queue(message)
+            ## Envoie reponse pour cryptage
 
-        # return message
+       
 
-
-        ## Commentaire car pas utilisé pour l'instant
+############## Commentaire car pas utilisé pour l'instant
 
         # next_msg = uart.get_next_message() #Checks if there is a message to send
-
         # if(next_msg): 
         #     if(uart.send_uart_frame(next_msg)==1):
         #         # logger.debug("Message successfully sent to UART : "+next_msg)
