@@ -7,27 +7,28 @@
   if(isset($_SESSION['auth']->id)){ 
     require 'inc/header.php';
     require 'inc/db.php';
-
-    // TODO : refaire cette partie un peu chelou et inutile
-    if ($_SESSION['auth']->admin == 1) {
+//si c'est un utilisateur qui est admin alors on affiche tout les groupes 
+    if ($_SESSION['auth']->Admin == 1) {
       $admin = true;
-      $sqlgrpuser ="SELECT * FROM users_groups WHERE id_user =1";
+      $sqlgrpuser ="SELECT * FROM groups";
       $req = $pdo->prepare($sqlgrpuser);
       $req->execute();
       $resultat = $req->fetchAll(PDO::FETCH_ASSOC);
-
-
     }
+  //sinon on recupere les groupes associés a l'id de l'utilisateur pour les afficher
     else{
-
+      
       $admin = false;
-      $sqlgrpuser ="SELECT * FROM users_groups WHERE id_user =".$_SESSION['auth']->id;
+      $sqlgrpuser ="SELECT GR.id,GR.name AS nom_groupe  FROM users AS UT
+      INNER JOIN users_groups AS UG ON UG.id_utilisateur = UT.id
+      INNER JOIN groups AS GR ON GR.id = UG.id_groupe
+      WHERE UT.id =".$_SESSION['auth']->id;
       $req = $pdo->prepare($sqlgrpuser);
       $req->execute();
       $resultat = $req->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    $sqladm = "SELECT id_object, GR.name as group_name, TY.name as type_name FROM object as OB
+    $sqladm = "SELECT id_object, GR.name as group_name, TY.name as type_name, GR.id FROM object as OB
         INNER JOIN object_type as TY ON TY.id = OB.type_id
         INNER JOIN group_objects as OG ON OG.id_object = OB.id
         INNER JOIN groups as GR ON GR.id = OG.id_group";
@@ -36,13 +37,17 @@
     $reqadm = $pdo->prepare($sqladm);
     $reqadm->execute();
 
-    $result = $reqadm->fetchAll(PDO::FETCH_ASSOC);
+    $obj = $reqadm->fetchAll(PDO::FETCH_ASSOC);
     
+    $sqlgrpuser ="SELECT * FROM groupe";
+    $req = $pdo->prepare($sqlgrpuser);
+    $req->execute();
+    $allGrp = $req->fetchAll(PDO::FETCH_ASSOC);
   }
+  
   else{
     header("Location: index.php");
   }
-
 
  
 ?>
@@ -53,106 +58,68 @@
   <div class="user_ban">
     <h1>Mes Groupes</h1>
   </div>
- 
-   <div class="artic">
-
-    <?php if(!$resultat && $admin == false):?>
+  <?php if(empty($resultat) && !$admin ){?>
       
-        <p>Vous n'êtes associé à aucun groupe.</p>
+      <p>Vous n'êtes associé à aucun groupe.</p>
+
+  <?php } else { ?>
+    <h1 class="subtitle">Groupes disponibles :</h1>
   
-    <?php endif ?>
-    <?php 
+   <div class="artic">
+    <?php
     foreach ($resultat as $value) {
-        if($value['id_group'] == '1' || $admin == true){?>
+        ?>
       <article class="card">
-        <div class="card_thumb"><img src="img/chambre.jpg"></div>
+        <div class="card_thumb"><img src=<?= "img/" . $value['nom_groupe'] . ".jpg"?> ></div>
         <div class="card_body">
-          <div class="card_cagtegory">Chambre</div>
-          <h2 class="card_title">Gerer les elements de ma chambre</h2>
+          <div class="card_cagtegory"><?=$value['nom_groupe']?></div>
+          <h2 class="card_title">Gerer les elements: <?=$value['nom_groupe']?></h2>
           <div class="card_subtitle">Voir les differents elements</div> 
           <div class="card_element">
             <?php 
-            foreach($result as $value){
-              if($value['group_name'] == 'CHAMBRE'):?>
-                <a href="ficheobjet.php?param=<?php echo $value['id_object'];?>"><?php echo $value['type_name']."<br>"?></a>
+            foreach($obj as $val_obj){
+              if($val_obj['id'] == $value['id'] ):?>
+                <a href="ficheobjet.php?param=<?php echo $val_obj['id_object'];?>"><?php echo $val_obj['type_name']."<br>"?></a>
               <?php endif;
-            }?>    
+            }?> 
+          </div>
+          <div class="card_footer"></div>
+        </div>
+
+      </article>
+      
+    <?php }
+     ?>
+  <?php }?>
+          </div>
+  
+  <!-- pour les demandes d'acces -->
+  <div>
+    <h1 class="subtitle">Groupes indisponibles :</h1>
+   <div class="artic">
+    <?php
+    foreach ($allGrp as $value) {
+
+        if(array_search($value['id'],array_column($resultat,'id')) == ""){
+          ?>
+       
+      <article class="card">
+        <div class="card_thumb"><img src=<?= "img/" . $value['nom_groupe'] . ".jpg"?> ></div>
+        <div class="card_body">
+          <div class="card_cagtegory"><?=$value['nom_groupe']?></div>
+          <h2 class="card_title"> <?=$value['nom_groupe']?></h2>
+          <div class="card_subtitle">Vous n'avez pas acces a ce groupe</div> 
+          
+          <div class="card_element">
+          <input class="button" type="button" value="Je demande acces">
           </div>
           <div class="card_footer"></div>
         </div>
       </article>
     <?php }
-    } ?>
-
-    <?php
-    foreach ($resultat as $value) {
-        if ($value['id_group'] == '2' || $admin == true){ ?>
-          <article class="card">
-            <div class="card_thumb"><img src="img/cuisine.jpg"></div>
-            <div class="card_body">
-              <div class="card_cagtegory">Cuisine</div>
-              <h2 class="card_title">Gerer les elements de la cuisine</h2>
-              <div class="card_subtitle">Voir les differents elements</div> 
-              <div class="card_element">
-                <?php 
-                foreach($result as $value){
-                  if($value['group_name'] == 'CUISINE'):?>
-                    <a href="ficheobjet.php?param=<?php echo $value['id_object'];?>"><?php echo $value['type_name']."<br>"?></a>
-                  <?php endif;
-                }?>    
-              </div>
-              <div class="card_footer"></div>
-            </div>
-          </article>
-    <?php }} ?>
-  
-    <?php
-    foreach ($resultat as $value) {
-        if($value['id_group'] == '3' || $admin == true){?>
-      <article class="card">
-        <div class="card_thumb"><img src="img/salon.jpg"></div>
-        <div class="card_body">
-          <div class="card_cagtegory">Salon</div>
-          <h2 class="card_title">Gerer les elements du salon</h2>
-          <div class="card_subtitle">Voir les differents elements</div> 
-          <div class="card_element">
-            <?php 
-            foreach($result as $value){
-              if($value['group_name'] == 'SALON'):?>
-                <a href="ficheobjet.php?param=<?php echo $value['id_object'];?>"><?php echo $value['type_name']."<br>"?></a>
-              <?php endif;
-            }?>    
-          </div>
-          <div class="card_footer"></div>
-        </div>
-      </article>
-    <?php }} ?>
-
-    <?php 
-    foreach ($resultat as $value) {
-        if ($value['id_group'] == '4' || $admin == true){ ?>
-          <article class="card">
-            <div class="card_thumb"><img src="img/exetieur.jpg"></div>
-            <div class="card_body">
-              <div class="card_cagtegory">Exterieur</div>
-              <h2 class="card_title">Gerer les elements de l'exterieur</h2>
-              <div class="card_subtitle">Voir les differents elements</div> 
-              <div class="card_element">
-                <?php 
-                foreach($result as $value){
-                  if($value['group_name'] == 'EXTERIEUR'):?>
-                    <a href="ficheobjet.php?param=<?php echo $value['id_object'];?>"><?php echo $value['type_name']."<br>"?></a>
-                  <?php endif;
-                }?>    
-              </div>
-              <div class="card_footer"></div>
-            </div>
-          </article>
-    <?php }} ?>
-
- 
-    
-  </div>
+     ?>
+  <?php }?>
+</div>
 </div>
 
 <?php require 'inc/footer.php';?>
