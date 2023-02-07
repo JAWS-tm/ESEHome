@@ -20,7 +20,7 @@
       
     if ($isadmin == 0){
     //recuprer les objets propres  chaque groupe et leurs paramtres    
-        $sqlitemuser = "SELECT id_object, GR.id as id_group, GR.name as group_name, TY.name as type_name
+        $sqlitemuser = "SELECT id_object, GR.id as id_group, GR.name as group_name, TY.name as type_name, OB.name as object_name
         FROM users as US
         INNER JOIN users_groups as GU ON GU.id_user = US.id
         INNER JOIN groups as GR ON GR.id = GU.id_group

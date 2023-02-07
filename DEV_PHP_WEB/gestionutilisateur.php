@@ -24,14 +24,14 @@
 
 		$sqlverifdoublon = "SELECT COUNT(*) FROM users_groups WHERE id_user =:verifdata AND id_group = :verifcgo";
 		$reqverifInsert = $pdo->prepare($sqlverifdoublon);
-	 	$reqverifInsert->execute();
+	 	$reqverifInsert->execute(array(':verifdata'=>$data, ':verifcgo'=>$cgo));
 		$verifresult = $reqverifInsert->fetchAll(PDO::FETCH_ASSOC);
 		$isverified = array_column($verifresult, 'COUNT(*)');
 	 	if ($isverified == [0]) {
 	 	 	// Insert du groupe dans la bdd 
 			$sqlGrpInsert = "INSERT INTO users_groups (id_user, id_group) VALUES (?, ?)";
 		 	$reqGrpInsert = $pdo->prepare($sqlGrpInsert);
-		 	$reqGrpInsert->execute();
+		 	$reqGrpInsert->execute([$data, $cgo]);
 	 	 } 
 
 		header("Location: gestionutilisateur.php");

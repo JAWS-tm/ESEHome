@@ -8,9 +8,9 @@
     require 'inc/header.php';
     require 'inc/db.php';
 //si c'est un utilisateur qui est admin alors on affiche tout les groupes 
-    if ($_SESSION['auth']->Admin == 1) {
+    if ($_SESSION['auth']->admin == 1) {
       $admin = true;
-      $sqlgrpuser ="SELECT * FROM groups";
+      $sqlgrpuser ="SELECT id, name AS nom_groupe FROM groups";
       $req = $pdo->prepare($sqlgrpuser);
       $req->execute();
       $resultat = $req->fetchAll(PDO::FETCH_ASSOC);
@@ -20,8 +20,8 @@
       
       $admin = false;
       $sqlgrpuser ="SELECT GR.id,GR.name AS nom_groupe  FROM users AS UT
-      INNER JOIN users_groups AS UG ON UG.id_utilisateur = UT.id
-      INNER JOIN groups AS GR ON GR.id = UG.id_groupe
+      INNER JOIN users_groups AS UG ON UG.id_user = UT.id
+      INNER JOIN groups AS GR ON GR.id = UG.id_group
       WHERE UT.id =".$_SESSION['auth']->id;
       $req = $pdo->prepare($sqlgrpuser);
       $req->execute();
@@ -39,7 +39,7 @@
 
     $obj = $reqadm->fetchAll(PDO::FETCH_ASSOC);
     
-    $sqlgrpuser ="SELECT * FROM groupe";
+    $sqlgrpuser ="SELECT * FROM groups";
     $req = $pdo->prepare($sqlgrpuser);
     $req->execute();
     $allGrp = $req->fetchAll(PDO::FETCH_ASSOC);
@@ -104,10 +104,10 @@
           ?>
        
       <article class="card">
-        <div class="card_thumb"><img src=<?= "img/" . $value['nom_groupe'] . ".jpg"?> ></div>
+        <div class="card_thumb"><img src=<?= "img/" . $value['name'] . ".jpg"?> ></div>
         <div class="card_body">
-          <div class="card_cagtegory"><?=$value['nom_groupe']?></div>
-          <h2 class="card_title"> <?=$value['nom_groupe']?></h2>
+          <div class="card_cagtegory"><?=$value['name']?></div>
+          <h2 class="card_title"> <?=$value['name']?></h2>
           <div class="card_subtitle">Vous n'avez pas acces a ce groupe</div> 
           
           <div class="card_element">
