@@ -12,7 +12,27 @@
     line-height: 1.4;
     background-color: white;
 }
+.subtitle{
+    font-size: 0.5em;
+    text-align: left;
+    padding-left: 10%;
+    text-decoration: underline;
+    
+}
+.button{
+	background-color: white;
+	border: 1px solid #2c7fe5;
+	border-radius: 1em;
+	padding: 10px;
+}
 
+.button:hover{
+	background-color: #2c7fe5;
+	border-color: white;
+	cursor: pointer;
+	color: white;
+	padding: 10px;
+}
 .user_ban{
 	font-size: 1em;
     line-height: 1.4;
@@ -28,10 +48,10 @@
 
 .artic{
     display: flex;
-    justify-content: space-around;
+    justify-content:space-evenly;
     flex-wrap: wrap;
     margin-bottom: 50px;
-    padding-top: 1em;
+    padding-top: 0.1em;
     padding-bottom: 1em;
 }
 
@@ -81,8 +101,9 @@
 .card_body{
     position: relative;
     padding: 20px;
-    height: 135px;
+    height: 160px;
     transition: height 0.3s;
+    width: 400px;
 }
 
 .card:hover .card_body{
