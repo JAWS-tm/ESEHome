@@ -20,10 +20,13 @@ def get_port_serial_open():
             connected.append(element.name)
         global port_serial
         port_serial = str(connected).split("'")[1]
+        print("port_serial :",port_serial)
+        return port_serial
     except IndexError as e:
-        print("get_port_serial_open error : ", e)
-        exit()
-
+        print("Il se peut qu'aucun port série ne soit connecté")
+        print("get_port_serial_open() error : ", e)
+        # exit()
+        return 0
 
 ## Créer les fichiers de log de l'application
 class AppliLogger():
@@ -100,7 +103,7 @@ if __name__ == "__main__":
 
     config.logger.info("-------------------Starting application-------------------")
 
-    # Config : donnéees, mpd, port... pour DATA_COMMUNICATION, DB et UART
+        # Config : donnéees, mpd, port... pour DATA_COMMUNICATION, DB et UART
     config()
     config.logger.info("-----------------------Config : ok------------------------")
 
@@ -108,5 +111,5 @@ if __name__ == "__main__":
     MariaDBConnect(config.DB_CONFIG)
     config.logger.info("-----------------------MariaDB : ok-----------------------")
 
-
-    mainClass()
+    if(get_port_serial_open() != 0):
+        mainClass()
