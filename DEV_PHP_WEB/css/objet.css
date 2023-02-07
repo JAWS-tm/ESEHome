@@ -1,96 +1,357 @@
-*
-{ 
-    box-sizing: border-box;
+* {
+  box-sizing: border-box;
 }
 
-
-body{
-    font-family: 'Work Sans', sans-serif;
-    font-size: 16px;
-    line-height: 1.4;
-    background-color: #EEE7E0;
+body {
+  font-family: "Work Sans", sans-serif;
+  font-size: 16px;
+  line-height: 1.4;
+  background-color: #eee7e0;
 }
 
-.user_ban{
-    background-color: #F5D1C6;
-    font-size: 25px;
-    color: #000;
-    font-weight: bold;
-    padding: 20px;
-    text-align: center;
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-
+.user_ban {
+  background-color: #f5d1c6;
+  font-size: 25px;
+  color: #000;
+  font-weight: bold;
+  padding: 20px;
+  text-align: center;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
+    Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
 }
 
+.artic {
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
+}
 
-.artic{
+.card:hover .card_thumb {
+  height: 200px;
+}
+
+.card_cagtegory {
+  font-size: 15px;
+}
+
+.card_element {
+  font-size: 14px;
+  line-height: 27px;
+  height: fit-content;
+  height: 135px;
+  opacity: 1;
+}
+
+.card_element .action {
+  position: absolute;
+  bottom: 40px;
+}
+
+.card_element .demande {
+  position: absolute;
+  bottom: 40px;
+  right: 20px;
+}
+
+/******** new object card *********/
+
+.object-sections {
+  padding: 50px 30px;
+}
+
+.section-title {
+  font-size: 1.2rem;
+  color: var(--text-color);
+  margin-bottom: 15px;
+  margin-top: 50px;
+  text-align: center;
+}
+
+.object-card {
+  height: fit-content;
+  width: 800px;
+  background: white;
+  margin: 0 auto;
+  border-radius: 15px;
+  position: relative;
+  overflow: hidden;
+  /* padding-bottom: 30px; */
+}
+
+.object-actions {
+  display: grid;
+  grid-template-columns: 40% 60%;
+}
+
+.object-img {
+  border-bottom-right-radius: 15px;
+  width: 100%;
+  min-width: 300px;
+  max-width: 400px;
+  height: 180px;
+  object-fit: cover;
+}
+
+/***********************  Common *******************/
+.actions {
+  height: 100%;
+  width: 100%;
+  padding: 10px;
+  display: flex;
+}
+
+.action-card-container {
+  margin: 10px;
+  text-align: center;
+}
+.card-title {
+  margin-top: 10px;
+  font-size: 0.8rem;
+}
+.action-card {
+  background: rgb(245, 245, 245);
+  border-radius: 15px;
+  width: 80px;
+  height: 130px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-evenly;
+}
+/***********************  seuil card *******************/
+.up-down-arrow {
+  font-size: 1.8rem;
+  transition: 0.1s all;
+}
+.up-down-arrow:hover {
+  cursor: pointer;
+}
+.up-down-arrow:active {
+  transform: scale(1.2);
+}
+.value {
+  font-weight: 900;
+}
+.value-input {
+  border: 1px solid transparent;
+  background: transparent;
+  width: 25px;
+  text-align: right;
+  font-size: 1rem;
+}
+.value-input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+.value-input:focus {
+  outline: none;
+  border: 1px solid gray;
+  border-radius: 5px;
+}
+/***********************  display card *******************/
+.two-actions-card {
+  display: flex;
+  flex-direction: column;
+}
+.display-card {
+  flex-direction: row;
+  width: 120px;
+  height: 54px;
+}
+
+.display-card i {
+  font-size: 1.2rem;
+}
+
+/***********************  switch card *******************/
+.switch-card,
+.brightness-card {
+  position: relative;
+  padding: 5px;
+  display: block;
+}
+.switch-card {
+  cursor: pointer;
+}
+.switch-card input[type="checkbox"] {
+  display: none;
+}
+.power-button {
+  width: 100%;
+  height: 50%;
+  position: relative;
+  top: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: var(--disable-button-color);
+  border-radius: 10px;
+  transition: 0.4s all ease-in-out;
+}
+.power-button i {
+  color: white;
+}
+
+.switch-card input[type="checkbox"]:checked ~ .power-button {
+  transform: translateY(-100%);
+  background: var(--primary-color);
+}
+/***********************  brightness card *******************/
+.brightness-card {
+}
+
+.brightness-card img {
+  width: 25px;
+  position: absolute;
+  bottom: 15%;
+  right: 50%;
+  transform: translateX(50%);
+  user-select: none;
+  -webkit-user-drag: none;
+  pointer-events: none;
+  z-index: 100;
+}
+.brightness {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  border-radius: 15px;
+}
+.brightness input[type="range"] {
+  margin: auto;
+  -webkit-appearance: none;
+  overflow: hidden;
+  height: 80px;
+  width: 130px;
+  cursor: pointer;
+  transform: rotate(270deg) translateY(-30px);
+  position: relative;
+  top: 20px;
+}
+::-webkit-slider-runnable-track {
+  background: rgb(245, 245, 245);
+}
+::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 0;
+  height: 300px;
+  box-shadow: -200px 0 0 200px var(--primary-color);
+}
+/***********************  selector card *******************/
+.selector-card {
+  padding: 5px;
+}
+.item-selector {
+  position: relative;
+  cursor: pointer;
+  font-size: 0.8rem;
+  height: 100%;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 10px;
+  transition: 0.1s all;
+}
+.selector-card input {
+  display: none;
+}
+.selector-card input[type="radio"]:checked + label {
+  background: var(--primary-color);
+  color: white;
+}
+
+.item-selector:not(:last-child)::after {
+  content: "";
+  height: 1px;
+  background: rgba(128, 128, 128, 0.5);
+  width: 60%;
+  position: absolute;
+  bottom: 0px;
+}
+/***********************  color card *******************/
+.color-card {
+  padding: 5px;
+}
+#color-border {
+  height: 100%;
+  width: 100%;
+  padding: 5px;
+  border-radius: 10px;
+  overflow: hidden;
+}
+.color-card input[type="color"] {
+  height: 140%;
+  width: 140%;
+  border: none;
+  padding: 0;
+  transform: translate(-10px, -10px);
+}
+
+.object-status-container p {
+  margin: 10px 20px;
+  font-weight: 400;
+}
+.object-status {
+  font-size: 0.7rem;
+  color: red;
+}
+
+input[type="submit"] {
+  position: absolute;
+  right: 10px;
+  bottom: 10px;
+  padding: 4px 10px;
+  border-radius: 10px;
+  border: 1px solid var(--disable-button-color);
+  background: rgb(244, 242, 242);
+  color: var(--disable-button-color);
+  cursor: pointer;
+  font-size: 0.7rem;
+  letter-spacing: 0.5px;
+  transition: 0.3s all;
+}
+input[type="submit"]:hover {
+  /* background: white; */
+  color: var(--primary-color);
+}
+
+/***********************  tableaux *******************/
+
+.table {
+  width: 100%;
+  text-align: center;
+  border-collapse: collapse;
+  line-height: 35px;
+  font-size: 0.9rem;
+}
+
+.table th {
+  border: none;
+}
+.table-first-collum {
+  background: var(--primary-color);
+  color: white;
+}
+.table-collums:nth-child(2n + 1) {
+  background: rgb(240, 240, 240);
+}
+
+/***********************  responsive *******************/
+
+@media screen and (max-width: 1100px) {
+  .object-card {
     display: flex;
-    justify-content: space-around;
-    flex-wrap: wrap;
-}
-
-.card{
-    margin-top: 50px;
-    background-color: #fff;
-    box-shadow: 0px 0px 50px rgba(0,0,0, 0.3);
-    transition: 0.3s;
-}
-
-
-.card_thumb{
-    height: 200px;
-    overflow: hidden;
-    background-color: #000;
-   
-}
-
-.card_thumb img{
-    height: 100%;
-}
-
-
-.card_body{
-    position: relative;
-    padding: 20px;
-    height: 200px;
-    transition: height 0.3s;
-}
-
-
-.card_cagtegory{
-    position: absolute;
-    left: 0;
-    top: -35px;
-    height: 35px;
-    padding: 0 15px;
-    color: #fff;
-    font-size: 15px;
-    line-height: 35px;
-    text-transform: uppercase;
-    background-color: #000;
-}
-
-.card_title{
-    margin: 0;
-    padding: 0 0 10px 0;
-    font-size: 22px;
-    color: #000;
-    font-weight: bold;
-}
-
-
-.card_element{
-    font-size: 14px;
-    line-height: 27px;
-}
-
-.card_element .action{
-    position: absolute;
-    bottom: 40px;
-}
-
-.card_element .demande{
-    position: absolute;
-    bottom: 40px;
-    right: 20px;
+    flex-direction: column;
+    align-items: center;
+    height: fit-content;
+  }
+  .object-actions {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .object-img {
+    border-radius: 15px;
+  }
 }

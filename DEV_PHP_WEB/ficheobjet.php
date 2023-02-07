@@ -14,7 +14,9 @@
 	    $dest = "DDDDDD$id";
 	}else{
 	    $dest = "DDDDDD0$id";
-	}
+	} 
+
+	// print_r($_POST);
 	
 	// On v�rifie si l'objet est bien connect� 
 	// solution bancale
@@ -367,111 +369,175 @@ if(!empty($_POST)){
 
 <link rel="stylesheet" href="css/objet.css">
 <link rel="stylesheet" href="css/ficheobjet.css">
- <div class="user_ban">
-    <h1 id="h1">Objet</h1>
-  </div>
-<div class="fiche">
-  <div class="artic">
-      <article class="card">
-          <div class="card_thumb">
-            <img src="img/chambre.jpg">
-          </div>
-          <div class="card_body">
-              <div class="card_cagtegory"><?php echo $result->group_name;?></div>
-              <h2 class="card_title">Gerer <?php echo $result->object_name;?></h2>
-              <div class="card_element">
-                <?php if($result->state){ ?>
-              			<p class="connect">Objet connecte</p>
-               <?php }else{ ?>
-                   <p class="disconnect">Objet deconnecte</p>
-                <?php }?>
-                 <p class="etat"><?php echo $state; ?></p>
-              	<form action="" method="POST">
-              		<input type="hidden"  name="Emetteur" value="EEEEEE00" require/>
-                    <input type="hidden"  name="Destinataire" value="<?php echo $dest; ?>" require/>
-                    <input type="hidden"  name="Type_messages" value="PARAMETER_WRITE" require/>
-                    <input type="hidden"  name="Paramettre_id" value="01" require/>
-                    <input type="hidden"  name="messages" value="02" require/>
-                    <input type="hidden"  name="Permanent" value="1" require/>
-                    <input type="hidden"  name="Date" value="<?php echo $Date; ?>" require/>
-              		<button type="submit" class="action">Action</button>
-              	</form>
-               	<form action="" method="POST">
-              		<input type="hidden"  name="Emetteur" value="EEEEEE00" require/>
-                    <input type="hidden"  name="Destinataire" value="<?php echo $dest; ?>" require/>
-                    <input type="hidden"  name="Type_messages" value="PARAMETER_WRITE" require/>
-                    <input type="hidden"  name="Paramettre_id" value="01" require/>
-                    <input type="hidden"  name="messages" value="02" require/>
-                    <input type="hidden"  name="Permanent" value="1" require/>
-                    <input type="hidden"  name="Date" value="<?php echo $Date; ?>" require/>
-              		<button type="submit" class="demande">Demande modif</button>
-              	</form>
-                 
-              </div>
-          </div>
-      </article>
+<link rel="stylesheet" href="css/colors.css">
+ <div class="object-sections">
+    <h2 class="section-title">Objet</h2>
+	<form method="post" class="object-card">
+		<div class="object-actions">
+			<img class="object-img" src="img/chambre.jpg">
+			<div class="actions">
+				
+				<!-- <div class="action-card-container">
+					<span class="card-title">Thermostat</span>
+					<div class="level-card action-card">
+						<i class="fa-solid fa-angle-up up-down-arrow" id="upValue"></i>
+						<div><input class="value value-input" id="value" type="text" min="10" max="30" value="25">
+						<span class="value">°C</span></div>
+						<i class="fa-solid fa-angle-down up-down-arrow" id="downValue"></i>
+
+					</div>
+				</div> -->
+				<div class="action-card-container two-actions-card">
+					<div>
+						<span class="card-title">Température</span>
+						<div class="display-card action-card">
+							<i class="fa-solid fa-temperature-high"></i>
+							<span class="value">25°C</span>
+						</div>
+					</div>
+					<div>
+						<span class="card-title">Humidité</span>
+						<div class="display-card action-card">
+							<i class="fa-solid fa-droplet"></i>
+							<span class="value">42%</span>
+						</div>
+					</div>
+				</div>
+				<div class="action-card-container">
+					<span class="card-title">Eclairage</span>
+					<label for="checkbox" class="switch-card action-card">
+						<input type="checkbox" id="checkbox">
+						<div class="power-button">
+							<i class="fa-solid fa-power-off"></i>
+						</div>
+					</label>
+				</div>
+				<div class="action-card-container">
+					<span class="card-title">Luminosité</span>
+					<div class="brightness-card action-card">
+						<div class="brightness">
+							<input id="brightnessRange" type="range" min="0" max="100" step="1" value=""  onchange="showVal(this.value)">
+						</div>
+						<img src="img/brightness.png" alt="">
+					</div>
+				</div>
+				<div class="action-card-container">
+					<span class="card-title">Chauffage</span>
+					<div class="selector-card action-card">
+						<input type="radio" id="mode1" name="radMod">
+						<label class="item-selector" for="mode1">
+							<span>Confort</span>
+						</label>
+						<input type="radio" id="mode2" name="radMod">
+						<label class="item-selector" for="mode2">
+							<span>Eco</span>
+						</label>
+						<input type="radio" id="mode3" name="radMod" checked="checked">
+						<label class="item-selector" for="mode3">
+							<span>Désactivé</span>
+						</label>	
+					</div>
+				</div>
+				<!-- <div class="action-card-container">
+					<span class="card-title">Couleur</span>
+					<div class="color-card action-card">
+						<div id="color-border">
+							<input type="color" value="#e66465">
+						</div>
+					</div>
+				</div> -->
+
+			</div>
+		</div>
+		<div class="object-status-container">
+			<p>Gestion de l'objet</p> 
+			<p class="object-status">Objet déconnecté</p>
+		</div>
+		<input type="submit" class="button" value="Valider">
+
+	</form>
+	<h2 class="section-title">Messages reçus</h2>
+	<div class="object-card object-received-msg">
+		<table class="table">
+			<tr class="table-first-collum">
+				<th>Emetteur</th>
+				<th>Type</th>
+				<th>Données</th>
+				<th>Permanent</th>
+				<th>Date</th>
+			</tr>
+			<tr class="table-collums">
+				<td>DDDDDD00</td>
+				<td>PARAMETER_IS</td>
+				<td>0x550201</td>
+				<td>TRUE</td>
+				<td>5 janvier 2023 10:52</td>
+			</tr>
+			<tr class="table-collums">
+				<td>DDDDDD00</td>
+				<td>PARAMETER_IS</td>
+				<td>0x550201</td>
+				<td>TRUE</td>
+				<td>5 janvier 2023 10:52</td>
+			</tr>
+			<tr class="table-collums">
+				<td>DDDDDD00</td>
+				<td>PARAMETER_IS</td>
+				<td>0x550201</td>
+				<td>TRUE</td>
+				<td>5 janvier 2023 10:52</td>
+			</tr>
+			<tr class="table-collums">
+				<td>DDDDDD00</td>
+				<td>PARAMETER_IS</td>
+				<td>0x550201</td>
+				<td>TRUE</td>
+				<td>5 janvier 2023 10:52</td>
+			</tr>
+		</table>
 	</div>
-      <div class = "messages">  
-          <div class = "re�u" id="recu" style="display: block;">
-          		<p> Dernier messages recu : <?php
-                  	                                  $req = $pdo->prepare('SELECT * FROM message WHERE recipient = ?');
-                                                      $req->execute([$dest]);
-                                                      $result = $req->fetchAll(PDO::FETCH_ASSOC);
-                                                      if($result){
-                                                          foreach ($result as $value){
-                                                              if ($value === end($result))
-                                                                  echo '<li>messages ('.$value['id'].') Destinataire : '.$value['recipient'].'/ Date : '.$value['date'].'/ type de messages : '.$value['type_message'].'/ Permanent : '.$value['permanent'].'</li>';
-                                                          }
-                                                      }else{
-                                                          echo 'Pas de messages recu';
-                                                      }?></p>
-          </div>
-          <div class = "envoy�" id="envoye" style="display: block;">
-                <p> Dernier messages envoye : <?php
-              	                                  $req = $pdo->prepare('SELECT * FROM message WHERE transmitter = ?');
-                                                  $req->execute([$dest]);
-                                                  $result = $req->fetchAll(PDO::FETCH_ASSOC);
-                                                  if($result){
-                                                      foreach ($result as $value){
-                                                          if ($value === end($result))
-                                                              echo '<li>messages ('.$value['id'].') Destinataire : '.$value['recipient'].'/ Date : '.$value['date'].'/ type de messages : '.$value['type_message'].'/ Permanent : '.$value['permanent'].'</li>';
-                                                      }
-                                                  }else{
-                                                      echo 'Pas de messages envoye';
-                                                  }?></p>
-          </div>
-          <button class="voir" id="btn"  style="display: block;">Voir tous les messagess</button>
-          <button class="voir" id="Fermer"  style="display: none;">Reduire</button>
-          <ul class="envoy�" id="envoyetout" style="display: none;">
-          <?php 
-          $req = $pdo->prepare('SELECT * FROM message WHERE transmitter = ?');
-          $req->execute([$dest]);
-          $result = $req->fetchAll(PDO::FETCH_ASSOC);
-          if($result){
-              echo '<li>messages envoyes</li>';
-              foreach ($result as $value){
-                echo '<li>messages ('.$value['id'].') Destinataire : '.$value['recipient'].'/ Date : '.$value['date'].'/ type de messages : '.$value['type_message'].'/ Permanent : '.$value['permanent'].'</li>';
-              }
-          }else{
-              echo '<li>Pas de messages envoye</li>';
-          }?>    
-          </ul>
-          
-          <ul class="re�u" id="recutout" style="display: none;">
-          <?php 
-          $req = $pdo->prepare('SELECT * FROM message WHERE recipient = ?');
-          $req->execute([$dest]);
-          $result = $req->fetchAll(PDO::FETCH_ASSOC);
-          if($result){
-              echo '<li>messages recu</li>';
-              foreach ($result as $value){
-                echo '<li>messages ('.$value['id'].') Destinataire : '.$value['recipient'].'/ Date : '.$value['date'].'/ type de messages : '.$value['type_message'].'/ Permanent : '.$value['permanent'].'</li>';
-              }
-          }else{
-              echo '<li>Pas de messages recu</li>';
-          }?>    
-          </ul>
-      </div>
-  </div>
-    <script type="text/javascript" src="js/message.js"></script>
+	<h2 class="section-title">Messages envoyés</h2>
+	<div class="object-card object-sent-msg">
+	<table class="table">
+			<tr class="table-first-collum">
+				<th>Emetteur</th>
+				<th>Type</th>
+				<th>Données</th>
+				<th>Permanent</th>
+				<th>Date</th>
+			</tr>
+			<tr class="table-collums">
+				<td>DDDDDD00</td>
+				<td>PARAMETER_IS</td>
+				<td>0x550201</td>
+				<td>TRUE</td>
+				<td>5 janvier 2023 10:52</td>
+			</tr>
+			<tr class="table-collums">
+				<td>DDDDDD00</td>
+				<td>PARAMETER_IS</td>
+				<td>0x550201</td>
+				<td>TRUE</td>
+				<td>5 janvier 2023 10:52</td>
+			</tr>
+			<tr class="table-collums">
+				<td>DDDDDD00</td>
+				<td>PARAMETER_IS</td>
+				<td>0x550201</td>
+				<td>TRUE</td>
+				<td>5 janvier 2023 10:52</td>
+			</tr>
+			<tr class="table-collums">
+				<td>DDDDDD00</td>
+				<td>PARAMETER_IS</td>
+				<td>0x550201</td>
+				<td>TRUE</td>
+				<td>5 janvier 2023 10:52</td>
+			</tr>
+		</table>
+	</div>
+</div>
+
+<script type="text/javascript" src="js/message.js"></script>
+<script type="text/javascript" src="js/object.js"></script>
 <?php require 'inc/footer.php';?>
