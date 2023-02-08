@@ -124,6 +124,8 @@ int main(void)
     	//Code commun à tout les objets
     	SECRETARY_process_main();
 
+    	SERIAL_DIALOG_process_main();
+
     	BUTTONS_process_main();
 
     	//Orientation du main vers chaque code de chaque objets
