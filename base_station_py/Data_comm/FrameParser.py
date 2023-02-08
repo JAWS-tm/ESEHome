@@ -13,6 +13,8 @@ class FrameParser :
         self.msgParsed() 
         self.getInfoMessageId()
         self.getSizeUpBit()
+        global tram_dico
+        tram_dico = {}
 
     #Message attributes (ex dest, emitter, data, etc.)
 
