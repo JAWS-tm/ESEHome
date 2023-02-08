@@ -82,7 +82,7 @@ void PARAMETERS_update(param_id_e param_id, int32_t new_value)
 		{
 			//sauvegarder le paramètre en flash...
 			uint32_t address = (uint32_t)param_id * 4;
-			FLASHWRITER_write(address, params[param_id].value_saved_in_flash);
+			FLASHWRITER_write(address, params[param_id].value);
 		}
 	}
 }
