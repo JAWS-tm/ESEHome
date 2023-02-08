@@ -58,11 +58,7 @@
   <div class="user_ban">
     <h1>Mes Groupes</h1>
   </div>
-  <?php if(empty($resultat) && !$admin ){?>
-      
-      <p>Vous n'êtes associé à aucun groupe.</p>
-
-  <?php } else { ?>
+ 
     <h1 class="subtitle">Groupes disponibles :</h1>
   
    <div class="artic">
@@ -90,7 +86,7 @@
       
     <?php }
      ?>
-  <?php }?>
+  <?php ?>
           </div>
   
   <!-- pour les demandes d'acces -->
