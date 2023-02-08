@@ -83,12 +83,3 @@ def db_process_main_thread(user, password, host, port, DB_name, input_queue : Qu
                 new_msg.objectTX2DB()
         except Exception as e:
             logger.error("DATABASE THREAD ERROR : "+str(e))
-
-
-        
-
-
-
-  
-
-

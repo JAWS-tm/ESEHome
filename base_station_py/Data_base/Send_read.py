@@ -1,9 +1,12 @@
-#all about write on database infos
 
-class dBwrite:
+# This class is used to read the message in the data base to send it to DB.py trhoug a dictionary.
+class Send_read:
 
-    def __init__(self,bdd_config):
-        self.nom = "----- DB functions -----"
+
+
+
+    """def __init__(self,bdd_config):
+        self.nom = "----- DBwrite functions -----"
         #connection to db
         print("--- Connection DB ---")
         try:
@@ -21,4 +24,4 @@ class dBwrite:
     ## Function add data to table in DB
     def addDataToTable(self, data, table):
         self.cursor.execute("INSERT INTO "+table+" VALUES "+data+";") # execute sql control
-        self.cnx.commit()
+        self.cnx.commit()"""

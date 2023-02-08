@@ -6,6 +6,7 @@
 from email import message
 
 
+
 class FrameParser :
     #Attributes
     def __init__(self, message):
@@ -13,6 +14,9 @@ class FrameParser :
         self.msgParsed() 
         self.getInfoMessageId()
         self.getSizeUpBit()
+        # Variable global du dico
+        global tram_dico
+        tram_dico = {}
 
     #Message attributes (ex dest, emitter, data, etc.)
 

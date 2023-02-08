@@ -25,7 +25,7 @@ class UartController :
             #Thread that handles UART communication
             self.input_queue = Queue()
             self.output_queue = Queue()
-            self.uart_thread = Thread(target=uart_process_main_thread, args=(get_serial_ports_open(),uart_config["baudrate"],uart_config["timeout"], self.input_queue, self.output_queue, uart_config["end_of_frame_character"]), daemon=False).start()
+            self.uart_thread = Thread(target=uart_process_main_thread, args=(uart_config["port"],uart_config["baudrate"],uart_config["timeout"], self.input_queue, self.output_queue, uart_config["end_of_frame_character"]), daemon=False).start()
         except Exception as e:        
             print("Error init UartController : ", e)
     '''Methods'''

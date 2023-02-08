@@ -2,6 +2,7 @@
 
 import mysql.connector
 from multiprocessing import Process, Manager
+import Receive_write
 
 class dBclass:
     
@@ -25,9 +26,6 @@ class dBclass:
 
     #Creation of tables not for the web
     def create_tables(self):
-        #chiffrage needs to be in an other database
-        self.cursor.execute("CREATE TABLE IF NOT EXISTS chiffrage (id INT AUTO_INCREMENT PRIMARY KEY, cle VARCHAR(255) NOT NULL, valeur VARCHAR(255) NOT NULL)")
-        self.cnx.commit()
         #object
         self.cursor.execute("CREATE TABLE IF NOT EXISTS `object` (`id` int(11) NOT NULL AUTO_INCREMENT,`physical_id` varchar(8) NOT NULL UNIQUE,`type_id` int(11) NOT NULL,`name` varchar(30) NOT NULL,`creation_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,`state` bit NOT NULL,PRIMARY KEY (`id`),FOREIGN KEY (`type_id`) REFERENCES object_type(`id`))")
         self.cnx.commit()
@@ -75,32 +73,6 @@ class dBclass:
         self.cnx.close()
 
 
-class dbFunction:
-
-    def __init__(self,bdd_config):
-        self.nom = "----- DB functions -----"
-        #connection to db
-        print("--- Connection DB ---")
-        try:
-            self.cnx = mysql.connector.connect(
-                ## Caution: it is your personnal host user and password
-                host = bdd_config["host"],
-                port = bdd_config["port"],
-                user = bdd_config["user"],
-                passwd = bdd_config["password"] 
-            )
-            self.cursor = self.cnx.cursor()
-        except Exception as e:
-            print("Error init database :", str(e))
-
-    ## Function add data to table in DB
-    def addDataToTable(self, data, table):
-        self.cursor.execute("INSERT INTO "+table+" VALUES "+data+";") # execute sql control
-        self.cnx.commit()
-
-    def deleteDataToTable(self, table, id):
-        self.cursor.execute("DELETE FROM "+table+" WHERE id="+id+";")
-        self.cnx.commit()
 
 #                       ---------- MAIN DB ----------
 if __name__ == "__main__":
@@ -108,9 +80,8 @@ if __name__ == "__main__":
         db = dBclass()
         db.create_database() #if database is not yet create
         db.create_tables()  #same for tables
-        dicotTrame= manager.dict()
         #go to Receive_send send by Reponse
-
+        Receive_write()
         db.close_connection() #close db when all is finished
 
 """
