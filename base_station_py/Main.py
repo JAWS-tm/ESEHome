@@ -5,6 +5,7 @@ from Data_base.MariadB_Connect import MariaDBConnect
 from Data_comm.mainURC import mainURC
 import time
 from serial.tools.list_ports import comports
+from Data_comm.UartController import UartController
 
 #main
 ##  Here, we call class and others                  DO AT THE END
@@ -24,6 +25,7 @@ def get_port_serial_open():
         return port_serial
     except IndexError as e:
         print("Il se peut qu'aucun port série ne soit connecté")
+        time.sleep(5)
         print("get_port_serial_open() error : ", e)
         # exit()
         return 0
@@ -96,7 +98,17 @@ class config (object):
 class mainClass (object):
     def __init__ (self):
         # On lancera ici le Data_base_main.py et le Data_comm_main.py en multiprocessing
-        mainURC(config.UART_CONFIG)
+
+
+        # mainURC(config.UART_CONFIG)
+        uart_controller = UartController(config.UART_CONFIG)
+
+        while True:
+            last_message = uart_controller.get_last_message()
+            if (last_message != 0): # 
+                print("reception du message dans le main : ",last_message)   
+
+                ## A voir ensuite comment on envoie le message dans la BDD    
 
 
 if __name__ == "__main__":
@@ -112,4 +124,16 @@ if __name__ == "__main__":
     config.logger.info("-----------------------MariaDB : ok-----------------------")
 
     if(get_port_serial_open() != 0):
+        
         mainClass()
+    
+    if(get_port_serial_open() == 0):
+        noSerial = True
+        while(noSerial == True):
+           if get_port_serial_open() !=0:
+                noSerial = False
+                mainClass()
+
+        
+
+    
