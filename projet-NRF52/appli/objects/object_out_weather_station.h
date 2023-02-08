@@ -13,8 +13,8 @@
 void OUT_WEATHER_STATION_MAIN(void);
 void RJ12_WindInit(void);
 void RJ12_RainInit(void);
-float RJ12_ReadWindTest(void);
-uint8_t RJ12_ReadRainTest(void);
+void state_machine_wind();
+void state_machine_rain();
 
 #endif /* APPLI_OBJECTS_OBJECT_OUT_WEATHER_STATION_H_ */
 

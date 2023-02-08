@@ -1,8 +1,8 @@
 /*
  * object_out_weather_station.c
  *
- *  Created on: 2 fï¿½vr. 2021
- *      Author: terri
+ *  Created on: 7 février 2023
+ *      Author: Isaac MAUXION
  */
 
 #include "../config.h"
@@ -16,15 +16,30 @@
 #include "../../bsp/nmos_gnd.h"
 #include "../common/gpio.h"
 
+uint32_t absolute_time;
+uint32_t t;
+uint32_t rain_counter;
+uint32_t K = 2*1000*3.14*0.07;
+float wind_speed;
+char char_wind_speed[10];
+uint32_t current_time;
+uint32_t previous_time;
+uint32_t duration;
+
+static void process_ms(void);
+
+void process_ms(void){
+	if(t){
+		t --;
+		absolute_time ++;
+	}
+}
+
 void OUT_WEATHER_STATION_MAIN(void){
-	uint32_t time = SYSTICK_get_time_us();
-	uint32_t time2 = 0;
 
 	typedef enum{
 		INIT,
-		MEASUREMENT,
-		WAIT,
-		SEND_DATAS
+		MEASUREMENT
 	}state_e;
 
 	static state_e state = INIT;
@@ -32,26 +47,18 @@ void OUT_WEATHER_STATION_MAIN(void){
 	case INIT:
 		RJ12_WindInit();
 		RJ12_RainInit();
-		DHT11_init(DHT11_PIN);
+		Systick_add_callback_function(&process_ms);
 		state = MEASUREMENT;
 		break;
 	case MEASUREMENT:
-		NMOS_On();
-		debug_printf("Temperature : %d\n", BMP180_temperature());
-		debug_printf("Pression : %d\n", BMP180_pressure());
-		debug_printf("Humidite : %d\n", DHT11_humidity());
-		debug_printf("WindReturn : %d \n",RJ12_ReadWindTest());
-		debug_printf("Nombre de milimÃ¨tre de pluie : %d (faire x0.1)\n",RJ12_ReadRainTest()*3);
-		NMOS_Off();
-		state = WAIT;
-		break;
-	case WAIT:
-		time = SYSTICK_get_time_us();
-		time2 = 0;
-		while(time2 < time + 5000000 ){
-			time2 = SYSTICK_get_time_us();
+		state_machine_rain();
+		state_machine_wind();
+
+		if(!t){
+			t = 10000;
+			debug_printf("Quantité de pluie : %d mm \n",rain_counter/10);	//affichage de la quantité de pluie toutes les 10 secondes
+			debug_printf("Vitesse du vent :  %s km/h \n", char_wind_speed);	//affichage de la vitesse du vent toutes les 10 secondes
 		}
-		state = MEASUREMENT;
 		break;
 	default:
 		break;
@@ -60,61 +67,96 @@ void OUT_WEATHER_STATION_MAIN(void){
 
 
 void RJ12_WindInit(void){
-	GPIO_configure(PIN_ANEMO_MOINS, NRF_GPIO_PIN_PULLUP, FALSE);
-	GPIO_configure(PIN_ANEMO_PLUS, NRF_GPIO_PIN_NOPULL, TRUE);
+	GPIO_configure(PIN_ANEMO_PLUS, NRF_GPIO_PIN_NOPULL, FALSE);
 }
-
-
-float RJ12_ReadWindTest(void){
-	RJ12_WindInit();
-	uint32_t time = SYSTICK_get_time_us();
-	uint32_t time2 = 0;
-	GPIO_write(PIN_ANEMO_PLUS, TRUE);
-	bool_e read = 0;
-	volatile uint8_t tour_in_10_seconds = 0;
-	while(time2 < time + 10000000){
-		read = GPIO_read(PIN_ANEMO_MOINS);
-		time2 = SYSTICK_get_time_us();
-		if(read == 1){
-			tour_in_10_seconds++;
-		}
-	}
-	volatile float vitesse_en_ms = 2*3.14*0.07*(tour_in_10_seconds)/10; // Vitesse en m/s
-	volatile float vitesse_en_kmh = 3.6*vitesse_en_ms; //Vitesse en km/h
-
-	return (int)vitesse_en_kmh;
-}
-
 
 void RJ12_RainInit(void){
-	GPIO_configure(PIN_PLUVIO_MOINS, NRF_GPIO_PIN_PULLUP, FALSE);
-	GPIO_configure(PIN_PLUVIO_PLUS, NRF_GPIO_PIN_NOPULL, TRUE);
+	GPIO_configure(PIN_PLUVIO_PLUS, NRF_GPIO_PIN_NOPULL, FALSE);
 }
 
+void state_machine_rain(){
 
-uint8_t RJ12_ReadRainTest(void){
-	RJ12_RainInit();
-	uint32_t time = SYSTICK_get_time_us();
-	uint32_t time2 = 0;
-	GPIO_write(PIN_PLUVIO_PLUS, TRUE);
-	volatile bool_e read = 0;
-	volatile uint8_t dose_pluie = 0;
-	while(time2 < time + 10000000 ){
-		read = GPIO_read(PIN_PLUVIO_MOINS);
-		time2 = SYSTICK_get_time_us();
-		uint32_t time3 = 0;
-		if(read != 1){
-			while(time3 < time2 + 100000 ){
-				time3 = SYSTICK_get_time_us();
+	typedef enum{
+		INIT,
+		WAIT_EVENT,
+		RAIN_EVENT
+	}state_e;
+
+	static state_e state = INIT;
+	static state_e previous_state = INIT;
+	bool_e entrance = (state != previous_state);
+	previous_state = state;
+	uint8_t rain_pin = GPIO_read(PIN_PLUVIO_PLUS);
+	switch(state){
+		case INIT:
+			state = WAIT_EVENT;
+			break;
+		case WAIT_EVENT:
+			if(rain_pin == 0){
+				state = RAIN_EVENT;
 			}
-			dose_pluie++;
-		}
+			break;
+		case RAIN_EVENT:
+			if(entrance){
+				rain_counter ++;
+				if(rain_counter % 10 == 0){
+					debug_printf("Niveau de pluie : %dmm\n",rain_counter/10);	//affichage tout les 1mm
+				}
+			}
+			if(rain_pin == 1){
+				state = WAIT_EVENT;
+			}
+			break;
+		default:
+			break;
 	}
-	return dose_pluie;
+
 }
 
+void state_machine_wind(){
 
+	typedef enum{
+		INIT,
+		WAIT_EVENT,
+		WIND_EVENT
+	}state_e;
 
+	static state_e state = INIT;
+	static state_e previous_state = INIT;
+	bool_e entrance = (state != previous_state);
+	previous_state = state;
+	uint8_t wind_pin = GPIO_read(PIN_ANEMO_PLUS);
+	switch(state){
+		case INIT:
+			state = WAIT_EVENT;
+			break;
+		case WAIT_EVENT:
+			if(absolute_time > (previous_time + 5000)){
+				wind_speed = 0;
+			}
+			if(wind_pin == 0){
+				state = WIND_EVENT;
+			}
+			break;
+		case WIND_EVENT:
+			if(entrance){
+				current_time = absolute_time;
+				duration = current_time - previous_time;
+				previous_time = current_time;
+				if(duration){
+					gcvt(wind_speed, 3, char_wind_speed);
+					wind_speed = ((float)K/duration)*3.6;
+				}
+			}
+			if(wind_pin == 1){
+				state = WAIT_EVENT;
+			}
+			break;
+		default:
+			break;
+	}
+
+}
 
 
 #endif
