@@ -20,6 +20,12 @@ class FrameParser :
 
     #Message attributes (ex dest, emitter, data, etc.)
 
+    def returnTramDico():
+        global tram_dico
+        return_dico = tram_dico
+        print(return_dico)
+        # return return_dico
+
     #Constructor
     #def __init__(self, ) :
     #init attributes (en fonction du protocole de com)
