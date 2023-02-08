@@ -107,7 +107,7 @@
           <div class="card_subtitle">Vous n'avez pas acces a ce groupe</div> 
           
           <div class="card_element">
-          <input class="button" type="button" value="Je demande acces">
+            <input class="button" type="button" value="Je demande accès">
           </div>
           <div class="card_footer"></div>
         </div>

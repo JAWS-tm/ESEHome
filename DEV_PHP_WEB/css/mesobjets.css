@@ -63,6 +63,8 @@
   border-radius: 5px;
   overflow: hidden;
   transition: 0.3s;
+  width: 400px;
+  margin: 30px;
 }
 
 .card a {
