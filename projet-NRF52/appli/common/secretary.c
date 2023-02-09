@@ -76,7 +76,7 @@ void SECRETARY_init(void)
 
 void SECRETARY_process_main(void)
 {
-	SECRETARY_esb_event_handler(MSG_SOURCE_RF);
+
 }
 
 
@@ -141,7 +141,7 @@ void SECRETARY_frame_parse(nrf_esb_payload_t * payload, msg_source_e msg_source)
 			}
 			else{
 				//je suis un objet
-				if(recipient == OBJECT_ID)
+				if(recipient & 0xFF == OBJECT_ID)	//l'octet de poids faible est le type d'objet. Les 3 autres octets sont un "unique ID".
 				{
 					//super, le message est pour moi !
 					RF_DIALOG_process_rx_object(payload);

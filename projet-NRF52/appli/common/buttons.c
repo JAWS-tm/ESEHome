@@ -19,6 +19,7 @@ typedef struct
 	callback_fun_t callback_short_release;
 	callback_fun_t callback_long_press;
 	callback_fun_t callback_long_release;
+	callback_fun_t callback_5_fast_press;
 }button_t;
 
 static button_t buttons[BUTTON_NB];
@@ -42,6 +43,7 @@ void BUTTONS_init(void)
 		buttons[b].callback_short_release = NULL;
 		buttons[b].callback_long_press = NULL;
 		buttons[b].callback_long_release = NULL;
+		buttons[b].callback_5_fast_press = NULL;
 		buttons[b].pullup = TRUE;
 	}
 	Systick_add_callback_function(&BUTTONS_process_ms);
@@ -117,7 +119,8 @@ void BUTTONS_process_main(void)
 			break;
 
 		case BUTTON_5_FAST_PRESS:
-			//TODO BUTTON_5_FAST_PRESS
+			if(buttons[button].callback_5_fast_press != NULL)
+				buttons[button].callback_5_fast_press();
 
 			state = IDLE_READING_BUTTON;
 			break;
@@ -136,7 +139,7 @@ void BUTTONS_process_main(void)
 }
 
 
-void BUTTONS_add(button_id_e id, uint8_t pin, bool_e pullup, callback_fun_t callback_short_press, callback_fun_t callback_short_release, callback_fun_t callback_long_press, callback_fun_t callback_long_release)
+void BUTTONS_add(button_id_e id, uint8_t pin, bool_e pullup, callback_fun_t callback_short_press, callback_fun_t callback_short_release, callback_fun_t callback_long_press, callback_fun_t callback_long_release, callback_fun_t callback_5_fast_press)
 {
 	//configure la pin du bouton concernée en entrée
 	//enregistre le bouton comme "initialisée"
@@ -150,6 +153,7 @@ void BUTTONS_add(button_id_e id, uint8_t pin, bool_e pullup, callback_fun_t call
 	buttons[id].callback_short_release = callback_short_release;
 	buttons[id].callback_long_press = callback_long_press;
 	buttons[id].callback_long_release = callback_long_release;
+	buttons[id].callback_5_fast_press = callback_5_fast_press;
 	buttons[id].pullup = pullup;
 	buttons[id].initialized = TRUE;
 }
@@ -172,6 +176,11 @@ void BUTTONS_set_long_press_callback(button_id_e id, callback_fun_t callback)
 void BUTTONS_set_long_release_callback(button_id_e id, callback_fun_t callback)
 {
 	buttons[id].callback_long_release = callback;
+}
+
+void BUTTONS_set_5_fast_press_callback(button_id_e id, callback_fun_t callback)
+{
+	buttons[id].callback_5_fast_press = callback;
 }
 
 

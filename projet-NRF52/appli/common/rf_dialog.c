@@ -186,10 +186,10 @@ void RF_DIALOG_send_msg_id_to_basestation(msg_id_e msg_id, uint8_t datasize, uin
 	msg_to_send[BYTE_POS_RECIPIENTS+2] = (my_base_station_id>>8)	&0xFF;
 	msg_to_send[BYTE_POS_RECIPIENTS+3] = (my_base_station_id>>0)	&0xFF;
 
-	msg_to_send[BYTE_POS_EMITTER]   = (OBJECT_ID >>24) & 0xFF;
-	msg_to_send[BYTE_POS_EMITTER+1] = (OBJECT_ID >>16) & 0xFF;
-	msg_to_send[BYTE_POS_EMITTER+2] = (OBJECT_ID >>8) & 0xFF;
-	msg_to_send[BYTE_POS_EMITTER+3] = (OBJECT_ID >>0) & 0xFF;
+	msg_to_send[BYTE_POS_EMITTER]   = (my_device_id >>24) & 0xFF;
+	msg_to_send[BYTE_POS_EMITTER+1] = (my_device_id >>16) & 0xFF;
+	msg_to_send[BYTE_POS_EMITTER+2] = (my_device_id >>8) & 0xFF;
+	msg_to_send[BYTE_POS_EMITTER+3] = (my_device_id >>0) & 0xFF;
 
 
 	msg_to_send[BYTE_POS_MSG_CNT] = index_msg_cnt;

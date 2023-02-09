@@ -99,7 +99,7 @@ int main(void)
 #endif
 
     //Fin de l'initialisation
-    debug_printf("NRF52832 initialis\n");
+    debug_printf("NRF52832 initialis�\n");
     volatile char id;
     id = OBJECT_ID;
     debug_printf("My id is %d. I am \"%s\"\n", id, object_id_to_string(id));
@@ -117,12 +117,14 @@ int main(void)
 
 	SECRETARY_init();
 
-	BUTTONS_add(BUTTON_NETWORK, PIN_BUTTON_NETWORK, TRUE, &button_network_process_short_press, NULL, &button_network_process_long_press, &button_network_process_5press);
+	BUTTONS_add(BUTTON_NETWORK, PIN_BUTTON_NETWORK, TRUE, &button_network_process_short_press, NULL, &button_network_process_long_press, NULL, &button_network_process_5press);
 
     while (1)
     {
-    	//Code commun à tout les objets
+    	//Code commun � tout les objets
     	SECRETARY_process_main();
+
+    	SERIAL_DIALOG_process_main();
 
     	BUTTONS_process_main();
 
