@@ -39,9 +39,9 @@ class UartSerial :
             if(rcv == ''):
                 return 0
             else:
+                # print("rcv ::",rcv)
                 self.current_message = rcv
                 self.put_message_in_queue(rcv)
-                # self.put_dico_in_queue(rcv)
                 return rcv
 
             ## Pas besoin de la suite car "readline" permet de récupérer chaque tram 1 par 1 en entière
@@ -117,7 +117,7 @@ def uart_process_main_thread(port : str, baudrate : int, timeout : int, incoming
             uart.put_dico_in_queue(dico_tram)
             
             ## Envoie reponse pour cryptage
-       
+
 
 ############## Commentaire car pas utilisé pour l'instant
 

@@ -2,6 +2,7 @@
 import json
 import logging
 from Data_base.MariadB_Connect import MariaDBConnect
+from Data_base.DB import dBclass
 from Data_comm.mainURC import mainURC
 import time
 from serial.tools.list_ports import comports
@@ -110,11 +111,15 @@ class mainClass (object):
             
             last_message = uart_controller.get_last_message()
             if (last_message != 0): # 
-                # print("reception du message dans le main : ",last_message)   
-                # print("reception du message dans le DIICOO : ",uart_controller.get_last_dico()) 
-                Receive_write.set_new_dico(self, uart_controller.get_last_dico())  
+                print("reception du message dans le main : ",last_message)
+                last_dico = uart_controller.get_last_dico()   
+                print("reception du dico dans le main  : ", last_dico) 
+                Receive_write.set_new_dico(self, last_dico)  
 
-
+            # Récupère le dernier dico enregistrer, et l'envoie dans Recieve_write, qui va enregistrer dans BDD
+            # last_dico = uart_controller.get_last_dico()
+            # if(last_dico != 0):
+            #     Receive_write.set_new_dico(last_dico)  
 
 if __name__ == "__main__":
 
@@ -125,7 +130,7 @@ if __name__ == "__main__":
     config.logger.info("-----------------------Config : ok------------------------")
 
     # MariaDb init : create database and tables, if not exists
-    MariaDBConnect(config.DB_CONFIG)
+    dBclass(config.DB_CONFIG)
     config.logger.info("-----------------------MariaDB : ok-----------------------")
 
     Receive_write(config.DB_CONFIG)

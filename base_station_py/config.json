@@ -11,7 +11,7 @@
     "port": 3306,
     "host": "localhost",
     "user": "root",
-    "password": "85480"
+    "password": "root"
   },
   "logs": {
     "fileName": "data_com_logs.txt",

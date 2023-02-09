@@ -2,19 +2,18 @@ import mysql.connector
 #This class is used to receivre a dictionary (containing the frame) from "Response" to write it inside the DataBase.
 class Receive_write:
     #                       ------- INIT -------
-    def __init__(self, bdd_config, db, reciever, emitter, typeID, paramID, msg, date, perm, history):
+    def __init__(self, bdd_config): #  (db, reciever, emitter, typeID, paramID, msg, date, perm, history)
         self.dico = {}
-        self.db = db
-        self.receiver = reciever
-        self.emitter = emitter
-        self.paramID = paramID
-        self.msgTypeID = typeID # frame.getId
-        self.msgCONTENT = msg # frame.getMessage
-        self.msgDATE = date # frame.getDate
-        self.msgPerm = perm
-        self.history = history
+        self.db = ""
+        self.receiver = ""
+        self.emitter = ""
+        self.paramID = ""
+        self.msgTypeID = "" # frame.getId
+        self.msgCONTENT = "" # frame.getMessage
+        self.msgDATE = "" # frame.getDate
+        self.msgPerm = ""
+        self.history = ""
         self.nom = "----- Receive_write class -----"
-
         #connection to db
         try:
             self.cnx = mysql.connector.connect(
@@ -27,32 +26,37 @@ class Receive_write:
             self.cursor = self.cnx.cursor()
         except Exception as e:
             print("Error init database :", str(e))
-
-        
+  
+        # if(self.dico != 0):
+        #     self.set_new_dico()
+        #     self.objectTX2DB()
     #                       ---------- Functions ----------
 
-    def set_new_dico(self, new_dico):
-        if(new_dico != 0):
-            self.dico = new_dico
-            print("set_new_dico ::", self.dico)
-            self.receiver = self.dico.receiver
-            self.emitter = self.dico.emitter
-            self.msgTypeID = self.dico.id
-            self.paramID = self.dico.param_id_e
-            self.msgCONTENT = self.dico.data_concat
+    def set_new_dico(self, dico):
+        if (dico != 0):
+            self.dico = dico         
+            print("\nset_new_dico ::", self.dico, type(self.dico))
+            self.receiver = self.dico.get("receiver")
+            self.emitter = self.dico.get("emitter")
+            self.msgTypeID = self.dico.get("id")
+            self.paramID = self.dico.get("param_id_e")
+            self.msgCONTENT = self.dico.get("data_concat")
             self.msgDATE = "09/02/2023"
             self.msgPerm = "perm ?"
+        
+        # self.objectTX2DB()
 
-            self.objectTX2DB()
-
-
-    def objectTX2DB(self):
-        self.cursor.execute("INSERT INTO message (destinataire, emetteur, type_message_id, parametre_id, message, date, permanent) VALUES (%s,%s,%s,%s,%s,%s,%s)", (self.receiver, self.emitter,self.msgTypeID, self.paramID, self.msgCONTENT, self.msgDATE, self.msgPerm)) # execute sql control
+    async def objectTX2DB(self):
+        print("objectTX2DB")
+        await self.cursor.execute('''INSERT INTO message (destinataire, emetteur, type_message_id, parametre_id, message, date, permanent) VALUES 
+            (%s,%s,%s,%s,%s,%s,%s)''', 
+            (self.receiver, self.emitter,self.msgTypeID, self.paramID, self.msgCONTENT, self.msgDATE, self.msgPerm))
+            # execute sql control
         self.cnx.commit()        
 
 
-if __name__ == "__main__":
-    Receive_write()
+# if __name__ == "__main__":
+#     Receive_write()
 
 
 

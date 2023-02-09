@@ -38,8 +38,8 @@ class UartController :
             return 0
     def get_last_dico(self):#message received from the uart
         if(self.dico_input_queue.qsize()>0):
-            last_msg = self.dico_input_queue.get()
-            return last_msg
+            last_dico = self.dico_input_queue.get()
+            return last_dico
         else :
             return 0
     def put_message_in_uart_sending_queue(self, msg : str):#message to send from the uart
