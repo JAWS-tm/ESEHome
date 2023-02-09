@@ -276,6 +276,11 @@
 		#define LCD_SWITCH_SLIDER_PIN	10
 	#endif
 
+	#if OBJECT_ID == OBJECT_MP3_PLAYER
+		#define UART_AT_BAUDRATE_9600	1
+ 	 	#define DISABLE_DEBUG_PRINTF	1
+	#endif
+
 	#if OBJECT_ID == OBJECTS_NB
 
 

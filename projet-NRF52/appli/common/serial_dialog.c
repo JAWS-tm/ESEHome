@@ -98,6 +98,7 @@ void SERIAL_DIALOG_uart_event_handler(nrfx_uart_event_t const * p_event, void * 
 #define DEBUG_PRINTF_BUFFER_SIZE	128
 uint32_t debug_printf(char * format, ...)
 {
+#ifndef DISABLE_DEBUG_PRINTF
 	va_list args_list;
 	va_start(args_list, format);
 
@@ -109,6 +110,10 @@ uint32_t debug_printf(char * format, ...)
 
 	va_end(args_list);
 	return ret;
+#else
+	return 0;
+#endif
+
 }
 
 void SERIAL_DIALOG_init(void)

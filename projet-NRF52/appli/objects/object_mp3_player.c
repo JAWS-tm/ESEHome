@@ -10,31 +10,23 @@
 
 
 #define UART_AT_BAUDRATE_9600 		1
-
+#define FIRST_SONG	0x01
+#define PLAY_WITH_INDEX	0x03
 
 
 void YX6300_demo(void)
 {
-
 	uint8_t data[2];
 	data[0] = 0x00;
-	data[1] = 0x01; // first song
-
-	MP3_PLAYER_use_sd_card();
-
-	YX6300_send_request(PLAY_WITH_INDEX, FALSE, 2, data);
-
-	data[0] = 0x00;
-	data[1] = 0x01;
-	YX6300_send_request(SET_VOLUME, FALSE, 2, data);
+	data[1] = 0x00;
+	YX6300_send_request(FIRST_SONG, FALSE, 2, data);
 
 	uint16_t index_song = 4;
-	uint8_t data[2];
 	data[0] = HIGHINT(index_song);
 	data[1] = LOWINT(index_song);
-	YX6300_send_request(command, FALSE, 2, data);
+	YX6300_send_request(PLAY_WITH_INDEX, FALSE, 2, data);
 
-	YX6300_send_request_with_2bytes_of_datas(command, FALSE, index_song);
+	YX6300_send_request_with_2bytes_of_datas(PLAY_WITH_INDEX, FALSE, index_song);
 }
 
 
