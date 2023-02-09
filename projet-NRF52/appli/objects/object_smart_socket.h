@@ -2,6 +2,13 @@
 #define OBJECT_SMART_SOCKETH
 #include "../config.h"
 
+#define REFRESH 10 //ms
+
+#define CYCLE 100 //ms
+
+#define LIM_COURANT 800 //mA
+
+
 typedef enum{
 			INITSS,
 			IDLE,

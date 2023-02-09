@@ -19,7 +19,11 @@ static bool_e prevStatut = FALSE;
 static bool_e statut = FALSE;
 static uint16_t mesureCourant = 0;
 static float courant = 0;
+static float tabCourant[CYCLE];
+static float moyenneCourant = 0;
 static uint32_t tperiod = 0;
+static uint32_t cycle = 0;
+
 
 const float courantMIN = 463;
 const float courantMAX = 643;
@@ -63,32 +67,58 @@ void toggleSockect(void){
 	}
 }
 
-// Fonction qui convertie une valeur sur un intervalle d'entrée vers un intervalle de sortie
-float map(float val, float I_Min, float I_Max, float O_Min, float O_Max){
-	return(((val-I_Min)*((O_Max-O_Min)/(I_Max-I_Min)))+O_Min);
-}
+
 
 void calculConsommation(void){
-	courant = map(mesureCourant, courantMIN, courantMAX, 0, 6);
+	//Pour I=0 => Vout = Vin * 0.5
+	//ADCmax => 1024
+	//Vadc(0A) = 1024 * 0.5
+	// 264 mv / A
+	//(mesureCourant - 512) * 3300 / 1024 * 100 / 264
+	courant = ((mesureCourant - 466) * 195) / 16;
 }
 
 void backgroudTaskFunction(void){
+	ADC_read(MESURE_COURANT, &mesureCourant);
+	//if (mesureCourant >= courantMIN+4 && mesureCourant <= courantMAX-4){
+		calculConsommation();
+		tabCourant[cycle] = courant;
+	//}else{
+		//courant = 0;
+	//}
+	if (courant > LIM_COURANT || courant < -LIM_COURANT){
+		stateSS = DRIVEGPIO;
+		return;
+	}
 	if (!tperiod) {
-		tperiod = 10000;
-		if (statut){
-			ADC_read(MESURE_COURANT, &mesureCourant);
-			if (mesureCourant >= courantMIN+4 && mesureCourant <= courantMAX-4){
-				calculConsommation();
-			}else{
-				courant = 0;
+		cycle++;
+		tperiod = REFRESH;
+		if (cycle == CYCLE){
+			cycle = 0;
+			moyenneCourant = 0;
+			for (int i = 0; i<CYCLE; i++){
+				moyenneCourant = moyenneCourant - tabCourant[i];
 			}
-			PARAMETERS_update(PARAM_SENSOR_VALUE, (int)(courant*1000));
-			stateSS = SENDBS;
-		} else {
-			courant = 0;
-			stateSS = DRIVEGPIO;
+			moyenneCourant = moyenneCourant / CYCLE;
+			if (moyenneCourant < 100 || moyenneCourant < -100){
+				moyenneCourant = 0;
+			}
+
+			debug_printf("Courant : %d mA\n", (int)(moyenneCourant));
+
+
+			if (statut){
+
+				PARAMETERS_update(PARAM_SENSOR_VALUE, (int)(courant));
+				stateSS = SENDBS;
+			} else {
+				//courant = 0;
+				stateSS = DRIVEGPIO;
+			}
 		}
-		debug_printf("Courant : %d mA\n", (int)(courant*1000));
+		//debug_printf("Courant : %d mA\n", (int)(courant*1000));
+
+
 	} else {
 		stateSS = DRIVEGPIO;
 	}
@@ -101,7 +131,7 @@ void OBJECT_SMART_SOCKET_Main(void){
 			// Éteinds, par défaut, la prise à l'allumage
 			toggleSockect();
 			// Timer en arrière plan
-			tperiod = 10000;
+			tperiod = REFRESH;
 			Systick_add_callback_function(process_ms);
 			// Initiamisation des différents paramètres
 			configParam();

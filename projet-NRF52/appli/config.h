@@ -40,8 +40,7 @@
 #define OBJECT_TOUCH_SCREEN         20
 #define OBJECT_E_PAPER              21
 #define OBJECT_MATRIX_LEDS			24
-#define OBJECT_MP3_PLAYER			25
-#define OBJECTS_NB					26
+#define OBJECTS_NB					25
 
 
 ///////////////////////////////////////////////////////////////////////////////////
@@ -72,9 +71,10 @@
 
 	#if OBJECT_ID == OBJECT_SMART_SOCKET
 		#define MOSFET_RELAIS 	9
-		#define MESURE_COURANT 	2
+		#define MESURE_COURANT 	0 //ADC channel 0
 		#define BUTTON_USER 	17
-		#define LED_STATUT 		20
+		#define LED_STATUT 		13
+
 	#endif
 
 	#if OBJECT_ID == OBJECT_NIGHT_LIGHT
@@ -97,6 +97,8 @@
 		#define MOSFET_GND  27
 		#define DHT11_PIN	2
 
+		#define PIN_UART_TX	8		//pour ne pas faire comme tout le monde (et rsoudre un pb hardware !)
+		#define PIN_UART_RX	6		//pour ne pas faire comme tout le monde (et rsoudre un pb hardware !)
 	#endif
 
 	#if OBJECT_ID == OBJECT_OUT_WEATHER_STATION
@@ -116,11 +118,11 @@
 
 
 	#if OBJECT_ID == OBJECT_ROLLER_SHUTTER
-		#define PIN_BP_UP           17 	//SB1 carte D_drivers
-		#define PIN_BP_DOWN         16 	//SB2 carte D_drivers
-		#define PIN_RIN				10 	// attention de ne pas utiliser en même temps l'object Ventilator
-		#define PIN_FIN				12 	// attention de ne pas utiliser en même temps l'object Ventilator
-		#define PIN_ADC				3 	//Shunt
+		#define PIN_BP_UP           17
+		#define PIN_BP_DOWN         16
+		#define PIN_RIN				9
+		#define PIN_FIN				10
+		#define PIN_ADC				4
 
 
 
@@ -274,10 +276,6 @@
 		#define LCD_SWITCH_SLIDER_PIN	10
 	#endif
 
-	#if OBJECT_ID == OBJECT_MP3_PLAYER
-		#define UART_AT_BAUDRATE_9600	1
-	#endif
-
 	#if OBJECT_ID == OBJECTS_NB
 
 
@@ -378,7 +376,7 @@ uint32_t debug_printf(char * format, ...);
 #endif
 
 #ifndef USE_BMP180
-	#define USE_BMP180		1
+	#define USE_BMP180		0
 #endif
 
 #ifndef USE_EPAPER
