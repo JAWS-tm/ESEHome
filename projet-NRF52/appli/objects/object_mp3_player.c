@@ -13,6 +13,7 @@
 #define FIRST_SONG	0x01
 #define PLAY_WITH_INDEX	0x03
 
+bool_e initialization = false;
 
 void YX6300_demo(void)
 {
@@ -99,6 +100,38 @@ void MP3_PLAYER_basic_command(command_e command){
 
 	YX6300_send_request(command, FALSE, 2, data);
 
+}
+
+void MP3_PLAYER_process_main(){
+
+	typedef enum {
+			INIT,
+			PROCESS,
+		}state_e;
+
+		static state_e state = INIT;
+
+		switch (state)
+		{
+			case INIT: {
+				if (!initialization)
+				{
+					initialization = true;
+				    MP3_PLAYER_use_sd_card();
+				    uint8_t data[2];
+					data[0] = 0x00;
+					data[1] = 0x01; // first music
+					YX6300_send_request(PLAY_WITH_INDEX, FALSE, 2, data);
+				}
+
+				state = PROCESS;
+				break;
+			}
+			case PROCESS: {
+
+				break;
+			}
+		}
 }
 
 #endif
