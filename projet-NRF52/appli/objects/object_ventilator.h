@@ -1,20 +1,12 @@
 /*
  * object_ventilator.h
  *
- *  Created on: 10 févr. 2022
- *      Author: Pierre Nile
- */
+ *  Created on: 30 Janvier 2023
+ *      Author: BAUDIQUEY Nicolas
+ /
 
-#ifndef APPLI_OBJECTS_OBJECT_VENTILATOR_H_
-#define APPLI_OBJECTS_OBJECT_VENTILATOR_H_
-
-void object_ventilator_activation(void);
-void object_ventilator_temperature(void);
+#ifndef APPLI_OBJECTS_OBJECT_VENTILATORH
+#define APPLI_OBJECTS_OBJECT_VENTILATORH
 
 
-typedef enum{
-	 VENTILATOR_INIT,
-	 VENTILATOR_ON
-}ventilator_e;
-
-#endif /* APPLI_OBJECTS_OBJECT_VENTILATOR_H_ */
+#endif / APPLI_OBJECTS_OBJECT_VENTILATORH */

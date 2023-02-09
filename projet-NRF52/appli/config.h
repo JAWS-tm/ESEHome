@@ -153,12 +153,12 @@
 
 	#if OBJECT_ID == OBJECT_VENTILATOR
 
-		#define MOSFET_PIN_1		25
-		#define MOSFET_PIN_2		26
-		#define MOSFET_PIN_3		27
-		#define TEMP_OUTPUT			3
+        #define MOSFET_PIN              10
+        #define DATA_VENTILATEUR        11
+        #define Button_SB1_PIN          16
+        #define Button_SB2_PIN          17
 
-	#endif
+    #endif
 
 
 	#if OBJECT_ID == OBJECT_GSM

@@ -1,138 +1,163 @@
 /*
  * object_ventilator.c
  *
- *  Created on: 10 févr. 2022
- *      Author: Pierre Nile
+ *  Created on: 30 Janvier 2023
+ *      Author: BAUDIQUEY Nicolas
  */
-#include "../config.h"
-
 
 #if OBJECT_ID == OBJECT_VENTILATOR
+
+#include "../config.h"
 #include "../common/gpio.h"
 #include "nrf_gpio.h"
 #include "nrf52.h"
+#include "bsp/pwm.h"
 #include "appli/common/leds.h"
 #include "appli/common/buttons.h"
-#include "appli/common/adc.h"
 #include "appli/common/serial_dialog.h"
 #include "object_ventilator.h"
-#include "appli/common/adc.h"
 #include "appli/common/parameters.h"
 #include "appli/common/rf_dialog.h"
-void BUTTON_action(void);
-void BUTTON_action_long_press(void);
 
-static volatile int etat = 0;
+static bool_e state_change = FALSE;
 
+static volatile bool_e flag_press_on;
+static volatile bool_e flag_press_off;
 
-void OBJECT_VENTILATOR_etat_updated_callback(int new_etat)
+typedef enum
 {
-	etat = new_etat;
+	ASK_OFF 	= 0,
+	ASK_ON		= 1,
+
+}ask_of_activation;
+
+static volatile ask_of_activation flag_ask_for_activation = ASK_OFF;
+
+void OBJECT_VENTILATOR_ask_for_activation_callback(int32_t ask_for_activation)
+{
+	if(ask_for_activation < ASK_NB)
+		flag_ask_for_activation = (ask_of_activation)ask_for_activation;
+}
+void short_press_ON(){
+	flag_short_press_ON = TRUE;
+}
+void long_press_ON(){
+	flag_long_press_ON = TRUE;
+}
+void short_press_OFF(){
+	flag_short_press_OFF = TRUE;
+}
+void long_press_OFF(){
+	flag_long_press_OFF = TRUE;
+}
+void short_release_ON (){
+	flag_short_release_ON = TRUE;
+}
+void short_release_OFF (){
+	flag_short_release_OFF = TRUE;
+}
+void long_release_ON(){
+	flag_long_release_ON = TRUE;
+}
+void long_release_OFF(){
+	flag_long_release_OFF = TRUE;
 }
 
-static ventilator_e state = VENTILATOR_INIT;
-int16_t temperature;
-int temp_deg;
 
-void object_ventilator_temperature(void)
+//Main de VENTILATOR
+void VENTILATOR_state_machine(void)
 {
-	//Lecture de la tension de sortie du capteur
-	ADC_read(TEMP_OUTPUT, &temperature);
-	debug_printf("Temperature est %d.\n", temperature);
+	//debug_printf("DEBUG state machine\n");
+	typedef enum{
+		 INIT,
+		 ON,
+		 OFF,
+		 IDLE,
+		 COMMUNICATION
 
-	//VOUT=TCxTA + V0°C
-	//19.5mV/°C
+	}state_e;
 
-	//Transformation de la tension de sortie en température
-	temp_deg = (temperature)*10000 / 195000 ;
-
-	debug_printf("La temperature en degre est %d. \n",temp_deg);
-}
-
-static volatile bool_e flag_new_ask_from_rf = FALSE;
-static volatile int32_t new_speed_asked_from_rf = 0;
-
-//Vitesse
-void object_fan_set_speed_from_rf(int32_t speed)
-{
-	new_speed_asked_from_rf = speed;
-	flag_new_ask_from_rf = TRUE;
-}
-
-static int8_t current_speed;
-
-void object_ventilator_activation(void)
-{
-	object_ventilator_temperature();
-
-	if(flag_new_ask_from_rf)	//demande de la station de base de piloter le ventilo à la vitesse XXXX)
-	{
-		flag_new_ask_from_rf = FALSE;
-		if(new_speed_asked_from_rf < 8)
-			current_speed =  new_speed_asked_from_rf;
-	}
+	static state_e state = INIT;
+	static state_e previous_state = INIT;
+	previous_state = state;
 
 	switch(state) {
-		case VENTILATOR_INIT:
-			//Initialisation des paramètres
+		////Initialisation
+		case INIT :
 			PARAMETERS_init();
-			PARAMETERS_enable(PARAM_ACTUATOR_STATE, 0, FALSE, &object_fan_set_speed_from_rf, NULL);
+			PARAMETERS_enable(PARAM_ACTUATOR_STATE, 0, FALSE, &OBJECT_ROLLER_SHUTTER_ask_for_activation_callback, NULL);
 
-			//Initialisation des différents éléments de l'objet
-			GPIO_init();
-			ADC_init();
-			GPIO_configure(MOSFET_PIN_1, NRF_GPIO_PIN_PULLUP, true);
-			GPIO_configure(MOSFET_PIN_2, NRF_GPIO_PIN_PULLUP, true);
-			GPIO_configure(MOSFET_PIN_3, NRF_GPIO_PIN_PULLUP, true);
-			LED_add(LED_ID_NETWORK, PIN_LED_NETWORK);
-			BUTTONS_add(BUTTON_NETWORK, PIN_BUTTON_NETWORK, TRUE, &BUTTON_action, NULL, &BUTTON_action_long_press, NULL);
-			state = VENTILATOR_ON;	//Changement d'état
+			GPIO_configure(PIN_RIN, NRF_GPIO_PIN_PULLUP, true);
+			BUTTONS_add(BUTTON_USER0, PIN_BP_UP, TRUE, &short_press_up, NULL, &long_press_up, NULL);
+			BUTTONS_add(BUTTON_USER1, PIN_BP_DOWN, TRUE,&short_press_down, NULL,&long_press_down, NULL);
+			state = IDLE;
+			MOSFET_PIN = FALSE;
 			break;
 
-		case VENTILATOR_ON:
+		////Allumage du ventilateur
+		case ON :
+			debug_printf("DEBUG -- ON\n");
+			//PWM_init(uint8_t * pins, uint8_t pin_nb, nrf_pwm_clk_t base_clock, uint16_t top_value);
+			GPIO_write(MOSFET_PIN, TRUE);
+			PWM_init(DATA_VENTILATEUR, 1, NRF_PWM_CLK_16MHz, 999);
+			PWM_set_duty(0, 50);
 
-			//Gestion de la vitesse en fonction des différents Mosfet
-			GPIO_write(MOSFET_PIN_1, current_speed>>0 & 1);
-			GPIO_write(MOSFET_PIN_2, current_speed>>1 & 1);
-			GPIO_write(MOSFET_PIN_3, current_speed>>2 & 1);
-
-			//Allumage de la led
-			LED_set(LED_ID_NETWORK, (current_speed)?LED_MODE_ON:LED_MODE_OFF);
-
-			//TODO : disposer de deux modes, pilotables par la station... et activant le suivi en température
-			/*if(temp_deg >= 20) {
-				current_speed = 3;
+			if (flag_short_press_OFF || flag_ask_for_activation == ASK_OFF){
+				state = IDLE;
 			}
+			break;
 
-			if(temp_deg >= 30) {
-				current_speed = 5;
-			}*/
 
-			if(temp_deg >= 50) {
-				current_speed = 7;
+			////Desactivation du ventilateur
+		case OFF :
+			debug_printf("DEBUG -- OFF\n");
+			GPIO_write(DATA_VENTILATEUR, FALSE);
+			GPIO_write(MOSFET_PIN, FALSE);
+			state = IDLE;
+			break;
+
+
+		case IDLE :
+			debug_printf("DEBUG -- IDLE\n");
+
+			if (flag_short_press_OFF || flag_ask_for_activation == ASK_OFF){
+				state = OFF;
 			}
-
+			if (flag_short_press_ON || flag_ask_for_activation == ASK_ON){
+				state = ON;
+			}
+			state = COMMUNICATION;
 			break;
 
 		default:
-			state = VENTILATOR_INIT;	//N'est jamais sensé se produire.
 			break;
+
+			//On renvoie les informations que la station de base demande
+		case COMMUNICATION :
+			debug_printf("curent state :\n");
+			PARAMETERS_send_param32_to_basestation(PARAM_ACTUATOR_STATE);
+			debug_printf("parameters mode :\n");
+			PARAMETERS_send_param32_to_basestation(PARAM_MODE);
+			state = IDLE;
+		break;
+
+
 	}
 
+	flag_ask_for_activation = ASK_OFF;
+	flag_short_press_ON = FALSE;
+	flag_long_press_ON = FALSE;
+	flag_short_press_OFF = FALSE;
+	flag_long_press_OFF = FALSE;
+	flag_short_release_ON = FALSE;
+	flag_short_release_OFF = FALSE;
+	flag_long_release_OFF = FALSE;
+	flag_long_release_ON = FALSE;
 }
 
-//Appuie court
-void BUTTON_action(void)
+void VENTILATOR_state_change(void)
 {
-	//Vitesse + 1 a chaque appuie de bouton
-	current_speed = (current_speed+1)%8;
-}
-
-//Appuie long
-void BUTTON_action_long_press(void)
-{
-	//Vitesse au maximum ou minimum à chaque appuie long
-	current_speed = (current_speed)?0:7;
+	state_change = TRUE;
 }
 
 #endif
