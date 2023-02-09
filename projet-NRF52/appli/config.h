@@ -117,11 +117,11 @@
 
 
 	#if OBJECT_ID == OBJECT_ROLLER_SHUTTER
-		#define PIN_BP_UP           17
-		#define PIN_BP_DOWN         16
-		#define PIN_RIN				9
-		#define PIN_FIN				10
-		#define PIN_ADC				4
+		#define PIN_BP_UP           17 	//SB1 carte D_drivers
+		#define PIN_BP_DOWN         16 	//SB2 carte D_drivers
+		#define PIN_RIN				10 	// attention de ne pas utiliser en même temps l'object Ventilator
+		#define PIN_FIN				12 	// attention de ne pas utiliser en même temps l'object Ventilator
+		#define PIN_ADC				3 	//Shunt
 
 
 
@@ -339,8 +339,8 @@ uint32_t debug_printf(char * format, ...);
 #define USE_ADC_CHANNEL_AIN0		(OBJECT_ID == OBJECT_WATER_LEVEL_DETECTOR)	//P0.02
 //#define USE_ADC_CHANNEL_AIN0		1	//P0.02
 #define USE_ADC_CHANNEL_AIN0		(OBJECT_ID == OBJECT_SMART_SOCKET || OBJECT_FIRE_DETECTOR)	//P0.02
-#define USE_ADC_CHANNEL_AIN1		(OBJECT_ID == OBJECT_VENTILATOR)	//P0.03
-#define USE_ADC_CHANNEL_AIN2		(OBJECT_ID == OBJECT_ROLLER_SHUTTER)	//P0.04
+#define USE_ADC_CHANNEL_AIN1		(OBJECT_ID == OBJECT_VENTILATOR || OBJECT_ID == OBJECT_ROLLER_SHUTTER)	//P0.03
+#define USE_ADC_CHANNEL_AIN2		0	//P0.04
 #define USE_ADC_CHANNEL_AIN3		0	//P0.05
 #define USE_ADC_CHANNEL_AIN4		0	//P0.06
 #define USE_ADC_CHANNEL_AIN7		I_HAVE_MEASURE_VBAT	//P0.31
