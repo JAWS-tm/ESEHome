@@ -34,14 +34,15 @@ class UartSerial :
     
     def read_uart_frame(self, end_of_frame_character) :
         try :
-                # copie d’une ligne entiere jusqu’a \n dans rcv
-                rcv = self.port.readline().decode("utf-8") 
-                if(rcv == ''):
-                    return 0
-                else:
-                    self.current_message = rcv
-                    self.put_message_in_queue(rcv)
-                    return rcv
+            # copie d’une ligne entiere jusqu’a \n dans rcv
+            rcv = self.port.readline().decode("utf-8") 
+            if(rcv == ''):
+                return 0
+            else:
+                self.current_message = rcv
+                self.put_message_in_queue(rcv)
+                # self.put_dico_in_queue(rcv)
+                return rcv
 
             ## Pas besoin de la suite car "readline" permet de récupérer chaque tram 1 par 1 en entière
 
@@ -81,9 +82,9 @@ class UartSerial :
         else :
             print("ERROR : You didn't launch the uart reader as a thread (ref to the constructor)")
 
-    def put_dico_in_queue(self, message):
+    def put_dico_in_queue(self, dico):
         if(self.launched_as_thread):
-            self.incoming_dico_queue.put(message)
+            self.incoming_dico_queue.put(dico)
         else :
             print("ERROR : You didn't launch the uart reader as a thread (ref to the constructor)")
     
@@ -109,11 +110,13 @@ def uart_process_main_thread(port : str, baudrate : int, timeout : int, incoming
     while True :
         message = uart.read_uart_frame(end_of_frame_character) #Automatically updates queue when a complete message is received
         if (message == 0):
-            print("\n\nPas de tram reçu. En attente...")
+            print("\nPas de tram reçu. En attente...")
         else : 
             FrameParser(message)
+            dico_tram = FrameParser(message).msgParsed()
+            uart.put_dico_in_queue(dico_tram)
+            
             ## Envoie reponse pour cryptage
-
        
 
 ############## Commentaire car pas utilisé pour l'instant

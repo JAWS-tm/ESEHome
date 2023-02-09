@@ -110,11 +110,9 @@ class mainClass (object):
             
             last_message = uart_controller.get_last_message()
             if (last_message != 0): # 
-                print("reception du message dans le main : ",last_message)   
-
-            last_dico = uart_controller.get_last_dico()
-            if (last_message != 0): # 
-                print("reception du dico dans le main : ",last_dico)   
+                # print("reception du message dans le main : ",last_message)   
+                # print("reception du message dans le DIICOO : ",uart_controller.get_last_dico()) 
+                Receive_write.set_new_dico(self, uart_controller.get_last_dico())  
 
 
 
@@ -129,6 +127,8 @@ if __name__ == "__main__":
     # MariaDb init : create database and tables, if not exists
     MariaDBConnect(config.DB_CONFIG)
     config.logger.info("-----------------------MariaDB : ok-----------------------")
+
+    Receive_write(config.DB_CONFIG)
 
     if(get_port_serial_open() != 0):
         mainClass()
