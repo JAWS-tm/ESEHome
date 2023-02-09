@@ -42,16 +42,19 @@ void OBJECT_MATRIX_LEDS_value_updated_callback(uint32_t new_value){
 
 void button_network_short_press(void) {
 	LED_toggle(LED_ID_USER0);
+	debug_printf("\nbutton_network_short_press");
 	//LED_set_flash_limited_nb(LED_ID_USER0, 5,100);
 	//LED_set(LED_ID_USER0, LED_MODE_FLASH);
 }
- void start_timer_short_press(void){
+void start_timer_short_press(void){
 	 flag_bp_chrono = TRUE;
- }
+	debug_printf("\nstart_timer_short_press");
+}
 
- void bp_long_press(void){
-	 flag_bp_long_press_chrono = TRUE;
-  }
+void bp_long_press(void){
+	flag_bp_long_press_chrono = TRUE;
+	debug_printf("\nbp_long_press");
+}
 
 
 // void restart_time_short_press(void){
@@ -59,6 +62,8 @@ void button_network_short_press(void) {
 // }
 void button_network_5press(void) {
 	LED_set_flash_limited_nb(LED_ID_USER0, 5,100);
+	debug_printf("\nbutton_network_5press");
+
 }
 
 typedef struct
@@ -144,12 +149,31 @@ const digit_t digits[11] =
 					0b000000}},
 };
 
+
+void MATRIX_LED_param_updated_callback(int32_t new_value)
+{
+	debug_printf("\nnew value : %d", new_value);
+}
+
+/*
+ * Met toutes les leds de la matrice noir = éteint
+ */
 void MATRIX_clear(uint32_t * matrix, uint16_t size)
 {
 	for(uint16_t i=0; i<size; i++)
 		matrix[i] = COLOR_BLACK;
 }
-
+/*
+ * Explication fonction MATRIX_putdigit_matrix
+ *
+ * 		MATRIX_putdigit_matrix(1, matrix_1, 8, 8, 0, 1, COLOR_LIGHTBLUE, COLOR_BLACK);
+ * 			1 : numéro 1 en bits, dans la constante "digits"
+ * 			matrix_1 : list de 64 cases, car 64 leds. Ne pas y toucher si utilisations 1 matrice
+ * 			8, 8 : Nombre de pixels/leds en X et en Y, sur le panneau leds
+ * 			0, 1 : Position affichage en X et en Y, sur le panneau leds
+ * 			COLOR_LIGHTBLUE : couleur de l'ecriture
+ * 			COLOR_BLACK : couleur de fond (noir = led éteinte)
+ */
 void MATRIX_putdigit_matrix(uint8_t d, uint32_t * matrix, uint16_t size_x, uint16_t size_y, uint8_t x, uint8_t y, uint32_t foreground, uint32_t background)
 {
 	for(uint16_t i=0; i<3; i++)
@@ -158,39 +182,45 @@ void MATRIX_putdigit_matrix(uint8_t d, uint32_t * matrix, uint16_t size_x, uint1
 			if(i+x<size_x && j+y<size_y)
 				matrix[i+x  +  size_x*(j+y)] = ((digits[d].lines[j]>>(7-i))&1)?foreground:background;
 		}
-
-
-//	for(uint16_t j=0; j<size_y; j++)
-//	{
-//		for(uint16_t i=0; i<size_x; i++)
-//			debug_printf("%c ", (matrix[i + size_x*j]==foreground)?'X':'_');
-//		debug_printf("\n");
-//	}
 }
 
-void Set_Timer(uint32_t * matrix_1, uint32_t * m2, uint32_t matrix_16x8){
+
+/*
+ * Affiche sur la matrice ":0", en attendant qu'il se passe quelque chose
+ */
+void Set_Timer(uint32_t * matrix_1, uint32_t matrix_8X8){
+
+	MATRIX_putdigit_matrix(0, matrix_1, 8, 8, 4, 1, COLOR_LIGHTBLUE, COLOR_BLACK);
+	MATRIX_putdigit_matrix(10, matrix_1, 8, 8, 0, 1, COLOR_LIGHTBLUE, COLOR_BLACK);
+	WS2812_display_matrix(matrix_1, matrix_8X8);
+	WS2812_refresh();
+}
+
+/* fonction pour 2 matrices
+ *void Set_Timer(uint32_t * matrix_1, uint32_t * m2, uint32_t matrix_8X8){
 	MATRIX_putdigit_matrix(0, matrix_1, 16, 8, 13, 1, COLOR_LIGHTBLUE, COLOR_BLACK);
 	MATRIX_putdigit_matrix(0, matrix_1, 16, 8, 9, 1, COLOR_LIGHTBLUE, COLOR_BLACK);
 	MATRIX_putdigit_matrix(0, matrix_1, 16, 8, 4, 1, COLOR_LIGHTBLUE, COLOR_BLACK);
 	MATRIX_putdigit_matrix(0, matrix_1, 16, 8, 0, 1, COLOR_LIGHTBLUE, COLOR_BLACK);
 	MATRIX_movement(matrix_1, m2);
-	WS2812_display_matrix(m2, matrix_16x8);
+	WS2812_display_matrix(m2, matrix_8X8);
 	WS2812_refresh();
 }
+*/
 
-void Get_hours(uint32_t * matrix_1, uint32_t * m2, uint32_t matrix_16x8)
+void Get_hours(uint32_t * matrix_1, uint32_t * m2, uint32_t matrix_8X8)
 
 {
-	MATRIX_clear(matrix_1, matrix_16x8);
+	MATRIX_clear(matrix_1, matrix_8X8);
 		int h = 0;
 		int m = 0;
 		int s = 0;
-		MATRIX_putdigit_matrix(0, matrix_1, 16, 8, 13, 1, COLOR_LIGHTBLUE, COLOR_BLACK);
-		MATRIX_putdigit_matrix(0, matrix_1, 16, 8, 9, 1, COLOR_LIGHTBLUE, COLOR_BLACK);
-		MATRIX_putdigit_matrix(0, matrix_1, 16, 8, 4, 1, COLOR_LIGHTBLUE, COLOR_BLACK);
-		MATRIX_putdigit_matrix(0, matrix_1, 16, 8, 0, 1, COLOR_LIGHTBLUE, COLOR_BLACK);
+		MATRIX_putdigit_matrix(0, matrix_1, 8, 8, 6, 1, COLOR_LIGHTBLUE, COLOR_BLACK);
+		MATRIX_putdigit_matrix(0, matrix_1, 8, 8, 4, 1, COLOR_LIGHTBLUE, COLOR_BLACK);
+		MATRIX_putdigit_matrix(0, matrix_1, 8, 8, 2, 1, COLOR_LIGHTBLUE, COLOR_BLACK);
+		MATRIX_putdigit_matrix(0, matrix_1, 8, 8, 0, 1, COLOR_LIGHTBLUE, COLOR_BLACK);
 		MATRIX_movement(matrix_1, m2);
-		WS2812_display_matrix(m2, matrix_16x8);
+		WS2812_display_matrix(m2, matrix_8X8);
 		WS2812_refresh();
 		for (size_t i=0; i < 86400; i++) // nombre de seconde en une journée
 		{
@@ -204,17 +234,17 @@ void Get_hours(uint32_t * matrix_1, uint32_t * m2, uint32_t matrix_16x8)
 					 int m_unite = (m%10); // unité minute
 					 int m_dizaine = (m/10)%10; // dizaine minute
 					 s = 0;
-					 MATRIX_putdigit_matrix(m_unite, matrix_1, 16, 8, 13, 1, COLOR_LIGHTBLUE, COLOR_BLACK);
-					 MATRIX_putdigit_matrix(m_dizaine, matrix_1, 16, 8, 9, 1, COLOR_LIGHTBLUE, COLOR_BLACK);
+					 MATRIX_putdigit_matrix(m_unite, matrix_1, 8, 8, 8, 1, COLOR_LIGHTBLUE, COLOR_BLACK);
+					 MATRIX_putdigit_matrix(m_dizaine, matrix_1, 8, 8, 5, 1, COLOR_LIGHTBLUE, COLOR_BLACK);
 					 MATRIX_movement(matrix_1, m2);
-					 WS2812_display_matrix(m2, matrix_16x8);
+					 WS2812_display_matrix(m2, matrix_8X8);
 					 WS2812_refresh();
 
 				 }else {
 					 s = 0;
-					 MATRIX_putdigit_matrix(m, matrix_1, 16, 8, 13, 1, COLOR_LIGHTBLUE, COLOR_BLACK);
+					 MATRIX_putdigit_matrix(m, matrix_1, 8, 8, 7, 1, COLOR_LIGHTBLUE, COLOR_BLACK);
 					 MATRIX_movement(matrix_1, m2);
-					 WS2812_display_matrix(m2, matrix_16x8);
+					 WS2812_display_matrix(m2, matrix_8X8);
 					 WS2812_refresh();
 
 				 }
@@ -224,18 +254,18 @@ void Get_hours(uint32_t * matrix_1, uint32_t * m2, uint32_t matrix_16x8)
 					 if (h >= 10){
 						 int h_unite = (s%10); // unité heure
 						 int h_dizaine = (s/10)%10; // dizaine heures
-						 MATRIX_putdigit_matrix(h_unite, matrix_1, 16, 8, 4, 1, COLOR_LIGHTBLUE, COLOR_BLACK);
-						 MATRIX_putdigit_matrix(h_dizaine, matrix_1, 16, 8, 0, 1, COLOR_LIGHTBLUE, COLOR_BLACK);
+						 MATRIX_putdigit_matrix(h_unite, matrix_1, 8, 8, 4, 1, COLOR_LIGHTBLUE, COLOR_BLACK);
+						 MATRIX_putdigit_matrix(h_dizaine, matrix_1, 8, 8, 0, 1, COLOR_LIGHTBLUE, COLOR_BLACK);
 						 MATRIX_movement(matrix_1, m2);
-						 WS2812_display_matrix(m2, matrix_16x8);
+						 WS2812_display_matrix(m2, matrix_8X8);
 						 WS2812_refresh();
 					 } else {
 						 m = 0;
-						 MATRIX_putdigit_matrix(h, matrix_1, 16, 8, 4, 1, COLOR_LIGHTBLUE, COLOR_BLACK);
-						 MATRIX_putdigit_matrix(m, matrix_1, 16, 8, 13, 1, COLOR_LIGHTBLUE, COLOR_BLACK);
-						 MATRIX_putdigit_matrix(m, matrix_1, 16, 8, 9, 1, COLOR_LIGHTBLUE, COLOR_BLACK);
+						 MATRIX_putdigit_matrix(h, matrix_1, 8, 8, 4, 1, COLOR_LIGHTBLUE, COLOR_BLACK);
+						 MATRIX_putdigit_matrix(m, matrix_1, 8, 8, 6, 1, COLOR_LIGHTBLUE, COLOR_BLACK);
+						 MATRIX_putdigit_matrix(m, matrix_1, 8, 8, 8, 1, COLOR_LIGHTBLUE, COLOR_BLACK);
 						 MATRIX_movement(matrix_1, m2);
-						 WS2812_display_matrix(m2, matrix_16x8);
+						 WS2812_display_matrix(m2, matrix_8X8);
 						 WS2812_refresh();
 					 }
 			 	 }
@@ -244,44 +274,62 @@ void Get_hours(uint32_t * matrix_1, uint32_t * m2, uint32_t matrix_16x8)
 			 //debug_printf("%d:%d:%d \n", h, m, s);
 		}
 }
-void Get_Timer(uint32_t * matrix_1, uint32_t * m2, uint32_t matrix_16x8){
-	MATRIX_clear(matrix_1, matrix_16x8);
-//
-//	static uint16_t ms =0;
-//	ms = (ms+1)%1000;
-//	if(!ms){
-//		seconds = (seconds+1)%60;
-//		if(!seconds)
-//		{
-//			minutes = (minutes+1)%60;
-//			if(!minutes)
-//				hours = (hours+1)%24;
-//		}
-//
-//	}
-//	debug_printf("%d:%d:%d \n", hours, minutes, seconds);
-	int h = 0;
-	int m = 0;
+
+
+
+/*
+ * Fonction qui lance le chrono
+ */
+void Get_Timer(uint32_t * matrix_1, uint32_t * m2, uint32_t matrix_8X8){
+	MATRIX_clear(matrix_1, matrix_8X8);
+
 	int s = 0;
+	debug_printf("\nGet timer");
 
-	for (size_t i=0; i < 86400; i++) // nombre de seconde en une journée
+
+	for (size_t i=0; i < 100; i++) // Timer de 10 seconde (0 a 9 car 1 matrice = affichage 2 chiffres)
 	{
-		 SYSTICK_delay_ms(1000);
-		 s++;
+		// Attendre 1s
+		SYSTICK_delay_ms(1000);
 
-		 if (s >= 10){
+		if(s == 100){
+			MATRIX_putdigit_matrix(1, matrix_1, 8, 8, 0, 1, COLOR_LIGHTBLUE, COLOR_BLACK);
+			MATRIX_putdigit_matrix(0, matrix_1, 8, 8, 1, 1, COLOR_LIGHTBLUE, COLOR_BLACK);
+			MATRIX_putdigit_matrix(0, matrix_1, 8, 8, 4, 1, COLOR_LIGHTBLUE, COLOR_BLACK);
+		}
+		else if (s >= 10){
+			int s_unite = (s%10); // unité seconde
+			int s_dizaine = (s/10)%10; // dizaine seconde
+			MATRIX_putdigit_matrix(s_unite, matrix_1, 8, 8, 4, 1, COLOR_LIGHTBLUE, COLOR_BLACK);
+			MATRIX_putdigit_matrix(s_dizaine, matrix_1, 8, 8, 0, 1, COLOR_LIGHTBLUE, COLOR_BLACK);
+			WS2812_display_matrix(matrix_1, matrix_8X8);
+			WS2812_refresh();
+		} else{
+			MATRIX_putdigit_matrix(0, matrix_1, 8, 8, 0, 1, COLOR_LIGHTBLUE, COLOR_BLACK);
+			MATRIX_putdigit_matrix(s, matrix_1, 8, 8, 4, 1, COLOR_LIGHTBLUE, COLOR_BLACK);
+			WS2812_display_matrix(matrix_1, matrix_8X8);
+			WS2812_refresh();
+		}
+
+		 s++;
+	}
+
+
+
+/*		 if (s >= 10){
 			 int s_unite = (s%10); // unité seconde
-			 int s_dizaine = (s/10)%10; // dizaine seconde
-			 MATRIX_putdigit_matrix(s_unite, matrix_1, 16, 8, 13, 1, COLOR_LIGHTBLUE, COLOR_BLACK);
-			 MATRIX_putdigit_matrix(s_dizaine, matrix_1, 16, 8, 9, 1, COLOR_LIGHTBLUE, COLOR_BLACK);
-			 MATRIX_movement(matrix_1, m2);
-			 WS2812_display_matrix(m2, matrix_16x8);
+			 //int s_dizaine = (s/10)%10; // dizaine seconde
+			 MATRIX_putdigit_matrix(s_unite, matrix_1, 8, 8, 4, 1, COLOR_LIGHTBLUE, COLOR_BLACK);
+			 //MATRIX_putdigit_matrix(s_dizaine, matrix_1, 8, 8, 4, 1, COLOR_LIGHTBLUE, COLOR_BLACK);
+			 //MATRIX_movement(matrix_1, m2);
+			 //WS2812_display_matrix(m2, matrix_8X8);
+			 WS2812_display_matrix(64, matrix_8X8);
 			 WS2812_refresh();
 		 } else {
-			 MATRIX_putdigit_matrix(s, matrix_1, 16, 8, 13, 1, COLOR_LIGHTBLUE, COLOR_BLACK);
-			 MATRIX_movement(matrix_1, m2);
-			 WS2812_display_matrix(m2, matrix_16x8);
-			 WS2812_refresh();
+		 MATRIX_putdigit_matrix(s, matrix_1, 8, 8, 4, 1, COLOR_LIGHTBLUE, COLOR_BLACK);
+		 //MATRIX_movement(matrix_1, m2);
+		 WS2812_display_matrix(64, matrix_8X8);
+		 WS2812_refresh();
 		 }
 		 if (s == 60)
 		 {
@@ -290,30 +338,29 @@ void Get_Timer(uint32_t * matrix_1, uint32_t * m2, uint32_t matrix_16x8){
 				 int m_unite = (m%10); // unité minute
 				 int m_dizaine = (m/10)%10; // dizaine minute
 				 s = 0;
-				 MATRIX_putdigit_matrix(s, matrix_1, 16, 8, 13, 1, COLOR_LIGHTBLUE, COLOR_BLACK);
-				 MATRIX_putdigit_matrix(s, matrix_1, 16, 8, 9, 1, COLOR_LIGHTBLUE, COLOR_BLACK);
-				 MATRIX_putdigit_matrix(m_unite, matrix_1, 16, 8, 4, 1, COLOR_LIGHTBLUE, COLOR_BLACK);
-				 MATRIX_putdigit_matrix(m_dizaine, matrix_1, 16, 8, 0, 1, COLOR_LIGHTBLUE, COLOR_BLACK);
+				 MATRIX_putdigit_matrix(s, matrix_1, 8, 8, 8, 1, COLOR_LIGHTBLUE, COLOR_BLACK);
+				 MATRIX_putdigit_matrix(s, matrix_1, 8, 8, 7, 1, COLOR_LIGHTBLUE, COLOR_BLACK);
+				 MATRIX_putdigit_matrix(m_unite, matrix_1, 8, 5, 4, 1, COLOR_LIGHTBLUE, COLOR_BLACK);
+				 MATRIX_putdigit_matrix(m_dizaine, matrix_1, 8, 5, 0, 1, COLOR_LIGHTBLUE, COLOR_BLACK);
 				 MATRIX_movement(matrix_1, m2);
-				 WS2812_display_matrix(m2, matrix_16x8);
+				 WS2812_display_matrix(m2, matrix_8X8);
 				 WS2812_refresh();
 
 			 }else {
 				 s = 0;
-				 MATRIX_putdigit_matrix(s, matrix_1, 16, 8, 13, 1, COLOR_LIGHTBLUE, COLOR_BLACK);
-				 MATRIX_putdigit_matrix(s, matrix_1, 16, 8, 9, 1, COLOR_LIGHTBLUE, COLOR_BLACK);
-				 MATRIX_putdigit_matrix(m, matrix_1, 16, 8, 4, 1, COLOR_LIGHTBLUE, COLOR_BLACK);
+				 MATRIX_putdigit_matrix(s, matrix_1, 8, 8, 8, 1, COLOR_LIGHTBLUE, COLOR_BLACK);
+				 MATRIX_putdigit_matrix(s, matrix_1, 8, 8, 5, 1, COLOR_LIGHTBLUE, COLOR_BLACK);
+				 MATRIX_putdigit_matrix(m, matrix_1, 8, 8, 3, 1, COLOR_LIGHTBLUE, COLOR_BLACK);
 				 MATRIX_movement(matrix_1, m2);
-				 WS2812_display_matrix(m2, matrix_16x8);
+				 WS2812_display_matrix(m2, matrix_8X8);
 				 WS2812_refresh();
 
 			 }
 
-		 }
-	}
+		 }	*/
 }
 
-void MATRIX_movement(uint32_t * m, uint32_t * m2)
+void MATRIX_movement(uint32_t * m, uint32_t * m2)	// Utile quand on utilise 1 matrice ???
 {
 	uint32_t i = 0;
 	for(i=0; i<8; i++){
@@ -375,14 +422,17 @@ void MATRIX_movement(uint32_t * m, uint32_t * m2)
 	}
 
 }
+
 void MATRIX_afficheur(uint32_t colorDonnees, uint32_t colorType){
+
 
 	typedef enum{
 		INIT_DATA,
 		IDLE,
 		CHRONO,
 		HOURS,
-		COMMUNICATION
+		COMMUNICATION,
+		TEST
 
 	}state_e;
 
@@ -392,25 +442,32 @@ void MATRIX_afficheur(uint32_t colorDonnees, uint32_t colorType){
 	previous_state = state;
 	static uint32_t matrix_8X8 = 64;
 	static uint32_t matrix_16X8 = 128;
-	static uint32_t matrix_1[128];
+	static uint32_t matrix_1[64];
 	static uint32_t m2[128];
 
 	switch(state){
 
 		case INIT_DATA:
+			debug_printf("\nINIT DATA");
 
 			PARAMETERS_enable(PARAM_MODE, 0, FALSE, NULL, NULL); // 0 quand chrono pas lancé sinon 1
 			PARAMETERS_init();
-			BUTTONS_add(BUTTON_CHRONO, PIN_BUTTON_CHRONO, TRUE, &start_timer_short_press, NULL, NULL, &bp_long_press);
-			WS2812_init(PIN_MATRIX_LED,matrix_16X8);
+			//BUTTONS_add(BUTTON_CHRONO, 18, TRUE, &start_timer_short_press, NULL, NULL, &bp_long_press);
+			WS2812_init(2,matrix_8X8);
 			state = IDLE;
+			debug_printf("\nINIT DATA OK");
+//			state = TEST;
+
 			break;
 
 		case CHRONO:
+			debug_printf("\nCHRONO");
+
+
 			if(entrance){
-				Get_Timer(matrix_1,m2,matrix_16X8);
+				Get_Timer(matrix_1,m2,matrix_8X8);
 				PARAMETERS_update(PARAM_MODE, 1); // chrono lancé
-				state = COMMUNICATION;
+				state = COMMUNICATION;		// Une fois la fonction terminée, un message est envoyé à lz station de base
 				if(flag_bp_chrono){
 					state = CHRONO;
 				}
@@ -419,10 +476,11 @@ void MATRIX_afficheur(uint32_t colorDonnees, uint32_t colorType){
 		break;
 
 		case IDLE:
-			Set_Timer(matrix_1, m2, matrix_16X8);
-//			flag_bp_short_press_chrono = FALSE;
+			//Set_Timer(matrix_1, m2, matrix_8X8);		// Fonction pour 2 matrices
+			Set_Timer(matrix_1, matrix_8X8);   			// Fonction pour 1 matrice
 
-			if(flag_bp_chrono){
+			//if(flag_bp_chrono){
+			if(true){	// True, pour lancer le chrono direct
 				flag_bp_chrono = FALSE;
 				state = CHRONO;
 			}else if (flag_bp_long_press_chrono){
@@ -431,8 +489,9 @@ void MATRIX_afficheur(uint32_t colorDonnees, uint32_t colorType){
 		break;
 
 		case HOURS:
+			debug_printf("\nHOUR");
 			flag_bp_long_press_chrono = FALSE;
-			Get_hours(matrix_1,m2,matrix_16X8);
+			Get_hours(matrix_1,m2,matrix_8X8);
 			PARAMETERS_update(PARAM_MODE, 0); // heure
 			state = COMMUNICATION;
 		break;
@@ -440,6 +499,12 @@ void MATRIX_afficheur(uint32_t colorDonnees, uint32_t colorType){
 		case COMMUNICATION:
 			PARAMETERS_send_param32_to_basestation(PARAM_MODE);
 			state = IDLE;
+		break;
+
+		case TEST:
+			MATRIX_putdigit_matrix(0, matrix_1, 8, 8, 1, 1, COLOR_YELLOW, COLOR_BLACK);
+			MATRIX_putdigit_matrix(0, matrix_1, 8, 8, 2, 2, COLOR_GREEN, COLOR_BLACK);
+			MATRIX_putdigit_matrix(0, matrix_1, 8, 8, 3, 3, COLOR_GREEN, COLOR_BLACK);
 		break;
 
 		default:

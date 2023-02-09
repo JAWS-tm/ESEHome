@@ -136,7 +136,7 @@ bool MPU6050_Init(MPU6050_t* DataStruct, MPU6050_Accelerometer_t AccelerometerSe
 }
 bool mpu6050_verify_product_id(void)
 {
-    uint8_t who_am_i = 0x55;
+    uint8_t who_am_i = 0x68;
 
     if (mpu6050_register_read(ADDRESS_WHO_AM_I, &who_am_i, 1) == END_OK)
     {
@@ -216,6 +216,7 @@ bool MPU6050_ReadAllType2(TYPE_2_MPU6050_t* DataStruct) {
 	int16_t temp;
 	for(uint8_t i = 0; i<14 ; i++)
 		data[i] = 0x55;
+
 	/* Read full raw data, 14bytes */
 	//	I2C_ReadMulti(MPU6050_I2C, DataStruct->Address, MPU6050_ACCEL_XOUT_H, data, 14);
 	//	MPU6050_Init(&MPU6050_Data, MPU6050_Accelerometer_8G, MPU6050_Gyroscope_2000s);

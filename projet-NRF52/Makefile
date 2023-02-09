@@ -18,6 +18,8 @@ SRC_FILES += \
   $(PROJ_DIR)/appli/common/battery.c \
   $(PROJ_DIR)/appli/common/flash.c \
   $(PROJ_DIR)/appli/common/parameters.c \
+  $(PROJ_DIR)/appli/common/verbose.c \
+  $(PROJ_DIR)/appli/objects/object_base_station.c \
   $(PROJ_DIR)/appli/objects/object_fall_sensor.c \
   $(PROJ_DIR)/appli/objects/object_matrix_leds.c \
   $(PROJ_DIR)/appli/objects/object_tracker_gps.c \

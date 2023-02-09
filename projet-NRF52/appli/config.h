@@ -115,11 +115,11 @@
 
 
 	#if OBJECT_ID == OBJECT_ROLLER_SHUTTER
-		#define PIN_BP_UP           17
-		#define PIN_BP_DOWN         16
-		#define PIN_RIN				9
-		#define PIN_FIN				10
-		#define PIN_ADC				4
+		#define PIN_BP_UP           17 	//SB1 carte D_drivers
+		#define PIN_BP_DOWN         16 	//SB2 carte D_drivers
+		#define PIN_RIN				10 	// attention de ne pas utiliser en même temps l'object Ventilator
+		#define PIN_FIN				12 	// attention de ne pas utiliser en même temps l'object Ventilator
+		#define PIN_ADC				3 	//Shunt
 
 
 

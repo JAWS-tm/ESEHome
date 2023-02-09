@@ -61,7 +61,9 @@ typedef enum{
 	NB				    = 25,
 }recipient_e;
 
+void RF_DIALOG_init(void);
 uint32_t RF_DIALOG_get_my_base_station_id(void);
+uint32_t RF_DIALOG_get_my_device_id(void);
 void RF_DIALOG_send_msg_id_to_basestation(msg_id_e msg_id, uint8_t datasize, uint8_t * datas);
 void RF_DIALOG_send_msg_id_to_object(recipient_e obj_id,msg_id_e msg_id, uint8_t datasize, uint8_t * datas);
 void RF_DIALOG_process_rx_basestation(nrf_esb_payload_t * payload);
