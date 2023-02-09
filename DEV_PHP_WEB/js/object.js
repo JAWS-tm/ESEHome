@@ -5,13 +5,15 @@ let downValue = document.getElementById("downValue");
 
 upValue.addEventListener("click", () => {
   inputValue = isNaN(inputValue) ? 0 : inputValue;
-  inputValue++;
+  let step = 0.5;
+  inputValue += step;
   input.value = inputValue;
 });
 
 downValue.addEventListener("click", () => {
   inputValue = isNaN(inputValue) ? 0 : inputValue;
-  inputValue--;
+  let step = 0.5;
+  inputValue -= step;
   input.value = inputValue;
 });
 
