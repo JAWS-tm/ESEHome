@@ -68,7 +68,7 @@ void OBJECT_FALL_SENSOR_state_machine(void){
 		debug_printf("Case INIT\n");
 		Systick_add_callback_function(&FALL_SENSOR_process_ms);
 		debug_printf("BUTTONS_add\n");
-		BUTTONS_add(BUTTON_ALERT,PIN_BUTTON_ALERT,TRUE,&cb_bt_alert_short_press_event,NULL,&cb_bt_alert_long_press_event,NULL); //Initialisation du bouton alerte
+		BUTTONS_add(BUTTON_ALERT,PIN_BUTTON_ALERT,TRUE,&cb_bt_alert_short_press_event,NULL,&cb_bt_alert_long_press_event,NULL,NULL); //Initialisation du bouton alerte
 		debug_printf("LED_add\n");
 		LED_add(led_alert_id,PIN_LED_ALERT);
 		debug_printf("GPIO_configure\n");
@@ -231,7 +231,7 @@ void cb_bt_alert_long_press_event(void){
 }
 
 void init_for_demo(void){
-	BUTTONS_add(BUTTON_ALERT,PIN_BUTTON_ALERT,TRUE,&cb_bt_alert_short_press_event,NULL,&cb_bt_alert_long_press_event,NULL); //Initialisation du bouton alerte
+	BUTTONS_add(BUTTON_ALERT,PIN_BUTTON_ALERT,TRUE,&cb_bt_alert_short_press_event,NULL,&cb_bt_alert_long_press_event,NULL, NULL); //Initialisation du bouton alerte
 	LED_add(led_alert_id,PIN_LED_ALERT);
 }
 
