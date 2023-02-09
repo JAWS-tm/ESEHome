@@ -7,7 +7,7 @@
 
 #if OBJECT_ID == OBJECT_VENTILATOR
 
-#include "../config.h"
+#include "../appli/config.h"
 #include "../common/gpio.h"
 #include "nrf_gpio.h"
 #include "nrf52.h"
@@ -23,6 +23,14 @@ static bool_e state_change = FALSE;
 
 static volatile bool_e flag_press_on;
 static volatile bool_e flag_press_off;
+static volatile bool_e flag_short_press_ON;
+static volatile bool_e flag_long_press_ON;
+static volatile bool_e flag_short_press_OFF;
+static volatile bool_e flag_long_press_OFF;
+static volatile bool_e flag_short_release_ON;
+static volatile bool_e flag_long_release_ON;
+static volatile bool_e flag_long_release_OFF;
+static volatile bool_e flag_short_release_OFF;
 
 typedef enum
 {
@@ -35,7 +43,7 @@ static volatile ask_of_activation flag_ask_for_activation = ASK_OFF;
 
 void OBJECT_VENTILATOR_ask_for_activation_callback(int32_t ask_for_activation)
 {
-	if(ask_for_activation < ASK_NB)
+	if(ask_for_activation < ASK_OFF)
 		flag_ask_for_activation = (ask_of_activation)ask_for_activation;
 }
 void short_press_ON(){
@@ -85,13 +93,13 @@ void VENTILATOR_state_machine(void)
 		////Initialisation
 		case INIT :
 			PARAMETERS_init();
-			PARAMETERS_enable(PARAM_ACTUATOR_STATE, 0, FALSE, &OBJECT_ROLLER_SHUTTER_ask_for_activation_callback, NULL);
+			BUTTONS_init();
+			PARAMETERS_enable(PARAM_ACTUATOR_STATE, 0, FALSE, &OBJECT_VENTILATOR_ask_for_activation_callback, NULL);
 
-			GPIO_configure(PIN_RIN, NRF_GPIO_PIN_PULLUP, true);
-			BUTTONS_add(BUTTON_USER0, PIN_BP_UP, TRUE, &short_press_up, NULL, &long_press_up, NULL);
-			BUTTONS_add(BUTTON_USER1, PIN_BP_DOWN, TRUE,&short_press_down, NULL,&long_press_down, NULL);
-			state = IDLE;
+			BUTTONS_add(BUTTON_USER0, Button_SB1_PIN, TRUE, &short_press_ON, NULL, &long_press_ON, NULL, NULL);
+			BUTTONS_add(BUTTON_USER1, Button_SB2_PIN, TRUE,&short_press_OFF, NULL,&long_press_OFF, NULL, NULL);
 			MOSFET_PIN = FALSE;
+			state = IDLE;
 			break;
 
 		////Allumage du ventilateur
