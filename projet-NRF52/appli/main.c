@@ -293,7 +293,7 @@ void button_network_process_short_press(void)
 	LED_toggle(LED_ID_NETWORK);
 #endif
 #if OBJECT_ID == OBJECT_MP3_PLAYER
-	static bool_e play = true;
+	static bool_e play = false;
 
 	command_e command;
 	if(!play){

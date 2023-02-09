@@ -118,10 +118,6 @@ void MP3_PLAYER_process_main(){
 				{
 					initialization = TRUE;
 				    MP3_PLAYER_use_sd_card();
-				    uint8_t data[2];
-					data[0] = 0x00;
-					data[1] = 0x01; // first music
-					YX6300_send_request(PLAY_WITH_INDEX, FALSE, 2, data);
 				}
 
 				state = PROCESS;
