@@ -46,6 +46,7 @@
 #include "objects/object_LCD_slider.h"
 #include "objects/object_night_light.h"
 #include "objects/object_touch_screen.h"
+#include "objects/object_mp3_player.h"
 
 //#include "objects/object_smart_socket.h"
 
@@ -254,6 +255,11 @@ int main(void)
 
 		#endif
 
+		#if OBJECT_ID == OBJECT_MP3_PLAYER
+
+
+		#endif
+
 		#if OBJECT_ID == OBJECTS_NB
 
 
@@ -317,6 +323,19 @@ void button_network_process_short_press(void)
 #else
 	LED_toggle(LED_ID_NETWORK);
 #endif
+#ifndef OBJECT_ID == OBJECT_MP3_PLAYER
+	static bool_e play = false;
+	play != play;
+
+	command_e command;
+	if(!play)
+		command = PLAY;
+	else
+		command = PAUSE;
+
+	MP3_PLAYER_basic_command(command);
+
+#endif
 }
 
 void button_network_process_long_press(void)
@@ -352,6 +371,13 @@ void button_network_process_5press(void)
 
 	RF_DIALOG_send_msg_id_to_object(0xFFFFFFFF, PARAMETER_IS, data_size, data);
 	debug_printf("Message fictif envoy� en broadcast\n");
+
+#if OBJECT_ID == OBJECT_MP3_PLAYER
+
+	MP3_PLAYER_basic_command(NEXT_SONG);
+
+#endif
+
 }
 
 

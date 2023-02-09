@@ -40,7 +40,8 @@
 #define OBJECT_TOUCH_SCREEN         20
 #define OBJECT_E_PAPER              21
 #define OBJECT_MATRIX_LEDS			24
-#define OBJECTS_NB					25
+#define OBJECT_MP3_PLAYER			25
+#define OBJECTS_NB					26
 
 
 ///////////////////////////////////////////////////////////////////////////////////
@@ -271,6 +272,10 @@
 		#define LCD_A_SLIDER_PIN		12
 		#define LCD_B_SLIDER_PIN		11
 		#define LCD_SWITCH_SLIDER_PIN	10
+	#endif
+
+	#if OBJECT_ID == OBJECT_MP3_PLAYER
+		#define UART_AT_BAUDRATE_9600	1
 	#endif
 
 	#if OBJECT_ID == OBJECTS_NB

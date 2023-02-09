@@ -7,6 +7,7 @@
 
 #include "../config.h"
 #include "../common/buttons.h"
+#include "../common/parameters.h"
 #include "../common/systick.h"
 
 #if OBJECT_ID == OBJECT_ALARM
