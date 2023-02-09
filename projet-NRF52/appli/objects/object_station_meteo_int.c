@@ -37,17 +37,15 @@ void STATION_METEO_INT_MAIN(void) {
 		break;}
 	case BMP180:{
 		NMOS_On();
-		PARAMETERS_send_param32_to_basestation(PARAM_PRESSURE);
 		BMP180_temperature();
 		NMOS_Off();
 		state = OTHERS_MEASUREMENT;
 		break;}
 	case OTHERS_MEASUREMENT:{
-		state = SEND_DATAS;
+			state = SEND_DATAS;
 		break;}
 	case SEND_DATAS:{
 
-		RF_DIALOG_send_msg_id_to_basestation(0x16,4,humidity_int);
 		state = EPAPER;
 		break;}
 	case EPAPER:{
