@@ -98,13 +98,21 @@ int main(void)
     SERIAL_DIALOG_init();	//initialise l'UART et permet les dialogues avec le PC de dbogage.
 #endif
 
+    PARAMETERS_init();
+
+    RF_DIALOG_init();
+
     //Fin de l'initialisation
     debug_printf("NRF52832 initialis�\n");
     volatile char id;
     id = OBJECT_ID;
     debug_printf("My id is %d. I am \"%s\"\n", id, object_id_to_string(id));
 
-    PARAMETERS_init();
+    debug_printf("My object id is %d.\nMy unique id is %x\n I am \"%s\" \n", id, RF_DIALOG_get_my_device_id(), object_id_to_string(id));
+
+#if (OBJECT_ID != OBJECT_BASE_STATION)
+    debug_printf("My base station is %x\n", RF_DIALOG_get_my_base_station_id());
+#endif
 
     LED_add(LED_ID_NETWORK, PIN_LED_NETWORK);
 
@@ -295,13 +303,37 @@ void button_network_process_short_press(void)
 
 void button_network_process_long_press(void)
 {
-
+#if OBJECT_ID != OBJECT_BASE_STATION
+	if (RF_DIALOG_get_my_base_station_id() == 0xFFFFFFFF)
+	{
+		debug_printf("No base station, broadcast msg\n");
+		RF_DIALOG_send_msg_id_to_basestation(I_HAVE_NO_SERVER_ID, 0, NULL);
+	}
+	else
+	{
+		debug_printf("My base station is 0x%x\n", RF_DIALOG_get_my_base_station_id());
+	}
+#else
+	debug_printf("I'm the base station, my id is 0x%x\n", RF_DIALOG_get_my_device_id());
+#endif
 }
 
 
 void button_network_process_5press(void)
 {
 	// TODO reset usine...
+
+	uint8_t data_size = 5;
+	uint8_t data[data_size];
+
+	data[0] = PARAM_COLOR; // parameter id
+	data[1] = 0xFF; // color R
+	data[2] = 0x00; // color G
+	data[3] = 0x00; // color B
+	data[4] = 0xFF; // color A
+
+	RF_DIALOG_send_msg_id_to_object(0xFFFFFFFF, PARAMETER_IS, data_size, data);
+	debug_printf("Message fictif envoy� en broadcast\n");
 }
 
 
