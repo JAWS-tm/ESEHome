@@ -14,6 +14,8 @@ class Receive_write:
         self.msgPerm = ""
         self.history = ""
         self.nom = "----- Receive_write class -----"
+        self.cnx = ""
+        self.cursor = ""
         #connection to db
         try:
             self.cnx = mysql.connector.connect(
@@ -43,16 +45,21 @@ class Receive_write:
             self.msgCONTENT = self.dico.get("data_concat")
             self.msgDATE = "09/02/2023"
             self.msgPerm = "perm ?"
+
+            # self.cursor.execute('''INSERT INTO message 
+            #     (recipient, transmitter, type_message, parameter_id, data, date, permanent) 
+            # VALUES 
+            #     (%s,%s,%s,%s,%s,%s,%s)
+            # ''', 
+            #     (self.receiver, self.emitter,self.msgTypeID, self.paramID, self.msgCONTENT, self.msgDATE, self.msgPerm))
+            # # execute sql control
+            # self.cnx.commit()   
         
         # self.objectTX2DB()
 
-    async def objectTX2DB(self):
-        print("objectTX2DB")
-        await self.cursor.execute('''INSERT INTO message (destinataire, emetteur, type_message_id, parametre_id, message, date, permanent) VALUES 
-            (%s,%s,%s,%s,%s,%s,%s)''', 
-            (self.receiver, self.emitter,self.msgTypeID, self.paramID, self.msgCONTENT, self.msgDATE, self.msgPerm))
-            # execute sql control
-        self.cnx.commit()        
+    # def objectTX2DB(self):
+    #     print("objectTX2DB")
+     
 
 
 # if __name__ == "__main__":

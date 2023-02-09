@@ -1,13 +1,11 @@
 #import
 import json
 import logging
-from Data_base.MariadB_Connect import MariaDBConnect
 from Data_base.DB import dBclass
-from Data_comm.mainURC import mainURC
 import time
 from serial.tools.list_ports import comports
 from Data_comm.UartController import UartController
-from Data_comm.FrameParser import FrameParser
+import mysql.connector
 from Data_base.Receive_write import Receive_write
 
 #main
@@ -88,6 +86,7 @@ class config (object):
             jsonFile.close()
         DATA_COMMUNICATION_CONFIG = CONFIG["data_communication"]
         DB_CONFIG = CONFIG["DB"]
+        print(DB_CONFIG)
         UART_CONFIG = CONFIG["data_communication"]["UART"]
         ## global = variable global
         global port_serial
@@ -99,13 +98,30 @@ class config (object):
 
 
 class mainClass (object):
-    def __init__ (self):
+    def __init__ (self, bdd_config):
         # On lancera ici le Data_base_main.py et le Data_comm_main.py en multiprocessing
 
         # Receive_write(FrameParser.tram_dico)
         
-        uart_controller = UartController(config.UART_CONFIG)
+        try:
+            self.cnx = mysql.connector.connect(
+                ## Caution: it is your personnal host user and password
+                host = bdd_config["host"],
+                port = bdd_config["port"],
+                user = bdd_config["user"],
+                passwd = bdd_config["password"],
+                database = bdd_config["database"]
+            )
+            self.cursor = self.cnx.cursor()
+        except Exception as e:
+            print("Error init database :", str(e))
 
+        self.loop()
+
+    def loop(self):
+        print("self.cnx :",self.cnx)
+        print("self.cursor :",self.cursor)
+        uart_controller = UartController(config.UART_CONFIG)
 
         while True:
             
@@ -115,6 +131,7 @@ class mainClass (object):
                 last_dico = uart_controller.get_last_dico()   
                 print("reception du dico dans le main  : ", last_dico) 
                 Receive_write.set_new_dico(self, last_dico)  
+                # Receive_write.objectTX2DB(self)
 
             # Récupère le dernier dico enregistrer, et l'envoie dans Recieve_write, qui va enregistrer dans BDD
             # last_dico = uart_controller.get_last_dico()
@@ -136,7 +153,7 @@ if __name__ == "__main__":
     Receive_write(config.DB_CONFIG)
 
     if(get_port_serial_open() != 0):
-        mainClass()
+        mainClass(config.DB_CONFIG)
     
     if(get_port_serial_open() == 0):
         get_port_serial_open()

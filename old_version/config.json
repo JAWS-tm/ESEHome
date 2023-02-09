@@ -12,8 +12,7 @@
     "host": "172.24.0.71",
     "DB_name": "PS2022",
     "user": "python",
-    "password": "python"
-  },
+    "password": "python"  },
   "logs": {
     "fileName": "data_com_logs.txt",
     "filter": "DEBUG",
