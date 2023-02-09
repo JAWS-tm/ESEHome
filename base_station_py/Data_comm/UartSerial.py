@@ -16,7 +16,7 @@ class UartSerial :
     ***if launched_as_thread***
     incoming_message_queue : Queue
     '''
-    def __init__(self, new_port : str, new_baudrate : int, new_timeout : int, launch_as_thread : bool, incoming_msg_queue : Queue, outgoing_msg_queue : Queue) : #launch_as_thread and msg_q should be additional args
+    def __init__(self, new_port : str, new_baudrate : int, new_timeout : int, launch_as_thread : bool, incoming_msg_queue : Queue, outgoing_msg_queue : Queue, incoming_dico_queue : Queue) : #launch_as_thread and msg_q should be additional args
         self.baudrate = new_baudrate
         self.timeout = new_timeout
         self.port = serial.Serial(port=new_port, baudrate=self.baudrate, timeout=self.timeout)
@@ -26,6 +26,7 @@ class UartSerial :
         self.print_port_info()
         if(launch_as_thread):
             self.incoming_message_queue = incoming_msg_queue
+            self.incoming_dico_queue = incoming_dico_queue
             self.outgoing_message_queue = outgoing_msg_queue
             self.launched_as_thread = True
         else :
@@ -33,14 +34,15 @@ class UartSerial :
     
     def read_uart_frame(self, end_of_frame_character) :
         try :
-                # copie d’une ligne entiere jusqu’a \n dans rcv
-                rcv = self.port.readline().decode("utf-8") 
-                if(rcv == ''):
-                    return 0
-                else:
-                    self.current_message = rcv
-                    self.put_message_in_queue(rcv)
-                    return rcv
+            # copie d’une ligne entiere jusqu’a \n dans rcv
+            rcv = self.port.readline().decode("utf-8") 
+            if(rcv == ''):
+                return 0
+            else:
+                self.current_message = rcv
+                self.put_message_in_queue(rcv)
+                # self.put_dico_in_queue(rcv)
+                return rcv
 
             ## Pas besoin de la suite car "readline" permet de récupérer chaque tram 1 par 1 en entière
 
@@ -79,6 +81,12 @@ class UartSerial :
             self.incoming_message_queue.put(message)
         else :
             print("ERROR : You didn't launch the uart reader as a thread (ref to the constructor)")
+
+    def put_dico_in_queue(self, dico):
+        if(self.launched_as_thread):
+            self.incoming_dico_queue.put(dico)
+        else :
+            print("ERROR : You didn't launch the uart reader as a thread (ref to the constructor)")
     
     def get_next_message(self):
         if(self.launched_as_thread):
@@ -97,16 +105,18 @@ class UartSerial :
 
 
 #THREADING MAIN FUNCTION
-def uart_process_main_thread(port : str, baudrate : int, timeout : int, incoming_message_queue : Queue, outgoing_message_queue : Queue, end_of_frame_character : str):
-    uart = UartSerial(port, baudrate, timeout, True, incoming_message_queue, outgoing_message_queue)
+def uart_process_main_thread(port : str, baudrate : int, timeout : int, incoming_message_queue : Queue, outgoing_message_queue : Queue, incoming_dico_queue : Queue, end_of_frame_character : str):
+    uart = UartSerial(port, baudrate, timeout, True, incoming_message_queue, outgoing_message_queue, incoming_dico_queue)
     while True :
         message = uart.read_uart_frame(end_of_frame_character) #Automatically updates queue when a complete message is received
         if (message == 0):
-            print("\n\nPas de tram reçu. En attente...")
+            print("\nPas de tram reçu. En attente...")
         else : 
             FrameParser(message)
+            dico_tram = FrameParser(message).msgParsed()
+            uart.put_dico_in_queue(dico_tram)
+            
             ## Envoie reponse pour cryptage
-
        
 
 ############## Commentaire car pas utilisé pour l'instant

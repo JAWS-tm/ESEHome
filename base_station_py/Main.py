@@ -6,6 +6,8 @@ from Data_comm.mainURC import mainURC
 import time
 from serial.tools.list_ports import comports
 from Data_comm.UartController import UartController
+from Data_comm.FrameParser import FrameParser
+from Data_base.Receive_write import Receive_write
 
 #main
 ##  Here, we call class and others                  DO AT THE END
@@ -99,16 +101,19 @@ class mainClass (object):
     def __init__ (self):
         # On lancera ici le Data_base_main.py et le Data_comm_main.py en multiprocessing
 
-
-        # mainURC(config.UART_CONFIG)
+        # Receive_write(FrameParser.tram_dico)
+        
         uart_controller = UartController(config.UART_CONFIG)
 
+
         while True:
+            
             last_message = uart_controller.get_last_message()
             if (last_message != 0): # 
-                print("reception du message dans le main : ",last_message)   
+                # print("reception du message dans le main : ",last_message)   
+                # print("reception du message dans le DIICOO : ",uart_controller.get_last_dico()) 
+                Receive_write.set_new_dico(self, uart_controller.get_last_dico())  
 
-                ## A voir ensuite comment on envoie le message dans la BDD    
 
 
 if __name__ == "__main__":
@@ -123,16 +128,15 @@ if __name__ == "__main__":
     MariaDBConnect(config.DB_CONFIG)
     config.logger.info("-----------------------MariaDB : ok-----------------------")
 
+    Receive_write(config.DB_CONFIG)
+
     if(get_port_serial_open() != 0):
-        
         mainClass()
     
     if(get_port_serial_open() == 0):
-        noSerial = True
-        while(noSerial == True):
-           if get_port_serial_open() !=0:
-                noSerial = False
-                mainClass()
+        get_port_serial_open()
+        
+    
 
         
 

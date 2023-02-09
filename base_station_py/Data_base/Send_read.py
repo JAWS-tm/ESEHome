@@ -2,7 +2,23 @@
 # This class is used to read the message in the data base to send it to DB.py trhoug a dictionary.
 class Send_read:
 
+#                       ------- INIT -------
+    def __init__(self, data , table):
+        self.nom = "----- Receive_write class -----"
+        
+    #                       ---------- Functions ----------
 
+    def read_db_tram(self, data, table):
+        Data_to_send = self.cursor.execute("SELECT "+data+" FROM "+table+";") # execute sql control
+
+    def send():
+
+
+
+if __name__ == "__main__":
+    print("main read")
+    read = read_db_tram(data, table)
+    read.send()
 
 
 #def objectRX2DB(self):
