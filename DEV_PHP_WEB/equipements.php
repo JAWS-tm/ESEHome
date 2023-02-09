@@ -104,67 +104,66 @@
 ?>
 <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
   <div class="mesobjets">
-  <div class="user_ban">
-  <?php 
-    if (empty($resultats_item)){?>
+      <div class="user_ban">
+          <?php
+            if (empty($resultats_item)){?>
 
-        <h1 class="title">Vous êtes associé à aucun groupe</h1>
-        <h1 class="subtitle">Veuillez vous <a class="lien_mesobject" href="mesobjets.php" >inscrire</a> à un groupe pour visualiser vos equipements ici</h1>
-        <lottie-player src="https://assets6.lottiefiles.com/private_files/lf30_zncbuxbi.json" background="transparent"  speed="1" loop controls autoplay></lottie-player>
-        <?php
-    }
-    else{?>
-    <h1>
-    <?php 
-    if (isset($_GET["filter"])){
-        if($_GET["filter"] != ""){
-            echo $resultats_groupes[array_search($_GET["filter"], array_column($resultats_groupes, 'id'))]['name'];
-        }
-        else{
-            echo "Tous les équipements";
+                <h1 class="title">Vous êtes associé à aucun groupe</h1>
+                <h1 class="subtitle">Veuillez vous <a class="lien_mesobject" href="mesobjets.php" >inscrire</a> à un groupe pour visualiser vos equipements ici</h1>
+                <lottie-player src="https://assets6.lottiefiles.com/private_files/lf30_zncbuxbi.json" background="transparent"  speed="1" loop controls autoplay></lottie-player>
+                <?php
             }
-    }
-    else{
-        echo "Tous les équipements";
-    }
-
-    ?>
-    </h1>
-    <div class="box-filter">
-        <?php if (count($resultats_groupes) > 1){?>
-            <form action="" method = "get">
-                <div class="filter-first-row">
-                    <select name="filter" class="filter-select sources" placeholder="GROUPES" >
-                            <option value="" selected>TOUS</option>
-                            <?php
-                            foreach($resultats_groupes as $key => $value_groupes) {
-                            ?>
-                            <option value=<?php echo $value_groupes['id']?>><?php echo $value_groupes['name']?></option>
-                        <?php } ?>
-                    </select>
-                    <div class="submit-search">
-                        <button type="submit" class="search">
-                        <i class="fas fa-search icon-search"></i>
-
-                    </div>
-                </div>
-                <?php if (isset($_GET["filter"])){
-                    if($_GET["filter"] != ""){?>
-                        <div class="filter-second-row">
-                            <a href="equipements.php" class="stop-filter filter-second-row" >
-                            <i class="fa-solid fa-trash icon-filter"></i> <?php echo $resultats_groupes[array_search($_GET["filter"], array_column($resultats_groupes, 'id'))]['name'];
-                            ?></a>
-                        </div>
-                        <?php
+            else{?>
+            <h1>
+            <?php
+            if (isset($_GET["filter"])){
+                if($_GET["filter"] != ""){
+                    echo $resultats_groupes[array_search($_GET["filter"], array_column($resultats_groupes, 'id'))]['name'];
+                }
+                else{
+                    echo "Tous les équipements";
                     }
+            }
+            else{
+                echo "Tous les équipements";
+            }
+
+            ?>
+            </h1>
+            <div class="box-filter">
+                <?php if (count($resultats_groupes) > 1){?>
+                    <form action="" method = "get">
+                        <div class="filter-first-row">
+                            <select name="filter" class="filter-select sources" placeholder="GROUPES" >
+                                    <option value="" selected>TOUS</option>
+                                    <?php
+                                    foreach($resultats_groupes as $key => $value_groupes) {
+                                    ?>
+                                    <option value=<?php echo $value_groupes['id']?>><?php echo $value_groupes['name']?></option>
+                                <?php } ?>
+                            </select>
+                            <div class="submit-search">
+                                <button type="submit" class="search">
+                                <i class="fas fa-search icon-search"></i>
+
+                            </div>
+                        </div>
+                        <?php if (isset($_GET["filter"])){
+                            if($_GET["filter"] != ""){?>
+                                <div class="filter-second-row">
+                                    <a href="equipements.php" class="stop-filter filter-second-row" >
+                                    <i class="fa-solid fa-trash icon-filter"></i> <?php echo $resultats_groupes[array_search($_GET["filter"], array_column($resultats_groupes, 'id'))]['name'];
+                                    ?></a>
+                                </div>
+                                <?php
+                            }
+                        }?>
+                    </form>
+                <?php
                 }?>
-            </form>
-        <?php
-        }?>
-        
-    </div>
-  </div>
-  <div>
+
+            </div>
+      </div>
     
   <div class="artic">
       <!-- Pour chaque objet on a une carte avec image, nom de groupe, nom objet, id et lien pour cliquer ou mention pas accs -->
@@ -176,39 +175,17 @@
                 <img src=<?= "img/" . $value['type_name'] . ".jpg"?>>
             </div>
             <a class="card_body" href="ficheobjet.php?param=<?php echo $value['id_object'];?>">
-                <div class="card_cagtegory"><a><?php echo $value['group_name'] ?></a></div>
+                <div class="card_cagtegory">
+                    <span><?php echo $value['group_name'] ?></span>
+                </div>
+
+
                 <h2 class="card_title"><?php echo $value['object_name'];?></h2>
                 <div class="card_subtitle">En savoir +</div> 
                 <div class="card_element">
-                    <?php
-                        if ($isadmin == 1){
-                            ?>
-                            <a href="#"><?php echo "Idententifiant de l'objet : ".$value['id_object'];?></a></br>
-                            <!-- <a href="ficheobjet.php?param=<?php echo $value['id_object'];?>">CLIQUEZ ICI</a>  -->
-                            <?php   
-                        }
-                        
-                        else{
-                            if (array_search($value['id_groupe'], $groupe) != ""){
-                                ?>
-                                <a href="#"><?php echo "Idententifiant de l'objet : ".$value['id_object'];?></a></br>
-                                <a href="ficheobjet.php?param=<?php echo $value['id_object'];?>">CLIQUEZ ICI</a> 
-                            <?php 
-                            }
-                            else{
-                                ?>
-                                <a href="#"><?php echo 'Vous n avez pas acces a cet objet!';?></a></br>
-                                <form>
-                                <input class="button" type="button" value="Je demande acces">
-                                </form>
-                                <?php 
-                            }
-                            
-                        }
-                    
-                        ?>
-                </div>          
-            </div>
+                    <span href="#"><?php echo "Identifiant de l'objet : ".$value['id_object'];?></span></br>
+                </div>
+            </a>
         </article>
       <?php } 
     }?>

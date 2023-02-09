@@ -50,7 +50,7 @@
 
 .card_thumb{
     height: 200px;
-    width: 350px;
+    width: 100%;
     overflow: hidden;
     background-color: #000;
     transition: height 0.3s;
@@ -64,6 +64,8 @@
     transition: 0.3s;
     transform: scale(1);
     transition: opacity 0.3s, transform 0.3s;
+    transform-origin: 50% 50%;
+    object-fit: cover;
 }
 
 .card:hover .card_thumb img{
@@ -72,10 +74,11 @@
 }
 
 .card:hover .card_thumb{
-    height: 135px;
+    height: 185px;
 }
 
 .card_body{
+    display: block;
     position: relative;
     padding: 20px;
     height: 135px;
@@ -83,7 +86,7 @@
 }
 
 .card:hover .card_body{
-    height: 250px;
+    height: 200px;
 }
 
 .card_cagtegory{
