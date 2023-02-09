@@ -16,9 +16,11 @@
 
 bool_e initialized = FALSE;
 
+void BASE_STATION_pong_callback(void);
 
 
 void BASE_STATION_init(void) {
+	RF_DIALOG_set_callback_pong((callback_fun_t) &BASE_STATION_pong_callback);
 }
 
 void BASE_STATION_process_main()
@@ -49,5 +51,8 @@ void BASE_STATION_process_main()
 	}
 }
 
+void BASE_STATION_pong_callback(void) {
+	debug_printf("BASE STATION: pong reçu");
+}
 
 #endif
