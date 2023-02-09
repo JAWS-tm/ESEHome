@@ -5,7 +5,6 @@
  *      Author: BAUDIQUEY Nicolas
  */
 
-#if OBJECT_ID == OBJECT_VENTILATOR
 
 #include "../appli/config.h"
 #include "../common/gpio.h"
@@ -18,6 +17,8 @@
 #include "object_ventilator.h"
 #include "appli/common/parameters.h"
 #include "appli/common/rf_dialog.h"
+
+#if OBJECT_ID == OBJECT_VENTILATOR
 
 static bool_e state_change = FALSE;
 
