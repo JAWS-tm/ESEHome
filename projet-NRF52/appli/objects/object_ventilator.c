@@ -96,9 +96,9 @@ void VENTILATOR_state_machine(void)
 			BUTTONS_init();
 			PARAMETERS_enable(PARAM_ACTUATOR_STATE, 0, FALSE, &OBJECT_VENTILATOR_ask_for_activation_callback, NULL);
 
-			BUTTONS_add(BUTTON_USER0, Button_SB1_PIN, TRUE, &short_press_ON, NULL, &long_press_ON, NULL, NULL);
-			BUTTONS_add(BUTTON_USER1, Button_SB2_PIN, TRUE,&short_press_OFF, NULL,&long_press_OFF, NULL, NULL);
-			MOSFET_PIN = FALSE;
+			BUTTONS_add(BUTTON_USER0, button_SB1_PIN, TRUE, &short_press_ON, NULL, &long_press_ON, NULL, NULL);
+			BUTTONS_add(BUTTON_USER1, button_SB2_PIN, TRUE,&short_press_OFF, NULL,&long_press_OFF, NULL, NULL);
+			GPIO_write(MOSFET_PIN, FALSE);
 			state = IDLE;
 			break;
 

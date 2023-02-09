@@ -155,8 +155,8 @@
 
         #define MOSFET_PIN              10
         #define DATA_VENTILATEUR        11
-        #define Button_SB1_PIN          16
-        #define Button_SB2_PIN          17
+        #define button_SB1_PIN          16
+        #define button_SB2_PIN          17
 
     #endif
 
