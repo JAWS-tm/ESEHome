@@ -39,7 +39,7 @@ class dBclass:
         #message
         self.cursor.execute("CREATE TABLE IF NOT EXISTS `message` ('id` int(11) NOT NULL AUTO_INCREMENT,`recipient` int(11) NOT NULL,`transmitter` int(11) NOT NULL,'type_message` int(11) NOT NULL,`parameter_id` int(11),'data` varchar(20) NOT NULL, # Taille max d`une trame : 20bits `date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,`permanent` bit NOT NULL DEFAULT 0,`history` bit NOT NULL DEFAULT 0,PRIMARY KEY (id),FOREIGN KEY (recipient) REFERENCES object(id),FOREIGN KEY (transmitter) REFERENCES object(id)")
         self.cnx.commit()
-        self.cursor.execute("INSERT INTO `message` (`recipient`, `transmitter`, `type_message`, `parameter_id`, `data`)VALUES (9, 1, 8, 2, '01'); # Message d'exemple : Message de la base station vers l'alarme (met le paramètre mode à 01 soit Activé)")
+        self.cursor.execute("INSERT INTO `message` (`recipient`, `transmitter`, `type_message`, `parameter_id`, `data`)VALUES (9, 1, 8, 2, '01')")
         self.cnx.commit()
         #message_type
         self.cursor.execute("CREATE TABLE IF NOT EXISTS `message_type` (`id` int(11) NOT NULL AUTO_INCREMENT,`name` varchar(100) NOT NULL,`hex_value` varchar(2),PRIMARY KEY (id)")

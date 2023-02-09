@@ -5,6 +5,11 @@ class Send_read:
 
 
 
+#def objectRX2DB(self):
+        #self.db.receiveData(getMessageSQLQuery)
+        #for c in self.db.getCursor():
+           #print(c)
+
     """def __init__(self,bdd_config):
         self.nom = "----- DBwrite functions -----"
         #connection to db
