@@ -1,6 +1,6 @@
 @charset "UTF-8";
 
-@media only screen and (max-width: 1101px) {
+@media only screen and (max-width: 1101px) { 
     .site-container {
         overflow: hidden !important;
         height: 100%  !important;
@@ -21,7 +21,7 @@
         padding-top: 0  !important;
         overflow-y: scroll  !important;
         -webkit-overflow-scrolling: touch  !important;
-        background-color: #FFF  !important;
+        background-color: #EDE7E1  !important;
     }
 
     .header {
@@ -83,4 +83,4 @@
         bottom: 0  !important;
         background-color: rgba(0, 0, 0, 0.5)  !important;
     }
-}
+} 

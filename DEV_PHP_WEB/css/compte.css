@@ -65,17 +65,6 @@ h1{
     font-weight: bold;
 } 
 
-.main h2:after{
-	content: '';
-	position: absolute;
-	left: 50%;
-	bottom: 0;
-	transform: translateX(-50%);
-	height: 4px;
-	width: 50px;
-	border-radius: 2px;
-	background-color: #3991FF;
-}
 
 .champ{
     width: 100%;

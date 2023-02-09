@@ -175,13 +175,38 @@
             <div class="card_thumb">
                 <img src=<?= "img/" . $value['type_name'] . ".jpg"?>>
             </div>
-            <div class="card_body">
+            <a class="card_body" href="ficheobjet.php?param=<?php echo $value['id_object'];?>">
                 <div class="card_cagtegory"><a><?php echo $value['group_name'] ?></a></div>
                 <h2 class="card_title"><?php echo $value['object_name'];?></h2>
                 <div class="card_subtitle">En savoir +</div> 
                 <div class="card_element">
-                    <a href="#"><?php echo "Identifiant de l'objet : ".$value['id_object'];?></a></br>
-                    <a href="ficheobjet.php?param=<?php echo $value['id_object'];?>">CLIQUEZ ICI</a> 
+                    <?php
+                        if ($isadmin == 1){
+                            ?>
+                            <a href="#"><?php echo "Idententifiant de l'objet : ".$value['id_object'];?></a></br>
+                            <!-- <a href="ficheobjet.php?param=<?php echo $value['id_object'];?>">CLIQUEZ ICI</a>  -->
+                            <?php   
+                        }
+                        
+                        else{
+                            if (array_search($value['id_groupe'], $groupe) != ""){
+                                ?>
+                                <a href="#"><?php echo "Idententifiant de l'objet : ".$value['id_object'];?></a></br>
+                                <a href="ficheobjet.php?param=<?php echo $value['id_object'];?>">CLIQUEZ ICI</a> 
+                            <?php 
+                            }
+                            else{
+                                ?>
+                                <a href="#"><?php echo 'Vous n avez pas acces a cet objet!';?></a></br>
+                                <form>
+                                <input class="button" type="button" value="Je demande acces">
+                                </form>
+                                <?php 
+                            }
+                            
+                        }
+                    
+                        ?>
                 </div>          
             </div>
         </article>
