@@ -78,11 +78,11 @@ void button_network_process(void)
 }
 
 int main(void)
- {
+{
 	//Dmarrage de l'horloge.
     clocks_start();
 
-    //Lancement du timer systick
+    //Lancement du timer systick*
     Systick_init();
 
     //Initialisation GPIO
@@ -158,7 +158,8 @@ int main(void)
     		#endif
 
     		#if OBJECT_ID == OBJECT_ROLLER_SHUTTER
-				VOLET_ROULANT_MAIN(void);
+				//debug_printf("roller shutter\n");
+				ROLLER_SHUTTER_state_machine();
 
     		#endif
 
