@@ -85,7 +85,7 @@ int main(void)
 	//Dmarrage de l'horloge.
     clocks_start();
 
-    //Lancement du timer systick
+    //Lancement du timer systick*
     Systick_init();
 
     //Initialisation GPIO
@@ -173,8 +173,8 @@ int main(void)
 		#endif
 
 		#if OBJECT_ID == OBJECT_ROLLER_SHUTTER
-			VOLET_ROULANT_MAIN(void);
-
+			//debug_printf("roller shutter\n");
+			ROLLER_SHUTTER_state_machine();
 		#endif
 
 		#if OBJECT_ID == OBJECT_ALARM
@@ -351,7 +351,7 @@ void button_network_process_5press(void)
 	data[4] = 0xFF; // color A
 
 	RF_DIALOG_send_msg_id_to_object(0xFFFFFFFF, PARAMETER_IS, data_size, data);
-	debug_printf("Message fictif envoyé en broadcast\n");
+	debug_printf("Message fictif envoyï¿½ en broadcast\n");
 }
 
 
