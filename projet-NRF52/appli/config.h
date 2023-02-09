@@ -96,8 +96,6 @@
 		#define MOSFET_GND  27
 		#define DHT11_PIN	2
 
-		#define PIN_UART_TX	8		//pour ne pas faire comme tout le monde (et rsoudre un pb hardware !)
-		#define PIN_UART_RX	6		//pour ne pas faire comme tout le monde (et rsoudre un pb hardware !)
 	#endif
 
 	#if OBJECT_ID == OBJECT_OUT_WEATHER_STATION
@@ -375,7 +373,7 @@ uint32_t debug_printf(char * format, ...);
 #endif
 
 #ifndef USE_BMP180
-	#define USE_BMP180		0
+	#define USE_BMP180		1
 #endif
 
 #ifndef USE_EPAPER
