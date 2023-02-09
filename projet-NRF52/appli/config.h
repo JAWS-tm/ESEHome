@@ -40,7 +40,8 @@
 #define OBJECT_TOUCH_SCREEN         20
 #define OBJECT_E_PAPER              21
 #define OBJECT_MATRIX_LEDS			24
-#define OBJECTS_NB					25
+#define OBJECT_MP3_PLAYER			25
+#define OBJECTS_NB					26
 
 
 ///////////////////////////////////////////////////////////////////////////////////

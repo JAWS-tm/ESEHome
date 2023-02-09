@@ -102,7 +102,7 @@ int main(void)
 			SERIAL_DIALOG_init();	//initialise l'UART et permet les dialogues avec le PC de dbogage.
 	#endif
 
-		PARAMETERS_init();
+	PARAMETERS_init();
 
     RF_DIALOG_init();
 
@@ -118,16 +118,6 @@ int main(void)
 				RF_DIALOG_set_callback_pong(&pong_callback);
 		#endif
 
-#if OBJECT_ID == OBJECT_MP3_PLAYER
-    MP3_PLAYER_use_sd_card();
-    uint8_t data[2];
-	data[0] = 0x00;
-	data[1] = 0x01; // first music
-	YX6300_send_request(PLAY_WITH_INDEX, FALSE, 2, data);
-#endif
-
-    
-
     LED_add(LED_ID_NETWORK, PIN_LED_NETWORK);
 
 	//LED_add(LED_ID_BATTERY, PIN_LED_BATTERY);
@@ -139,7 +129,7 @@ int main(void)
 
 	SECRETARY_init();
 
-	BUTTONS_add(BUTTON_NETWORK, PIN_BUTTON_NETWORK, TRUE, &button_network_process_short_press, NULL, &button_network_process_long_press, &button_network_process_5press);
+	BUTTONS_add(BUTTON_NETWORK, PIN_BUTTON_NETWORK, TRUE, &button_network_process_short_press, NULL, &button_network_process_long_press, NULL, &button_network_process_5press);
 
 	while (1)
 	{
@@ -264,6 +254,11 @@ int main(void)
 
 			#endif
 
+			#if OBJECT_ID == OBJECT_MP3_PLAYER
+				MP3_PLAYER_process_main();
+
+			#endif
+
 			#if OBJECT_ID == OBJECT_MATRIX_LEDS
 				MATRIX_afficheur();
 
@@ -298,14 +293,6 @@ void button_network_process_short_press(void)
 	LED_toggle(LED_ID_NETWORK);
 #endif
 #if OBJECT_ID == OBJECT_MP3_PLAYER
-	/*static bool_e first_play = false;
-	if(!first_play){
-		uint8_t data[2];
-		data[0] = 0x00;
-		data[1] = 0x01;
-		YX6300_send_request(PLAY_WITH_INDEX, FALSE, 2, data);
-		first_play = true;
-	}*/
 	static bool_e play = true;
 
 	command_e command;

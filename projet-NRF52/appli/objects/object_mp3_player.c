@@ -13,7 +13,7 @@
 #define FIRST_SONG	0x01
 #define PLAY_WITH_INDEX	0x03
 
-bool_e initialization = false;
+bool_e initialization = FALSE;
 
 void YX6300_demo(void)
 {
@@ -116,7 +116,7 @@ void MP3_PLAYER_process_main(){
 			case INIT: {
 				if (!initialization)
 				{
-					initialization = true;
+					initialization = TRUE;
 				    MP3_PLAYER_use_sd_card();
 				    uint8_t data[2];
 					data[0] = 0x00;
