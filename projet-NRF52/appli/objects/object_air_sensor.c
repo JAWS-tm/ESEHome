@@ -116,19 +116,14 @@ void OBJECT_AIR_parse_frames(void)
 		//debug_printf("%02X ",c);
 		if(c == 0x42){
 			check_begin = TRUE;
-
 		}
-
 		if(c == 0x4D && check_begin == TRUE){
 			index = 0;
 			sum = 0x42+0x4D;
 			mode_process_rx = WAIT_SIZE;
 		}
-
 		else{
-
 			switch(mode_process_rx){
-
 			case WAIT_SIZE:
 				if(index == 0){
 					size = (uint16_t)(c)<<8;
@@ -137,14 +132,12 @@ void OBJECT_AIR_parse_frames(void)
 				}
 				else if(index == 1){
 					size |= c;
-
 					index=0;
 					sum+=c;
 					mode_process_rx=WAIT_DATA;
 					//debug_printf("Size trame : %X \n",size);
 				}
 			break;
-
 			case WAIT_DATA:
 				if(!(index%2)){
 					data[index/2] =(uint16_t)(c)<<8;
@@ -160,13 +153,11 @@ void OBJECT_AIR_parse_frames(void)
 				}
 				sum+=c;
 			break;
-
 			case CHECKSUM_HIGH:
 				checksum = (uint16_t)(c)<<8;
 				//debug_printf("\nje suis dans check_sum high\n");
 				mode_process_rx = CHECKSUM_LOW;
 			break;
-
 			case CHECKSUM_LOW:
 				//debug_printf("je suis dans check_sum low\n");
 				checksum |= c;
@@ -180,8 +171,6 @@ void OBJECT_AIR_parse_frames(void)
 					/*for(uint8_t i=0; i<((size-2)/2); i++){
 						debug_printf("%02X ",data[i]);
 					}*/
-
-
 					//debug_printf("PM1.0 : %X\n",data[0]);
 				}
 				else
@@ -204,7 +193,6 @@ void frame_management(uint16_t * data, uint16_t size){
 	/*for(uint16_t i=0; i<size; i++){
 		debug_printf("%02X ",data[i]);
 	}*/
-
 	PM1_0 = data[0];
 	PM2_5 = data[1];
 	PM10 = data[2];

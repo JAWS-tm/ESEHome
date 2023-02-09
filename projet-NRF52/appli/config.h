@@ -41,6 +41,7 @@
 #define OBJECT_E_PAPER              21
 #define OBJECT_MATRIX_LEDS			24
 #define OBJECTS_NB					25
+#define OBJECT_AMPLIFIED_MICROPHONE 26
 
 
 ///////////////////////////////////////////////////////////////////////////////////
@@ -96,8 +97,8 @@
 		#define MOSFET_GND  27
 		#define DHT11_PIN	2
 
-		#define PIN_UART_TX	8		//pour ne pas faire comme tout le monde (et rsoudre un pb hardware !)
-		#define PIN_UART_RX	6		//pour ne pas faire comme tout le monde (et rsoudre un pb hardware !)
+		//#define PIN_UART_TX	8		//pour ne pas faire comme tout le monde (et rsoudre un pb hardware !)
+		//#define PIN_UART_RX	6		//pour ne pas faire comme tout le monde (et rsoudre un pb hardware !)
 	#endif
 
 	#if OBJECT_ID == OBJECT_OUT_WEATHER_STATION
@@ -280,6 +281,11 @@
 
 	#endif
 
+	#if OBJECT_ID == OBJECT_AMPLIFIED_MICROPHONE
+		#define ADC_OUT 17
+		#define VCC_IN 	9
+	#endif
+
 ///////////////////////////////////////////////////////////////////////////////////
 
 ///////////////////////////////////////////////////////////////////////////////////
@@ -336,7 +342,7 @@ uint32_t debug_printf(char * format, ...);
 
 
 #define USE_ADC						1
-#define USE_ADC_CHANNEL_AIN0		(OBJECT_ID == OBJECT_WATER_LEVEL_DETECTOR || OBJECT_ID == OBJECT_SMART_SOCKET || OBJECT_FIRE_DETECTOR)	//P0.02
+#define USE_ADC_CHANNEL_AIN0		(OBJECT_ID == OBJECT_WATER_LEVEL_DETECTOR || OBJECT_ID == OBJECT_SMART_SOCKET || OBJECT_FIRE_DETECTOR || OBJECT_AMPLIFIED_MICROPHONE)	//P0.02
 #define USE_ADC_CHANNEL_AIN1		(OBJECT_ID == OBJECT_VENTILATOR)	//P0.03
 #define USE_ADC_CHANNEL_AIN2		(OBJECT_ID == OBJECT_ROLLER_SHUTTER)	//P0.04
 #define USE_ADC_CHANNEL_AIN3		0	//P0.05
