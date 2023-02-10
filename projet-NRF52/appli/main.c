@@ -45,7 +45,7 @@
 #include "objects/object_LCD_slider.h"
 #include "objects/object_night_light.h"
 #include "objects/object_touch_screen.h"
-
+#include "objects/object_amplified_microphone.h"
 //#include "objects/object_smart_socket.h"
 
 
@@ -248,7 +248,7 @@ int main(void)
     			//LCD_SLIDER_process_main();
     		#endif
 			#if OBJECT_ID == OBJECT_AMPLIFIED_MICROPHONE
-    			//TODO
+    			main_Amplified_Microphone();
     		#endif
     }
 }

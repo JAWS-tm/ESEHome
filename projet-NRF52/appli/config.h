@@ -282,7 +282,7 @@
 	#endif
 
 	#if OBJECT_ID == OBJECT_AMPLIFIED_MICROPHONE
-		#define ADC_OUT 17
+		#define ADC_PIN	17
 		#define VCC_IN 	9
 	#endif
 
