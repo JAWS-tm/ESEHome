@@ -1,0 +1,22 @@
+{
+  "data_communication": {
+    "UART": {
+      "port": "",
+      "baudrate": 115200,
+      "timeout": 3.0,
+      "end_of_frame_character": "\n"
+    }
+  },
+  "DB": {
+    "port": 3306,
+    "host": "localhost",
+    "user": "root",
+    "password": "root",
+    "database": "esehome"
+  },
+  "logs": {
+    "fileName": "data_com_logs.txt",
+    "filter": "DEBUG",
+    "format": "default"
+  }
+}
