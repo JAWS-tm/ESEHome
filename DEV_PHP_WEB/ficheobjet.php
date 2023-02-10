@@ -258,7 +258,7 @@
 		</div>
 
         <?php if (!empty($parameters)): ?>
-		<input type="submit" class="button" value="Valider les modifications" name="update_params">
+		<input type="submit" value="Valider les modifications" name="update_params">
         <?php endif; ?>
 
 	</form>

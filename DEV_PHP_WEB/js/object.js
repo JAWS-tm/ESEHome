@@ -16,12 +16,3 @@ downValue.addEventListener("click", () => {
   inputValue -= step;
   input.value = inputValue;
 });
-
-let brightness = document.getElementById("brightnessRange");
-// let brightnessValue = brightness.value;
-// console.log("value :" + brightnessValue);
-
-function showVal(newVal) {
-  console.log(newVal);
-  brightness.setAttribute("value", newVal);
-}
