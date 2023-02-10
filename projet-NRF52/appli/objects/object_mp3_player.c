@@ -1,6 +1,7 @@
 #include "../config.h"
 #include "../common/serial_dialog.h"
 #include "object_mp3_player.h"
+#include "../common/parameters.h"
 
 #if OBJECT_ID == OBJECT_MP3_PLAYER
 
@@ -15,20 +16,7 @@
 
 bool_e initialization = FALSE;
 
-void YX6300_demo(void)
-{
-	uint8_t data[2];
-	data[0] = 0x00;
-	data[1] = 0x00;
-	YX6300_send_request(FIRST_SONG, FALSE, 2, data);
-
-	uint16_t index_song = 4;
-	data[0] = HIGHINT(index_song);
-	data[1] = LOWINT(index_song);
-	YX6300_send_request(PLAY_WITH_INDEX, FALSE, 2, data);
-
-	YX6300_send_request_with_2bytes_of_datas(PLAY_WITH_INDEX, FALSE, index_song);
-}
+uint32_t track_from_base_sation = 0;
 
 
 void YX6300_send_request_with_2bytes_of_datas(command_e command, bool_e feedback, uint16_t data16)
@@ -102,6 +90,14 @@ void MP3_PLAYER_basic_command(command_e command){
 
 }
 
+void MP3_PLAYER_base_station_set_track(int32_t data){
+	uint8_t datas[2];
+	datas[0] = ((uint32_t) data >> 8) & 0xFF;
+	datas[1] = ((uint32_t) data >> 0) & 0xFF;
+
+	YX6300_send_request(PLAY_WITH_INDEX, FALSE, 2, datas);
+}
+
 void MP3_PLAYER_process_main(){
 
 	typedef enum {
@@ -118,6 +114,7 @@ void MP3_PLAYER_process_main(){
 				{
 					initialization = TRUE;
 				    MP3_PLAYER_use_sd_card();
+				    PARAMETERS_enable(PARAM_MP3_TRACK, 1, FALSE, &MP3_PLAYER_base_station_set_track, NULL );
 				}
 
 				state = PROCESS;

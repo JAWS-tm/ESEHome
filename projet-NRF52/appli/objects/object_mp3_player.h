@@ -30,7 +30,6 @@ typedef enum{
 
 }command_e;
 
-void YX6300_demo(void);
 void YX6300_send_request(command_e command, bool_e feedback, uint8_t datasize, uint8_t * data);
 void MP3_PLAYER_basic_command(command_e command);
 void MP3_PLAYER_process_main();
