@@ -44,6 +44,7 @@
 #define BMP180_1_32768  ((float) 0.000030517578125)
 #define BMP180_1_65536  ((float) 0.0000152587890625)
 #define BMP180_1_101325 ((float) 0.00000986923266726)
+
 bool_e butt_press_flag = FALSE;
 
 void my_object_button_network_process_short_press(void);
@@ -173,6 +174,51 @@ void BMP180_demo(void)
 	}
 }
 
+
+void BMP180_main(void){
+	typedef enum{
+			INIT,
+			READ_DATAS,
+			SEND_DATAS,
+			ERROR,
+		}state_e;
+		BMP180_t BMP180_Data;
+		static state_e state = INIT;
+		switch(state)
+			{
+			case INIT :
+				if (BMP180_Init(&BMP180_Data) == BMP180_Result_Ok) {
+						/* Init OK */
+						debug_printf("BMP180 configured and ready to use\n\n");
+						BMP180_StartTemperature(&BMP180_Data);
+						BMP180_StartPressure(&BMP180_Data, BMP180_Oversampling_UltraHighResolution);
+						state = READ_DATAS;
+					} else {
+						/* Device error */
+						state = ERROR;
+					}
+
+				break;
+			case READ_DATAS :
+				BMP180_ReadTemperature(&BMP180_Data);
+				BMP180_ReadPressure(&BMP180_Data);
+				state = SEND_DATAS;
+				break;
+			case SEND_DATAS :
+				debug_printf("Temp: %2d degrees\nPressure: %6ld Pascals\nAltitude at current pressure: %d meters\n\n",
+							(uint16_t)(BMP180_Data.Temperature),
+							BMP180_Data.Pressure,
+							(uint16_t)(BMP180_Data.Altitude));
+				break;
+			case ERROR :
+				debug_printf("BMP180 error\n\n");
+				break;
+			default:
+					break;
+
+			}
+
+}
 void my_object_button_network_process_short_press(void)
 {
 	printf("Bouton network appui court\n");

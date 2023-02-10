@@ -92,14 +92,17 @@
 	#if OBJECT_ID == OBJECT_STATION_METEO_INT
 		#define USE_DHT11	1
 		#define USE_BMP180	1
-
+		//#define USE_EPAPER 1
 		#define USE_NMOS_GND	1
 
 		#define MOSFET_GND  27
-		#define DHT11_PIN	2
+		#define DHT11_PIN	16
+		//pin pour le E PAPER
+		/*#define CS_PIN           11
+		#define RST_PIN          7
+		#define DC_PIN           10
+		#define BUSY_PIN         15*/
 
-		#define PIN_UART_TX	8		//pour ne pas faire comme tout le monde (et rsoudre un pb hardware !)
-		#define PIN_UART_RX	6		//pour ne pas faire comme tout le monde (et rsoudre un pb hardware !)
 	#endif
 
 	#if OBJECT_ID == OBJECT_OUT_WEATHER_STATION
@@ -362,7 +365,7 @@ uint32_t debug_printf(char * format, ...);
 #endif
 
 #ifndef USE_DHT11
-	#define USE_DHT11		0
+	#define USE_DHT11		1
 #endif
 
 #ifndef USE_NMOS_GND
