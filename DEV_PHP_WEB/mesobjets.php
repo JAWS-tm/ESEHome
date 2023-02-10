@@ -91,10 +91,13 @@
     foreach ($resultat as $value) {
         ?>
       <article class="card">
+        <a href="equipements.php?filter=<?= $value['id']?>">
         <div class="card_thumb"><img src=<?= "img/" . $value['nom_groupe'] . ".jpg"?> ></div>
         <div class="card_body">
+          <a href="equipements.php?filter=<?= $value['id']?>">
           <div class="card_cagtegory"><?=$value['nom_groupe']?></div>
           <h2 class="card_title">Gerer les elements: <?=$value['nom_groupe']?></h2>
+          </a>
           <div class="card_subtitle">Voir les differents elements</div> 
           <div class="card_element">
             <?php 
@@ -106,7 +109,7 @@
           </div>
           <div class="card_footer"></div>
         </div>
-
+        </a>
       </article>
       
     <?php }
