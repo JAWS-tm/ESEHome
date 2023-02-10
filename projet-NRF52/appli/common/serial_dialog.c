@@ -35,6 +35,11 @@ BA 01 00 DA
 
 BA 04 D1 D2 D3 D4 DA
 
+test trame valide
+BA 0B 4a 98 b4 00 8C 59 1a 08 A3 FD 00 DA
+BA 0B 8C 59 1a 08 4a 98 b4 00 A3 FE 00 DA
+
+8c591a00
 */
 static volatile bool_e initialized = FALSE;
 
@@ -50,6 +55,13 @@ static app_uart_buffers_t buffers;
 static uint8_t     rx_buf[RX_BUF_SIZE];
 static uint8_t     tx_buf[TX_BUF_SIZE];
 
+typedef struct {
+	uint8_t size;
+	uint8_t * datas;
+} uart_message_t;
+
+static uart_message_t last_message;
+static bool_e flag_new_message = FALSE;
 
 
 /*
@@ -86,6 +98,7 @@ void SERIAL_DIALOG_uart_event_handler(nrfx_uart_event_t const * p_event, void * 
 #define DEBUG_PRINTF_BUFFER_SIZE	128
 uint32_t debug_printf(char * format, ...)
 {
+#ifndef DISABLE_DEBUG_PRINTF
 	va_list args_list;
 	va_start(args_list, format);
 
@@ -97,6 +110,10 @@ uint32_t debug_printf(char * format, ...)
 
 	va_end(args_list);
 	return ret;
+#else
+	return 0;
+#endif
+
 }
 
 void SERIAL_DIALOG_init(void)
@@ -213,7 +230,11 @@ void SERIAL_DIALOG_send_data(uint8_t * data, uint16_t len)
 
 void SERIAL_DIALOG_process_main()
 {
-
+	if (flag_new_message) {
+		// Si un nouveau message est arrivé on le traite
+		SERIAL_DIALOG_process_msg(last_message.size, last_message.datas);
+		flag_new_message = FALSE;
+	}
 
 }
 
@@ -230,6 +251,7 @@ static void SERIAL_DIALOG_parse_rx(uint8_t c)
 	static bool_e flag_FA = FALSE;
 	static uint16_t index = 0;
 	static uint8_t size;
+
 	switch(index)
 	{
 		case 0:
@@ -248,8 +270,13 @@ static void SERIAL_DIALOG_parse_rx(uint8_t c)
 		default:
 			if(index-2 == size)
 			{
-				if(c == EOT)//ok, fin du message !
-					SERIAL_DIALOG_process_msg(size, datas);
+				if(c == EOT){//ok, fin du message !
+					// on lève le flag pour traiter le msg par la suite dans le process et non en IT
+					flag_new_message = TRUE;
+					last_message = (uart_message_t) {
+						.size=size,
+						.datas=datas
+					};}
 				index = 0;
 			}
 			else if(flag_FA)

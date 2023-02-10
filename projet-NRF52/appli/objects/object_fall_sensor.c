@@ -61,28 +61,38 @@ void OBJECT_FALL_SENSOR_state_machine(void){
 	static state_e previous_state = INIT;
 	bool_e entrance = (state != previous_state);
 	previous_state = state;
+	debug_printf("Initialisation\n");
 	switch(state)
 	{
 	case INIT:
+		debug_printf("Case INIT\n");
 		Systick_add_callback_function(&FALL_SENSOR_process_ms);
-
-		BUTTONS_add(BUTTON_ALERT,PIN_BUTTON_ALERT,TRUE,&cb_bt_alert_short_press_event,NULL,&cb_bt_alert_long_press_event,NULL); //Initialisation du bouton alerte
+		debug_printf("BUTTONS_add\n");
+		BUTTONS_add(BUTTON_ALERT,PIN_BUTTON_ALERT,TRUE,&cb_bt_alert_short_press_event,NULL,&cb_bt_alert_long_press_event,NULL,NULL); //Initialisation du bouton alerte
+		debug_printf("LED_add\n");
 		LED_add(led_alert_id,PIN_LED_ALERT);
+		debug_printf("GPIO_configure\n");
 		GPIO_configure(PIN_BUZZER,NRF_GPIO_PIN_NOPULL,TRUE);
+		debug_printf("MPU_Init\n");
 		MPU6050_Init(&mpu_datas, MPU6050_Accelerometer_4G, MPU6050_Gyroscope_1000s);
-
+		debug_printf("Parameter_init\n");
 		PARAMETERS_init(); //Initialisation de la communication RF
+		debug_printf("Parameter enable\n");
 		PARAMETERS_enable(PARAM_SENSOR_VALUE, 0, FALSE, NULL, NULL); //Initialisation du paramètre de l'état de l'alarme
 		PARAMETERS_enable(PARAM_ALARM_TRESHOLD, 0, FALSE, NULL, NULL); // Initialisation du paramètre de seuil de détection de l'accéleromètre
 		state = GET_DATA;
 		break;
 	case GET_DATA:{
+		debug_printf("Case GET DATA\n");
 		if(entrance){
+			debug_printf("Parameters_send_param32_to_basestation");
 			PARAMETERS_send_param32_to_basestation(PARAM_SENSOR_VALUE); // envoie de la valeur du capteur à 0
 		}
 		flag_bt_alert_LP = FALSE;
-		//getMPU6050_Datas(); //aide au debug pour afficher les valeurs du MPU6050
+		debug_printf("PARAMETERS_get\n");
+		getMPU6050_Datas(); //aide au debug pour afficher les valeurs du MPU6050
 		threshold_frome_bs = PARAMETERS_get(PARAM_ALARM_TRESHOLD);
+
 
 		int16_t gyro_x = 0;
 		int16_t gyro_y = 0;
@@ -98,11 +108,14 @@ void OBJECT_FALL_SENSOR_state_machine(void){
 		acc_x = mpu_datas.Accelerometer_X/410; //-> en pourcentage
 		acc_y = mpu_datas.Accelerometer_Y/410; // -> en pourcentage
 		acc_z = mpu_datas.Accelerometer_Z/410; // -> en pourcentage
+
+		//debug_printf("AX%4d\tAY%4d\tAZ%4d\tGX%4d\tGY%4d\tGZ%4d\n",acc_x,acc_y,acc_z,gyro_x,gyro_y,gyro_z);
 		if(acc_z < -15 || flag_bt_alert_LP || acc_z < threshold_frome_bs){
 			state = ALERT;
 		}
 		}break;
 	case ALERT :
+		debug_printf("Case ALERT\n");
 		if(entrance){
 			flag_bt_alert_SP = FALSE;
 			flag_reset_morse = TRUE;
@@ -128,6 +141,7 @@ void OBJECT_FALL_SENSOR_state_machine(void){
 		}
 		break;
 	case FALSE_ALERT :
+		debug_printf("Case FALSE ALERT\n");
 		PARAMETERS_update(PARAM_SENSOR_VALUE, 0);
 		flag_bt_alert_LP = FALSE;
 		LED_set(led_alert_id,LED_MODE_OFF);
@@ -135,6 +149,7 @@ void OBJECT_FALL_SENSOR_state_machine(void){
 		state = GET_DATA;
 		break;
 	case SEND_ALERT :
+		debug_printf("Case SEND ALERT\n");
 		PARAMETERS_update(PARAM_SENSOR_VALUE, 1);
 		PARAMETERS_send_param32_to_basestation(PARAM_SENSOR_VALUE); // envoie de la valeur du capteur à 1
 		state = ALERT;
@@ -144,7 +159,7 @@ void OBJECT_FALL_SENSOR_state_machine(void){
 	}
 }
 
-/*
+/*+
  * @author	Montreuil Joshua
  * @date 24 jan 2022
  *
@@ -216,7 +231,7 @@ void cb_bt_alert_long_press_event(void){
 }
 
 void init_for_demo(void){
-	BUTTONS_add(BUTTON_ALERT,PIN_BUTTON_ALERT,TRUE,&cb_bt_alert_short_press_event,NULL,&cb_bt_alert_long_press_event,NULL); //Initialisation du bouton alerte
+	BUTTONS_add(BUTTON_ALERT,PIN_BUTTON_ALERT,TRUE,&cb_bt_alert_short_press_event,NULL,&cb_bt_alert_long_press_event,NULL, NULL); //Initialisation du bouton alerte
 	LED_add(led_alert_id,PIN_LED_ALERT);
 }
 

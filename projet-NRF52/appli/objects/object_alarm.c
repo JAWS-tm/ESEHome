@@ -7,6 +7,7 @@
 
 #include "../config.h"
 #include "../common/buttons.h"
+#include "../common/parameters.h"
 #include "../common/systick.h"
 
 #if OBJECT_ID == OBJECT_ALARM
@@ -125,7 +126,7 @@ void ALARM_state_machine(void){
 void init(void){
 	//INITIALISATION DE LA STATION DE BASE
 	PARAMETERS_init();
-	PARAMETERS_enable(PARAM_ACTUATOR_STATE, 0, FALSE, NULL, NULL);
+	//PARAMETERS_enable(PARAM_ACTUATOR_STATE, 0, FALSE, NULL, NULL);
 
 	//INIT DES OBJETS
 	SERIAL_DIALOG_init();

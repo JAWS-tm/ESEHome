@@ -16,6 +16,7 @@
 
 void SERIAL_DIALOG_init(void);
 void SERIAL_DIALOG_puts(char * s);
+void SERIAL_DIALOG_putc(char c);
 
 void SERIAL_DIALOG_process_main(void);
 void SERIAL_DIALOG_send_msg(uint8_t size, uint8_t * datas);

@@ -27,6 +27,13 @@
 #include "../appli/common/systick.h"
 #include "../appli/common/gpio.h"
 
+#include "appli/common/gpio.h"
+#include "appli/common/leds.h"
+#include "appli/common/buttons.h"
+#include <math.h>
+#include <stdlib.h>
+#include "appli/common/parameters.h"
+
 #if USE_BMP180
 /* Multiple is faster than divide */
 #define BMP180_1_16     ((float) 0.0625)
@@ -38,8 +45,15 @@
 #define BMP180_1_65536  ((float) 0.0000152587890625)
 #define BMP180_1_101325 ((float) 0.00000986923266726)
 
+bool_e butt_press_flag = FALSE;
+
+void my_object_button_network_process_short_press(void);
+
 uint16_t BMP180_temperature(void)
 {
+	BUTTONS_init();
+	BUTTONS_add(BUTTON_NETWORK, PIN_BUTTON_NETWORK, TRUE, &my_object_button_network_process_short_press,NULL,NULL,NULL,NULL);
+
 
     char buffer[50];
     BMP180_t BMP180_Data;
@@ -62,7 +76,13 @@ uint16_t BMP180_temperature(void)
 	BMP180_ReadPressure(&BMP180_Data);
 	//debug_printf("Temp: %2d degrees\nPressure: %6ld Pascals\n\n",(uint16_t)(BMP180_Data.Temperature),BMP180_Data.Pressure);
 	SYSTICK_delay_ms(1000);
+
 	//debug_printf((uint16_t)(BMP180_Data.Temperature));
+	//if(butt_press_flag){
+		RF_DIALOG_send_msg_id_to_basestation(0x16,4,buffer);
+		butt_press_flag = FALSE;
+
+	//}
 	return (uint16_t)(BMP180_Data.Temperature);
 }
 
@@ -155,6 +175,56 @@ void BMP180_demo(void)
 }
 
 
+void BMP180_main(void){
+	typedef enum{
+			INIT,
+			READ_DATAS,
+			SEND_DATAS,
+			ERROR,
+		}state_e;
+		BMP180_t BMP180_Data;
+		static state_e state = INIT;
+		switch(state)
+			{
+			case INIT :
+				if (BMP180_Init(&BMP180_Data) == BMP180_Result_Ok) {
+						/* Init OK */
+						debug_printf("BMP180 configured and ready to use\n\n");
+						BMP180_StartTemperature(&BMP180_Data);
+						BMP180_StartPressure(&BMP180_Data, BMP180_Oversampling_UltraHighResolution);
+						state = READ_DATAS;
+					} else {
+						/* Device error */
+						state = ERROR;
+					}
+
+				break;
+			case READ_DATAS :
+				BMP180_ReadTemperature(&BMP180_Data);
+				BMP180_ReadPressure(&BMP180_Data);
+				state = SEND_DATAS;
+				break;
+			case SEND_DATAS :
+				debug_printf("Temp: %2d degrees\nPressure: %6ld Pascals\nAltitude at current pressure: %d meters\n\n",
+							(uint16_t)(BMP180_Data.Temperature),
+							BMP180_Data.Pressure,
+							(uint16_t)(BMP180_Data.Altitude));
+				break;
+			case ERROR :
+				debug_printf("BMP180 error\n\n");
+				break;
+			default:
+					break;
+
+			}
+
+}
+void my_object_button_network_process_short_press(void)
+{
+	printf("Bouton network appui court\n");
+	butt_press_flag = TRUE;
+
+}
 void BMP180_register_read(uint8_t register_address, uint8_t * destination, uint8_t number_of_bytes)
 {
 	while(I2C_register_read(register_address,  destination, number_of_bytes)==IN_PROGRESS);

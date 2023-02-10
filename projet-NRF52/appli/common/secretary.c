@@ -16,6 +16,8 @@
 #include "modules/nrfx/hal/nrf_gpio.h"
 #include "components/proprietary_rf/esb/nrf_esb.h"
 #include "rf_dialog.h"
+#include "serial_dialog.h"
+#include "verbose.h"
 
 static nrf_esb_payload_t        rx_payload;
 static nrf_esb_payload_t        tx_payload;
@@ -107,60 +109,73 @@ void SECRETARY_esb_event_handler(nrf_esb_evt_t const * p_event)
 void SECRETARY_frame_parse(nrf_esb_payload_t * payload, msg_source_e msg_source)
 {
 	uint32_t recipient;
+	uint32_t emitter;
 	uint8_t msg_id;
 	uint8_t msg_size;
 
 
-		if(payload->length > BYTE_POS_DATASIZE && payload->length <= NRF_ESB_MAX_PAYLOAD_LENGTH)
+	if(payload->length > BYTE_POS_DATASIZE && payload->length <= NRF_ESB_MAX_PAYLOAD_LENGTH)
+	{
+		recipient = U32FROMU8( payload->data[BYTE_POS_RECIPIENTS],  payload->data[BYTE_POS_RECIPIENTS+1],  payload->data[BYTE_POS_RECIPIENTS+2],  payload->data[BYTE_POS_RECIPIENTS+3]);
+		emitter = U32FROMU8( payload->data[BYTE_POS_EMITTER],  payload->data[BYTE_POS_EMITTER+1],  payload->data[BYTE_POS_EMITTER+2],  payload->data[BYTE_POS_EMITTER+3]);
+
+		if(OBJECT_ID == OBJECT_BASE_STATION)
 		{
-			recipient = U32FROMU8( payload->data[BYTE_POS_RECIPIENTS],  payload->data[BYTE_POS_RECIPIENTS+1],  payload->data[BYTE_POS_RECIPIENTS+2],  payload->data[BYTE_POS_RECIPIENTS+3]);
+			//je suis la station de base
 
-			if(OBJECT_ID == OBJECT_BASE_STATION)
+			if(recipient == RF_DIALOG_get_my_device_id() || recipient == 0xFFFFFFFF)
 			{
-				//je suis la station de base
+				// affichage clair en console
+				VERBOSE_add_message_to_process(payload);
 
-				if(recipient == RF_DIALOG_get_my_base_station_id() || recipient == 0xFFFFFFFF)
-				{
-					//le message est pour moi
-					RF_DIALOG_process_rx_basestation(payload);
-					if(msg_source == MSG_SOURCE_RF)
-						SECRETARY_process_msg_to_uart(payload);	//je renvoie le message sur l'UART
-				}
-				else
-				{
-					//le message reçu est pour quelqu'un d'autre
-					if(msg_source == MSG_SOURCE_UART)
-					{
-						//le message vient de l'UART (donc du serveur !), on le relaye vers le RF
-						SECRETARY_send_msg(payload->length, payload->data);
-					}
-				}
-
-
+				//le message est pour moi
+				RF_DIALOG_process_rx_basestation(payload);
+				if(msg_source == MSG_SOURCE_RF)
+					SECRETARY_process_msg_to_uart(payload);	//je renvoie le message sur l'UART afin que le serveur python le traite
 
 			}
-			else{
-				//je suis un objet
-				if(recipient & 0xFF == OBJECT_ID)	//l'octet de poids faible est le type d'objet. Les 3 autres octets sont un "unique ID".
+			else
+			{
+				//le message reçu est pour quelqu'un d'autre
+				if(msg_source == MSG_SOURCE_UART)
+				{
+					//le message vient de l'UART (donc du serveur !), on le relaye vers le RF
+					SECRETARY_send_msg(payload->length, payload->data);
+				}
+			}
+
+
+
+		}
+		else{
+			//je suis un objet
+
+			// Si le destinataire est moi ou qu'il est de ma famille sans uid (000000FF par exemple) à des fins de débogage
+			if(recipient == RF_DIALOG_get_my_device_id() || recipient == (uint32_t) (OBJECT_ID))
+			{
+				// On vérifie que le message provient bien de notre notre base station, si on en a pas on accepte tous les messages
+				if (emitter == RF_DIALOG_get_my_base_station_id() || RF_DIALOG_get_my_base_station_id() == 0xFFFFFFFF)
 				{
 					//super, le message est pour moi !
 					RF_DIALOG_process_rx_object(payload);
-					if(msg_source == MSG_SOURCE_RF)
-						SECRETARY_process_msg_to_uart(payload);	//je renvoie le message sur l'UART
 				}
-				else
-				{
-					//le message est pour quelqu'un d'autre
 
-					//si ce message vient de l'UART (donc d'un développeur qui test des choses...
-					//je le renvoie sur la RF
-					if(msg_source == MSG_SOURCE_UART)
-						SECRETARY_send_msg(payload->length, payload->data);
+				if(msg_source == MSG_SOURCE_RF)
+					SECRETARY_process_msg_to_uart(payload);	//je renvoie le message sur l'UART (pour débug)
+			}
+			else
+			{
+				//le message est pour quelqu'un d'autre
 
-					//sinon, je ne fait rien... le message n'était pas pour moi.
-				}
+				//si ce message vient de l'UART (donc d'un développeur qui test des choses...
+				//je le renvoie sur la RF
+				if(msg_source == MSG_SOURCE_UART)
+					SECRETARY_send_msg(payload->length, payload->data);
+
+				//sinon, je ne fait rien... le message n'était pas pour moi.
 			}
 		}
+	}
 }
 
 
@@ -189,7 +204,7 @@ void SECRETARY_process_msg_from_uart(uint8_t size, uint8_t * datas)
 	SECRETARY_frame_parse(&fake_payload, MSG_SOURCE_UART);
 }
 
-
+// Send RF message to UART
 void SECRETARY_process_msg_to_uart(nrf_esb_payload_t * payload)
 {
 	SERIAL_DIALOG_putc(0xBA);

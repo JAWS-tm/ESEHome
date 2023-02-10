@@ -40,7 +40,8 @@
 #define OBJECT_TOUCH_SCREEN         20
 #define OBJECT_E_PAPER              21
 #define OBJECT_MATRIX_LEDS			24
-#define OBJECTS_NB					25
+#define OBJECT_MP3_PLAYER			25
+#define OBJECTS_NB					26
 
 
 ///////////////////////////////////////////////////////////////////////////////////
@@ -71,9 +72,10 @@
 
 	#if OBJECT_ID == OBJECT_SMART_SOCKET
 		#define MOSFET_RELAIS 	9
-		#define MESURE_COURANT 	2
+		#define MESURE_COURANT 	0 //ADC channel 0
 		#define BUTTON_USER 	17
-		#define LED_STATUT 		20
+		#define LED_STATUT 		13
+
 	#endif
 
 	#if OBJECT_ID == OBJECT_NIGHT_LIGHT
@@ -90,14 +92,17 @@
 	#if OBJECT_ID == OBJECT_STATION_METEO_INT
 		#define USE_DHT11	1
 		#define USE_BMP180	1
-
+		//#define USE_EPAPER 1
 		#define USE_NMOS_GND	1
 
 		#define MOSFET_GND  27
-		#define DHT11_PIN	2
+		#define DHT11_PIN	16
+		//pin pour le E PAPER
+		/*#define CS_PIN           11
+		#define RST_PIN          7
+		#define DC_PIN           10
+		#define BUSY_PIN         15*/
 
-		#define PIN_UART_TX	8		//pour ne pas faire comme tout le monde (et rsoudre un pb hardware !)
-		#define PIN_UART_RX	6		//pour ne pas faire comme tout le monde (et rsoudre un pb hardware !)
 	#endif
 
 	#if OBJECT_ID == OBJECT_OUT_WEATHER_STATION
@@ -149,12 +154,12 @@
 
 	#if OBJECT_ID == OBJECT_VENTILATOR
 
-		#define MOSFET_PIN_1		25
-		#define MOSFET_PIN_2		26
-		#define MOSFET_PIN_3		27
-		#define TEMP_OUTPUT			3
+        #define MOSFET_PIN              10
+        #define DATA_VENTILATEUR        11
+        #define button_SB1_PIN          16
+        #define button_SB2_PIN          17
 
-	#endif
+    #endif
 
 
 	#if OBJECT_ID == OBJECT_GSM
@@ -273,6 +278,11 @@
 		#define LCD_SWITCH_SLIDER_PIN	10
 	#endif
 
+	#if OBJECT_ID == OBJECT_MP3_PLAYER
+		#define UART_AT_BAUDRATE_9600	1
+ 	 	#define DISABLE_DEBUG_PRINTF	1
+	#endif
+
 	#if OBJECT_ID == OBJECTS_NB
 
 
@@ -355,7 +365,7 @@ uint32_t debug_printf(char * format, ...);
 #endif
 
 #ifndef USE_DHT11
-	#define USE_DHT11		0
+	#define USE_DHT11		1
 #endif
 
 #ifndef USE_NMOS_GND

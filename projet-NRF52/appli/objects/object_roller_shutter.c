@@ -1,5 +1,5 @@
 /*
- * object_roller_shutter.c
+ * object_roller_shutter.cs
  *
  *  Created on: 25 janv. 2022
  *      Author: tardychu
@@ -109,7 +109,7 @@ void process_ms(void){
 	 {
 		 ms = 0;
 		 seconds++;
-		 debug_printf("sec : %d et min : %d\n",seconds,minutes);
+		 //debug_printf("sec : %d et min : %d\n",seconds,minutes);
 		 if(seconds == 60)
 		 {
 			 seconds = 0;
@@ -156,15 +156,16 @@ void OBJECT_ROLLER_set_mode_callback(int32_t new_mode)
 //Sinon arrived reste à FALSE
 
 void motor_arrived(void){
+	debug_printf("motor_arrived void\n");
 	if (!adc_current){
 		adc_current = 1000;
-		ADC_read(PIN_ADC, &value);
-		//debug_printf("%d",value);*
+		ADC_read(1, &value);
+		debug_printf("%d value of ADC\n",value);
 		if(value<0)
 			current = 0;
 		else
-			current = (((value)*619)/64);
-		//debug_printf("Courant consommé par le moteur : ");
+			current = (((value)*619)/64); //permet de calculer le courant consommé par le moteur
+		debug_printf("Courant consommé par le moteur : ");
 		debug_printf("#%d->%d\n",value,current);
 		if (current > seuil){
 			debug_printf("Fin de course\n");
@@ -173,9 +174,10 @@ void motor_arrived(void){
 	}
 }
 
-
+//Main de Roller Shutter
 void ROLLER_SHUTTER_state_machine(void)
 {
+	//debug_printf("-----state machine ----\n");
 	typedef enum{
 		 INIT,
 		 MOTOR_FORWARD,
@@ -210,8 +212,8 @@ void ROLLER_SHUTTER_state_machine(void)
 			PARAMETERS_enable(PARAM_MODE, auto_mode, FALSE, &OBJECT_ROLLER_set_mode_callback, NULL);
 
 			ADC_init();
-			GPIO_configure(PIN_RIN, NRF_GPIO_PIN_NOPULL, true);
-			GPIO_configure(PIN_FIN, NRF_GPIO_PIN_NOPULL, true);
+			GPIO_configure(PIN_RIN, NRF_GPIO_PIN_PULLUP, true);
+			GPIO_configure(PIN_FIN, NRF_GPIO_PIN_PULLUP, true);
 			BUTTONS_add(BUTTON_USER0, PIN_BP_UP, TRUE, &short_press_up, NULL, &long_press_up, NULL);
 			BUTTONS_add(BUTTON_USER1, PIN_BP_DOWN, TRUE,&short_press_down, NULL,&long_press_down, NULL);
 			state = IDLE;
@@ -220,14 +222,17 @@ void ROLLER_SHUTTER_state_machine(void)
 
 		////MONTEE DU VOLET
 		case UP :
+			//debug
+			ADC_read(1, &value);
+			debug_printf("%d value of ADC\n",value);
 			if (entrance){
-				debug_printf("Montee du volet\n");
+				debug_printf("Montée du volet\n");
 				t = 1000;
 				GPIO_write(PIN_RIN, true);
 				GPIO_write(PIN_FIN, false);
 				timeout = 10000;
 			}
-/*			if(flag_ask_for_movement == ASK_UP)
+			/*if(flag_ask_for_movement == ASK_UP)
 				state = IDLE;
 			if(flag_ask_for_movement == ASK_DOWN)
 				state = DOWN;*/
@@ -260,7 +265,7 @@ void ROLLER_SHUTTER_state_machine(void)
 				timeout = 10000;
 			}
 
-/*			if(flag_ask_for_movement == ASK_UP)
+			/*if(flag_ask_for_movement == ASK_UP)
 				state = UP;
 			if(flag_ask_for_movement == ASK_DOWN)
 				state = DOWN;*/
@@ -304,7 +309,9 @@ void ROLLER_SHUTTER_state_machine(void)
 
 			/////On envoie l'etat actuel du volet à la station de base
 		case COMMUNICATION :
+			debug_printf("param actuel state\n");
 			PARAMETERS_send_param32_to_basestation(PARAM_ACTUATOR_STATE);
+			debug_printf("param mode\n");
 			PARAMETERS_send_param32_to_basestation(PARAM_MODE);
 			state = IDLE;
 		break;

@@ -12,6 +12,8 @@
 #include "../../bsp/nmos_gnd.h"
 #include "../../bsp/dht11.h"
 #include "../../bsp/bmp180.h"
+#include "../appli/common/parameters.h"
+#include "object_e_paper.h"
 
 void STATION_METEO_INT_MAIN(void) {
 	typedef enum{
@@ -33,22 +35,25 @@ void STATION_METEO_INT_MAIN(void) {
 		DHT11_main();
 		NMOS_Off();
 		state = BMP180;
-		state = OTHERS_MEASUREMENT;
 		break;}
 	case BMP180:{
 		NMOS_On();
-		BMP180_demo();
+		BMP180_main();
 		NMOS_Off();
 		state = OTHERS_MEASUREMENT;
 		break;}
 	case OTHERS_MEASUREMENT:{
-		state = SEND_DATAS;
+			state = SEND_DATAS;
 		break;}
 	case SEND_DATAS:{
+
 		state = EPAPER;
 		break;}
 	case EPAPER:{
-		debug_printf("DHT11 : (h=%d,%d | t=%d,%d)\n", humidity_int, humidity_dec, temperature_int, temperature_dec);
+		//EPAPER_demo();
+		//debug_printf("BMP180 : Pressure (%6ld Pascals)\n", BMP180_Data.Pressure);
+		debug_printf("DHT11 epaper : (h=%d,%d | t=%d,%d)\n", humidity_int, humidity_dec, temperature_int, temperature_dec);
+		//debug_printf("BMP180 : (p=%d)\n",BMP180_pressure);
 		state = INIT;
 		break;}
 	default:
