@@ -12,8 +12,8 @@ class FrameParser :
     def __init__(self, message):
         self.message = message
         self.msgParsed()
-        # self.getInfoMessageId()
-        # self.getSizeUpBit()
+        self.getInfoMessageId()
+        self.getSizeUpBit()
      
 
     #Message attributes (ex dest, emitter, data, etc.)

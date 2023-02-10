@@ -60,14 +60,14 @@ class Receive_write:
             self.receiver = "000000"+self.receiver[6:8]
 
             ## Ajout à la BDD ok, mais encore qqlq bugs, c'est pour çz que c'est commenté 
-            # self.cursor.execute('''INSERT INTO message 
-            #     (recipient, transmitter, type_message, parameter_id, data, date, permanent) 
-            # VALUES 
-            #     ((SELECT type_id from object WHERE physical_id = %s),(SELECT type_id from object WHERE physical_id = %s),%s,%s,%s,%s,%s)
-            # ''', 
-            #     (self.receiver, self.emitter,self.msgTypeID, self.paramID, self.msgCONTENT, self.msgDATE, self.msgPerm))
-            # # execute sql control
-            # self.cnx.commit()   
+            self.cursor.execute('''INSERT INTO message 
+                (recipient, transmitter, type_message, parameter_id, data, date, permanent) 
+            VALUES 
+                ((SELECT type_id from object WHERE physical_id = %s),(SELECT type_id from object WHERE physical_id = %s),%s,%s,%s,%s,%s)
+            ''', 
+                (self.receiver, self.emitter,self.msgTypeID, self.paramID, self.msgCONTENT, self.msgDATE, self.msgPerm))
+            # execute sql control
+            self.cnx.commit()   
         
         # self.objectTX2DB()
 
