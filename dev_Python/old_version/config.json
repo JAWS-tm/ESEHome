@@ -1,0 +1,21 @@
+{
+  "data_communication": {
+    "UART": {
+      "port": "COM4",
+      "baudrate": 115000,
+      "timeout": 3.0,
+      "end_of_frame_character": "\n"
+    }
+  },
+  "DB": {
+    "port": 3306,
+    "host": "172.24.0.71",
+    "DB_name": "PS2022",
+    "user": "python",
+    "password": "python"  },
+  "logs": {
+    "fileName": "data_com_logs.txt",
+    "filter": "DEBUG",
+    "format": "default"
+  }
+}
