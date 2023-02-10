@@ -56,6 +56,7 @@ class Receive_write:
             self.msgCONTENT = self.dico.get("data_concat")
             self.msgDATE = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
             self.msgPerm = 1
+            ## Mise en forme : 000000+id car au moment du test, les émeteurs et récepteurs sont sous cette mise en forme
             self.emitter = "000000"+self.emitter[6:8]
             self.receiver = "000000"+self.receiver[6:8]
 
