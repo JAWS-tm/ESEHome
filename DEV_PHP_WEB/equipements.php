@@ -117,10 +117,7 @@
             echo $resultats_groupes[array_search($_GET["filter"], array_column($resultats_groupes, 'id'))]['name'];
         }
         else{
-            echo "Tous les équipements";
-            }
-            else{?>
-            <h1>
+            ?>
             <?php
             if (isset($_GET["filter"])){
                 if($_GET["filter"] != ""){
@@ -133,7 +130,8 @@
             else{
                 echo "Tous les équipements";
             }
-
+        }
+    }
             ?>
             </h1>
             <div class="box-filter">
