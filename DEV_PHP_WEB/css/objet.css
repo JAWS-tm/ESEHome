@@ -79,6 +79,10 @@ body {
   /* padding-bottom: 30px; */
 }
 
+.object-card.table {
+  width: 80%;
+}
+
 .object-actions {
   display: grid;
   grid-template-columns: 40% 60%;
@@ -99,6 +103,12 @@ body {
   width: 100%;
   padding: 10px;
   display: flex;
+  flex-wrap: wrap;
+}
+
+.actions.center {
+  justify-content: center;
+  align-items: center;
 }
 
 .action-card-container {
@@ -295,8 +305,14 @@ body {
 }
 .object-status {
   font-size: 0.7rem;
+}
+.object-status.disconnected {
   color: red;
 }
+.object-status.connected {
+  color: #61c400;
+}
+
 
 input[type="submit"] {
   position: absolute;

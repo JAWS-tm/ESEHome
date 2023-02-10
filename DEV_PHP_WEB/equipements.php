@@ -174,7 +174,7 @@
             <div class="card_thumb">
                 <img src=<?= "img/" . $value['type_name'] . ".jpg"?>>
             </div>
-            <a class="card_body" href="ficheobjet.php?param=<?php echo $value['id_object'];?>">
+            <a class="card_body" href="ficheobjet.php?id=<?php echo $value['id_object'];?>">
                 <div class="card_cagtegory">
                     <span><?php echo $value['group_name'] ?></span>
                 </div>

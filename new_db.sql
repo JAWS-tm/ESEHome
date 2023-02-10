@@ -361,18 +361,19 @@ VALUES ('RECENT_RESET', '02'),
 CREATE TABLE IF NOT EXISTS `message` (
     `id` int(11) NOT NULL AUTO_INCREMENT,
     `recipient` int(11) NOT NULL,
-    `transmitter` int(11) NOT NULL,
+    `transmitter` int(11), # Null si serveur
     `type_message` int(11) NOT NULL,
     `parameter_id` int(11),
-    `data` varchar(20) NOT NULL, # Taille max d`une trame : 20bits
+    `data` varchar(20), # Taille max d`une trame : 20bits
     `date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
     `permanent` bit NOT NULL DEFAULT 0,
     `history` bit NOT NULL DEFAULT 0,
 
     PRIMARY KEY (id),
     FOREIGN KEY (recipient) REFERENCES object(id),
-    FOREIGN KEY (transmitter) REFERENCES object(id)
-
+    FOREIGN KEY (transmitter) REFERENCES object(id),
+    FOREIGN KEY (type_message) REFERENCES message_type(id),
+    FOREIGN KEY (parameter_id) REFERENCES parameters(id)
 );
 
 --

@@ -75,7 +75,7 @@
             <?php 
             foreach($obj as $val_obj){
               if($val_obj['id'] == $value['id'] ):?>
-                <a href="ficheobjet.php?param=<?php echo $val_obj['id_object'];?>"><?php echo $val_obj['type_name']."<br>"?></a>
+                <a href="ficheobjet.php?id=<?php echo $val_obj['id_object'];?>"><?php echo $val_obj['type_name']."<br>"?></a>
               <?php endif;
             }?> 
           </div>
