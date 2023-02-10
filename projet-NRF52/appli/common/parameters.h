@@ -37,6 +37,7 @@ typedef enum
 	PARAM_PM1_0, //Ajout de paramètres pour l'objet "Air Sensor" (ID = 15)
 	PARAM_PM2_5,
 	PARAM_PM10,
+	PARAM_MP3_TRACK,
 	PARAM_32_BITS_NB = 63,	//avant ce define, tout les paramètres tiennent sur 32 bits.
 
 

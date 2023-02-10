@@ -194,7 +194,9 @@ static void SERIAL_DIALOG_uart_event_handler(app_uart_evt_t * p_event)
 
 void SERIAL_DIALOG_putc(char c)
 {
+#if !UART_SHUTUP_EVERYWHERE_EXCEPT_FOR_MY_OBJECT
 	app_uart_put(c);
+#endif
 }
 
 void SERIAL_DIALOG_puts(char * s)
@@ -206,8 +208,10 @@ void SERIAL_DIALOG_puts(char * s)
 		if(!initialized)
 			SERIAL_DIALOG_init();
 		//nrfx_uart_tx(&uart_instance, (uint8_t *)(s), strlen(s));
+#if !UART_SHUTUP_EVERYWHERE_EXCEPT_FOR_MY_OBJECT
 		for(uint16_t i = 0; s[i]; i++)
 			while(app_uart_put(s[i])!=NRF_SUCCESS);
+#endif
 		reentrance_detection = FALSE;
 	}
 }

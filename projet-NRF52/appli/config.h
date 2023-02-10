@@ -324,6 +324,8 @@
 	#define USE_SERIAL_DIALOG	1
 #endif
 
+#define UART_SHUTUP_EVERYWHERE_EXCEPT_FOR_MY_OBJECT	(OBJECT_ID== OBJECT_MP3_PLAYER)
+
 //pour voir les IRQ Radio...
 #define SP_DEBUG_RADIO_IRQ_INIT()		nrf_gpio_cfg_output(12)
 #define SP_DEBUG_RADIO_IRQ_SET()		NRF_P0->OUTSET = (1 << (12))
