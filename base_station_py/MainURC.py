@@ -1,11 +1,21 @@
+########################
+# MainURC : 
+#			Ce main comprend les composantes suivantes : 
+#				UART
+#				RÈponse
+#				Chiffrement	
+########################
+
 #import
 import json
 import logging
-from Data_base.DB import dBclass
+from multiprocessing import RLock
+from Data_base.MariadB_Connect import MariaDBConnect
+from Data_comm.mainURC import mainURC
 import time
 from serial.tools.list_ports import comports
 from Data_comm.UartController import UartController
-import mysql.connector
+from Data_comm.FrameParser import FrameParser
 from Data_base.Receive_write import Receive_write
 
 #main
@@ -25,13 +35,13 @@ def get_port_serial_open():
         print("port_serial :",port_serial)
         return port_serial
     except IndexError as e:
-        print("Il se peut qu'aucun port s√©rie ne soit connect√©")
+        print("Il se peut qu'aucun port serie ne soit connecte")
         time.sleep(5)
         print("get_port_serial_open() error : ", e)
         # exit()
         return 0
 
-## Cr√©er les fichiers de log de l'application
+## CrÈer les fichiers de log de l'application
 class AppliLogger():
     '''Attributes'''
     logger = None
@@ -76,7 +86,7 @@ class AppliLogger():
     def critical(self, message):
         self.logger.critical(message)
 
-# Va r√©cup√©rer les infos de config dans le fichier config.json
+# Va rÈcupÈrer les infos de config dans le fichier config.json
 class config (object):
     get_port_serial_open()
     try: 
@@ -97,57 +107,44 @@ class config (object):
 
 
 class mainClass (object):
-    def __init__ (self, bdd_config):
+    def __init__ (self):
         # On lancera ici le Data_base_main.py et le Data_comm_main.py en multiprocessing
 
         # Receive_write(FrameParser.tram_dico)
         
-        try:
-            self.cnx = mysql.connector.connect(
-                ## Caution: it is your personnal host user and password
-                host = bdd_config["host"],
-                port = bdd_config["port"],
-                user = bdd_config["user"],
-                passwd = bdd_config["password"],
-                database = bdd_config["database"]
-            )
-            self.cursor = self.cnx.cursor()
-        except Exception as e:
-            print("Error init database :", str(e))
-
-        self.loop()
-
-    def loop(self):
         uart_controller = UartController(config.UART_CONFIG)
+
 
         while True:
             
             last_message = uart_controller.get_last_message()
             if (last_message != 0): # 
-                last_dico = uart_controller.get_last_dico()   
-                Receive_write.set_new_dico(self, last_dico)  
-                # Receive_write.objectTX2DB(self)
+                print("reception du message dans le main : ",last_message)   
 
-            # R√©cup√®re le dernier dico enregistrer, et l'envoie dans Recieve_write, qui va enregistrer dans BDD
-            # last_dico = uart_controller.get_last_dico()
-            # if(last_dico != 0):
-            #     Receive_write.set_new_dico(last_dico)  
+            last_dico = uart_controller.get_last_dico()
+            if (last_message != 0): # 
+                print("reception du dico dans le main : ",last_dico)   
 
-
-
-if __name__ == "__main__":
-
+                
+    
+def mainURC(dic = {}, lock = RLock()):
     config.logger.info("-------------------Starting application-------------------")
 
-        # Config : donn√©ees, mpd, port... pour DATA_COMMUNICATION, DB et UART
+        # Config : donnÈees, mpd, port... pour DATA_COMMUNICATION, DB et UART
     config()
     config.logger.info("-----------------------Config : ok------------------------")
 
     # MariaDb init : create database and tables, if not exists
-    dBclass(config.DB_CONFIG)
+    MariaDBConnect(config.DB_CONFIG)
     config.logger.info("-----------------------MariaDB : ok-----------------------")
 
-    Receive_write(config.DB_CONFIG)
-
-    mainClass(config.DB_CONFIG)
+    if(get_port_serial_open() != 0):
+        mainClass()
     
+    if(get_port_serial_open() == 0):
+        get_port_serial_open
+
+
+
+if __name__ == "__main__":
+    mainURC()
