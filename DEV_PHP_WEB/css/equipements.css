@@ -45,7 +45,6 @@
 
 .card:hover{
     box-shadow: 0px 0px 50px rgba(0,0,0, 0.3);
-    cursor: pointer;
 }
 
 .card_thumb{
@@ -78,6 +77,7 @@
 }
 
 .card_body{
+    cursor: pointer;
     display: block;
     position: relative;
     padding: 20px;

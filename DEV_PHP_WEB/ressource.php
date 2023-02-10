@@ -4,8 +4,8 @@
     require 'inc/header.php';
     require 'inc/db.php';
     
-    //r�cup�re les infos des objets
-    $sqladm = "SELECT id_object, TY.name as type_name, GR.name as group_name, creation_date, state FROM object as OB
+    //récupère les infos des objets
+    $sqladm = "SELECT id_object, OB.name object_name, TY.name as type_name, GR.name as group_name, creation_date, state FROM object as OB
 		INNER JOIN object_type as TY ON TY.id = OB.type_id
 		INNER JOIN group_objects as OG ON OG.id_object = OB.id
 		INNER JOIN groups as GR ON GR.id = OG.id_group";
@@ -14,7 +14,7 @@
     $reqadm->execute();
     $result = $reqadm->fetchAll(PDO::FETCH_ASSOC);
     
-    //r�cup�re les infos des utilisateurs
+    //récupère les infos des utilisateurs
     $user = "SELECT * FROM users ORDER BY id ASC";
     $utilisateur = $pdo->prepare($user);
     $utilisateur->execute();
@@ -37,7 +37,8 @@
 				        <thead>
 				            <tr>
 						        <th class="id">Id</th>
-						        <th class="pseudo">Groupe</th>
+                                <th class="pseudo">Nom</th>
+                                <th class="pseudo">Groupe</th>
 						        <th class="text">Type</th>
 						        <th class="text">Date de création</th>
 						        <th class="text">Etat</th>
@@ -53,6 +54,7 @@
 				        <tbody>
 				        	<tr>
 				        		<td><?php echo $value['id_object'];?></td>
+                                <td><?php echo $value['object_name'];?></td>
 					            <td><?php echo $value['group_name'];?></td>
 					            <td><?php echo $value['type_name'];?></td>
 					            <td><?php echo $value['creation_date'];?></td>
