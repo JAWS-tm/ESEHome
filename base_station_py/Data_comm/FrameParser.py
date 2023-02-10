@@ -52,7 +52,7 @@ class FrameParser :
         elif self.end != CONST_END:
             print("Frame end error :", self.end)
             return 0
-        elif self.param_id_e == CONST_END:
+        elif self.param_id_e == CONST_END: # param_id_e = CONST_END si pas de message dans la tram
             print("pas de message dans la tram")
             tram_dico = {
                 "begin": self.begin,
@@ -62,7 +62,7 @@ class FrameParser :
                 "cnt": self.cnt,
                 "id": self.id,
                 "msg_size": self.msg_size,
-                "param_id_e": self.param_id_e,
+                "param_id_e": "",   # String vide, sinon param_id_e = DA
                 "data_concat": self.data_concat,
                 "end": self.end
             }

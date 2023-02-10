@@ -86,7 +86,6 @@ class config (object):
             jsonFile.close()
         DATA_COMMUNICATION_CONFIG = CONFIG["data_communication"]
         DB_CONFIG = CONFIG["DB"]
-        print(DB_CONFIG)
         UART_CONFIG = CONFIG["data_communication"]["UART"]
         ## global = variable global
         global port_serial
@@ -119,17 +118,13 @@ class mainClass (object):
         self.loop()
 
     def loop(self):
-        print("self.cnx :",self.cnx)
-        print("self.cursor :",self.cursor)
         uart_controller = UartController(config.UART_CONFIG)
 
         while True:
             
             last_message = uart_controller.get_last_message()
             if (last_message != 0): # 
-                print("reception du message dans le main : ",last_message)
                 last_dico = uart_controller.get_last_dico()   
-                print("reception du dico dans le main  : ", last_dico) 
                 Receive_write.set_new_dico(self, last_dico)  
                 # Receive_write.objectTX2DB(self)
 

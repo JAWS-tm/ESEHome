@@ -1,4 +1,6 @@
 import mysql.connector
+from datetime import datetime
+
 #This class is used to receivre a dictionary (containing the frame) from "Response" to write it inside the DataBase.
 class Receive_write:
     #                       ------- INIT -------
@@ -34,6 +36,15 @@ class Receive_write:
         #     self.objectTX2DB()
     #                       ---------- Functions ----------
 
+    def set_date():
+        # datetime object containing current date and time
+        
+        # dd/mm/YY H:M:S
+        dt_string = now.strftime("%Y-%m-%d %H:%M:%S")
+        print("now =", dt_string)
+        return dt_string
+
+
     def set_new_dico(self, dico):
         if (dico != 0):
             self.dico = dico         
@@ -43,13 +54,16 @@ class Receive_write:
             self.msgTypeID = self.dico.get("id")
             self.paramID = self.dico.get("param_id_e")
             self.msgCONTENT = self.dico.get("data_concat")
-            self.msgDATE = "09/02/2023"
-            self.msgPerm = "perm ?"
+            self.msgDATE = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+            self.msgPerm = 1
+            self.emitter = "000000"+self.emitter[6:8]
+            self.receiver = "000000"+self.receiver[6:8]
 
+            ## Ajout à la BDD ok, mais encore qqlq bugs, c'est pour çz que c'est commenté 
             # self.cursor.execute('''INSERT INTO message 
             #     (recipient, transmitter, type_message, parameter_id, data, date, permanent) 
             # VALUES 
-            #     (%s,%s,%s,%s,%s,%s,%s)
+            #     ((SELECT type_id from object WHERE physical_id = %s),(SELECT type_id from object WHERE physical_id = %s),%s,%s,%s,%s,%s)
             # ''', 
             #     (self.receiver, self.emitter,self.msgTypeID, self.paramID, self.msgCONTENT, self.msgDATE, self.msgPerm))
             # # execute sql control

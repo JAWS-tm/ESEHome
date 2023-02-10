@@ -261,7 +261,9 @@ class dBclass:
     #Creation of database
     def create_database(self):
         try:
-            self.cursor.execute('''CREATE DATABASE IF NOT EXISTS esehome DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci''') # execute sql control
+            self.cursor.execute('''CREATE DATABASE IF NOT EXISTS esehome 
+                DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci
+            ''') # execute sql control
             self.cnx.commit()
             self.cursor.execute('''USE esehome''')
             self.cnx.commit()
