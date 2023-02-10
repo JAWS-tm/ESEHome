@@ -365,7 +365,7 @@ uint32_t debug_printf(char * format, ...);
 #endif
 
 #ifndef USE_DHT11
-	#define USE_DHT11		1
+	#define USE_DHT11		0
 #endif
 
 #ifndef USE_NMOS_GND
