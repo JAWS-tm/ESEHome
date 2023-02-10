@@ -25,6 +25,10 @@ unix : source env/bin/activate
 windows : env/Scripts/activate
 ```
 
+### Utilisation d'une Arduino pour simuler l'arrivé des trames, sur le serveur.
+```
+test_comm_serial.ino
+```
 
 ### Installation des packages, library...
 Dans votre Powershell ou cmd:
@@ -39,3 +43,5 @@ Voici la liste des élements présent dans requirements.txt
 *  **pyserial version 3.5**
 *  **cryptography version 39.0.0**
 *  **asyncio version 3.4.3**
+```
+
