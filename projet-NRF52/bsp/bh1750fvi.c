@@ -64,7 +64,7 @@ void BH1750FVI_demo()
 	uint16_t luminosity;
 	BH1750FVI_init();
 	BH1750FVI_powerOn();
-	BH1750FVI_measureMode(BH1750FVI_CON_H1);
+	BH1750FVI_measureMode(BH1750FVI_CON_L);
 	while(1)
 	{
 		SYSTICK_delay_ms(200);
@@ -80,11 +80,13 @@ void BH1750FVI_demo()
  */
 void BH1750FVI_init()
 {
-	I2C_init(BH1750FVI_ADDR);
+	I2C_init(BH1750FVI_ADDR_L);
+
 }
 
 void BH1750_write(uint8_t data)
 {
+
 	while(I2C_write(&data, 1)==IN_PROGRESS);
 }
 /**

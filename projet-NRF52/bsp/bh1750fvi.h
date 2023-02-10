@@ -13,8 +13,8 @@
 
 #define BH1750FVI_I2C 	I2C1
 
-#define BH1750FVI_ON		0x00
-#define BH1750FVI_OFF		0x01
+#define BH1750FVI_ON		0x01
+#define BH1750FVI_OFF		0x00
 #define BH1750FVI_RESET		0x07
 
 //Modes de mesure

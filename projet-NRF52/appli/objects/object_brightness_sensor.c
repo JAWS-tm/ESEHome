@@ -48,8 +48,8 @@ void OBJECT_BRIGHTNESS_SENSOR_MAIN(void)
 		LED_add(LED_ID_BATTERY, PIN_LED_BATTERY);
 		LED_add(LED_ID_NETWORK, PIN_LED_NETWORK);
 
-		GPIO_configure(BH1750FVI_VCC_PIN, GPIO_PIN_CNF_PULL_Pullup, TRUE);
-		GPIO_write(BH1750FVI_VCC_PIN, TRUE);
+		//GPIO_configure(BH1750FVI_VCC_PIN, GPIO_PIN_CNF_PULL_Pullup, TRUE);
+		//GPIO_write(BH1750FVI_VCC_PIN, TRUE);
 
 		//Initialisation du bouton
 		BUTTONS_add(BUTTON_NETWORK, PIN_BUTTON_NETWORK, TRUE,&btn_switch_measure_mode, NULL,&btn_sleep, NULL);
@@ -69,7 +69,7 @@ void OBJECT_BRIGHTNESS_SENSOR_MAIN(void)
 		while(1){
 			previous_luminosity = luminosity;
 			luminosity = BH1750FVI_readLuminosity();
-			luminosity_observation(luminosity,previous_luminosity);
+			//luminosity_observation(luminosity,previous_luminosity);
 			PARAMETERS_update(PARAM_BRIGHTNESS, luminosity);
 
 			SYSTICK_delay_ms(120);
