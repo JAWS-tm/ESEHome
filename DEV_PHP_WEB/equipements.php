@@ -42,7 +42,7 @@
         $req->execute();
         $resultats_groupes = $req->fetchAll(PDO::FETCH_ASSOC);
     }
-    else{
+    elseif ($isadmin == 1){
         //recuprer les objets propres  chaque groupe et leurs paramtres    
         $sqlitemuser = "SELECT id_object, GR.id as id_group, GR.name as group_name, TY.name as type_name, OB.name as object_name FROM object as OB
         INNER JOIN object_type as TY ON TY.id = OB.type_id
@@ -74,15 +74,11 @@
 
         if (isset($filter))
         {
-            $new_resultats_item = [];
-            foreach($resultats_item as $key => $value_resultats_item) {
-                if ($isadmin == 0){
-                    if ($value_resultats_item['id'] == $filter)
-                    array_push($new_resultats_item, $value_resultats_item);
-                }
-                else{
+            if (count($resultats_item) != 0){
+                $new_resultats_item = [];
+                foreach($resultats_item as $key => $value_resultats_item) {
                     if ($value_resultats_item['id_group'] == $filter)
-                    array_push($new_resultats_item, $value_resultats_item);
+                        array_push($new_resultats_item, $value_resultats_item);
                 }
             }
             if (!empty($new_resultats_item))
@@ -108,10 +104,20 @@
           <?php
             if (empty($resultats_item)){?>
 
-                <h1 class="title">Vous êtes associé à aucun groupe</h1>
-                <h1 class="subtitle">Veuillez vous <a class="lien_mesobject" href="mesobjets.php" >inscrire</a> à un groupe pour visualiser vos equipements ici</h1>
-                <lottie-player src="https://assets6.lottiefiles.com/private_files/lf30_zncbuxbi.json" background="transparent"  speed="1" loop controls autoplay></lottie-player>
-                <?php
+        <h1 class="title">Vous êtes associé à aucun groupe</h1>
+        <h1 class="subtitle">Veuillez vous <a class="lien_mesobject" href="mesobjets.php" >inscrire</a> à un groupe pour visualiser vos equipements ici</h1>
+        <lottie-player src="https://assets6.lottiefiles.com/private_files/lf30_zncbuxbi.json" background="transparent"  speed="1" loop controls autoplay></lottie-player>
+        <?php
+    }
+    else{?>
+    <h1>
+    <?php 
+    if (isset($_GET["filter"])){
+        if($_GET["filter"] != "" && count($resultats_groupes) > 1){
+            echo $resultats_groupes[array_search($_GET["filter"], array_column($resultats_groupes, 'id'))]['name'];
+        }
+        else{
+            echo "Tous les équipements";
             }
             else{?>
             <h1>

@@ -191,7 +191,7 @@ CREATE TABLE IF NOT EXISTS `message_admin` (
     `id_user` int(11) NOT NULL,
     `message_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
     `message` text NOT NULL,
-    `object` varchar(100) NOT NULL,
+    `object` int NOT NULL,
 
     PRIMARY KEY (id),
     FOREIGN KEY (id_user) REFERENCES users(`id`)
@@ -202,7 +202,7 @@ CREATE TABLE IF NOT EXISTS `message_admin` (
 --
 
 INSERT INTO `message_admin` (`id_user`, `object`, `message`)
-VALUES (2, 'Demande de grade', 'Bonjour, je souhaiterais devenir admin.');
+VALUES (2, 2, 'Bonjour, je souhaiterais avoir acces au groupe 2.');
 
 --
 -- Structure de la table `interface_type`

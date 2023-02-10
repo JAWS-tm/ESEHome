@@ -43,11 +43,32 @@
     $req = $pdo->prepare($sqlgrpuser);
     $req->execute();
     $allGrp = $req->fetchAll(PDO::FETCH_ASSOC);
+
+    if (isset($_GET["groups"])){
+      $groups_send = $_GET["groups"];
+      $sqlverifdoublon = "SELECT COUNT(*) FROM message_admin WHERE id_user =:verifdata AND object = :verifcgo";
+		  $reqverifInsert = $pdo->prepare($sqlverifdoublon);
+	 	  $reqverifInsert->execute(array(':verifdata'=>$_SESSION['auth']->id, ':verifcgo'=>$groups_send));
+		  $verifresult = $reqverifInsert->fetchAll(PDO::FETCH_ASSOC);
+		  $isverified = array_column($verifresult, 'COUNT(*)');
+	 	  if ($isverified == [0]) {
+      
+      $message_send = "Bonjour, je souhaiterais avoir acces au groupe ".$groups_send.".";
+      $sql_message = "INSERT INTO message_admin (id_user, object, message) VALUES (".$_SESSION['auth']->id.", ".$groups_send.", '".$message_send."')";
+	 	  $sql_message = $pdo->prepare($sql_message);
+	 	  $sql_message->execute();
+      }
+      header("Location: mesobjets.php");
+
+    }
+
   }
   
   else{
     header("Location: index.php");
   }
+
+
 
  
 ?>
@@ -66,10 +87,13 @@
     foreach ($resultat as $value) {
         ?>
       <article class="card">
+        <a href="equipements.php?filter=<?= $value['id']?>">
         <div class="card_thumb"><img src=<?= "img/" . $value['nom_groupe'] . ".jpg"?> ></div>
         <div class="card_body">
+          <a href="equipements.php?filter=<?= $value['id']?>">
           <div class="card_cagtegory"><?=$value['nom_groupe']?></div>
           <h2 class="card_title">Gerer les elements: <?=$value['nom_groupe']?></h2>
+          </a>
           <div class="card_subtitle">Voir les differents elements</div> 
           <div class="card_element">
             <?php 
@@ -81,7 +105,7 @@
           </div>
           <div class="card_footer"></div>
         </div>
-
+        </a>
       </article>
       
     <?php }
@@ -107,7 +131,11 @@
           <div class="card_subtitle">Vous n'avez pas acces a ce groupe</div> 
           
           <div class="card_element">
-            <input class="button" type="button" value="Je demande accès">
+          <form action="" method="get">
+            <button class="button" type="submit" name="groups" value="<?=$value['id']?>">
+              Je demande acces
+            </button>
+          </form>
           </div>
           <div class="card_footer"></div>
         </div>

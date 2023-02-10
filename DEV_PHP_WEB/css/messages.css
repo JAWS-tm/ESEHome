@@ -38,11 +38,11 @@ h1{
 
 .tableau{
   position: relative;
-  margin-left: 20%;
+  margin-left: 10%;
   margin-right: 0;
   margin-top: 1.5em;
   margin-bottom: 2em;
-  width: 60%;
+  width: 80%;
   border: 2px solid #000000;
   box-shadow: 10px 5px 5px rgb(105, 105, 105);
 }
@@ -156,4 +156,35 @@ td{
 thead{
   vertical-align:middle;
   height: auto;
+}
+
+
+.icon-check{
+  padding: 8px;
+  border-radius: 10px;
+  background-color: #61da61;
+}
+
+.icon-check:hover{
+  background-color: #3ad53a;
+}
+
+.icon-trash{
+  padding: 8px;
+  border-radius: 10px;
+  background-color: #f75c5c;
+}
+
+.icon-trash:hover{
+  background-color: #f63131;
+}
+
+.div-icon{
+  display: flex;
+  justify-content: space-evenly;
+}
+
+.btn-icon{
+  background: none;
+  border: none;
 }
