@@ -6,15 +6,21 @@
 from email import message
 
 
+
 class FrameParser :
     #Attributes
     def __init__(self, message):
         self.message = message
-        self.msgParsed() 
-        self.getInfoMessageId()
-        self.getSizeUpBit()
+        self.msgParsed()
+        # self.getInfoMessageId()
+        # self.getSizeUpBit()
+        
+        # Variable global du dico
+        # global tram_dico
+        # tram_dico = {}
 
     #Message attributes (ex dest, emitter, data, etc.)
+    
 
     #Constructor
     #def __init__(self, ) :
@@ -23,12 +29,12 @@ class FrameParser :
         CONST_BEGIN = "BA"
         CONST_END = "DA"
         self.tram_size = len(self.message)//2
-
+        tram_dico = {}
         tab_msg = []
         for x in range(self.tram_size):
             chaine = self.message[x*2]+self.message[(x*2)+1]
             tab_msg.append(chaine)
-        print("\n\n")
+        print("\n")
         # print("tab_msg :",tab_msg)
 
         self.begin = tab_msg[0]
@@ -45,8 +51,10 @@ class FrameParser :
 
         if self.begin != CONST_BEGIN:
             print("Frame begin error : ", self.begin)
+            return 0
         elif self.end != CONST_END:
             print("Frame end error :", self.end)
+            return 0
         elif self.param_id_e == CONST_END:
             print("pas de message dans la tram")
             tram_dico = {
@@ -61,9 +69,12 @@ class FrameParser :
                 "data_concat": self.data_concat,
                 "end": self.end
             }
-            print(tram_dico)
+            # print(tram_dico)
+            return tram_dico
+            # self.put_dico_in_queue(tram_dico)
         elif self.param_id_e > "24" or self.param_id_e == "16" :
             print("Param id error")
+            return 0
         else:
             tram_dico = {
                 "begin": self.begin,
@@ -77,7 +88,9 @@ class FrameParser :
                 "data_concat": self.data_concat,
                 "end": self.end
             }
-            print(tram_dico)
+            # print(tram_dico)
+            return tram_dico
+            # self.put_dico_in_queue(tram_dico)
             # tab_parse = []
             # tab_parse.insert(0,self.begin)
             # tab_parse.insert(1,self.data_size)

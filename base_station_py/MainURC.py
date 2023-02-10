@@ -35,7 +35,7 @@ def get_port_serial_open():
         print("port_serial :",port_serial)
         return port_serial
     except IndexError as e:
-        print("Il se peut qu'aucun port série ne soit connecté")
+        print("Il se peut qu'aucun port serie ne soit connecte")
         time.sleep(5)
         print("get_port_serial_open() error : ", e)
         # exit()
