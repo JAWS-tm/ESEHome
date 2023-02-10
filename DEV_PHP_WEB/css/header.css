@@ -1,0 +1,150 @@
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@100&display=swap");
+
+/*------------ BASE ------------*/
+
+html,
+body {
+  font-family: Roboto;
+  font-size: 16px;
+  line-height: 1.4;
+  height: 100%;
+  margin: 0 0 0 0;
+  padding: 0;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+.container {
+  padding: 60px 0 !important;
+}
+
+.site-content {
+  padding-top: 66px;
+}
+
+/*------------ HEADER ------------*/
+
+.header {
+  position: fixed;
+  left: 0;
+  right: 0;
+  height: 66px;
+  line-height: 66px;
+  color: #fff;
+  background-color: #334e70;
+  z-index: 1000;
+}
+
+.header_logo img {
+  padding-top: 7px;
+  padding-left: 40px;
+  max-height: 50px;
+  max-width: auto;
+}
+
+/*------------ MENU ------------*/
+
+.menu {
+  float: right;
+  padding-right: 40px;
+}
+
+.menu a {
+  padding: 0 30px 0;
+  margin: 0 0 0 0;
+  font-size: 22px;
+  text-transform: uppercase;
+}
+
+.menu a:hover {
+  color: #f5d1c6;
+  /* font-weight: bold; */
+}
+
+/*------------ RESPONSIVE ------------*/
+
+@media only screen and (max-width: 750px) {
+  .site-container {
+    overflow: hidden;
+    height: 100%;
+  }
+
+  .site-pusher {
+    height: 100%;
+    transition-duration: 0.3s;
+    transform: translateX(0);
+  }
+
+  .site-content {
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: 0;
+    bottom: 0;
+    padding-top: 0;
+    overflow-y: scroll;
+    -webkit-overflow-scrolling: touch;
+    background-color: #fff;
+  }
+
+  .header {
+    position: static;
+  }
+
+  /* Icon 3 traits avec le shadow-box */
+  .header_icon {
+    position: relative;
+    display: block;
+    float: left;
+    width: 50px;
+    height: 66px;
+    cursor: pointer;
+  }
+
+  .header_icon:after {
+    content: "";
+    position: absolute;
+    display: block;
+    width: 1rem;
+    height: 0;
+    top: 16px;
+    left: 20px;
+    box-shadow: 0 10px 0 1px #fff, 0 16px 0 1px #fff, 0 22px 0 1px #fff;
+  }
+
+  /* Menu collé à gauche masqué grace à transform */
+  .menu {
+    position: absolute;
+    left: 0;
+    top: 66px;
+    bottom: 0;
+    background-color: #2c496d;
+    width: 250px;
+    /* transform: translateX(-250px); */
+  }
+
+  /* Un lien par ligne */
+  .menu a {
+    display: block;
+    height: 66px;
+    text-align: center;
+    line-height: 66px;
+    border-bottom: 1px solid #334e70;
+  }
+
+  .with-sidebar .site-pusher {
+    transform: translateX(250px);
+  }
+
+  .with-sidebar .site-cache {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+  }
+}

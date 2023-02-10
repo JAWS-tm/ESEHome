@@ -1,0 +1,157 @@
+/**      Author: Raimbault PL
+ */
+
+
+*{
+    box-sizing: border-box;
+}
+
+h1{
+    font-family: 'Work Sans', sans-serif;
+    font-size: 60px;
+    color: #3991FF;
+    text-align: center;
+}
+
+/* Formulaire INSCRIPTION */
+.container{
+    position: unset;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    padding: 45px 100px;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    margin-bottom: 50px;
+}
+
+.contact-form{
+    max-width: 850px;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    background-color: #fff;
+    box-shadow: 0px 0px 19px 5px rgba(0,0,0,0.19);
+     margin-bottom: 100px;
+}
+
+
+.left{
+    height: 100%;
+    background-color: #3991FF;
+}
+
+.left .logo{
+	 height: 75%;
+	 width: 75%;
+	 margin-top: 15%;
+}
+
+.right{
+    padding: 25px 40px;
+}
+
+.right h2{
+	position: relative;
+	padding-bottom: 10px;
+	padding-bottom: 10px;
+} 
+
+.right h2:after{
+	content: '';
+	position: absolute;
+	left: 50%;
+	bottom: 0;
+	transform: translateX(-50%);
+	height: 4px;
+	width: 50px;
+	border-radius: 2px;
+	background-color: #3991FF;
+}
+
+.champ{
+    width: 100%;
+    padding: 0.5rem 1rem;
+    outline: none;
+    border: 2px solid rgba(0,0,0,0);
+    background-color: rgba(230,230,230,0.6);
+    font-size: 1.1rem;
+    margin-bottom: 22px;
+    transition: 0.3s;
+}
+
+.champ:hover{
+  background-color: rgba(0,0,0,0.1);
+}
+
+.champ:focus{
+    background-color: #fff;
+    border: 2px solid rgba(30,85,250,0.47);
+}
+
+
+.right .btn{
+    width: 100%;
+    padding: 0.5rem 1rem;
+    font-size: 1.1rem;
+    background-color: #3991FF;
+    cursor: pointer;
+    outline: none;
+    border:none;
+    color: #fff;
+    transition: 0.3s;
+    margin-top: 10px;
+}
+
+@media screen and (max-width:690px){
+	.contact-form{
+		grid-template-columns: 1fr;
+	}
+}
+
+/*MESSAGE D'ERREUR*/
+
+.alert{
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    color: #fff;
+    background-color: red;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+}
+
+.password-eye{
+    position: relative;
+    margin-bottom: 22px;
+}
+
+.password{
+  transition: all 0.2s;
+  margin-bottom: 0px;
+}
+
+
+.password-icon {
+    display: flex;
+    align-items: center;
+    position: absolute;
+    top: 50%;
+    right: 17px;
+    transform: translateY(-50%);
+    width: 20px;
+    transition: all 0.2s;
+  }
+  .password-icon:hover {
+    cursor: pointer;
+    color: #3991FF;
+  }
+  .password-icon .eye-slash {
+    display: none;
+  }
+
