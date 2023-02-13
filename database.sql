@@ -299,9 +299,15 @@ CREATE TABLE IF NOT EXISTS `parameters` (
 -- Contenu de la table `parameters`
 --
 
-INSERT INTO `parameters` (`name`, `param_type_id`, `object_id`, `value`, `unit`)
-VALUES ('Température', 7, 6, '15', '°C'),
-       ('Mode', 15, 9, '15', NULL);
+INSERT INTO `parameters` (`id`, `param_type_id`, `object_id`, `name`, `value`, `unit`)
+VALUES  (2, 15, 9, 'Mode', '15', null),
+        (3, 3, 2, 'État', '1', null),
+        (4, 11, 2, 'Luminosité', '10', null),
+        (5, 4, 14, 'Niveau max', '23', 'cm'),
+        (6, 7, 6, 'Température', '20.5', '°C'),
+        (7, 8, 6, 'Humidité', '35', '%'),
+        (8, 14, 2, 'Couleur', 'FFBF52', ''),
+        (9, 15, 2, 'Mode', '01', '');
 
 --
 -- Structure de la table `parameter_modes`
@@ -321,10 +327,13 @@ CREATE TABLE IF NOT EXISTS `parameter_modes` (
 -- Contenu de la table `parameter_modes`
 --
 
-INSERT INTO `parameter_modes` (`name`, `parameter_id`, `value`)
-VALUES ('Mode veille', 2, '02'),
-       ('Activé', 2, '01'),
-       ('Désactivé', 2, '00');
+INSERT INTO `parameter_modes` (`parameter_id`, `name`, `value`)
+VALUES  (2, 'Mode veille', '02'),
+        (2, 'Activé', '01'),
+        (2, 'Désactivé', '00'),
+        (9, 'Désactivé', '00'),
+        (9, 'Activé', '01'),
+        (9, 'Mode Nuit', '02');
 
 --
 -- Structure de la table `message_type`
