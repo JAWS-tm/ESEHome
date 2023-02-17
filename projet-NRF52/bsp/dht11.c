@@ -82,7 +82,7 @@ void DHT11_init(uint16_t GPIO_PIN_x)
 uint16_t DHT11_humidity(void)
 {
 	uint16_t humidity = 0;
-	DHT11_init(DHT11_PIN);
+	//DHT11_init(DHT11_PIN);
 	uint32_t time = SYSTICK_get_time_us();
 	uint32_t time2 = 0;
 	while(time2 < time + 4000000 ){
@@ -117,7 +117,7 @@ uint16_t DHT11_humidity(void)
 void DHT11_main(void)
 {
 
-	DHT11_init(DHT11_PIN);
+	//DHT11_init(DHT11_PIN);
 	while(DHT11_state_machine_get_datas(&humidity_int, &humidity_dec, &temperature_int, &temperature_dec) != END_OK)
 	{
 	}

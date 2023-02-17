@@ -69,7 +69,7 @@ void BH1750FVI_demo()
 	{
 		SYSTICK_delay_ms(200);
 		luminosity = BH1750FVI_readLuminosity();
-		debug_printf("\nLuminosite = %d lx", luminosity);
+		debug_printf("\nLuminosite = %d lx\r", luminosity);
 	}
 }
 

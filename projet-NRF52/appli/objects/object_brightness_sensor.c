@@ -26,6 +26,11 @@ static bool boolean_btn_switch_ = FALSE;
 static bool boolean_btn_sleep_ = FALSE;
 static uint16_t save_state;
 
+int32_t callback_read_sensor(void)
+{
+	return (int32_t)luminosity;
+}
+
 void OBJECT_BRIGHTNESS_SENSOR_MAIN(void)
 {
 	typedef enum{
@@ -36,13 +41,17 @@ void OBJECT_BRIGHTNESS_SENSOR_MAIN(void)
 	}state_e;
 
 	static state_e state = INIT;
+	static state_e previous_state = INIT;
+	bool_e entrance = (state!=previous_state);
+	previous_state = state;
 
 	switch(state){
 	case INIT:
 		//Initialisation
 		BH1750FVI_init();
+
 		PARAMETERS_init();
-		PARAMETERS_enable(PARAM_BRIGHTNESS,0,FALSE,NULL,NULL);
+		PARAMETERS_enable(PARAM_BRIGHTNESS,0,FALSE,NULL,&callback_read_sensor);
 
 		//Initialisation des LED
 		LED_add(LED_ID_BATTERY, PIN_LED_BATTERY);
@@ -52,7 +61,9 @@ void OBJECT_BRIGHTNESS_SENSOR_MAIN(void)
 		//GPIO_write(BH1750FVI_VCC_PIN, TRUE);
 
 		//Initialisation du bouton
-		BUTTONS_add(BUTTON_NETWORK, PIN_BUTTON_NETWORK, TRUE,&btn_switch_measure_mode, NULL,&btn_sleep, NULL);
+		//BUTTONS_add(BUTTON_NETWORK, PIN_BUTTON_NETWORK, TRUE,&btn_switch_measure_mode, NULL,&btn_sleep, NULL);
+
+		//BH1750FVI_demo();
 
 
 		state = CONTINUOUS_MEASURE;
@@ -60,13 +71,14 @@ void OBJECT_BRIGHTNESS_SENSOR_MAIN(void)
 		break;
 		
 	case CONTINUOUS_MEASURE:
-
+		if(entrance)
+		{
+			BH1750FVI_powerOn();
+			BH1750FVI_measureMode(BH1750FVI_CON_L);
+		}
 		led_lighting_status(1);
 
-		BH1750FVI_powerOn();
-		BH1750FVI_measureMode(BH1750FVI_CON_H1); //BH1750FVI_CON_L
 
-		while(1){
 			previous_luminosity = luminosity;
 			luminosity = BH1750FVI_readLuminosity();
 			//luminosity_observation(luminosity,previous_luminosity);
@@ -84,7 +96,6 @@ void OBJECT_BRIGHTNESS_SENSOR_MAIN(void)
 				state = SLEEP;
 			}
 
-		}
 
 		break;
 		

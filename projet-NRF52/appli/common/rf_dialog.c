@@ -87,7 +87,7 @@ void RF_DIALOG_process_rx_object(nrf_esb_payload_t * payload){
 				break;
 			}
 			case PARAMETER_ASK :{
-				debug_printf("\n Le parametre demande est de %d lx.", payload->data[BYTE_POS_DATAS]);
+				//debug_printf("\n Le parametre demande est de %d lx.", payload->data[BYTE_POS_DATAS]);
 				PARAMETERS_send_param32_to_basestation((param_id_e)(payload->data[BYTE_POS_DATAS]));
 				break;
 			}
